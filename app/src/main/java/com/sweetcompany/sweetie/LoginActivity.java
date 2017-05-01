@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if (mFirebaseUser != null) {
+            mFirebaseAuth.signOut();
+        }
+
+
     }
 
     private void handleFirebaseAuthResult(AuthResult authResult) {

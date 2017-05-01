@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/rosa_sweetie</item>
+        <item name="colorPrimaryDark">@color/rosa_sweetie</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name = "android:windowActionBar">false</item>
+        <item name = "android:windowNoTitle">true</item>
+    </style>
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@color/rosa_sweetie</item>
+        <item name="tabIndicatorHeight">5dp</item>
+        <item name="tabIndicatorColor">@color/yellow_sweetie</item>
+        <item name="tabTextColor">@android:color/white</item>
+        <item name="tabSelectedTextColor">@color/yellow_sweetie</item>
+        <item name="android:textSize">14sp</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+</resources>

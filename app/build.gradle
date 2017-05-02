@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'sweetalias'
             keyPassword 'sklh335'
-            storeFile file('C:/Users/ghiro/Documents/Android Studio Projects/Sweetie/sweetiekey.jks')
+            storeFile file('C:/Users/Federico/AndroidStudioProjects/sweetierepo/sweetiekey.jks')
             storePassword 'sklh335'
         }
     }

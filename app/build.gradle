@@ -64,6 +64,9 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:10.2.1'
     // Firebase UI
     compile 'com.firebaseui:firebase-ui-database:1.2.0'
+
+    // UnitTest
+    testCompile 'junit:junit:4.12'
 }
 
 // Add to the bottom of the file

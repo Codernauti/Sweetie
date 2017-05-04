@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             startActivity(new Intent(this, DashboardActivity.class));
         };
 */
-        startActivity(new Intent(this, RegisterActivity.class));
+        //startActivity(new Intent(this, RegisterActivity.class));
 
     }
 

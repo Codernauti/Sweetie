@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Home.HomeActivity"
+        <activity android:name=".DashboardActivity"
                   android:theme="@style/AppTheme"/>
         <activity android:name=".LoginActivity"
                   android:theme="@style/AppTheme"/>

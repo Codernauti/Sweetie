@@ -4,13 +4,10 @@ package com.sweetcompany.sweetie;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.sweetcompany.sweetie.Home.HomeActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         } else {
-            startActivity(new Intent(this, HomeActivity.class));
+            startActivity(new Intent(this, DashboardActivity.class));
             finish();
         };
 

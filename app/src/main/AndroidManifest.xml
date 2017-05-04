@@ -22,6 +22,8 @@
                   android:theme="@style/AppTheme"/>
         <activity android:name=".LoginActivity"
                   android:theme="@style/AppTheme"/>
+        <activity android:name=".Registration.RegisterActivity"
+            android:theme="@style/AppTheme"/>
 
     </application>
 

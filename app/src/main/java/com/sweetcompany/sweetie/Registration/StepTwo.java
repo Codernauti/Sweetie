@@ -33,16 +33,16 @@ import java.util.concurrent.Executor;
 
 public class StepTwo extends Fragment implements View.OnClickListener {
 
-    private static final String TAG = "RegisterActivity";
+    private static final String TAG = "StepTwo";
     private static final int RC_SIGN_IN = 9001;
 
     private Button mForwardButton;
 
-    public static StepOne newInstance() {
-        StepOne stepOne = new StepOne();
+    public static StepTwo newInstance() {
+        StepTwo stepTwo = new StepTwo();
         Bundle args = new Bundle();
-        stepOne.setArguments(args);
-        return stepOne;
+        stepTwo.setArguments(args);
+        return stepTwo;
     }
 
     @Override
@@ -57,7 +57,6 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         mForwardButton = (Button) view.findViewById(R.id.fordward_button);
         // Set click listeners
         mForwardButton.setOnClickListener(this);
-
     }
 
 

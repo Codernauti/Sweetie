@@ -41,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity implements ViewPager.OnP
     Context mContext;
 
     @Override
+    //TODO usare setcustom animation e gestirseli da sè senza viewpager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_layout);

@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Home;
+package com.sweetcompany.sweetie;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -6,11 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.sweetcompany.sweetie.Calendar.CalendarFragment;
 import com.sweetcompany.sweetie.Folders.FoldersFragment;
+import com.sweetcompany.sweetie.Actions.ActionsFragment;
 import com.sweetcompany.sweetie.Map.MapFragment;
-import com.sweetcompany.sweetie.R;
 
 
-public class HomePagerAdapter extends FragmentPagerAdapter {
+public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
     private final static int NUM_TAB = 4;
     private final static int CALENDAR_TAB = 0;
@@ -20,7 +20,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
 
     Context context;
 
-    HomePagerAdapter(FragmentManager fm, Context mContext) {
+    DashboardPagerAdapter(FragmentManager fm, Context mContext) {
         super(fm);
         context = mContext;
     }
@@ -31,7 +31,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
             case CALENDAR_TAB:
                 return new CalendarFragment();
             case HOME_TAB:
-                return new HomeFragment();
+                return new ActionsFragment();
             case FOLDERS_TAB:
                 return new FoldersFragment();
             case MAP_TAB:

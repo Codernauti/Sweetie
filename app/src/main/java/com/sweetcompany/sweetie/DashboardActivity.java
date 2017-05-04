@@ -1,14 +1,12 @@
-package com.sweetcompany.sweetie.Home;
+package com.sweetcompany.sweetie;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,24 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.google.android.gms.auth.api.Auth;
-import com.sweetcompany.sweetie.LoginActivity;
-import com.sweetcompany.sweetie.R;
-
-public class HomeActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity {
 
     ViewPager mViewPager;
-    HomePagerAdapter mAdapter;
+    DashboardPagerAdapter mAdapter;
     Context mContext;
     TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_activity);
+        setContentView(R.layout.dashboard_activity);
 
         mContext = getApplicationContext();
-        mAdapter = new HomePagerAdapter(getSupportFragmentManager(), mContext);
+        mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mAdapter);
@@ -52,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
         //Set map tab icon
         tabLayout.getTabAt(3).setIcon(R.drawable.mapicon_white);
         // Show HomePage first
-        mViewPager.setCurrentItem(HomePagerAdapter.HOME_TAB);
+        mViewPager.setCurrentItem(DashboardPagerAdapter.HOME_TAB);
         //SlidingTabStrip in TabLayout
         ViewGroup slidingTabStrip = (ViewGroup) tabLayout.getChildAt(0);
         //Last tab (map) in SlidingTabStrip
@@ -73,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sign_out_menu:
-                startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+                startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
                 finish();
                 return true;
             default:

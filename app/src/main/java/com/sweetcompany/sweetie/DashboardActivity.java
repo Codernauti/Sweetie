@@ -29,7 +29,7 @@ public class DashboardActivity extends AppCompatActivity {
         mContext = getApplicationContext();
         mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext);
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
         mViewPager.setAdapter(mAdapter);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);

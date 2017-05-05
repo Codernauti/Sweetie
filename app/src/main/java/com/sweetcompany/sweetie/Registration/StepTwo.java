@@ -1,14 +1,19 @@
 package com.sweetcompany.sweetie.Registration;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CpuUsageInfo;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -38,6 +43,8 @@ public class StepTwo extends Fragment implements View.OnClickListener {
 
     private Button mForwardButton;
 
+    private Context mContext = getContext();
+
     public static StepOne newInstance() {
         StepOne stepOne = new StepOne();
         Bundle args = new Bundle();
@@ -57,7 +64,6 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         mForwardButton = (Button) view.findViewById(R.id.fordward_button);
         // Set click listeners
         mForwardButton.setOnClickListener(this);
-
     }
 
 
@@ -71,6 +77,8 @@ public class StepTwo extends Fragment implements View.OnClickListener {
                 return;
         }
     }
+
+
 
 
 }

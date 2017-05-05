@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                 startActivity(new Intent(this, RegisterActivity.class));
                 break;
             case R.id.login_button:
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
         }
 

@@ -13,15 +13,22 @@
         android:layout_marginTop="40dp"
         android:text="REGISTER"/>
 
-
+    <ProgressBar
+        android:id="@+id/progressBar_register"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:layout_gravity="center"/>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/register_google_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:layout_centerInParent="true"
-        android:visibility="visible"
         android:layout_gravity="center"/>
+
+
 
 </LinearLayout>

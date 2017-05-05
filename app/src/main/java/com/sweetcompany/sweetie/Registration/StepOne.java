@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -39,6 +40,7 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     private FirebaseUser mFirebaseUser;
 
     private SignInButton mRegisterGoogleButton;
+    private ProgressBar mProgressBar;
 
     public static StepOne newInstance() {
         StepOne stepOne = new StepOne();
@@ -57,6 +59,10 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Assign fields
         mRegisterGoogleButton = (SignInButton) view.findViewById(R.id.register_google_button);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar_register);
+
+        // Initialize progress bar
+        setProgressBarVisibile(false);
 
         // Set click listeners
         mRegisterGoogleButton.setOnClickListener(this);
@@ -90,6 +96,7 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.register_google_button:
+                setProgressBarVisibile(true);
                 signIn();
                 break;
             default:
@@ -100,6 +107,14 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void setProgressBarVisibile(Boolean b){
+        if(b){
+            mProgressBar.setVisibility(View.VISIBLE);
+        }else{
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -137,8 +152,10 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(getActivity(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            setProgressBarVisibile(true);
                         } else {
                             // go to Step 2
+                            setProgressBarVisibile(false);
                             ((RegisterActivity) getActivity()).onPageSelected(RegisterPagerAdapter.STEP_TWO);
                         }
                     }

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
     private SignInButton mSignInButton;
+    private ProgressBar mProgressBar;
 
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mFirebaseAuth;
@@ -41,6 +43,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Assign fields
         mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar_login);
+
+        // Initialize progress bar
+        setProgressBarVisibile(false);
 
         // Set click listeners
         mSignInButton.setOnClickListener(this);
@@ -80,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sign_in_button:
+                setProgressBarVisibile(true);
                 signIn();
                 break;
             default:
@@ -90,6 +97,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void setProgressBarVisibile(Boolean b){
+        if(b){
+            mProgressBar.setVisibility(View.VISIBLE);
+        }else{
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -127,7 +142,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            setProgressBarVisibile(false);
                         } else {
+                            setProgressBarVisibile(false);
                             startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                             finish();
                         }

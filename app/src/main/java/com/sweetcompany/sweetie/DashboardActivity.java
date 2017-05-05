@@ -67,7 +67,7 @@ public class DashboardActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.sign_out_menu:
-                startActivity(new Intent(DashboardActivity.this, LoginActivity.class));
+                startActivity(new Intent(DashboardActivity.this, MainActivity.class));
                 finish();
                 return true;
             default:

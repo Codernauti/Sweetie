@@ -4,7 +4,8 @@
         xmlns:app2="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-    
+
+    <!-- TODO aggiungere icona Gittabile della donnina -->
     <ImageView
             android:id="@+id/image_action_list_item"
             android:layout_width="60dp"
@@ -13,11 +14,12 @@
             android:layout_marginBottom="2.5dp"
             android:layout_marginStart="6dp"
 
-            android:src="@drawable/test_female_user_icon128x128"
+            android:src="@drawable/common_google_signin_btn_text_dark"
 
             app2:layout_constraintTop_toBottomOf="parent"
             app2:layout_constraintLeft_toRightOf="parent"
     />
+
 
     <TextView
             android:id="@+id/title_action_list_item"
@@ -43,10 +45,42 @@
             app2:layout_constraintTop_toBottomOf="@+id/title_action_list_item"
             app2:layout_constraintLeft_toRightOf="@+id/image_action_list_item"
 
-            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ut iaculis purus. Cras pharetra libero dui, non tempus nisl blandit."
+            android:text="Lorem ipsum dolor sit amet."
             android:textSize="14dp"
             android:ellipsize="end"
             android:maxLines="1"
     />
+
+    <!-- TODO aggiustare padding di ogni elemento -->
+    <TextView
+        android:id="@+id/date_action_list_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+
+        app2:layout_constraintTop_toBottomOf="parent"
+        app2:layout_constraintRight_toLeftOf="parent"
+
+        android:text="08/05/2017"
+        android:textSize="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        />
+
+    <ImageView
+        android:id="@+id/type_action_list_item"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="18dp"
+
+        app2:layout_constraintTop_toBottomOf="@+id/date_action_list_item"
+        app2:layout_constraintRight_toLeftOf="parent"
+
+        android:src="@drawable/googleg_standard_color_18"
+
+        />
 
 </android.support.constraint.ConstraintLayout>

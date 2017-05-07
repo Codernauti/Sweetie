@@ -16,7 +16,6 @@ import java.util.List;
 
 public class ActionsFragment extends Fragment {
 
-    private RecyclerView mActionsList;
     private ActionsAdapter mActionAdapter;
 
     @Override
@@ -32,7 +31,7 @@ public class ActionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.actions_fragment, container, false);
 
-        mActionsList = (RecyclerView) root.findViewById(R.id.actions_list);
+        RecyclerView mActionsList = (RecyclerView) root.findViewById(R.id.actions_list);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mActionsList.setLayoutManager(layoutManager);

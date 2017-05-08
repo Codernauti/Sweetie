@@ -1,7 +1,6 @@
 package com.sweetcompany.sweetie.Actions;
 
-import android.content.Context;
-import android.support.v4.graphics.ColorUtils;
+
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,7 +53,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
     }
 
 
-    class ActionViewHolder extends RecyclerView.ViewHolder {
+    class ActionViewHolder extends RecyclerView.ViewHolder{
         TextView title, description, date;
         ImageView avatar, type;
 
@@ -67,6 +66,8 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             avatar = (ImageView) itemView.findViewById(R.id.image_action_list_item);
             type = (ImageView) itemView.findViewById(R.id.type_action_list_item);
         }
+
     }
+
 
 }

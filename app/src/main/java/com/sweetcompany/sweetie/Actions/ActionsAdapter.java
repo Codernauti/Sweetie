@@ -49,6 +49,17 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
         holder.title.setText(actionObj.getTitle() + " " + position);
         holder.description.setText(actionObj.getDescription());
         holder.date.setText(actionObj.getDataTime());
+
+        // TODO switch case String only for java 7
+        if(actionObj.getmType().equals("MSG")) {
+            holder.type.setImageResource(R.drawable.mapicon_yellow);
+        }
+        if(actionObj.getmType().equals("PHOTO")) {
+            holder.type.setImageResource(R.drawable.googleg_disabled_color_18);
+        }
+        if(actionObj.getmType().equals("TODO")) {
+            holder.type.setImageResource(R.drawable.googleg_standard_color_18);
+        }
     }
 
     @Override
@@ -66,7 +77,6 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             title = (TextView) itemView.findViewById(R.id.title_action_list_item);
             description = (TextView) itemView.findViewById(R.id.subtitle_action_list_item);
             date = (TextView) itemView.findViewById(R.id.date_action_list_item);
-
             avatar = (ImageView) itemView.findViewById(R.id.image_action_list_item);
             type = (ImageView) itemView.findViewById(R.id.type_action_list_item);
         }

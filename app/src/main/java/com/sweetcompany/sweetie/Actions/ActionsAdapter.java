@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.sweetcompany.sweetie.R;
 
+import java.util.List;
+
 /**
  * Created by Eduard on 07/05/2017.
  */
@@ -21,10 +23,10 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
     private static int VIEW_HOLDER_COUNT = 0;
 
     private int mNumberItems;
+    private List<ActionObj> mActionsList;
 
-    ActionsAdapter(int numberOfItems) {
-        mNumberItems = numberOfItems;
-        //mOnClickListener = listener;
+    ActionsAdapter(List<ActionObj> actions) {
+        mActionsList = actions;
     }
 
     @Override
@@ -43,13 +45,15 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
 
     @Override
     public void onBindViewHolder(ActionViewHolder holder, int position) {
-        Log.d(TAG, ":onBindViewHolder() #" + position);
-        holder.title.setText("Title " + position);
+        ActionObj actionObj = mActionsList.get(position);
+        holder.title.setText(actionObj.getTitle() + " " + position);
+        holder.description.setText(actionObj.getDescription());
+        holder.date.setText(actionObj.getDataTime());
     }
 
     @Override
     public int getItemCount() {
-        return mNumberItems;
+        return mActionsList.size();
     }
 
 

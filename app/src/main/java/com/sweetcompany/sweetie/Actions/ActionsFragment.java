@@ -11,16 +11,21 @@ import android.view.ViewGroup;
 
 import com.sweetcompany.sweetie.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ActionsFragment extends Fragment implements RecyclerItemClickListener.OnItemClickListener{
 
     private ActionsAdapter mActionAdapter;
-    private RecyclerView mActionsList;
+    private RecyclerView mActionsListView;
+
+    private List<ActionObj> mActionsList = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActionAdapter = new ActionsAdapter(20);
+        mActionAdapter = new ActionsAdapter(mActionsList);
     }
 
 
@@ -29,13 +34,13 @@ public class ActionsFragment extends Fragment implements RecyclerItemClickListen
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.actions_fragment, container, false);
 
-        mActionsList = (RecyclerView) root.findViewById(R.id.actions_list);
+        mActionsListView = (RecyclerView) root.findViewById(R.id.actions_list);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mActionsList.setLayoutManager(layoutManager);
+        mActionsListView.setLayoutManager(layoutManager);
 
-        mActionsList.setAdapter(mActionAdapter);
-        mActionsList.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), this));
+        mActionsListView.setAdapter(mActionAdapter);
+        mActionsListView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), this));
 
 
         return root;
@@ -44,7 +49,7 @@ public class ActionsFragment extends Fragment implements RecyclerItemClickListen
     //  TODO
     @Override
     public void onItemClick(View childView, int position) {
-        int selectedItemPosition = mActionsList.getChildAdapterPosition(childView);
+        int selectedItemPosition = mActionsListView.getChildAdapterPosition(childView);
 
     }
 

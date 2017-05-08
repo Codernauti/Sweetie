@@ -41,7 +41,7 @@ public class ActionsFragment extends Fragment implements RecyclerItemClickListen
         return root;
     }
 
-    // TODO
+    //  TODO
     @Override
     public void onItemClick(View childView, int position) {
         int selectedItemPosition = mActionsList.getChildAdapterPosition(childView);

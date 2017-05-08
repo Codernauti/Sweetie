@@ -14,7 +14,7 @@ import com.sweetcompany.sweetie.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionsFragment extends Fragment implements RecyclerItemClickListener.OnItemClickListener{
+public class ActionsFragment extends Fragment{
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
@@ -27,6 +27,7 @@ public class ActionsFragment extends Fragment implements RecyclerItemClickListen
 
         prepareActionsFake();
         mActionAdapter = new ActionsAdapter(mActionsList);
+
     }
 
 
@@ -41,22 +42,8 @@ public class ActionsFragment extends Fragment implements RecyclerItemClickListen
         mActionsListView.setLayoutManager(layoutManager);
 
         mActionsListView.setAdapter(mActionAdapter);
-        mActionsListView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), this));
-
 
         return root;
-    }
-
-    //  TODO
-    @Override
-    public void onItemClick(View childView, int position) {
-        int selectedItemPosition = mActionsListView.getChildAdapterPosition(childView);
-
-    }
-
-    @Override
-    public void onItemLongPress(View childView, int position) {
-
     }
 
     public void prepareActionsFake(){

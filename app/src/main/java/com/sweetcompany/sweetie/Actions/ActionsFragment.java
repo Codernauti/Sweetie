@@ -25,6 +25,7 @@ public class ActionsFragment extends Fragment implements RecyclerItemClickListen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        prepareActionsFake();
         mActionAdapter = new ActionsAdapter(mActionsList);
     }
 
@@ -56,5 +57,16 @@ public class ActionsFragment extends Fragment implements RecyclerItemClickListen
     @Override
     public void onItemLongPress(View childView, int position) {
 
+    }
+
+    public void prepareActionsFake(){
+        ActionObj actionObj = new ActionObj("Amore", "I love you my dear so much ma much much much", "08/05/17", "MSG");
+        mActionsList.add(actionObj);
+
+        actionObj = new ActionObj("Estate 2016", "Marina ha aggiunto 3 nuove foto", "02/04/07", "PHOTO");
+        mActionsList.add(actionObj);
+
+        actionObj = new ActionObj("FILM da vedere", "Marina ha aggiunto due elementi", "04/03/17", "TODO");
+        mActionsList.add(actionObj);
     }
 }

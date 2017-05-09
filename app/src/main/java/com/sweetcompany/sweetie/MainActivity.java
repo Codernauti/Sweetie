@@ -35,7 +35,18 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        // Check User TODO
+
+        //check if user is logged in. If not go to the login page.
+        // Initialize Firebase Auth
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            startActivity(new Intent(this, DashboardActivity.class));
+        } else {
+            // User is signed out
+            startActivity(new Intent(this, LoginActivity.class));
+            // Split if User need to login or register TODO
+        }
 
         mRegisterButton = (Button) findViewById (R.id.register_button);
         mLoginButton = (Button) findViewById (R.id.login_button);
@@ -43,18 +54,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         mRegisterButton.setOnClickListener(this);
         mLoginButton.setOnClickListener(this);
 
-        // Initialize Firebase Auth
-/*
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if (mFirebaseUser == null) {
-            // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, LoginActivity.class));
-        } else {
-            startActivity(new Intent(this, DashboardActivity.class));
-        };
-*/
-        //startActivity(new Intent(this, RegisterActivity.class));
 
     }
 

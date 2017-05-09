@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar_login);
 
-        // Initialize progress bar
+        // Initialize progress bar hidden
         setProgressBarVisibile(false);
 
         // Set click listeners
@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    private void handleFirebaseAuthResult(AuthResult authResult) {
+    /*private void handleFirebaseAuthResult(AuthResult authResult) {
         if (authResult != null) {
             // Welcome the user
             FirebaseUser user = authResult.getUser();
@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             // Go back to the main activity
             startActivity(new Intent(this, MainActivity.class));
         }
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 signIn();
                 break;
             default:
-                return;
+                break;
         }
     }
 
@@ -99,6 +99,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    // TODO to put in a general external class
     private void setProgressBarVisibile(Boolean b){
         if(b){
             mProgressBar.setVisibility(View.VISIBLE);

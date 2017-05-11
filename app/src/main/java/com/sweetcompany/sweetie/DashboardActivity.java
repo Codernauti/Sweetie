@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements IPageChanger {
 
     ViewPager mViewPager;
     DashboardPagerAdapter mAdapter;
@@ -70,8 +70,15 @@ public class DashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(DashboardActivity.this, MainActivity.class));
                 finish();
                 return true;
+            case R.id.fake_update_menu:
+                mAdapter.mPresenter.updateActionsList();
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void changePageTo(int page) {
+        mViewPager.setCurrentItem(page);
     }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.sweetcompany.sweetie.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,11 +24,8 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
     private static int VIEW_HOLDER_COUNT = 0;
 
     private int mNumberItems;
-    private List<ActionObj> mActionsList;
+    private List<ActionVM> mActionsList = new ArrayList<>();
 
-    ActionsAdapter(List<ActionObj> actions) {
-        mActionsList = actions;
-    }
 
     @Override
     public ActionViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -45,21 +43,21 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
 
     @Override
     public void onBindViewHolder(ActionViewHolder holder, int position) {
-        ActionObj actionObj = mActionsList.get(position);
-        holder.title.setText(actionObj.getTitle() + " " + position);
-        holder.description.setText(actionObj.getDescription());
-        holder.date.setText(actionObj.getDataTime());
+        ActionVM actionVM = mActionsList.get(position);
+        holder.title.setText(actionVM.getTitle() + " " + position);
+        holder.description.setText(actionVM.getDescription());
+        holder.date.setText(actionVM.getDataTime());
 
         // TODO switch case String only for java 7
-        if(actionObj.getmType().equals("MSG")) {
+        /*if(actionVM.getmType().equals("MSG")) {
             holder.type.setImageResource(R.drawable.mapicon_yellow);
         }
-        if(actionObj.getmType().equals("PHOTO")) {
+        if(actionVM.getmType().equals("PHOTO")) {
             holder.type.setImageResource(R.drawable.googleg_disabled_color_18);
         }
-        if(actionObj.getmType().equals("TODO")) {
+        if(actionVM.getmType().equals("TODO")) {
             holder.type.setImageResource(R.drawable.googleg_standard_color_18);
-        }
+        }*/
     }
 
     @Override
@@ -67,13 +65,22 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
         return mActionsList.size();
     }
 
+    public void updateActionsList(List<ActionVM> actionsVM) {
+        mActionsList.clear();
+        mActionsList.addAll(actionsVM);
+        this.notifyDataSetChanged();
+    }
 
-    class ActionViewHolder extends RecyclerView.ViewHolder{
+
+    class ActionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, description, date;
         ImageView avatar, type;
 
         ActionViewHolder(View itemView) {
             super(itemView);
+
+            itemView.setOnClickListener(this);
+
             title = (TextView) itemView.findViewById(R.id.title_action_list_item);
             description = (TextView) itemView.findViewById(R.id.subtitle_action_list_item);
             date = (TextView) itemView.findViewById(R.id.date_action_list_item);
@@ -81,6 +88,12 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             type = (ImageView) itemView.findViewById(R.id.type_action_list_item);
         }
 
+        @Override
+        public void onClick(View v) {
+            // TODO test method
+            int position = this.getAdapterPosition();
+            mActionsList.get(position).showAction();
+        }
     }
 
 

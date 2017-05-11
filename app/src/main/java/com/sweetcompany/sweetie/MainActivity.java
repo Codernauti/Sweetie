@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             startActivity(new Intent(this, DashboardActivity.class));
         } else {
             // User is signed out
-            startActivity(new Intent(this, LoginActivity.class));
+            //startActivity(new Intent(this, LoginActivity.class));
             // Split if User need to login or register TODO
         }
 

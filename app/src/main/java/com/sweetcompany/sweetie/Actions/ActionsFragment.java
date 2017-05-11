@@ -9,25 +9,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sweetcompany.sweetie.DashboardActivity;
+import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ActionsFragment extends Fragment{
+public class ActionsFragment extends Fragment implements ActionsContract.View {
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
 
-    private List<ActionObj> mActionsList = new ArrayList<>();
+    private ActionsContract.Presenter mPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        prepareActionsFake();
-        mActionAdapter = new ActionsAdapter(mActionsList);
-
+        mActionAdapter = new ActionsAdapter();
     }
 
 
@@ -46,14 +45,22 @@ public class ActionsFragment extends Fragment{
         return root;
     }
 
-    public void prepareActionsFake(){
-        ActionObj actionObj = new ActionObj("Amore", "I love you my dear so much ma much much much", "08/05/17", "MSG");
-        mActionsList.add(actionObj);
+    @Override
+    public void setPresenter(ActionsContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
 
-        actionObj = new ActionObj("Estate 2016", "Marina ha aggiunto 3 nuove foto", "02/04/07", "PHOTO");
-        mActionsList.add(actionObj);
+    @Override
+    public void updateActionsList(List<ActionVM> actionsVM) {
+        for(ActionVM actionVM : actionsVM) {
+            actionVM.setPageChanger((IPageChanger)getActivity());
+        }
 
-        actionObj = new ActionObj("FILM da vedere", "Marina ha aggiunto due elementi", "04/03/17", "TODO");
-        mActionsList.add(actionObj);
+        mActionAdapter.updateActionsList(actionsVM);
+    }
+
+    @Override
+    public void showCalendarFragment() {
+        ((DashboardActivity)getActivity()).changePageTo(0);
     }
 }

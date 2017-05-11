@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.sweetcompany.sweetie.Actions.ActionsContract;
+import com.sweetcompany.sweetie.Actions.ActionsPresenter;
 import com.sweetcompany.sweetie.Calendar.CalendarFragment;
 import com.sweetcompany.sweetie.Folders.FoldersFragment;
 import com.sweetcompany.sweetie.Actions.ActionsFragment;
@@ -20,6 +23,9 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
     Context context;
 
+    public ActionsContract.Presenter mPresenter;
+
+
     DashboardPagerAdapter(FragmentManager fm, Context mContext) {
         super(fm);
         context = mContext;
@@ -31,13 +37,15 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
             case CALENDAR_TAB:
                 return new CalendarFragment();
             case HOME_TAB:
-                return new ActionsFragment();
+                ActionsFragment view = new ActionsFragment();
+                mPresenter = new ActionsPresenter(view);
+                view.setPresenter(mPresenter);
+                return view;
             case FOLDERS_TAB:
                 return new FoldersFragment();
             case MAP_TAB:
                 return new MapFragment();
         }
-
         return null;
     }
 

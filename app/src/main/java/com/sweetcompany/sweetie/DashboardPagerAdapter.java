@@ -21,6 +21,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
     private final static int FOLDERS_TAB = 2;
     private final static int MAP_TAB = 3;
 
+    // For getString From Resource
     Context context;
 
     public ActionsContract.Presenter mPresenter;
@@ -28,7 +29,6 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
     DashboardPagerAdapter(FragmentManager fm, Context mContext) {
         super(fm);
-        context = mContext;
     }
 
     @Override
@@ -66,7 +66,6 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
             //case MAP_TAB:
                 //return context.getString(R.string.map_tab_name);
         }
-
         return null;
     }
 

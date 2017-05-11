@@ -35,4 +35,11 @@ public class ChatFragment extends Fragment implements ChatContract.View {
     public void setPresenter(ChatContract.Presenter presenter) {
         mPresenter = presenter;
     }
+
+    public static ChatFragment newInstance() {
+        ChatFragment newChatFragment = new ChatFragment();
+        return newChatFragment;
+    }
+
+
 }

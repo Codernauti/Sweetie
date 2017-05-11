@@ -10,6 +10,8 @@ public class ChatPresenter implements ChatContract.Presenter {
 
     public ChatPresenter(ChatContract.View view){
         mView = view;
+
+        mView.setPresenter(this);
     }
 
     @Override

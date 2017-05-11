@@ -25,6 +25,9 @@
         <activity android:name=".Registration.RegisterActivity"
             android:theme="@style/AppTheme"/>
 
+        <activity android:name=".Chat.ChatActivity"
+                  android:theme="@style/AppTheme"/>
+
     </application>
 
 </manifest>

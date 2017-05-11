@@ -16,23 +16,8 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     public ActionsPresenter(ActionsContract.View view) {
         mView = view;
-
-        //prepareActionsFake();
     }
 
-    /**
-     *  Test method
-     */
-    private void prepareActionsFake(){
-        ActionVM actionVM = new ActionVM("Amore", "I love you my dear so much ma much much much", "08/05/17", "MSG");
-        mActionsList.add(actionVM);
-
-        actionVM = new ActionVM("Estate 2016", "Marina ha aggiunto 3 nuove foto", "02/04/07", "PHOTO");
-        mActionsList.add(actionVM);
-
-        actionVM = new ActionVM("FILM da vedere", "Marina ha aggiunto due elementi", "04/03/17", "TODO");
-        mActionsList.add(actionVM);
-    }
 
 
     @Override

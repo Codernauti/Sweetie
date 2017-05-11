@@ -2,6 +2,8 @@ package com.sweetcompany.sweetie.Actions;
 
 import android.util.Log;
 
+import com.sweetcompany.sweetie.R;
+
 /**
  * Created by Eduard on 11/05/2017.
  */
@@ -20,5 +22,10 @@ public class ActionPhotoVM extends ActionVM {
 
         //mView.showCalendarFragment();
         mPageChanger.changePageTo(0);
+    }
+
+    @Override
+    public int getIconId() {
+        return R.drawable.action_photo_icon;
     }
 }

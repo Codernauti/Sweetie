@@ -47,17 +47,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
         holder.title.setText(actionVM.getTitle() + " " + position);
         holder.description.setText(actionVM.getDescription());
         holder.date.setText(actionVM.getDataTime());
-
-        // TODO switch case String only for java 7
-        /*if(actionVM.getmType().equals("MSG")) {
-            holder.type.setImageResource(R.drawable.mapicon_yellow);
-        }
-        if(actionVM.getmType().equals("PHOTO")) {
-            holder.type.setImageResource(R.drawable.googleg_disabled_color_18);
-        }
-        if(actionVM.getmType().equals("TODO")) {
-            holder.type.setImageResource(R.drawable.googleg_standard_color_18);
-        }*/
+        holder.type.setImageResource(actionVM.getIconId());
     }
 
     @Override

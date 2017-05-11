@@ -1,18 +1,22 @@
 package com.sweetcompany.sweetie.Actions;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.IPageChanger;
+import com.sweetcompany.sweetie.R;
 
 /**
  * Created by ghiro on 08/05/2017.
  */
 
 // TODO abstract class
-public class ActionVM {
+public abstract class ActionVM {
 
     protected ActionsContract.View mView;
     protected IPageChanger mPageChanger;
+    protected Context mContext;
 
     private String mTitle;
     private String mDescription;
@@ -37,6 +41,10 @@ public class ActionVM {
     }
 
     public void setPageChanger(IPageChanger pageChanger) { mPageChanger = pageChanger; }
+
+    public void setContext(Context context){
+        mContext = context;
+    }
 
     public void setTitle(String title){
         this.mTitle = title;
@@ -75,7 +83,10 @@ public class ActionVM {
 
 
     /* TEST */
-    public void showAction() {
-        Log.d("ActionVM", "ahowAction doesn't override");
+    public abstract void showAction();
+
+
+    public int getIconId() {
+        return R.drawable.action_todo_icon;
     }
 }

@@ -1,6 +1,10 @@
 package com.sweetcompany.sweetie.Actions;
 
+import android.content.Intent;
 import android.util.Log;
+
+import com.sweetcompany.sweetie.Chat.ChatActivity;
+import com.sweetcompany.sweetie.R;
 
 /**
  * Created by Eduard on 10/05/2017.
@@ -18,7 +22,15 @@ public class ActionChatVM extends ActionVM {
     public void showAction() {
         Log.d("ActionChatVM", getTitle() + " override work!!!");
 
+        Intent intent = new Intent(mContext, ChatActivity.class);
+        mContext.startActivity(intent);
+
         //mView.showCalendarFragment();
-        mPageChanger.changePageTo(2);
+        //mPageChanger.changePageTo(2);
+    }
+
+    @Override
+    public int getIconId() {
+        return R.drawable.action_chat_icon;
     }
 }

@@ -54,6 +54,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     public void updateActionsList(List<ActionVM> actionsVM) {
         for(ActionVM actionVM : actionsVM) {
             actionVM.setPageChanger((IPageChanger)getActivity());
+            actionVM.setContext(getContext());
         }
 
         mActionAdapter.updateActionsList(actionsVM);

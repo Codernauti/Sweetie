@@ -22,13 +22,14 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
     private final static int MAP_TAB = 3;
 
     // For getString From Resource
-    Context context;
+    Context mContext;
 
     public ActionsContract.Presenter mPresenter;
 
 
-    DashboardPagerAdapter(FragmentManager fm, Context mContext) {
+    DashboardPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
+        mContext = context;
     }
 
     @Override
@@ -58,11 +59,11 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case CALENDAR_TAB:
-                return context.getString(R.string.calendar_tab_name);
+                return mContext.getString(R.string.calendar_tab_name);
             case HOME_TAB:
-                return context.getString(R.string.home_tab_name);
+                return mContext.getString(R.string.home_tab_name);
             case FOLDERS_TAB:
-                return context.getString(R.string.folders_tab_name);
+                return mContext.getString(R.string.folders_tab_name);
             //case MAP_TAB:
                 //return context.getString(R.string.map_tab_name);
         }

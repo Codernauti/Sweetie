@@ -11,21 +11,21 @@ import com.sweetcompany.sweetie.R;
  */
 
 // TODO complete class
-public class ActionChatVM extends ActionVM {
+class ActionChatVM extends ActionVM {
 
-    public ActionChatVM(String title) {
+    ActionChatVM(String title) {
         // TODO: complete all fields
         super.setTitle(title);
     }
 
     @Override
     public void showAction() {
-        Log.d("ActionChatVM", getTitle() + " override work!!!");
+        Log.d("ActionChatVM", getTitle() + " openAction");
 
         Intent intent = new Intent(mContext, ChatActivity.class);
         mContext.startActivity(intent);
 
-        //mView.showCalendarFragment();
+        // Or in a SingleActivity App
         //mPageChanger.changePageTo(2);
     }
 

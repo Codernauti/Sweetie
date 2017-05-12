@@ -12,39 +12,34 @@ import com.sweetcompany.sweetie.R;
  */
 
 // TODO abstract class
-public abstract class ActionVM {
+abstract class ActionVM {
 
-    protected ActionsContract.View mView;
     protected IPageChanger mPageChanger;
     protected Context mContext;
 
     private String mTitle;
     private String mDescription;
     private String mDdata; // TODO change format
-    private String mType; // TODO string || int ?
 
-    public ActionVM() {
+    ActionVM() {
     }
 
-    public ActionVM(String title, String description, String date, String type) {
+    ActionVM(String title, String description, String date) {
         // TODO assertion function true value
         this.mTitle = title;
         this.mDescription = description;
         this.mDdata = date;
-        this.mType = type;
+    }
+
+
+    // Setter from Fragment injection
+    void setPageChanger(IPageChanger pageChanger) { mPageChanger = pageChanger; }
+
+    void setContext(Context context){
+        mContext = context;
     }
 
     /*** SETTER ***/
-
-    public void setView(ActionsContract.View view) {
-        mView = view;
-    }
-
-    public void setPageChanger(IPageChanger pageChanger) { mPageChanger = pageChanger; }
-
-    public void setContext(Context context){
-        mContext = context;
-    }
 
     public void setTitle(String title){
         this.mTitle = title;
@@ -57,10 +52,6 @@ public abstract class ActionVM {
     public void setDataTime(String data){
         //setData e getData sono keyword già occupate
         this.mDdata = data;
-    }
-
-    private void setType(String type){
-        this.setType(type);
     }
 
     /*** GETTER ***/ //TODO crate assert null function
@@ -77,15 +68,12 @@ public abstract class ActionVM {
         return mDdata;
     }
 
-    public String getmType(){
-        return mType;
-    }
 
+    /*** override method ***/
 
-    /* TEST */
     public abstract void showAction();
 
-
+    // default implementation; TODO should it be abstract?
     public int getIconId() {
         return R.drawable.action_todo_icon;
     }

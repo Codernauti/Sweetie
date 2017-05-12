@@ -2,10 +2,12 @@ package com.sweetcompany.sweetie.Actions;
 
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +21,10 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
+
+    private FloatingActionButton mFabNewAction;
+    private FloatingActionButton mNewChatAction;
+    private FloatingActionButton mNewPhotoAction;
 
     private ActionsContract.Presenter mPresenter;
 
@@ -39,8 +45,29 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mActionsListView.setLayoutManager(layoutManager);
-
         mActionsListView.setAdapter(mActionAdapter);
+
+        mFabNewAction = (FloatingActionButton) root.findViewById(R.id.fab_new_action);
+
+        mNewChatAction = (FloatingActionButton) root.findViewById(R.id.fab_new_chat);
+        //TODO: create animation for fab mNewChatAction.startAnimation();
+        mNewChatAction.setClickable(false);
+
+        mNewPhotoAction = (FloatingActionButton) root.findViewById(R.id.fab_new_photo);
+        //TODO: create animation for fab mNewPhotoAction.startAnimation();
+        mNewPhotoAction.setClickable(false);
+
+        mFabNewAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // show others action fab button
+                mNewChatAction.setVisibility(View.VISIBLE);
+                mNewChatAction.setClickable(true);
+
+                mNewPhotoAction.setVisibility(View.VISIBLE);
+                mNewPhotoAction.setClickable(true);
+            }
+        });
 
         return root;
     }
@@ -58,10 +85,5 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         }
 
         mActionAdapter.updateActionsList(actionsVM);
-    }
-
-    @Override
-    public void showCalendarFragment() {
-        ((DashboardActivity)getActivity()).changePageTo(0);
     }
 }

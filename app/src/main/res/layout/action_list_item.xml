@@ -27,12 +27,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
+            android:maxWidth="220dp"
 
             app2:layout_constraintTop_toBottomOf="parent"
             app2:layout_constraintLeft_toRightOf="@+id/image_action_list_item"
 
             android:text="Title actions"
             android:textSize="18dp"
+            android:ellipsize="end"
+            android:maxLines="1"
     />
 
     <TextView

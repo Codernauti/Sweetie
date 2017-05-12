@@ -9,19 +9,19 @@ import com.sweetcompany.sweetie.R;
  */
 
 //TODO complete class
-public class ActionPhotoVM extends ActionVM {
+class ActionPhotoVM extends ActionVM {
 
-    public ActionPhotoVM(String title) {
+    ActionPhotoVM(String title) {
         // TODO: complete all fields
         super.setTitle(title);
     }
 
     @Override
     public void showAction() {
-        Log.d("ActionPhotoVM", getTitle() + " override work!!!");
+        Log.d("ActionPhotoVM", getTitle() + " openAction");
 
-        //mView.showCalendarFragment();
-        mPageChanger.changePageTo(0);
+        // For SingleActivity App
+        // mPageChanger.changePageTo(0);
     }
 
     @Override

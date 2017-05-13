@@ -1,17 +1,18 @@
 package com.sweetcompany.sweetie.Actions;
 
 
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sweetcompany.sweetie.DashboardActivity;
+import com.sweetcompany.sweetie.Chat.ChatActivity;
 import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
 
@@ -23,8 +24,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     private RecyclerView mActionsListView;
 
     private FloatingActionButton mFabNewAction;
-    private FloatingActionButton mNewChatAction;
-    private FloatingActionButton mNewPhotoAction;
+    private FloatingActionButton mFabNewChatAction;
+    private FloatingActionButton mFabNewPhotoAction;
 
     private ActionsContract.Presenter mPresenter;
 
@@ -49,23 +50,41 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
         mFabNewAction = (FloatingActionButton) root.findViewById(R.id.fab_new_action);
 
-        mNewChatAction = (FloatingActionButton) root.findViewById(R.id.fab_new_chat);
-        //TODO: create animation for fab mNewChatAction.startAnimation();
-        mNewChatAction.setClickable(false);
+        mFabNewChatAction = (FloatingActionButton) root.findViewById(R.id.fab_new_chat);
+        //TODO: create animation for fab mFabNewChatAction.startAnimation();
+        mFabNewChatAction.setClickable(false);
 
-        mNewPhotoAction = (FloatingActionButton) root.findViewById(R.id.fab_new_photo);
-        //TODO: create animation for fab mNewPhotoAction.startAnimation();
-        mNewPhotoAction.setClickable(false);
+        mFabNewPhotoAction = (FloatingActionButton) root.findViewById(R.id.fab_new_photo);
+        //TODO: create animation for fab mFabNewPhotoAction.startAnimation();
+        mFabNewPhotoAction.setClickable(false);
 
+
+
+        // Add listener
         mFabNewAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // show others action fab button
-                mNewChatAction.setVisibility(View.VISIBLE);
-                mNewChatAction.setClickable(true);
+                // show others action fab
+                mFabNewPhotoAction.setVisibility(View.VISIBLE);
+                mFabNewPhotoAction.setClickable(true);
 
-                mNewPhotoAction.setVisibility(View.VISIBLE);
-                mNewPhotoAction.setClickable(true);
+                mFabNewChatAction.setVisibility(View.VISIBLE);
+                mFabNewChatAction.setClickable(true);
+            }
+        });
+
+        mFabNewChatAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // hide others action fab
+                mFabNewPhotoAction.setVisibility(View.INVISIBLE);
+                mFabNewPhotoAction.setClickable(false);
+
+                mFabNewChatAction.setVisibility(View.INVISIBLE);
+                mFabNewChatAction.setClickable(false);
+
+                DialogFragment dialogFragment = ActionNewChatFragment.newInstance();
+                dialogFragment.show(getActivity().getFragmentManager(), ActionNewChatFragment.TAG);
             }
         });
 

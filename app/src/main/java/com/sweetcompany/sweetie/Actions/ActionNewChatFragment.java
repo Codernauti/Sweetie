@@ -3,18 +3,14 @@ package com.sweetcompany.sweetie.Actions;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.sweetcompany.sweetie.Chat.ChatActivity;
-import com.sweetcompany.sweetie.DashboardActivity;
 import com.sweetcompany.sweetie.R;
 
 /**
@@ -25,6 +21,8 @@ import com.sweetcompany.sweetie.R;
 public class ActionNewChatFragment extends DialogFragment {
 
     public static final String TAG = "ActionNewChatFragment";
+
+    static final String INPUT_CHAT_TITLE_KEY = "ChatTitle";
 
     private static final String USER_POSITIVE_RESPONSE = "Ok";
     private static final String USER_NEGATIVE_RESPONSE = "Cancel";
@@ -58,7 +56,7 @@ public class ActionNewChatFragment extends DialogFragment {
 
                                 if (!userInputChatTitle.isEmpty()) {
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);
-                                    intent.putExtra("ChatTitle", userInputChatTitle);
+                                    intent.putExtra(INPUT_CHAT_TITLE_KEY, userInputChatTitle);
 
                                     startActivity(intent);
                                 }

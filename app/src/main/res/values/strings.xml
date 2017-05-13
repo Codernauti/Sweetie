@@ -5,4 +5,7 @@
     <string name="folders_tab_name">Folders</string>
     <string name="map_tab_name">Map</string>
     <string name="sign_out">Sign Out</string>
+
+    <!-- ActionNewChatFragment dialog -->
+    <string name="action_new_chat_title_dialog">Insert new chat title</string>
 </resources>

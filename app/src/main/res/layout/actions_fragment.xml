@@ -43,6 +43,7 @@
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:src="@drawable/plus_icon"
             app2:backgroundTint="@color/rosa_sweetie"
     />
 

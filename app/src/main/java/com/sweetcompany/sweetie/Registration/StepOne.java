@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.Registration;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -76,9 +77,12 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+
+
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
     }
 
     private void handleFirebaseAuthResult(AuthResult authResult) {
@@ -136,14 +140,15 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mFirebaseAuth.signInWithCredential(credential) //TODO !!! warning thred pool shared
+        mFirebaseAuth.signInWithCredential(credential)//TODO !!! warning thread pool shared
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -154,6 +159,9 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                                     Toast.LENGTH_SHORT).show();
                             setProgressBarVisibile(true);
                         } else {
+                            //save id token
+                            Log.d("test",task.getResult().getUser().getUid());
+                            saveSharedPreference(task.getResult().getUser().getUid());
                             // go to Step 2
                             setProgressBarVisibile(false);
                             ((RegisterActivity) getActivity()).onPageSelected(RegisterPagerAdapter.STEP_TWO);
@@ -171,5 +179,11 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     }
 
 
+    private void saveSharedPreference(String id){
+        SharedPreferences settings = this.getActivity().getSharedPreferences("token", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("id",id);
+        editor.commit();
+    }
 
 }

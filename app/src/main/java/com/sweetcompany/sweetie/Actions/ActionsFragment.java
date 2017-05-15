@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie.Actions;
 
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.sweetcompany.sweetie.Chat.ChatActivity;
 import com.sweetcompany.sweetie.IPageChanger;
@@ -26,14 +29,26 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     private FloatingActionButton mFabNewAction;
     private FloatingActionButton mFabNewChatAction;
     private FloatingActionButton mFabNewPhotoAction;
+    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private boolean isFabOpen = false;
 
     private ActionsContract.Presenter mPresenter;
+
+    private Context mContext;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mActionAdapter = new ActionsAdapter();
+        mContext = getContext();
+
+        //set animations
+        fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(mContext ,R.anim.rotate_backward);
     }
 
 
@@ -51,13 +66,10 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         mFabNewAction = (FloatingActionButton) root.findViewById(R.id.fab_new_action);
 
         mFabNewChatAction = (FloatingActionButton) root.findViewById(R.id.fab_new_chat);
-        //TODO: create animation for fab mFabNewChatAction.startAnimation();
         mFabNewChatAction.setClickable(false);
 
         mFabNewPhotoAction = (FloatingActionButton) root.findViewById(R.id.fab_new_photo);
-        //TODO: create animation for fab mFabNewPhotoAction.startAnimation();
         mFabNewPhotoAction.setClickable(false);
-
 
 
         // Add listener
@@ -65,11 +77,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             @Override
             public void onClick(View v) {
                 // show others action fab
-                mFabNewPhotoAction.setVisibility(View.VISIBLE);
-                mFabNewPhotoAction.setClickable(true);
-
-                mFabNewChatAction.setVisibility(View.VISIBLE);
-                mFabNewChatAction.setClickable(true);
+                animateFAB();
             }
         });
 
@@ -77,18 +85,33 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             @Override
             public void onClick(View v) {
                 // hide others action fab
-                mFabNewPhotoAction.setVisibility(View.INVISIBLE);
-                mFabNewPhotoAction.setClickable(false);
-
-                mFabNewChatAction.setVisibility(View.INVISIBLE);
-                mFabNewChatAction.setClickable(false);
-
+                animateFAB();
                 DialogFragment dialogFragment = ActionNewChatFragment.newInstance();
                 dialogFragment.show(getActivity().getFragmentManager(), ActionNewChatFragment.TAG);
             }
         });
 
         return root;
+    }
+
+    public void animateFAB(){
+
+        if(isFabOpen){
+            mFabNewAction.startAnimation(rotate_backward);
+            mFabNewChatAction.startAnimation(fab_close);
+            mFabNewPhotoAction.startAnimation(fab_close);
+            mFabNewChatAction.setClickable(false);
+            mFabNewChatAction.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+            mFabNewAction.startAnimation(rotate_forward);
+            mFabNewChatAction.startAnimation(fab_open);
+            mFabNewPhotoAction.startAnimation(fab_open);
+            mFabNewChatAction.setClickable(true);
+            mFabNewPhotoAction.setClickable(true);
+            isFabOpen = true;
+        }
     }
 
     @Override

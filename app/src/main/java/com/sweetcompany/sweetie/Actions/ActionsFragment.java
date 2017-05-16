@@ -68,6 +68,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         mFrameBackground = (FrameLayout) root.findViewById(R.id.frame_background);
         mFrameBackground.setAlpha(0f);
         mFrameBackground.setClickable(false);
+        mFrameBackground.setVisibility(View.INVISIBLE);
 
         mFrameBackground.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +120,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFabNewChatAction.setClickable(false);
             mFabNewChatAction.setClickable(false);
             isFabOpen = false;
+            mFrameBackground.setVisibility(View.INVISIBLE);
             mFrameBackground.setClickable(false);
             mFrameBackground.setAlpha(0f);
         } else {
@@ -128,6 +130,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFabNewChatAction.setClickable(true);
             mFabNewPhotoAction.setClickable(true);
             isFabOpen = true;
+            mFrameBackground.setVisibility(View.VISIBLE);
             mFrameBackground.setClickable(true);
             mFrameBackground.setAlpha(0.5f);
         }

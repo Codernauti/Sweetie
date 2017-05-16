@@ -43,12 +43,6 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     private SignInButton mRegisterGoogleButton;
     private ProgressBar mProgressBar;
 
-    public static StepOne newInstance() {
-        StepOne stepOne = new StepOne();
-        Bundle args = new Bundle();
-        stepOne.setArguments(args);
-        return stepOne;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -160,7 +154,6 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                             setProgressBarVisibile(true);
                         } else {
                             //save id token
-                            Log.d("test",task.getResult().getUser().getUid());
                             saveSharedPreference(task.getResult().getUser().getUid());
                             // go to Step 2
                             setProgressBarVisibile(false);
@@ -185,5 +178,6 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
         editor.putString("id",id);
         editor.commit();
     }
+
 
 }

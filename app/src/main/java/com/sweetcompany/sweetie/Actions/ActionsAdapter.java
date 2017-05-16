@@ -28,10 +28,10 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
 
 
     @Override
-    public ActionViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+    public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View view = inflater.inflate(R.layout.action_list_item, viewGroup, false);
+        View view = inflater.inflate(R.layout.action_list_item, parent, false);
         ActionViewHolder viewHolder = new ActionViewHolder(view);
 
         //viewHolder.viewHolderIndex.setText("ViewHolder index: " + VIEW_HOLDER_COUNT);

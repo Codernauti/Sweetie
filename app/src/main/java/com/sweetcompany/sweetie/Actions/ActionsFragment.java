@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 
 import com.sweetcompany.sweetie.Chat.ChatActivity;
 import com.sweetcompany.sweetie.IPageChanger;
@@ -31,6 +32,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     private FloatingActionButton mFabNewPhotoAction;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private boolean isFabOpen = false;
+    private FrameLayout mFrameBackground;
 
     private ActionsContract.Presenter mPresenter;
 
@@ -62,6 +64,20 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mActionsListView.setLayoutManager(layoutManager);
         mActionsListView.setAdapter(mActionAdapter);
+
+        mFrameBackground = (FrameLayout) root.findViewById(R.id.frame_background);
+        mFrameBackground.setAlpha(0f);
+        mFrameBackground.setClickable(false);
+
+        mFrameBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // show others action fab
+                if(isFabOpen){
+                    animateFAB();
+                }
+            }
+        });
 
         mFabNewAction = (FloatingActionButton) root.findViewById(R.id.fab_new_action);
 
@@ -103,7 +119,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFabNewChatAction.setClickable(false);
             mFabNewChatAction.setClickable(false);
             isFabOpen = false;
-
+            mFrameBackground.setClickable(false);
+            mFrameBackground.setAlpha(0f);
         } else {
             mFabNewAction.startAnimation(rotate_forward);
             mFabNewChatAction.startAnimation(fab_open);
@@ -111,6 +128,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFabNewChatAction.setClickable(true);
             mFabNewPhotoAction.setClickable(true);
             isFabOpen = true;
+            mFrameBackground.setClickable(true);
+            mFrameBackground.setAlpha(0.5f);
         }
     }
 

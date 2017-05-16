@@ -52,8 +52,8 @@ public class RegisterActivity extends AppCompatActivity implements ViewPager.OnP
         mViewPager = (ViewPager) findViewById(R.id.register_pager);
         mViewPager.setAdapter(mAdapter);
         //disable swiping // TODO checcazzè? esiste altro modo per bloccarlo?
-        //mViewPager.beginFakeDrag();
-        //mViewPager.setOffscreenPageLimit(0);
+        mViewPager.beginFakeDrag();
+        mViewPager.setOffscreenPageLimit(0);
 
     }
 
@@ -67,10 +67,13 @@ public class RegisterActivity extends AppCompatActivity implements ViewPager.OnP
         switch (position){
             case RegisterPagerAdapter.STEP_ONE:
                 mViewPager.setCurrentItem(RegisterPagerAdapter.STEP_ONE);
+                break;
             case RegisterPagerAdapter.STEP_TWO:
                 mViewPager.setCurrentItem(RegisterPagerAdapter.STEP_TWO);
+                break;
             case RegisterPagerAdapter.STEP_THREE:
                 mViewPager.setCurrentItem(RegisterPagerAdapter.STEP_THREE);
+                break;
         }
     }
 

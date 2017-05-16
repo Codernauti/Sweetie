@@ -103,7 +103,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFabNewChatAction.setClickable(false);
             mFabNewChatAction.setClickable(false);
             isFabOpen = false;
-
+            mActionsListView.setAlpha(1.0f);
         } else {
             mFabNewAction.startAnimation(rotate_forward);
             mFabNewChatAction.startAnimation(fab_open);
@@ -111,6 +111,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFabNewChatAction.setClickable(true);
             mFabNewPhotoAction.setClickable(true);
             isFabOpen = true;
+            mActionsListView.setAlpha(0.5f);
         }
     }
 

@@ -52,13 +52,6 @@ public class StepTwo extends Fragment implements View.OnClickListener {
     private DatabaseReference mFirebaseReference;
 
 
-    public static StepOne newInstance() {
-        StepOne stepOne = new StepOne();
-        Bundle args = new Bundle();
-        stepOne.setArguments(args);
-        return stepOne;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,7 +93,8 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.fordward_button:
                 writeDB(v);
-                ((RegisterActivity) getActivity()).registrationCompleted();
+                ((RegisterActivity) getActivity()).onPageSelected(RegisterPagerAdapter.STEP_THREE);
+                //((RegisterActivity) getActivity()).registrationCompleted();
                 break;
             default:
                 return;

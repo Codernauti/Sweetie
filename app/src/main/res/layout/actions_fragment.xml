@@ -10,6 +10,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
+    <FrameLayout
+        android:id="@+id/frame_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+    </FrameLayout>
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_new_photo"
             android:layout_width="wrap_content"
@@ -46,5 +52,6 @@
             android:src="@drawable/plus_icon"
             app2:backgroundTint="@color/rosa_sweetie"
     />
+
 
 </FrameLayout>

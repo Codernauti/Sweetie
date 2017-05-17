@@ -23,7 +23,7 @@ public class FirebaseController {
     private static FirebaseAuth mFirebaseAuth;
     private static FirebaseUser mFirebaseUser;
     private static FirebaseDatabase database;
-    private static DatabaseReference mFirebaseUsersReference;
+    private static DatabaseReference mFirebaseReference;
 
 
     public static FirebaseController getInstance() {
@@ -66,8 +66,15 @@ public class FirebaseController {
     }
 
     public DatabaseReference getDatabaseUserReferences(){
-        mFirebaseUsersReference = database.getReference().child("users");
+        mFirebaseReference = database.getReference().child("users");
         //TODO add assertions
-        return mFirebaseUsersReference;
+        return mFirebaseReference;
+    }
+
+
+    public DatabaseReference getDatabaseActionsReferences(){
+        mFirebaseReference = database.getReference().child("actions");
+
+        return mFirebaseReference;
     }
 }

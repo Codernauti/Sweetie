@@ -23,7 +23,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     private List<TextMessageVM> mMessageList = new ArrayList<>();
 
     ChatAdapter(){
-        mMessageList.add(new TextMessageVM("barabba", true));
+        //mMessageList.add(new TextMessageVM("barabba", true));
     }
 
     @Override
@@ -40,13 +40,31 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(ChatViewHolder holder, int position) {
         TextMessageVM textMessageVM = mMessageList.get(position);
         holder.mText.setText(textMessageVM.getText());
-
     }
 
     @Override
     public int getItemCount() {
         return mMessageList.size();
     }
+
+    public void newMessage(TextMessageVM message) {
+        /*List<TextMessageVM> list = new ArrayList<>();
+        list.add(message);
+
+        mMessageList.clear();
+        mMessageList.addAll(list);
+*/
+        mMessageList.add(message);
+        notifyDataSetChanged();
+
+        // Mostra solo il primo item
+//        int oldSize = mMessageList.size();
+//
+//        mMessageList.add(oldSize, message);
+//        notifyItemInserted(oldSize + 1);
+    }
+
+
 
     class ChatViewHolder extends RecyclerView.ViewHolder {
         private TextView mText;

@@ -35,8 +35,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private ProgressBar mProgressBar;
 
     private GoogleApiClient mGoogleApiClient;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +65,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         if (mFireBaseController.getFirebaseUser() != null) {
+            //TODO non mi è chiaro il perchè richiami signout qui "by Ghiro"
             mFireBaseController.getAuth().signOut();
         }
-
 
     }
 

@@ -27,6 +27,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
+    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
+
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
     private SignInButton mSignInButton;
@@ -61,11 +63,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
 
         // Initialize FirebaseAuth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        //mFirebaseAuth = FirebaseAuth.getInstance();
+        //mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        if (mFirebaseUser != null) {
-            mFirebaseAuth.signOut();
+        if (mFireBaseController.getFirebaseUser() != null) {
+            mFireBaseController.getAuth().signOut();
         }
 
 
@@ -130,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mFirebaseAuth.signInWithCredential(credential)
+        mFireBaseController.getAuth().signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

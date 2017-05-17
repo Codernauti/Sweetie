@@ -29,7 +29,6 @@ public class ActionNewChatFragment extends DialogFragment {
 
     private EditText mTitleChatEditText;
 
-
     static ActionNewChatFragment newInstance() {
         ActionNewChatFragment fragment = new ActionNewChatFragment();
 

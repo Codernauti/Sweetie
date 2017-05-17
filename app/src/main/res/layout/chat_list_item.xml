@@ -7,5 +7,7 @@
         android:id="@+id/chat_item_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CIAO"/>
+        android:layout_gravity="right"
+        android:padding="7dp"
+        android:text="@string/lorem_ipsum"/>
 </LinearLayout>

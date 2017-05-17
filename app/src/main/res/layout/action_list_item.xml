@@ -32,7 +32,7 @@
             app2:layout_constraintTop_toBottomOf="parent"
             app2:layout_constraintLeft_toRightOf="@+id/image_action_list_item"
 
-            android:text="Title actions"
+            android:text="@string/action_title"
             android:textSize="18dp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -48,7 +48,7 @@
             app2:layout_constraintTop_toBottomOf="@+id/title_action_list_item"
             app2:layout_constraintLeft_toRightOf="@+id/image_action_list_item"
 
-            android:text="Lorem ipsum dolor sit amet."
+            android:text="@string/lorem_ipsum"
             android:textSize="14dp"
             android:ellipsize="end"
             android:maxLines="1"

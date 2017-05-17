@@ -8,4 +8,10 @@
 
     <!-- ActionNewChatFragment dialog -->
     <string name="action_new_chat_title_dialog">Insert new chat title</string>
+
+
+    <!-- Test String for debug version -->
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet.</string>
+    <string name="action_title">No title</string>
+
 </resources>

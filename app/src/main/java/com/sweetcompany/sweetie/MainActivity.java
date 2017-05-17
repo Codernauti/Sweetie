@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         }*/
         if (mFireBaseController.getFirebaseUser() != null)
         {
-            //startActivity(new Intent(this, DashboardActivity.class));
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, DashboardActivity.class));
+            //startActivity(new Intent(this, LoginActivity.class));
         } else if (mFireBaseController.getFirebaseUser() == null)
         {
             startActivity(new Intent(this, LoginActivity.class));

@@ -81,4 +81,11 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
     public void changePageTo(int page) {
         mViewPager.setCurrentItem(page);
     }
+
+    // esco dall'app
+    //TODO guardare se è il metodo migliore per uscire dall'app
+    public void onBackPressed() {
+        //  super.onBackPressed();
+        moveTaskToBack(true);
+    }
 }

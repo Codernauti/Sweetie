@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.sweetcompany.sweetie.FirebaseController;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 
@@ -40,6 +41,8 @@ import java.util.concurrent.Executor;
 
 
 public class StepTwo extends Fragment implements View.OnClickListener {
+
+    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
     private static final String TAG = "RegisterActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -81,10 +84,6 @@ public class StepTwo extends Fragment implements View.OnClickListener {
             }
         });
 
-
-        //inizialize FirebaseDatabase
-        database = FirebaseDatabase.getInstance();
-        mFirebaseReference = database.getReference().child("users");
     }
 
 
@@ -107,7 +106,7 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         String mPhone = mPhoneText.getText().toString();
         boolean mGender = mRadio.isChecked();
         User user = new User(mUsername,mPhone,mGender);
-        mFirebaseReference.child(userId).setValue(user);
+        mFireBaseController.getDatabaseUserReferences().child(userId).setValue(user);
     }
 
     private String getIdToken(){

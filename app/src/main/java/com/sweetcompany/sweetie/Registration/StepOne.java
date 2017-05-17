@@ -27,18 +27,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.sweetcompany.sweetie.DashboardActivity;
+import com.sweetcompany.sweetie.FirebaseController;
 import com.sweetcompany.sweetie.LoginActivity;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 
 public class StepOne extends Fragment implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
+    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
+
     private static final String TAG = "StepOne";
     private static final int RC_SIGN_IN = 9001;
 
     private GoogleApiClient mGoogleApiClient;
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
 
     private SignInButton mRegisterGoogleButton;
     private ProgressBar mProgressBar;
@@ -70,13 +71,6 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                 .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
-
-
-        // Initialize FirebaseAuth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-
     }
 
     private void handleFirebaseAuthResult(AuthResult authResult) {
@@ -137,7 +131,7 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mFirebaseAuth.signInWithCredential(credential)//TODO !!! warning thread pool shared
+        mFireBaseController.getAuth().signInWithCredential(credential)//TODO !!! warning thread pool shared
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

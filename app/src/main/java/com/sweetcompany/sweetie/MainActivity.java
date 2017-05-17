@@ -14,13 +14,11 @@ import com.sweetcompany.sweetie.Registration.RegisterActivity;
 
 public class MainActivity extends AppCompatActivity implements Button.OnClickListener{
 
-    public static final String ANONYMOUS = "anonymous";
-    public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
-    public static final int RC_SIGN_IN = 1;
-    private static final int RC_PHOTO_PICKER =  2;
+    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
+
+    public static final String ALREADY_REGISTED = "rip.tutorial";
 
     // Firebase instance variables
-    private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
     // Button
@@ -35,10 +33,24 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        mFireBaseController.init();
 
-        //check if user is logged in. If not go to the login page.
+        //se non si è mai registrato
+        /* if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
+            startActivity(new Intent(this, RegisterActivity.class));
+        }*/
+        if (mFireBaseController.getFirebaseUser() != null)
+        {
+            //startActivity(new Intent(this, DashboardActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
+        } else if (mFireBaseController.getFirebaseUser() == null)
+        {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+
+        /*//check if user is logged in. If not go to the login page.
         // Initialize Firebase Auth
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
             startActivity(new Intent(this, DashboardActivity.class));
@@ -52,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         mLoginButton = (Button) findViewById (R.id.login_button);
 
         mRegisterButton.setOnClickListener(this);
-        mLoginButton.setOnClickListener(this);
+        mLoginButton.setOnClickListener(this);*/
 
 
     }

@@ -11,7 +11,6 @@
         android:layout_height="match_parent"/>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -20,26 +19,25 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/photoPickerButton"
+            android:id="@+id/chat_photo_picker_button"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@android:drawable/ic_menu_gallery" />
 
         <!-- TODO disable keyboard focus automatic-->
         <EditText
-            android:id="@+id/messageEditText"
+            android:id="@+id/chat_text_message_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/sendButton"
+            android:id="@+id/chat_send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:enabled="false"
-            android:text="INVIA"/>
+            android:text="Send"/>
 
     </LinearLayout>
 

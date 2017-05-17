@@ -10,7 +10,6 @@ public class ChatPresenter implements ChatContract.Presenter {
 
     public ChatPresenter(ChatContract.View view){
         mView = view;
-
         mView.setPresenter(this);
     }
 
@@ -25,7 +24,8 @@ public class ChatPresenter implements ChatContract.Presenter {
     }
 
     @Override
-    public void updateActionsList() {
-
+    public void sendMessage(TextMessageVM message) {
+        // TODO: push message to firebase database
     }
+
 }

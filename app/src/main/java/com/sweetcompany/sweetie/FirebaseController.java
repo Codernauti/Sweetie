@@ -5,6 +5,8 @@ import android.content.Context;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by ghiro on 17/05/2017.
@@ -20,6 +22,8 @@ public class FirebaseController {
     private GoogleApiClient mGoogleApiClient;
     private static FirebaseAuth mFirebaseAuth;
     private static FirebaseUser mFirebaseUser;
+    private static FirebaseDatabase database;
+    private static DatabaseReference mFirebaseUsersReference;
 
 
     public static FirebaseController getInstance() {
@@ -33,6 +37,8 @@ public class FirebaseController {
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        //inizialize FirebaseDatabase
+        database = FirebaseDatabase.getInstance();
     }
 
     public void setContext(Context context) {
@@ -53,5 +59,15 @@ public class FirebaseController {
 
     public FirebaseAuth getAuth() {
         return mFirebaseAuth;
+    }
+
+    public FirebaseDatabase getDatabase(){
+        return database;
+    }
+
+    public DatabaseReference getDatabaseUserReferences(){
+        mFirebaseUsersReference = database.getReference().child("users");
+        //TODO add assertions
+        return mFirebaseUsersReference;
     }
 }

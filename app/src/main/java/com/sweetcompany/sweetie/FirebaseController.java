@@ -71,7 +71,6 @@ public class FirebaseController {
         return mFirebaseReference;
     }
 
-
     public DatabaseReference getDatabaseActionsReferences(){
         mFirebaseReference = database.getReference().child("actions");
 

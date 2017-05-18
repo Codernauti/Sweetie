@@ -18,15 +18,17 @@ abstract class ActionVM {
     protected Context mContext;
 
     private String mTitle;
+    private String mLastUser;
     private String mDescription;
     private String mDdata; // TODO change format
 
     ActionVM() {
     }
 
-    ActionVM(String title, String description, String date) {
+    ActionVM(String title, String lastUser, String description, String date) {
         // TODO assertion function true value
         this.mTitle = title;
+        this.mLastUser = lastUser;
         this.mDescription = description;
         this.mDdata = date;
     }

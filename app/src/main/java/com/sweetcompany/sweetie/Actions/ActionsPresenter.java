@@ -49,7 +49,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
         ActionVM newActionVM;
 
         if (dirtyFlag) {
-            newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()));
+            newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()), "descrizione");
             //Map<String, ActionVM> action = new HashMap<String, ActionVM>();
             //action.put("Barabbino CHAT", new ActionChatVM(String.valueOf(Math.random())));
 

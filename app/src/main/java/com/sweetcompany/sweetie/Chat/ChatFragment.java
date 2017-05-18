@@ -80,7 +80,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mTextMessageInput.setText("");
 
         if (!inputText.isEmpty()) {
-            TextMessageVM newMessage = new TextMessageVM(inputText, true);
+            MessageVM newMessage = new TextMessageVM(inputText, TextMessageVM.THE_MAIN_USER);
 
             mChatAdapter.addMessage(newMessage);
             mChatListView.smoothScrollToPosition(mChatAdapter.getItemCount());

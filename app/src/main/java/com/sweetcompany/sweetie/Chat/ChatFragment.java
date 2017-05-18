@@ -80,7 +80,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         if (!inputText.isEmpty()) {
             TextMessageVM newMessage = new TextMessageVM(inputText, true);
 
-            mChatAdapter.newMessage(newMessage);
+            mChatAdapter.addMessage(newMessage);
 
             //TODO: update also the presenter
             // mPresenter.sendMessage(...

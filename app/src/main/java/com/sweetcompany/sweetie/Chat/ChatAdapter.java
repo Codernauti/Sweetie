@@ -35,6 +35,9 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
         mMessageList.add(new TextMessageVM("Se vuoi torno", true));
         mMessageList.add(new TextMessageVM("Che cosa ha fatto di male?", true));
         mMessageList.add(new TextMessageVM("Buongiorno", false));
+        mMessageList.add(new TextMessageVM("Hey! :)", true));
+        mMessageList.add(new TextMessageVM("Allora...?", false));
+        mMessageList.add(new TextMessageVM("Che c'è?", true));
     }
 
     @Override

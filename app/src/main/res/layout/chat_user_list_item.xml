@@ -68,7 +68,7 @@
         android:layout_gravity="center_vertical"
         android:maxWidth="250dp"
         android:textSize="16sp"
-        android:background="@drawable/shape_circle"
+        android:background="@drawable/shape_rounded_rectangle"
         android:padding="10dp"
         android:text="@string/lorem_ipsum"/>
 

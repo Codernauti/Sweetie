@@ -19,25 +19,22 @@ import java.util.List;
 
 class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
-    private static String TAG = "ChatAdapter";
+    private static final String TAG = "ChatAdapter";
 
     private List<TextMessageVM> mMessageList = new ArrayList<>();
 
     ChatAdapter(){
 
         // Populate items for TEST
-        mMessageList.add(new TextMessageVM("Sei tu il re dei Giudei?", true));
-        mMessageList.add(new TextMessageVM("Tu lo dici.", false));
-        mMessageList.add(new TextMessageVM("Non senti di quante cose ti accusano?", true));
-        mMessageList.add(new TextMessageVM("Chi volete che sia lasciato libero: Barabba, oppure Gesù detto Cristo?", true));
-        mMessageList.add(new TextMessageVM("Chi dei due volete che lasci libero?", true));
-        mMessageList.add(new TextMessageVM("Barabba", false));
-        mMessageList.add(new TextMessageVM("Che farò dunque di Gesù, detto Cristo?", true));
-        mMessageList.add(new TextMessageVM("In croce!", false));
+        mMessageList.add(new TextMessageVM("Amore hai chiamato?", false));
+        mMessageList.add(new TextMessageVM("Dammi 10 minuti e scendo", false));
+        mMessageList.add(new TextMessageVM("Sono in macchina più avanti al palazzo", true));
+        mMessageList.add(new TextMessageVM("Ok", true));
+        mMessageList.add(new TextMessageVM(":) Scendi qualcosa di cibo?o magari da bere", true));
+        mMessageList.add(new TextMessageVM("Se puoi", true));
+        mMessageList.add(new TextMessageVM("Se vuoi torno", true));
         mMessageList.add(new TextMessageVM("Che cosa ha fatto di male?", true));
-        mMessageList.add(new TextMessageVM("In croce! in croce!", false));
-        mMessageList.add(new TextMessageVM("Io non sono responsabile della morte di quest'uomo! Sono affari vostri!", true));
-        mMessageList.add(new TextMessageVM("Il suo sangue ricada su di noi e sui nostri figli!", false));
+        mMessageList.add(new TextMessageVM("Buongiorno", false));
     }
 
     @Override
@@ -82,7 +79,7 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
     public void addMessage(TextMessageVM message) {
         mMessageList.add(message);
-        notifyDataSetChanged();
+        notifyItemInserted(mMessageList.size());
     }
 
 
@@ -91,7 +88,7 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
         private TextView mTextMessage;
         private ImageButton mBookmarkButton;
 
-        public ChatViewHolder(View itemView, boolean isUser) {
+        ChatViewHolder(View itemView, boolean isUser) {
             super(itemView);
 
             // TODO: da sistemare, non posso usare un booleano -> usare ViewHolder diverse

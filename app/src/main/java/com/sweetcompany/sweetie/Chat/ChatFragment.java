@@ -81,6 +81,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             TextMessageVM newMessage = new TextMessageVM(inputText, true);
 
             mChatAdapter.addMessage(newMessage);
+            mChatListView.smoothScrollToPosition(mChatAdapter.getItemCount());
 
             //TODO: update also the presenter
             // mPresenter.sendMessage(...

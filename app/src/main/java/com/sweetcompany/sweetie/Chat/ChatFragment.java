@@ -52,6 +52,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mChatListView.setLayoutManager(layoutManager);
         mChatListView.setAdapter(mChatAdapter);
+        // set focus from bottom of list
+        ((LinearLayoutManager)(mChatListView.getLayoutManager())).setStackFromEnd(true);
 
         mTextMessageInput = (EditText) root.findViewById(R.id.chat_text_message_input);
         mPhotoPickerButton = (ImageButton) root.findViewById(R.id.chat_photo_picker_button);

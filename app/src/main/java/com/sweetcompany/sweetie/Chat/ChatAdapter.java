@@ -23,8 +23,20 @@ class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
     private List<TextMessageVM> mMessageList = new ArrayList<>();
 
     ChatAdapter(){
-        mMessageList.add(new TextMessageVM("barabba", true));
-        mMessageList.add(new TextMessageVM("Vogliamo BARABBA! vogliamo barabba!!!! BARABBA!", true));
+
+        // Populate items for TEST
+        mMessageList.add(new TextMessageVM("Sei tu il re dei Giudei?", true));
+        mMessageList.add(new TextMessageVM("Tu lo dici.", true));
+        mMessageList.add(new TextMessageVM("Non senti di quante cose ti accusano?", true));
+        mMessageList.add(new TextMessageVM("Chi volete che sia lasciato libero: Barabba, oppure Gesù detto Cristo?", true));
+        mMessageList.add(new TextMessageVM("Chi dei due volete che lasci libero?", true));
+        mMessageList.add(new TextMessageVM("Barabba", true));
+        mMessageList.add(new TextMessageVM("Che farò dunque di Gesù, detto Cristo?", true));
+        mMessageList.add(new TextMessageVM("In croce!", true));
+        mMessageList.add(new TextMessageVM("Che cosa ha fatto di male?", true));
+        mMessageList.add(new TextMessageVM("In croce! in croce!", true));
+        mMessageList.add(new TextMessageVM("Io non sono responsabile della morte di quest'uomo! Sono affari vostri!", true));
+        mMessageList.add(new TextMessageVM("Il suo sangue ricada su di noi e sui nostri figli!", true));
     }
 
     @Override

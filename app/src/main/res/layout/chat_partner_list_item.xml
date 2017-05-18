@@ -23,22 +23,21 @@
     />
 
     <TextView
-            android:id="@+id/chat_partner_item_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        android:id="@+id/chat_partner_item_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_vertical"
 
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_vertical"
-            android:maxWidth="250dp"
-            android:textSize="16sp"
-            android:background="@drawable/shape_rounded_rectangle"
-            android:padding="10dp"
-            android:text="@string/lorem_ipsum"/>
+        android:maxWidth="250dp"
+        android:textSize="16sp"
+        android:background="@drawable/shape_rounded_rectangle"
+        android:padding="10dp"
+        android:text="@string/lorem_ipsum"/>
 
 </RelativeLayout>

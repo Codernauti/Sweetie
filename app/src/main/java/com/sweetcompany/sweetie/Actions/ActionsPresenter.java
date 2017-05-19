@@ -1,20 +1,13 @@
 package com.sweetcompany.sweetie.Actions;
 
-import android.util.Log;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.sweetcompany.sweetie.FirebaseController;
+import com.sweetcompany.sweetie.Firebase.FirebaseController;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Eduard on 10/05/2017.
@@ -62,7 +55,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
             //newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()), "descrizione");
             DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
             String date = df.format(Calendar.getInstance().getTime());
-            ActionChat action = new ActionChat("ActionChat: " + date, "heila Jesaaass!", date);
+            ActionFB action = new ActionFB("ActionChat: " + date, "Eduard", "heila Jesaaass!", date);
             newActionRef.setValue(action);
 
             //TODO: decide if use Activity or Fragment
@@ -74,7 +67,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
             //newActionVM.setView(mView);
             DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
             String date = df.format(Calendar.getInstance().getTime());
-            newActionRef.setValue(new ActionPhoto("ActionPhoto: " + date, "Barabba ha aggiunto 5 foto della croce", date));
+            newActionRef.setValue(new ActionFB("ActionPhoto: " + date, "Luca", "Barabba ha aggiunto 5 foto della croce", date));
             dirtyFlag = true;
         }
 

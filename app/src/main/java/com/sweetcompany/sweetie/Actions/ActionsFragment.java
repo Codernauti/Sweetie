@@ -51,6 +51,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(mContext ,R.anim.rotate_backward);
+
+        mPresenter.start();
     }
 
 

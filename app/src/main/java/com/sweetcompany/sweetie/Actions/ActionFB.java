@@ -4,7 +4,7 @@ package com.sweetcompany.sweetie.Actions;
  * Created by ghiro on 18/05/2017.
  */
 
-public class Action {
+public class ActionFB {
 
     public final static int CHAT = 0;
     public final static int PHOTO = 1;
@@ -15,16 +15,17 @@ public class Action {
     private String mDdata;
     private int mType;
 
-    Action(){
+    ActionFB(){
 
     }
 
-    Action(String title, String lastUser, String description, String date) {
+    ActionFB(String title, String lastUser, String description, String date) {
         this.mTitle = title;
         this.mLastUser = lastUser;
         this.mDescription = description;
         this.mDdata = date;
     }
+
 
     /*** SETTER ***/
 

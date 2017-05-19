@@ -23,12 +23,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.sweetcompany.sweetie.DashboardActivity;
-import com.sweetcompany.sweetie.FirebaseController;
-import com.sweetcompany.sweetie.LoginActivity;
+import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 

@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.Registration.RegisterActivity;
 
 public class MainActivity extends AppCompatActivity implements Button.OnClickListener{

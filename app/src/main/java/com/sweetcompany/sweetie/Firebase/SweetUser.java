@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie;
+package com.sweetcompany.sweetie.Firebase;
 
 import java.io.File;
 import java.sql.Date;

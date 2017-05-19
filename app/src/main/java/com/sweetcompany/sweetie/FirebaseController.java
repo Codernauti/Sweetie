@@ -1,12 +1,21 @@
 package com.sweetcompany.sweetie;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.sweetcompany.sweetie.Actions.Action;
+import com.sweetcompany.sweetie.Actions.ActionChat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ghiro on 17/05/2017.
@@ -14,16 +23,25 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseController {
 
+    interface OnFirebaseDataChange {
+        void notifyDataChange(List<ActionChat> newData);
+    }
+
     private static FirebaseController sInstance;
 
     private Context mContext;
     private MainActivity mMainActivity;
 
+    //firebase
     private GoogleApiClient mGoogleApiClient;
     private static FirebaseAuth mFirebaseAuth;
     private static FirebaseUser mFirebaseUser;
     private static FirebaseDatabase database;
     private static DatabaseReference mFirebaseReference;
+    private static DatabaseReference mUserReference;
+    private static DatabaseReference mActionsReference;
+
+    private List<OnFirebaseDataChange> mListeners = new ArrayList<>();
 
 
     public static FirebaseController getInstance() {
@@ -39,6 +57,12 @@ public class FirebaseController {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         //inizialize FirebaseDatabase
         database = FirebaseDatabase.getInstance();
+        mUserReference = database.getReference().child("users");
+        mActionsReference = database.getReference().child("actions");
+    }
+
+    public void addListener(OnFirebaseDataChange listener) {
+        mListeners.add(listener);
     }
 
     public void setContext(Context context) {
@@ -66,14 +90,35 @@ public class FirebaseController {
     }
 
     public DatabaseReference getDatabaseUserReferences(){
-        mFirebaseReference = database.getReference().child("users");
-        //TODO add assertions
-        return mFirebaseReference;
+        return mUserReference;
     }
 
     public DatabaseReference getDatabaseActionsReferences(){
         mFirebaseReference = database.getReference().child("actions");
 
         return mFirebaseReference;
+    }
+
+    public void attachDataChange() {
+        // Add value event listener to the post
+        // [START post_value_event_listener]
+        ValueEventListener actionsListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI
+                ActionChat action = dataSnapshot.getValue(ActionChat.class);
+
+                for (OnFirebaseDataChange listener : mListeners) {
+//                    listener.notifyDataChange(action);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Firebase ;)", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        mActionsReference.addValueEventListener(actionsListener);
     }
 }

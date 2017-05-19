@@ -1,11 +1,17 @@
 package com.sweetcompany.sweetie.Actions;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.FirebaseController;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +22,15 @@ import java.util.Map;
 
 public class ActionsPresenter implements ActionsContract.Presenter {
 
+    public static final String TAG = "Action.presenter" ;
+
     private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
     private ActionsContract.View mView;
 
     private List<ActionVM> mActionsList = new ArrayList<>();
+
+    private DateFormat df = new SimpleDateFormat("dd/MM HH:mm");
 
 
     public ActionsPresenter(ActionsContract.View view) {
@@ -30,7 +40,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     @Override
     public void start() {
-
+        mFireBaseController.attachDataChange();
     }
 
     @Override
@@ -49,41 +59,27 @@ public class ActionsPresenter implements ActionsContract.Presenter {
         ActionVM newActionVM;
 
         if (dirtyFlag) {
-            newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()), "descrizione");
-            //Map<String, ActionVM> action = new HashMap<String, ActionVM>();
-            //action.put("Barabbino CHAT", new ActionChatVM(String.valueOf(Math.random())));
+            //newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()), "descrizione");
+            DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
+            String date = df.format(Calendar.getInstance().getTime());
+            ActionChat action = new ActionChat("ActionChat: " + date, "heila Jesaaass!", date);
+            newActionRef.setValue(action);
 
-            //mFireBaseController.getDatabaseActionsReferences().setValue(action);
             //TODO: decide if use Activity or Fragment
             //newActionVM.setView(mView);
             dirtyFlag = false;
         }
         else {
-            newActionVM = new ActionPhotoVM("ActionPhotoVM: " + String.valueOf(Math.random()));
+            //newActionVM = new ActionPhotoVM("ActionPhotoVM: " + String.valueOf(Math.random()));
             //newActionVM.setView(mView);
+            DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
+            String date = df.format(Calendar.getInstance().getTime());
+            newActionRef.setValue(new ActionPhoto("ActionPhoto: " + date, "Barabba ha aggiunto 5 foto della croce", date));
             dirtyFlag = true;
         }
 
-        mActionsList.add(newActionVM);
+        //mActionsList.add(newActionVM);
         mView.updateActionsList(mActionsList);
+
     }
-
-    /*public void retrieveActions(){
-        mFireBaseController.getDatabaseActionsReferences();
-
-
-        // Attach a listener to read the data at our posts reference
-        mFireBaseController.getDatabaseActionsReferences().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Post post = dataSnapshot.getValue(Post.class);
-                System.out.println(post);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-    }*/
 }

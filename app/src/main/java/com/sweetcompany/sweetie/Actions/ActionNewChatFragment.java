@@ -11,7 +11,12 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.sweetcompany.sweetie.Chat.ChatActivity;
+import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by Eduard on 13-May-17.
@@ -20,12 +25,19 @@ import com.sweetcompany.sweetie.R;
 // TODO: decide if use DialogFragment of this class or go to ChatsActivity
 public class ActionNewChatFragment extends DialogFragment {
 
+    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
+
     public static final String TAG = "ActionNewChatFragment";
 
     static final String INPUT_CHAT_TITLE_KEY = "ChatTitle";
 
     private static final String USER_POSITIVE_RESPONSE = "Ok";
     private static final String USER_NEGATIVE_RESPONSE = "Cancel";
+
+    private DateFormat df = new SimpleDateFormat("dd/MM HH:mm");
+    private String date;
+
+    private ActionsContract.Presenter mPresenter;
 
     private EditText mTitleChatEditText;
 
@@ -54,6 +66,14 @@ public class ActionNewChatFragment extends DialogFragment {
                                 String userInputChatTitle = mTitleChatEditText.getText().toString();
 
                                 if (!userInputChatTitle.isEmpty()) {
+
+                                    //make ChatFB object
+                                    //date = df.format(Calendar.getInstance().getTime());
+                                    //ActionFB action = new ActionFB(userInputChatTitle, mFireBaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
+                                    //TODO collegare presenter a questo fragment
+                                    // mPresenter.addActionChat(action);
+
+
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                                     intent.putExtra(INPUT_CHAT_TITLE_KEY, userInputChatTitle);
 

@@ -49,6 +49,8 @@ public class ActionFB {
         return mTitle;
     }
 
+    public String getLastUser() { return mLastUser; }
+
     public String getDescription(){
         return mDescription;
     }

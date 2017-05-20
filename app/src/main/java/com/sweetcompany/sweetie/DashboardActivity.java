@@ -71,7 +71,7 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
                 finish();
                 return true;
             case R.id.fake_update_menu:
-                mAdapter.mPresenter.updateActionsList();
+                //mAdapter.mPresenter.updateActionsList();
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -1,6 +1,11 @@
 package com.sweetcompany.sweetie.Actions;
 
+import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 
 import java.text.DateFormat;
@@ -24,6 +29,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
     private List<ActionVM> mActionsList = new ArrayList<>();
 
     private DateFormat df = new SimpleDateFormat("dd/MM HH:mm");
+    String date = df.format(Calendar.getInstance().getTime());
 
 
     public ActionsPresenter(ActionsContract.View view) {
@@ -32,7 +38,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     @Override
     public void start() {
-        mFireBaseController.attachDataChange();
+        attachDataChange();
     }
 
     @Override
@@ -42,33 +48,12 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     private boolean dirtyFlag = true;
 
-    /**
-     *  Test method
-     */
+    // Clear actions, retrieve all actions on server
     public void updateActionsList(List<ActionFB> actionsFB) {
         List<ActionFB> mActionsFB = actionsFB;
-
-        /*if (dirtyFlag) {
-            //newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()), "descrizione");
-            DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
-            //String actionID = newActionRef.push().getKey();
-            String date = df.format(Calendar.getInstance().getTime());
-            ActionFB action = new ActionFB("ActionChat: " + date, "Eduard", "heila Jesaaass!", date, ActionFB.CHAT);
-            //newActionRef.child(actionID).setValue(action);
-            newActionRef.setValue(action);
-
-            dirtyFlag = false;
-        }
-        else {
-            //newActionVM = new ActionPhotoVM("ActionPhotoVM: " + String.valueOf(Math.random()));
-            //newActionVM.setView(mView);
-            DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
-            String date = df.format(Calendar.getInstance().getTime());
-            newActionRef.setValue(new ActionFB("ActionPhoto: " + date, "Luca", "Barabba ha aggiunto 5 foto della croce", date, ActionFB.PHOTO));
-            dirtyFlag = true;
-        }*/
-
         ActionVM newActionVM;
+
+        mActionsList.clear();
 
         for(ActionFB act : mActionsFB){
             switch (act.getType()) {
@@ -82,24 +67,46 @@ public class ActionsPresenter implements ActionsContract.Presenter {
                     break;
             }
         }
-        //mActionsList.add(newActionVM);
         mView.updateActionsList(mActionsList);
     }
 
-    public void updateActionsList() {
+    // Push ActionChat on Server
+    public void addActionChat(ActionFB newAction){
 
-        ActionVM newActionVM;
+        DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
+        newActionRef.setValue(newAction);
+    }
 
-        if (dirtyFlag) {
-            newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()),"descrizione");
-            dirtyFlag = false;
-        }
-        else {
-            newActionVM = new ActionPhotoVM("ActionPhotoVM: " + String.valueOf(Math.random()),"desc");
-            dirtyFlag = true;
-        }
+    public void attachDataChange() {
+        // Add value event listener to the post
+        final List<ActionFB> actions = new ArrayList<>();
 
-        mActionsList.add(newActionVM);
-        mView.updateActionsList(mActionsList);
+        ValueEventListener actionsListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                /*for (OnFirebaseDataChange listener : mListeners) {
+                    listener.notifyDataChange(action);
+                }*/
+
+
+                for (DataSnapshot actionSnapshot: dataSnapshot.getChildren()) {
+                    ActionFB action = actionSnapshot.getValue(ActionFB.class);
+                    actions.add(action);
+                }
+
+                if(dataSnapshot!=null) {
+                    updateActionsList(actions);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w("Firebase ;)", "loadPost:onCancelled", databaseError.toException());
+            }
+        };
+        mFireBaseController.getDatabaseActionsReferences().addValueEventListener(actionsListener);
     }
 }

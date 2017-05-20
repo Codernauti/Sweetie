@@ -91,35 +91,6 @@ public class FirebaseController {
     }
 
     public DatabaseReference getDatabaseActionsReferences(){
-        mFirebaseReference = database.getReference().child("actions");
-
-        return mFirebaseReference;
-    }
-
-
-    public void attachDataChange() {
-        // Add value event listener to the post
-        final List<ActionFB> actions = new ArrayList<>();
-
-        ValueEventListener actionsListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                /*for (OnFirebaseDataChange listener : mListeners) {
-                    listener.notifyDataChange(action);
-                }*/
-
-                ActionFB action = dataSnapshot.getValue(ActionFB.class);
-                actions.add(action);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("Firebase ;)", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        mActionsReference.addValueEventListener(actionsListener);
-
+        return mActionsReference;
     }
 }

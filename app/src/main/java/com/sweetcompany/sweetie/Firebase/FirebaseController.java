@@ -1,6 +1,5 @@
 package com.sweetcompany.sweetie.Firebase;
 
-import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
 
@@ -14,7 +13,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.Actions.ActionFB;
 import com.sweetcompany.sweetie.Actions.ActionsContract;
-import com.sweetcompany.sweetie.Actions.ActionsParser;
 import com.sweetcompany.sweetie.MainActivity;
 
 import java.util.ArrayList;
@@ -32,10 +30,7 @@ public class FirebaseController {
 
     private static FirebaseController sInstance;
 
-    private ActionsContract.Presenter mPresenter;
-
     private Context mContext;
-    private MainActivity mMainActivity;
 
     //firebase
     private GoogleApiClient mGoogleApiClient;
@@ -79,10 +74,6 @@ public class FirebaseController {
         return mContext;
     }
 
-    public MainActivity getRipActivity() {
-        return mMainActivity;
-    }
-
     public FirebaseUser getFirebaseUser() {
         return mFirebaseUser;
     }
@@ -105,8 +96,11 @@ public class FirebaseController {
         return mFirebaseReference;
     }
 
+
     public void attachDataChange() {
         // Add value event listener to the post
+        final List<ActionFB> actions = new ArrayList<>();
+
         ValueEventListener actionsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -115,10 +109,8 @@ public class FirebaseController {
                     listener.notifyDataChange(action);
                 }*/
 
-                List<ActionFB> actions = new ArrayList<ActionFB>();
                 ActionFB action = dataSnapshot.getValue(ActionFB.class);
                 actions.add(action);
-                //mPresenter.updateActionsList(actions);
             }
 
             @Override
@@ -128,5 +120,6 @@ public class FirebaseController {
             }
         };
         mActionsReference.addValueEventListener(actionsListener);
+
     }
 }

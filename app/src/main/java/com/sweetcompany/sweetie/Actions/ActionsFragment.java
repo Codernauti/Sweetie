@@ -3,7 +3,6 @@ package com.sweetcompany.sweetie.Actions;
 
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -16,16 +15,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
-import com.sweetcompany.sweetie.Chat.ChatActivity;
-import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
 
 import java.util.List;
 
 public class ActionsFragment extends Fragment implements ActionsContract.View {
-
-    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
@@ -34,7 +29,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     private FloatingActionButton mFabNewChatAction;
     private FloatingActionButton mFabNewPhotoAction;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
-    private boolean isFabOpen = false;
+    private boolean mIsFabOpen = false;
     private FrameLayout mFrameBackground;
 
     private ActionsContract.Presenter mPresenter;
@@ -79,7 +74,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             @Override
             public void onClick(View v) {
                 // show others action fab
-                if(isFabOpen){
+                if(mIsFabOpen){
                     animateFAB();
                 }
             }
@@ -118,13 +113,13 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
     public void animateFAB(){
 
-        if(isFabOpen){
+        if(mIsFabOpen){
             mFabNewAction.startAnimation(rotate_backward);
             mFabNewChatAction.startAnimation(fab_close);
             mFabNewPhotoAction.startAnimation(fab_close);
             mFabNewChatAction.setClickable(false);
             mFabNewChatAction.setClickable(false);
-            isFabOpen = false;
+            mIsFabOpen = false;
             mFrameBackground.setVisibility(View.INVISIBLE);
             mFrameBackground.setClickable(false);
             mFrameBackground.setAlpha(0f);
@@ -134,7 +129,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFabNewPhotoAction.startAnimation(fab_open);
             mFabNewChatAction.setClickable(true);
             mFabNewPhotoAction.setClickable(true);
-            isFabOpen = true;
+            mIsFabOpen = true;
             mFrameBackground.setVisibility(View.VISIBLE);
             mFrameBackground.setClickable(true);
             mFrameBackground.setAlpha(0.5f);

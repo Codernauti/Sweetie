@@ -39,10 +39,8 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     @Override
     public void pause() {
-
+        //TODO implements and call detachDataChange()
     }
-
-    private boolean dirtyFlag = true;
 
     // Clear actions, retrieve all actions on server
     public void updateActionsList(List<ActionFB> actionsFB) {
@@ -80,12 +78,6 @@ public class ActionsPresenter implements ActionsContract.Presenter {
         ValueEventListener actionsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                /*for (OnFirebaseDataChange listener : mListeners) {
-                    listener.notifyDataChange(action);
-                }*/
-
-
                 for (DataSnapshot actionSnapshot: dataSnapshot.getChildren()) {
                     ActionFB action = actionSnapshot.getValue(ActionFB.class);
                     actions.add(action);
@@ -94,7 +86,6 @@ public class ActionsPresenter implements ActionsContract.Presenter {
                 if(dataSnapshot!=null) {
                     updateActionsList(actions);
                 }
-
             }
 
             @Override

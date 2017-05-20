@@ -152,4 +152,5 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
         mActionAdapter.updateActionsList(actionsVM);
     }
+
 }

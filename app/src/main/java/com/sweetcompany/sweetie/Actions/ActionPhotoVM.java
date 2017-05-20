@@ -11,9 +11,10 @@ import com.sweetcompany.sweetie.R;
 //TODO complete class
 class ActionPhotoVM extends ActionVM {
 
-    ActionPhotoVM(String title) {
+    ActionPhotoVM(String title, String description) {
         // TODO: complete all fields
         super.setTitle(title);
+        super.setTitle(description);
     }
 
     @Override

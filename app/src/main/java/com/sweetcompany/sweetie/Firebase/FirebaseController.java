@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.Firebase;
 
+import android.app.Notification;
 import android.content.Context;
 import android.util.Log;
 
@@ -12,6 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.Actions.ActionFB;
+import com.sweetcompany.sweetie.Actions.ActionsContract;
+import com.sweetcompany.sweetie.Actions.ActionsParser;
 import com.sweetcompany.sweetie.MainActivity;
 
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ public class FirebaseController {
     }
 
     private static FirebaseController sInstance;
+
+    private ActionsContract.Presenter mPresenter;
 
     private Context mContext;
     private MainActivity mMainActivity;
@@ -57,6 +62,7 @@ public class FirebaseController {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         //inizialize FirebaseDatabase
         database = FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true); // enable disk persistence
         mUserReference = database.getReference().child("users");
         mActionsReference = database.getReference().child("actions");
     }
@@ -101,16 +107,18 @@ public class FirebaseController {
 
     public void attachDataChange() {
         // Add value event listener to the post
-        // [START post_value_event_listener]
         ValueEventListener actionsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                ActionFB action = dataSnapshot.getValue(ActionFB.class);
 
-                for (OnFirebaseDataChange listener : mListeners) {
-//                    listener.notifyDataChange(action);
-                }
+                /*for (OnFirebaseDataChange listener : mListeners) {
+                    listener.notifyDataChange(action);
+                }*/
+
+                List<ActionFB> actions = new ArrayList<ActionFB>();
+                ActionFB action = dataSnapshot.getValue(ActionFB.class);
+                actions.add(action);
+                //mPresenter.updateActionsList(actions);
             }
 
             @Override

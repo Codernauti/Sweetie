@@ -19,11 +19,12 @@ public class ActionFB {
 
     }
 
-    ActionFB(String title, String lastUser, String description, String date) {
+    ActionFB(String title, String lastUser, String description, String date, int type) {
         this.mTitle = title;
         this.mLastUser = lastUser;
         this.mDescription = description;
         this.mDdata = date;
+        this.mType = type;
     }
 
 
@@ -58,7 +59,4 @@ public class ActionFB {
 
     public int getType() { return mType; }
 
-    public void setType(int type) {
-        this.mType = type;
-    }
 }

@@ -28,10 +28,6 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     private List<ActionVM> mActionsList = new ArrayList<>();
 
-    private DateFormat df = new SimpleDateFormat("dd/MM HH:mm");
-    String date = df.format(Calendar.getInstance().getTime());
-
-
     public ActionsPresenter(ActionsContract.View view) {
         mView = view;
     }
@@ -58,7 +54,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
         for(ActionFB act : mActionsFB){
             switch (act.getType()) {
                 case 0:
-                    newActionVM = new ActionChatVM(act.getTitle(), act.getDescription());
+                    newActionVM = new ActionChatVM(act.getTitle(), act.getDescription(), act.getDataTime());
                     mActionsList.add(newActionVM);
                     break;
                 case 1:

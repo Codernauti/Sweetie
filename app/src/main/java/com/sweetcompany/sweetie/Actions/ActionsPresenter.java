@@ -26,6 +26,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
     private DateFormat df = new SimpleDateFormat("dd/MM HH:mm");
 
 
+
     public ActionsPresenter(ActionsContract.View view) {
         mView = view;
     }
@@ -33,6 +34,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     @Override
     public void start() {
+        //mFireBaseController.retrieveActions();
         mFireBaseController.attachDataChange();
     }
 
@@ -48,18 +50,18 @@ public class ActionsPresenter implements ActionsContract.Presenter {
     /**
      *  Test method
      */
-    public void updateActionsList() {
-        ActionVM newActionVM;
+/*    public void updateActionsList(List<ActionFB> actionsFB) {
+        List<ActionFB> mActionsFB = actionsFB;
 
-        if (dirtyFlag) {
+        *//*if (dirtyFlag) {
             //newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()), "descrizione");
             DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
+            //String actionID = newActionRef.push().getKey();
             String date = df.format(Calendar.getInstance().getTime());
-            ActionFB action = new ActionFB("ActionChat: " + date, "Eduard", "heila Jesaaass!", date);
+            ActionFB action = new ActionFB("ActionChat: " + date, "Eduard", "heila Jesaaass!", date, ActionFB.CHAT);
+            //newActionRef.child(actionID).setValue(action);
             newActionRef.setValue(action);
 
-            //TODO: decide if use Activity or Fragment
-            //newActionVM.setView(mView);
             dirtyFlag = false;
         }
         else {
@@ -67,12 +69,42 @@ public class ActionsPresenter implements ActionsContract.Presenter {
             //newActionVM.setView(mView);
             DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
             String date = df.format(Calendar.getInstance().getTime());
-            newActionRef.setValue(new ActionFB("ActionPhoto: " + date, "Luca", "Barabba ha aggiunto 5 foto della croce", date));
+            newActionRef.setValue(new ActionFB("ActionPhoto: " + date, "Luca", "Barabba ha aggiunto 5 foto della croce", date, ActionFB.PHOTO));
+            dirtyFlag = true;
+        }*//*
+
+        ActionVM newActionVM;
+
+        for(ActionFB act : mActionsFB){
+            switch (act.getType()) {
+                case 0:
+                    newActionVM = new ActionChatVM(act.getTitle(), act.getDescription());
+                    mActionsList.add(newActionVM);
+                    break;
+                case 1:
+                    newActionVM = new ActionPhotoVM(act.getTitle(), act.getDescription());
+                    mActionsList.add(newActionVM);
+                    break;
+            }
+        }
+        //mActionsList.add(newActionVM);
+        mView.updateActionsList(mActionsList);
+    }*/
+
+    public void updateActionsList() {
+
+        ActionVM newActionVM;
+
+        if (dirtyFlag) {
+            newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()),"descrizione");
+            dirtyFlag = false;
+        }
+        else {
+            newActionVM = new ActionPhotoVM("ActionPhotoVM: " + String.valueOf(Math.random()),"desc");
             dirtyFlag = true;
         }
 
-        //mActionsList.add(newActionVM);
+        mActionsList.add(newActionVM);
         mView.updateActionsList(mActionsList);
-
     }
 }

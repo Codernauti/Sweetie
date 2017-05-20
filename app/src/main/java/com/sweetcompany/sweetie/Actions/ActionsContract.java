@@ -16,6 +16,7 @@ public interface ActionsContract {
     interface Presenter {
         void start();
         void pause();
+        //void updateActionsList(List<ActionFB> actionsFB);
         void updateActionsList();
     }
 }

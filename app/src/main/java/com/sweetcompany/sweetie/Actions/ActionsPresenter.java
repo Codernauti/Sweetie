@@ -26,15 +26,12 @@ public class ActionsPresenter implements ActionsContract.Presenter {
     private DateFormat df = new SimpleDateFormat("dd/MM HH:mm");
 
 
-
     public ActionsPresenter(ActionsContract.View view) {
         mView = view;
     }
 
-
     @Override
     public void start() {
-        //mFireBaseController.retrieveActions();
         mFireBaseController.attachDataChange();
     }
 
@@ -43,17 +40,15 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     }
 
-    // Callback from database
-
     private boolean dirtyFlag = true;
 
     /**
      *  Test method
      */
-/*    public void updateActionsList(List<ActionFB> actionsFB) {
+    public void updateActionsList(List<ActionFB> actionsFB) {
         List<ActionFB> mActionsFB = actionsFB;
 
-        *//*if (dirtyFlag) {
+        /*if (dirtyFlag) {
             //newActionVM = new ActionChatVM("ActionChatVM: " + String.valueOf(Math.random()), "descrizione");
             DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
             //String actionID = newActionRef.push().getKey();
@@ -71,7 +66,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
             String date = df.format(Calendar.getInstance().getTime());
             newActionRef.setValue(new ActionFB("ActionPhoto: " + date, "Luca", "Barabba ha aggiunto 5 foto della croce", date, ActionFB.PHOTO));
             dirtyFlag = true;
-        }*//*
+        }*/
 
         ActionVM newActionVM;
 
@@ -89,7 +84,7 @@ public class ActionsPresenter implements ActionsContract.Presenter {
         }
         //mActionsList.add(newActionVM);
         mView.updateActionsList(mActionsList);
-    }*/
+    }
 
     public void updateActionsList() {
 

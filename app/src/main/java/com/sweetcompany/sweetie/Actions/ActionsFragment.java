@@ -17,12 +17,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
 import com.sweetcompany.sweetie.Chat.ChatActivity;
+import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
 
 import java.util.List;
 
 public class ActionsFragment extends Fragment implements ActionsContract.View {
+
+    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;

@@ -30,8 +30,6 @@ public class FirebaseController {
 
     private static FirebaseController sInstance;
 
-    private Context mContext;
-
     //firebase
     private GoogleApiClient mGoogleApiClient;
     private static FirebaseAuth mFirebaseAuth;
@@ -64,14 +62,6 @@ public class FirebaseController {
 
     public void addListener(OnFirebaseDataChange listener) {
         mListeners.add(listener);
-    }
-
-    public void setContext(Context context) {
-        mContext = context.getApplicationContext();
-    }
-
-    public Context getAppContext() {
-        return mContext;
     }
 
     public FirebaseUser getFirebaseUser() {

@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.Chat;
 
+import android.view.View;
+
 /**
  * Created by Eduard on 18-May-17.
  */
@@ -14,9 +16,17 @@ abstract class MessageVM {
         mWho = who;
     }
 
-    int getWho() {
-        return mWho;
+    boolean isTheMainUser() {
+        return mWho == THE_MAIN_USER;
     }
 
-    abstract void configViewHolder(ChatAdapter.TextMessageViewHolder viewHolder);
+    boolean isThePartner() {
+        return mWho == THE_PARTNER;
+    }
+
+    abstract void configViewHolder(MessageViewHolder viewHolder);
+
+    abstract int getIdView();
+
+    abstract MessageViewHolder getViewHolder(View inflatedView);
 }

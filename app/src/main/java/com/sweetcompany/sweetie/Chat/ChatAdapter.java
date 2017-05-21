@@ -24,7 +24,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
     ChatAdapter(){
         // Populate items for TEST
-        for (int i = 0; i < 5000; i++) {
+        /*for (int i = 0; i < 5000; i++) {
             mMessageList.add(new TextMessageVM("Amore hai chiamato?", MessageVM.THE_PARTNER));
             mMessageList.add(new TextMessageVM("Dammi 10 minuti e scendo", MessageVM.THE_PARTNER));
             mMessageList.add(new TextMessageVM("Sono in macchina più avanti al palazzo", MessageVM.THE_MAIN_USER));
@@ -37,17 +37,17 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder> {
             mMessageList.add(new TextMessageVM("Hey! :)", MessageVM.THE_MAIN_USER));
             mMessageList.add(new TextMessageVM("Allora...?", MessageVM.THE_PARTNER));
             mMessageList.add(new TextMessageVM("Che c'è?", MessageVM.THE_MAIN_USER));
-        }
+        }*/
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position;    // TODO test performance (part I)
+        return position;
     }
 
     @Override
     public MessageViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        MessageVM message = mMessageList.get(position); // TODO test performance (part II)
+        MessageVM message = mMessageList.get(position);
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         View viewToInflate = inflater.inflate(message.getIdView(), parent, false);
@@ -68,8 +68,14 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     }
 
 
-    public void addMessage(MessageVM message) {
+    void addMessage(MessageVM message) {
         mMessageList.add(message);
         notifyItemInserted(mMessageList.size());
+    }
+
+    void updateActionsList(List<MessageVM> messagesVM) {
+        mMessageList.clear();
+        mMessageList.addAll(messagesVM);
+        this.notifyDataSetChanged();
     }
 }

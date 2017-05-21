@@ -65,13 +65,25 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mPresenter.pause();
+    }
+
+    @Override
     public void setPresenter(ChatContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
     @Override
-    public void updateMessages(List<TextMessageVM> messages) {
-        //TODO: update the Adapter items list
+    public void updateMessages(List<MessageVM> messagesVM) {
+        mChatAdapter.updateActionsList(messagesVM);
     }
 
     @Override
@@ -82,11 +94,11 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         if (!inputText.isEmpty()) {
             MessageVM newMessage = new TextMessageVM(inputText, TextMessageVM.THE_MAIN_USER);
 
+            // update view to feedback user if he is offline
             mChatAdapter.addMessage(newMessage);
             mChatListView.smoothScrollToPosition(mChatAdapter.getItemCount());
 
-            //TODO: update also the presenter
-            // mPresenter.sendMessage(...
+            mPresenter.sendMessage(newMessage);
         }
 
     }

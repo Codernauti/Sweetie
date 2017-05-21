@@ -22,11 +22,11 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     public static final String TAG = "Action.presenter" ;
 
+    private ActionsContract.View mView;
     private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
-    private ActionsContract.View mView;
-
     private List<ActionVM> mActionsList = new ArrayList<>();
+
 
     public ActionsPresenter(ActionsContract.View view) {
         mView = view;
@@ -43,20 +43,20 @@ public class ActionsPresenter implements ActionsContract.Presenter {
     }
 
     // Clear actions, retrieve all actions on server
-    public void updateActionsList(List<ActionFB> actionsFB) {
-        List<ActionFB> mActionsFB = actionsFB;
+    private void updateActionsList(List<ActionFB> actionsFB) {
         ActionVM newActionVM;
-
         mActionsList.clear();
 
-        for(ActionFB act : mActionsFB){
-            switch (act.getType()) {
+        for(ActionFB action : actionsFB){
+            // TODO: use a Factory Method
+            // for example use ActionConverter.convertToViewModel(action);
+            switch (action.getType()) {
                 case 0:
-                    newActionVM = new ActionChatVM(act.getTitle(), act.getDescription(), act.getDataTime());
+                    newActionVM = new ActionChatVM(action.getTitle(), action.getDescription(), action.getDataTime());
                     mActionsList.add(newActionVM);
                     break;
                 case 1:
-                    newActionVM = new ActionPhotoVM(act.getTitle(), act.getDescription());
+                    newActionVM = new ActionPhotoVM(action.getTitle(), action.getDescription());
                     mActionsList.add(newActionVM);
                     break;
             }
@@ -66,7 +66,6 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     // Push ActionChat on Server
     public void addActionChat(ActionFB newAction){
-
         DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
         newActionRef.setValue(newAction);
     }

@@ -16,6 +16,11 @@ class TextMessageVM extends MessageVM {
         mText = text;
     }
 
+    TextMessageVM(String text, boolean mainUser) {
+        super(mainUser? THE_MAIN_USER : THE_PARTNER);
+        mText = text;
+    }
+
     String getText() {
         return mText;
     }

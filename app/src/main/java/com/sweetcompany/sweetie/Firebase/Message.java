@@ -5,4 +5,21 @@ package com.sweetcompany.sweetie.Firebase;
  */
 
 public class Message {
+    //TODO: add user fields
+    private String text;
+
+    // For firebase serialization
+    public Message() {}
+
+    public Message(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }

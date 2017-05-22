@@ -1,4 +1,8 @@
-package com.sweetcompany.sweetie.Actions;
+package com.sweetcompany.sweetie.Firebase;
+
+import android.util.Log;
+
+import com.google.firebase.database.Exclude;
 
 /**
  * Created by ghiro on 18/05/2017.
@@ -14,6 +18,7 @@ public class ActionFB {
     private String mDescription;
     private String mDdata;
     private int mType;
+    private String date;
 
     ActionFB(){
 
@@ -60,5 +65,17 @@ public class ActionFB {
     }
 
     public int getType() { return mType; }
+
+    @Exclude
+    public String getTime() {
+        if (date != null) {
+            int indexSpace = date.lastIndexOf(" " + 1);
+            int indexLastDots = date.lastIndexOf(":");
+            String time = date.substring(indexSpace, indexLastDots);
+            Log.d("DateTime Debug", "Time from substring: " + time);
+            return time;
+        }
+        else return null;
+    }
 
 }

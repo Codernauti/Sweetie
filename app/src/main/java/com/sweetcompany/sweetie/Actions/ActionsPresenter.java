@@ -1,12 +1,8 @@
 package com.sweetcompany.sweetie.Actions;
 
-import android.util.Log;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.sweetcompany.sweetie.Firebase.FirebaseController;
+import com.sweetcompany.sweetie.Firebase.ActionFB;
+import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,32 +11,35 @@ import java.util.List;
  * Created by Eduard on 10/05/2017.
  */
 
-public class ActionsPresenter implements ActionsContract.Presenter {
+public class ActionsPresenter implements ActionsContract.Presenter, FirebaseActionsController.OnFirebaseActionsDataChange {
 
     public static final String TAG = "Action.presenter" ;
 
     private ActionsContract.View mView;
-    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
+    FirebaseActionsController mFireBaseController;
 
     private List<ActionVM> mActionsList = new ArrayList<>();
 
 
     public ActionsPresenter(ActionsContract.View view) {
         mView = view;
+        mView.setPresenter(this);
+        mFireBaseController = FirebaseActionsController.getInstance();
+        mFireBaseController.addListener(this);
     }
 
     @Override
     public void start() {
-        attachDataChange();
+        mFireBaseController.attachNetworkDatabase();
     }
 
     @Override
     public void pause() {
-        //TODO implements and call detachDataChange()
+        mFireBaseController.detachNetworkDatabase();
     }
 
     // Clear actions, retrieve all actions on server
-    private void updateActionsList(List<ActionFB> actionsFB) {
+    public void updateActionsList(List<ActionFB> actionsFB) {
         ActionVM newActionVM;
         mActionsList.clear();
 
@@ -63,33 +62,8 @@ public class ActionsPresenter implements ActionsContract.Presenter {
 
     // Push ActionChat on Server
     public void addActionChat(ActionFB newAction){
-        DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
-        newActionRef.setValue(newAction);
+        //DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
+        //newActionRef.setValue(newAction);
     }
 
-    public void attachDataChange() {
-        // Add value event listener to the post
-        final List<ActionFB> actions = new ArrayList<>();
-
-        ValueEventListener actionsListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot actionSnapshot: dataSnapshot.getChildren()) {
-                    ActionFB action = actionSnapshot.getValue(ActionFB.class);
-                    actions.add(action);
-                }
-
-                if(dataSnapshot!=null) {
-                    updateActionsList(actions);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w("Firebase ;)", "loadPost:onCancelled", databaseError.toException());
-            }
-        };
-        mFireBaseController.getDatabaseActionsReferences().addValueEventListener(actionsListener);
-    }
 }

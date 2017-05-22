@@ -22,6 +22,8 @@ import java.util.List;
 
 public class ActionsFragment extends Fragment implements ActionsContract.View {
 
+    private static final String TAG = "ActionsFragment";
+
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
 
@@ -30,6 +32,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     private FloatingActionButton mFabNewPhotoAction;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private boolean mIsFabOpen = false;
+
     private FrameLayout mFrameBackground;
 
     private ActionsContract.Presenter mPresenter;
@@ -50,9 +53,24 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(mContext ,R.anim.rotate_backward);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mPresenter.start();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mPresenter.pause();
+    }
+
+    @Override
+    public void setPresenter(ActionsContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -134,11 +152,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFrameBackground.setClickable(true);
             mFrameBackground.setAlpha(0.5f);
         }
-    }
-
-    @Override
-    public void setPresenter(ActionsContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     @Override

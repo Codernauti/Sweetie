@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -48,20 +49,10 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         mUsernameText = (EditText) view.findViewById(R.id.username_input);
         mPhoneText = (EditText) view.findViewById(R.id.phone_input);
         mRadio = (RadioButton)view.findViewById(R.id.radio_button_male);
+
         // Set click listeners
         mForwardButton.setOnClickListener(this);
-        mPhoneText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                //TODO aggiungere controllo se il numero è gia presente nel db
-            }
-        });
+        ;
 
     }
 
@@ -70,7 +61,7 @@ public class StepTwo extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fordward_button:
-                writeDB(v);
+                savePreferences();
                 ((RegisterActivity) getActivity()).onPageSelected(RegisterPagerAdapter.STEP_THREE);
                 //((RegisterActivity) getActivity()).registrationCompleted();
                 break;
@@ -79,20 +70,29 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void writeDB(View v){
-        String userId = getIdToken();
+    private void savePreferences() {
         String mUsername = mUsernameText.getText().toString();
-        String mPhone = mPhoneText.getText().toString();
+        String mPhoneNumber = mPhoneText.getText().toString();
         boolean mGender = mRadio.isChecked();
-        User user = new User(mUsername,mPhone,mGender);
-        mFireBaseController.getDatabaseUserReferences().child(userId).setValue(user);
+        if (saveStringPreference("username", mUsername) == false) {
+            throwError();
+        }
+        if (saveStringPreference("phoneNumber", mPhoneNumber) == false) {
+            throwError();
+        }
+        if (saveStringPreference("gender",String.valueOf(mGender)) == false) {
+            throwError();
+        }
+    }
+    private boolean saveStringPreference(String name,String data){
+        SharedPreferences settings = this.getActivity().getSharedPreferences(name, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(name,data);
+        return editor.commit();
+
     }
 
-    private String getIdToken(){
-        SharedPreferences settings = this.getActivity().getSharedPreferences("token", 0);
-        Log.d("Recupero uid",settings.getString("id","error"));
-        return settings.getString("id","error");
-
+    private void throwError(){
+        Toast.makeText(getActivity(), "Error saving preferences", Toast.LENGTH_SHORT).show();
     }
-
 }

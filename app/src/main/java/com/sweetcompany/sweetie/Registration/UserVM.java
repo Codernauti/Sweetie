@@ -1,17 +1,22 @@
 package com.sweetcompany.sweetie.Registration;
 
 
-public class User {
+public class UserVM {
     private String username;
     private String phone;
     private boolean gender;
 
-    User(){}
 
-    User(String u, String p, boolean g){
-        this.username=u;
-        this.phone=p;
-        this.gender=g;
+
+    private String mail;
+
+    UserVM(){}
+
+    UserVM(String u, String p, String m, boolean g){
+        this.username = u;
+        this.phone = p;
+        this.mail = m;
+        this.gender = g;
     }
 
     public String getUsername() {
@@ -21,6 +26,8 @@ public class User {
     public String getPhone() {
         return phone;
     }
+
+    public String getMail() { return mail; }
 
     public boolean isGender() {
         return gender;

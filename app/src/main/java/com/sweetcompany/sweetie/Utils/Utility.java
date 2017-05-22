@@ -1,9 +1,7 @@
 package com.sweetcompany.sweetie.Utils;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 /**
  * Created by lucas on 22/05/2017.

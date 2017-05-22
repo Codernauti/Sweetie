@@ -16,7 +16,6 @@ import com.sweetcompany.sweetie.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 /**
  * Created by Eduard on 13-May-17.

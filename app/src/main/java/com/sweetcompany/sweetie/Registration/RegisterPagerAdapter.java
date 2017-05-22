@@ -5,13 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.sweetcompany.sweetie.Actions.ActionsContract;
-import com.sweetcompany.sweetie.Actions.ActionsFragment;
-import com.sweetcompany.sweetie.Calendar.CalendarFragment;
-import com.sweetcompany.sweetie.Folders.FoldersFragment;
-import com.sweetcompany.sweetie.Map.MapFragment;
-import com.sweetcompany.sweetie.R;
-
 
 public class RegisterPagerAdapter extends FragmentPagerAdapter {
 

@@ -6,8 +6,6 @@ public class UserVM {
     private String phone;
     private boolean gender;
 
-
-
     private String mail;
 
     UserVM(){}

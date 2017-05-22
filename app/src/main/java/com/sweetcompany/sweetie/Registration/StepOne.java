@@ -28,6 +28,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 public class StepOne extends Fragment implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
@@ -145,8 +146,8 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                             setProgressBarVisibile(true);
                         } else {
                             //save id token
-                            saveStringPreference("token",task.getResult().getUser().getUid());
-                            saveStringPreference("mail",task.getResult().getUser().getEmail());
+                            Utility.saveStringPreference(getContext(),"token",task.getResult().getUser().getUid());
+                            Utility.saveStringPreference(getContext(),"mail",task.getResult().getUser().getEmail());
                             // go to Step 2
                             setProgressBarVisibile(false);
                             ((RegisterActivity) getActivity()).onPageSelected(RegisterPagerAdapter.STEP_TWO);
@@ -163,15 +164,6 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
         Toast.makeText(getActivity(), "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
-
-    private boolean saveStringPreference(String name,String data){
-        Log.d(TAG, data);
-        SharedPreferences settings = this.getActivity().getSharedPreferences(name, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(name,data);
-        return editor.commit();
-
-    }
 
 
 }

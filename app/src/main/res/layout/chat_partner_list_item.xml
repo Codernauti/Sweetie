@@ -23,6 +23,15 @@
     />
 
     <TextView
+        android:id="@+id/chat_partner_item_time_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/chat_partner_item_text_view"
+        android:layout_toEndOf="@+id/chat_partner_item_text_view"
+        android:textSize="12sp"
+        />
+
+    <TextView
         android:id="@+id/chat_partner_item_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

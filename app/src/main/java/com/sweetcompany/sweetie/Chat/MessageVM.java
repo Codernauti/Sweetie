@@ -1,27 +1,37 @@
 package com.sweetcompany.sweetie.Chat;
 
+import android.util.Log;
 import android.view.View;
+
+import com.sweetcompany.sweetie.Firebase.Message;
+
+import java.util.Date;
 
 /**
  * Created by Eduard on 18-May-17.
  */
 
 abstract class MessageVM {
-    static final int THE_PARTNER = 0;
-    static final int THE_MAIN_USER = 1;
+    static final boolean THE_MAIN_USER = true;
+    static final boolean THE_PARTNER = false;
 
-    private int mWho;
+    private boolean mWho;
+    private String mDate;   // Format HH:mm
 
-    MessageVM(int who) {
+    MessageVM(boolean who, String date) {
         mWho = who;
+        mDate = date;
     }
 
     boolean isTheMainUser() {
-        return mWho == THE_MAIN_USER;
+        return mWho;
+    }
+    boolean isThePartner() {
+        return mWho;
     }
 
-    boolean isThePartner() {
-        return mWho == THE_PARTNER;
+    String getDate() {
+        return mDate;
     }
 
     abstract void configViewHolder(MessageViewHolder viewHolder);

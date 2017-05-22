@@ -11,7 +11,7 @@
 
 
     <!-- Test String for debug version -->
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet.</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</string>
     <string name="action_title">No title</string>
 
 </resources>

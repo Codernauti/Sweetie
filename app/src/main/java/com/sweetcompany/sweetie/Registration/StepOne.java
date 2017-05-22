@@ -145,7 +145,8 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                             setProgressBarVisibile(true);
                         } else {
                             //save id token
-                            saveSharedPreference(task.getResult().getUser().getUid());
+                            saveStringPreference("token",task.getResult().getUser().getUid());
+                            saveStringPreference("mail",task.getResult().getUser().getEmail());
                             // go to Step 2
                             setProgressBarVisibile(false);
                             ((RegisterActivity) getActivity()).onPageSelected(RegisterPagerAdapter.STEP_TWO);
@@ -163,11 +164,13 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     }
 
 
-    private void saveSharedPreference(String id){
-        SharedPreferences settings = this.getActivity().getSharedPreferences("token", 0);
+    private boolean saveStringPreference(String name,String data){
+        Log.d(TAG, data);
+        SharedPreferences settings = this.getActivity().getSharedPreferences(name, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString("id",id);
-        editor.commit();
+        editor.putString(name,data);
+        return editor.commit();
+
     }
 
 

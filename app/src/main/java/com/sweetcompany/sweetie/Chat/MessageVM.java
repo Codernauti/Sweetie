@@ -3,6 +3,8 @@ package com.sweetcompany.sweetie.Chat;
 import android.util.Log;
 import android.view.View;
 
+import com.sweetcompany.sweetie.Firebase.Message;
+
 import java.util.Date;
 
 /**
@@ -10,30 +12,22 @@ import java.util.Date;
  */
 
 abstract class MessageVM {
-    static final int THE_PARTNER = 0;
-    static final int THE_MAIN_USER = 1;
+    static final boolean THE_MAIN_USER = true;
+    static final boolean THE_PARTNER = false;
 
-    static final boolean THE_MAIN_USER_BOOL = true;
-    static final boolean THE_PARTNER_BOOL = false;
-
-    private int mWho;
+    private boolean mWho;
     private String mDate;   // Format HH:mm
 
-    MessageVM(int who) {
-        mWho = who;
-    }
-
-    MessageVM(int who, String date) {
+    MessageVM(boolean who, String date) {
         mWho = who;
         mDate = date;
     }
 
     boolean isTheMainUser() {
-        return mWho == THE_MAIN_USER;
+        return mWho;
     }
-
     boolean isThePartner() {
-        return mWho == THE_PARTNER;
+        return mWho;
     }
 
     String getDate() {

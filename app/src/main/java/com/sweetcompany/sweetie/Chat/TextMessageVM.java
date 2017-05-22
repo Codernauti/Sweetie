@@ -11,14 +11,8 @@ import com.sweetcompany.sweetie.R;
 class TextMessageVM extends MessageVM {
     private String mText;
 
-    @Deprecated
-    TextMessageVM(String text, int who) {
-        super(who);
-        mText = text;
-    }
-
     TextMessageVM(String text, boolean mainUser, String date) {
-        super(mainUser? THE_MAIN_USER : THE_PARTNER, date);
+        super(mainUser, date);
         mText = text;
     }
 

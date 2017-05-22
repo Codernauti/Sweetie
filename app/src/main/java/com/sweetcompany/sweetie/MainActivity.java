@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        mFireBaseController.init();
+        //mFireBaseController.init();
 
         //se non si è mai registrato
         /* if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {

@@ -42,14 +42,7 @@ public class FirebaseController {
     private List<OnFirebaseDataChange> mListeners = new ArrayList<>();
 
 
-    public static FirebaseController getInstance() {
-        if (sInstance == null) {
-            sInstance = new FirebaseController();
-        }
-        return sInstance;
-    }
-
-    public static void init(){
+    private FirebaseController(){
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -58,6 +51,13 @@ public class FirebaseController {
         database.setPersistenceEnabled(true); // enable disk persistence
         mUserReference = database.getReference().child("users");
         mActionsReference = database.getReference().child("actions");
+    }
+
+    public static FirebaseController getInstance() {
+        if (sInstance == null) {
+            sInstance = new FirebaseController();
+        }
+        return sInstance;
     }
 
     public void addListener(OnFirebaseDataChange listener) {

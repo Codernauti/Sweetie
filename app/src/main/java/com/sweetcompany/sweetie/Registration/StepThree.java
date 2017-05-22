@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 
 public class StepThree extends Fragment implements View.OnClickListener {
@@ -101,17 +102,14 @@ public class StepThree extends Fragment implements View.OnClickListener {
     }
 
     private void saveUserData(){
-        String token = getStringPreference("token");
-        UserVM user= new UserVM(getStringPreference("username"),getStringPreference("phoneNumber"), getStringPreference("mail"),Boolean.valueOf(getStringPreference("gender")));
+        String token = Utility.getStringPreference(getContext(),"token");
+        UserVM user= new UserVM(Utility.getStringPreference(getContext(),"username"),Utility.getStringPreference(getContext(),"phoneNumber"), Utility.getStringPreference(getContext(),"mail"),Boolean.valueOf(Utility.getStringPreference(getContext(),"gender")));
         mFireBaseController.getDatabase().getReference().child("users").child(token).setValue(user);
 
     }
-    private String getStringPreference(String name){
-        SharedPreferences setting = this.getActivity().getSharedPreferences(name, 0);
-        return setting.getString(name,"error");
-    }
+
     private void saveRequest(){
-        RequestVM request = new RequestVM(getStringPreference("phoneNumber"),mPhoneNumber);
+        RequestVM request = new RequestVM(Utility.getStringPreference(getContext(),"phoneNumber"),mPhoneNumber);
         mFireBaseController.getDatabase().getReference().child("requests").push().setValue(request);
     }
 }

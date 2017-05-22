@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 
 public class StepTwo extends Fragment implements View.OnClickListener {
@@ -74,22 +75,15 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         String mUsername = mUsernameText.getText().toString();
         String mPhoneNumber = mPhoneText.getText().toString();
         boolean mGender = mRadio.isChecked();
-        if (saveStringPreference("username", mUsername) == false) {
+        if (Utility.saveStringPreference(getContext(),"username", mUsername) == false) {
             throwError();
         }
-        if (saveStringPreference("phoneNumber", mPhoneNumber) == false) {
+        if (Utility.saveStringPreference(getContext(),"phoneNumber", mPhoneNumber) == false) {
             throwError();
         }
-        if (saveStringPreference("gender",String.valueOf(mGender)) == false) {
+        if (Utility.saveStringPreference(getContext(),"gender",String.valueOf(mGender)) == false) {
             throwError();
         }
-    }
-    private boolean saveStringPreference(String name,String data){
-        SharedPreferences settings = this.getActivity().getSharedPreferences(name, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(name,data);
-        return editor.commit();
-
     }
 
     private void throwError(){

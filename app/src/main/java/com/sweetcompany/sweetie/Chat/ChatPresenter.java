@@ -37,7 +37,7 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
         // TODO: remove down cast -> use Factory method
         TextMessageVM messageVM = (TextMessageVM)message;
 
-        Message newMessage = new Message(messageVM.getText());
+        Message newMessage = new Message(messageVM.getText(), messageVM.getDate());
         mFirebaseController.pushMessage(newMessage);
     }
 
@@ -45,8 +45,9 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
     public void notifyNewMessages(List<Message> messages) {
         List<MessageVM> messagesVM = new ArrayList<>();
         for (Message msg : messages) {
-            // TODO convert user to boolean
-            TextMessageVM msgVM = new TextMessageVM(msg.getText(), false);
+            // TODO: convert user to boolean
+            // TODO: check if the user of the message is the main user
+            TextMessageVM msgVM = new TextMessageVM(msg.getText(), false, msg.getTime());
             messagesVM.add(msgVM);
         }
 

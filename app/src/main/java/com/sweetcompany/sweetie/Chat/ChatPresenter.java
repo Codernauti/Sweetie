@@ -45,9 +45,8 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
     public void notifyNewMessages(List<Message> messages) {
         List<MessageVM> messagesVM = new ArrayList<>();
         for (Message msg : messages) {
-            // TODO: convert user to boolean
             // TODO: check if the user of the message is the main user
-            TextMessageVM msgVM = new TextMessageVM(msg.getText(), false, msg.getTime());
+            TextMessageVM msgVM = new TextMessageVM(msg.getText(), MessageVM.THE_PARTNER, msg.getTime());
             messagesVM.add(msgVM);
         }
 

@@ -14,13 +14,11 @@ import android.widget.ImageButton;
 
 import com.sweetcompany.sweetie.R;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.zip.DataFormatException;
 
 /**
  * Created by ghiro on 11/05/2017.
@@ -105,16 +103,17 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
             Date currentTime = Calendar.getInstance().getTime();
             // TODO: search correct time zone and change DataFormate based to android setting
+            // check http://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
             String stringCurrentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(currentTime);
             Log.d(TAG, "Current time: " + stringCurrentTime);
 
             // TODO: change stringCurrentTime -> View need HH:mm; Model need YYYY-MM-DD HH:mm:ss
             MessageVM newMessage =
-                    new TextMessageVM(inputText, MessageVM.THE_MAIN_USER_BOOL, stringCurrentTime);
+                    new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, stringCurrentTime);
 
             // update view to feedback user if he is offline
             mChatAdapter.addMessage(newMessage);
-            // TODO: smooth scroll?
+            // TODO: smooth scroll is not good if user is upper of chat but scrollToPosition doesn't work
             mChatListView.smoothScrollToPosition(mChatAdapter.getItemCount());
 
             mPresenter.sendMessage(newMessage);

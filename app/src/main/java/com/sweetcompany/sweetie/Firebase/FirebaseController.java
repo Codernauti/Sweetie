@@ -1,19 +1,11 @@
 package com.sweetcompany.sweetie.Firebase;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.Actions.ActionFB;
-import com.sweetcompany.sweetie.Actions.ActionsContract;
-import com.sweetcompany.sweetie.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;

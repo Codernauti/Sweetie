@@ -2,28 +2,26 @@ package com.sweetcompany.sweetie.Registration;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
-
-import org.w3c.dom.Text;
-
-import static android.app.Activity.RESULT_OK;
 
 
 public class StepThree extends Fragment implements View.OnClickListener {
+    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
     private static final int PICK_CONTACT = 1;
     private Button mForwardButton;
@@ -59,9 +57,12 @@ public class StepThree extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fordward_button:
-
+                saveUserData();
+                saveRequest();
+                Toast.makeText(getActivity(), "Request successfully sent!",
+                        Toast.LENGTH_SHORT).show();
+                ((RegisterActivity) getActivity()).registrationCompleted();
                 break;
-            case R.id.image_contacts_icon:
 
             default:
                 return;
@@ -76,6 +77,7 @@ public class StepThree extends Fragment implements View.OnClickListener {
             case (PICK_CONTACT) :
                 if (resultCode == Activity.RESULT_OK) {
                     mPhoneNumber = contactPicked(data);
+                    mPhoneNumber = mPhoneNumber.replaceAll("^00\\d{2}|\\+\\d{2}|\\s|\\-","");
                     mPhoneText.setText(mPhoneNumber);
                 }
                 break;
@@ -96,5 +98,20 @@ public class StepThree extends Fragment implements View.OnClickListener {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void saveUserData(){
+        String token = getStringPreference("token");
+        UserVM user= new UserVM(getStringPreference("username"),getStringPreference("phoneNumber"), getStringPreference("mail"),Boolean.valueOf(getStringPreference("gender")));
+        mFireBaseController.getDatabase().getReference().child("users").child(token).setValue(user);
+
+    }
+    private String getStringPreference(String name){
+        SharedPreferences setting = this.getActivity().getSharedPreferences(name, 0);
+        return setting.getString(name,"error");
+    }
+    private void saveRequest(){
+        RequestVM request = new RequestVM(getStringPreference("phoneNumber"),mPhoneNumber);
+        mFireBaseController.getDatabase().getReference().child("requests").push().setValue(request);
     }
 }

@@ -24,7 +24,7 @@ public class ActionFB {
 
     }
 
-    ActionFB(String title, String lastUser, String description, String date, int type) {
+    public ActionFB(String title, String lastUser, String description, String date, int type) {
         this.mTitle = title;
         this.mLastUser = lastUser;
         this.mDescription = description;

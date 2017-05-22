@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie.Firebase;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,7 +25,6 @@ public class FirebaseActionsController {
     private static FirebaseActionsController mInstance;
     private List<OnFirebaseActionsDataChange> mListeners;
     private ValueEventListener mActionsEventListener;
-
 
     public interface OnFirebaseActionsDataChange {
         void updateActionsList(List<ActionFB> actions);
@@ -86,9 +86,9 @@ public class FirebaseActionsController {
         mActionsEventListener = null;
     }
 
-    public void pushMessage(Message msg) {
-        DatabaseReference newMessagePush = mActionsDbReference.push();
-        newMessagePush.setValue(msg);
+    public void pushActions(ActionFB act) {
+        DatabaseReference newActionPush = mActionsDbReference.push();
+        newActionPush.setValue(act);
     }
 
 }

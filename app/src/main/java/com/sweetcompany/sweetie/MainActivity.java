@@ -18,15 +18,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
     public static final String ALREADY_REGISTED = "rip.tutorial";
 
-    // Firebase instance variables
-    private FirebaseUser mFirebaseUser;
-
-    // Button
-    private Button mRegisterButton;
-    private Button mLoginButton;
-
-    private GoogleApiClient mGoogleApiClient;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,25 +38,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         {
             startActivity(new Intent(this, LoginActivity.class));
         }
-
-        /*//check if user is logged in. If not go to the login page.
-        // Initialize Firebase Auth
-        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-            startActivity(new Intent(this, DashboardActivity.class));
-        } else {
-            // User is signed out
-            //startActivity(new Intent(this, LoginActivity.class));
-            // Split if User need to login or register TODO
-        }
-
-        mRegisterButton = (Button) findViewById (R.id.register_button);
-        mLoginButton = (Button) findViewById (R.id.login_button);
-
-        mRegisterButton.setOnClickListener(this);
-        mLoginButton.setOnClickListener(this);*/
-
 
     }
 

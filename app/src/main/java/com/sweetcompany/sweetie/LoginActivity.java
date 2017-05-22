@@ -59,10 +59,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        // Initialize FirebaseAuth
-        //mFirebaseAuth = FirebaseAuth.getInstance();
-        //mFirebaseUser = mFirebaseAuth.getCurrentUser();
-
         if (mFireBaseController.getFirebaseUser() != null) {
             //TODO non mi è chiaro il perchè richiami signout qui "by Ghiro"
             mFireBaseController.getAuth().signOut();

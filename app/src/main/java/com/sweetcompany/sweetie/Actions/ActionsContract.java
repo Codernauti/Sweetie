@@ -19,7 +19,6 @@ public interface ActionsContract {
         void start();
         void pause();
         void addActionChat(ActionFB action);
-        //void updateActionsList();
     }
 
 }

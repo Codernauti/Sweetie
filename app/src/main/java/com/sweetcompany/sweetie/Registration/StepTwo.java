@@ -1,14 +1,16 @@
 package com.sweetcompany.sweetie.Registration;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -21,26 +23,24 @@ public class StepTwo extends Fragment implements View.OnClickListener {
 
     private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
-    private static final String TAG = "RegisterActivity";
-    private static final int RC_SIGN_IN = 9001;
+    private static final String TAG = "StepTwo";
+
 
     private Button mForwardButton;
     private EditText mUsernameText;
     private EditText mPhoneText;
     private RadioButton mRadio;
-    private FirebaseDatabase database;
-    private DatabaseReference mFirebaseReference;
+    private Context mContext;
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.register_step_two, container, false);
-
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.register_step_two, container, false);
         // Assign fields
         mForwardButton = (Button) view.findViewById(R.id.fordward_button);
         mUsernameText = (EditText) view.findViewById(R.id.username_input);
@@ -50,6 +50,9 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         // Set click listeners
         mForwardButton.setOnClickListener(this);
 
+        mContext = getContext();
+        return view;
+
     }
 
 
@@ -58,8 +61,17 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.fordward_button:
                 savePreferences();
-                ((RegisterActivity) getActivity()).onPageSelected(RegisterPagerAdapter.STEP_THREE);
-                //((RegisterActivity) getActivity()).registrationCompleted();
+                saveUserData();
+                Fragment mFragment = new StepThree();
+                FragmentTransaction mTransaction = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right
+                );
+                mTransaction.addToBackStack("stepTwo");
+                mTransaction.replace(R.id.register_fragment_container,mFragment);
+                mTransaction.commit();
                 break;
             default:
                 return;
@@ -70,18 +82,14 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         String mUsername = mUsernameText.getText().toString();
         String mPhoneNumber = mPhoneText.getText().toString();
         boolean mGender = mRadio.isChecked();
-        if (Utility.saveStringPreference(getContext(),"username", mUsername) == false) {
-            throwError();
-        }
-        if (Utility.saveStringPreference(getContext(),"phoneNumber", mPhoneNumber) == false) {
-            throwError();
-        }
-        if (Utility.saveStringPreference(getContext(),"gender",String.valueOf(mGender)) == false) {
-            throwError();
-        }
+        Utility.saveStringPreference(mContext,"username", mUsername);
+        Utility.saveStringPreference(mContext,"phoneNumber", mPhoneNumber);
+        Utility.saveStringPreference(mContext,"gender",String.valueOf(mGender));
     }
 
-    private void throwError(){
-        Toast.makeText(getActivity(), "Error saving preferences", Toast.LENGTH_SHORT).show();
+    private void saveUserData(){
+        String token = Utility.getStringPreference(getContext(),"token");
+        UserVM user= new UserVM(Utility.getStringPreference(getContext(),"username"),Utility.getStringPreference(getContext(),"phoneNumber"), Utility.getStringPreference(getContext(),"mail"),Boolean.valueOf(Utility.getStringPreference(getContext(),"gender")));
+        mFireBaseController.getDatabase().getReference().child("users").child(token).setValue(user);
     }
 }

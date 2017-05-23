@@ -19,17 +19,18 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
         mView = view;
         mView.setPresenter(this);
         mFirebaseController = FirebaseChatController.getInstance();
-        mFirebaseController.addListener(this);
     }
 
     @Override
     public void start() {
         mFirebaseController.attachNetworkDatabase();
+        mFirebaseController.addListener(this);
     }
 
     @Override
     public void pause() {
         mFirebaseController.detachNetworkDatabase();
+        mFirebaseController.removeListener(this);
     }
 
     @Override

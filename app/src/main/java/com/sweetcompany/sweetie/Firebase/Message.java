@@ -12,13 +12,15 @@ public class Message {
     //TODO: add user fields
     private String text;
     private String date;
+    private boolean bookmarked;
 
     // For firebase serialization
     public Message() {}
 
-    public Message(String text, String date) {
+    public Message(String text, String date, boolean bookmarked) {
         this.text = text;
         this.date = date;
+        this.bookmarked = bookmarked;
     }
 
     public String getText() {
@@ -37,15 +39,36 @@ public class Message {
         return date;
     }
 
+    public boolean isBookmarked() {
+        return bookmarked;
+    }
+
+    public void setBookmarked(boolean bookmarked) {
+        this.bookmarked = bookmarked;
+    }
+
+
     @Exclude
     public String getTime() {
+        // TODO: not reliable method; Hardcoded indexes
         if (date != null) {
-            int indexSpace = date.lastIndexOf(" " + 1);
-            int indexLastDots = date.lastIndexOf(":");
-            String time = date.substring(indexSpace, indexLastDots);
+            int indexStartHours = 11; //date.lastIndexOf(" " + 1);
+            int indexEndMinutes = 16; //date.lastIndexOf(":");
+            // take substring from char[12] to char[16]
+            String time = date.substring(indexStartHours, indexEndMinutes);
             Log.d("DateTime Debug", "Time from substring: " + time);
             return time;
         }
         else return null;
+    }
+
+    @Exclude
+    @Override
+    public String toString() {
+        return "{" +
+                " text: " + text +
+                " date: " + date +
+                " bookmarked: " + bookmarked +
+                "}";
     }
 }

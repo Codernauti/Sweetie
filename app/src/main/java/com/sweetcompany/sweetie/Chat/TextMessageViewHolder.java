@@ -39,8 +39,13 @@ class TextMessageViewHolder extends MessageViewHolder implements View.OnClickLis
         mTextTime.setText(time);
     }
 
+    public void setBookmark(boolean isBookmarked) {
+        mBookmarkButton.setSelected(isBookmarked);
+    }
+
     @Override
     public void onClick(View v) {
         mBookmarkButton.setSelected(!mBookmarkButton.isSelected());
+        mListener.onBookmarkClicked(getAdapterPosition());
     }
 }

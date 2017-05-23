@@ -24,12 +24,13 @@ import java.util.Locale;
  * Created by ghiro on 11/05/2017.
  */
 
-public class ChatFragment extends Fragment implements ChatContract.View, View.OnClickListener {
+public class ChatFragment extends Fragment implements ChatContract.View, View.OnClickListener,
+        ChatAdapter.ChatAdapterListener {
 
     private static final String TAG = "ChatFragment";
 
     private EditText mTextMessageInput;
-    private ImageButton mPhotoPickerButton;
+    private ImageButton mPhotoPickerButton; // TODO: implement PhotoPicker
     private Button mSendButton;
     private RecyclerView mChatListView;
 
@@ -47,6 +48,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         super.onCreate(savedInstanceState);
 
         mChatAdapter = new ChatAdapter();
+        mChatAdapter.setChatAdapterListener(this);
     }
 
     @Override
@@ -93,13 +95,15 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mChatAdapter.updateActionsList(messagesVM);
     }
 
+
+    // Callback bottom input bar
     @Override
     public void onClick(View v) {
         String inputText = mTextMessageInput.getText().toString();
         mTextMessageInput.setText("");
 
         if (!inputText.isEmpty()) {
-            // TODO: is this responsability of presenter?
+            // TODO: is this responsibility of fragment?
 
             Date currentTime = Calendar.getInstance().getTime();
             // TODO: search correct time zone and change DataFormate based to android setting
@@ -109,7 +113,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
             // TODO: change stringCurrentTime -> View need HH:mm; Model need YYYY-MM-DD HH:mm:ss
             MessageVM newMessage =
-                    new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, stringCurrentTime);
+                    new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, stringCurrentTime, false, null);
 
             // update view to feedback user if he is offline
             mChatAdapter.addMessage(newMessage);
@@ -119,5 +123,12 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             mPresenter.sendMessage(newMessage);
         }
 
+    }
+
+    // ChatAdapter callback
+    @Override
+    public void onBookmarkClicked(MessageVM messageVM) {
+        // TODO: is this responsibility of fragment?
+        mPresenter.bookmarkMessage(messageVM);
     }
 }

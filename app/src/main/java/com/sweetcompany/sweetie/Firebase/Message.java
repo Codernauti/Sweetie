@@ -10,6 +10,8 @@ import com.google.firebase.database.Exclude;
 
 public class Message {
     //TODO: add user fields
+    @Exclude
+    private String key;
     private String text;
     private String date;
     private boolean bookmarked;
@@ -66,9 +68,20 @@ public class Message {
     @Override
     public String toString() {
         return "{" +
+                " key: " + key +
                 " text: " + text +
                 " date: " + date +
                 " bookmarked: " + bookmarked +
                 "}";
+    }
+
+    @Exclude
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    @Exclude
+    public String getKey() {
+        return key;
     }
 }

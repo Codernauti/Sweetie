@@ -17,5 +17,6 @@ public interface ChatContract {
         void start();
         void pause();
         void sendMessage(MessageVM message);
+        void bookmarkMessage(MessageVM message);
     }
 }

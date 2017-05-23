@@ -10,7 +10,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Eduard on 21-May-17.
@@ -57,11 +59,12 @@ public class FirebaseChatController {
         if (mChatEventListener == null) {
             mChatEventListener = new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot messagesSnapshot) {
+                public void onDataChange(DataSnapshot dataSnapshot) {
                     List<Message> messages = new ArrayList<>();
 
-                    for (DataSnapshot messageSnapshot : messagesSnapshot.getChildren()) {
+                    for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                         Message message = messageSnapshot.getValue(Message.class);
+                        message.setKey(messageSnapshot.getKey());
                         messages.add(message);
                     }
 
@@ -89,8 +92,19 @@ public class FirebaseChatController {
     }
 
     public void pushMessage(Message msg) {
+        Log.d(TAG, "Push Message: " + msg);
         DatabaseReference newMessagePush = mChatDbReference.push();
         newMessagePush.setValue(msg);
+    }
+
+    public void updateMessage(Message msg) {
+        Log.d(TAG, "Update Message: " + msg);
+
+//        Map<String, Object> msgUpdate = new HashMap<>();
+//        msgUpdate.put(msg.getKey() + "/bookmarked", msg.isBookmarked());
+//
+//        mChatDbReference.updateChildren(msgUpdate);
+        mChatDbReference.child(msg.getKey()).child("bookmarked").setValue(msg.isBookmarked());
     }
 
 }

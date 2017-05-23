@@ -15,12 +15,17 @@ abstract class MessageVM {
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
 
-    private boolean mWho;
-    private String mDate;   // Format HH:mm
+    private final String mKey;
 
-    MessageVM(boolean who, String date) {
+    private final boolean mWho;
+    private final String mDate;   // Format HH:mm
+    private boolean mBookMarked;
+
+    MessageVM(boolean who, String date, boolean bookMarked, String key) {
         mWho = who;
         mDate = date;
+        mBookMarked = bookMarked;
+        mKey = key;
     }
 
     boolean isTheMainUser() {
@@ -34,9 +39,14 @@ abstract class MessageVM {
         return mDate;
     }
 
+    boolean isBookmarked() {return mBookMarked; }
+    void setBookmarked(boolean bookmarked) {mBookMarked = bookmarked; }
+
+    String getKey() { return mKey; }
+
     abstract void configViewHolder(MessageViewHolder viewHolder);
 
     abstract int getIdView();
 
-    abstract MessageViewHolder getViewHolder(View inflatedView);
+    abstract MessageViewHolder newViewHolder(View inflatedView);
 }

@@ -4,10 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
-
-import com.sweetcompany.sweetie.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +12,18 @@ import java.util.List;
  * Created by ghiro on 16/05/2017.
  */
 
-class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder> {
+class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
+        implements MessageViewHolder.OnViewHolderClickListener {
 
     private static final String TAG = "ChatAdapter";
 
+    interface ChatAdapterListener {
+        void onBookmarkClicked(MessageVM messageVM);
+        //...
+    }
+
     private List<MessageVM> mMessageList = new ArrayList<>();
+    private ChatAdapterListener mListener;
 
     ChatAdapter(){
         // Populate items for TEST
@@ -40,8 +43,24 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder> {
         }*/
     }
 
+    /**
+     * Call when create ChatAdapter
+     * @param listener
+     */
+    public void setChatAdapterListener(ChatAdapterListener listener) {
+        mListener = listener;
+    }
+
+    /**
+     *  Call when destroy ChatAdapterListener
+     */
+    public void removeChatAdapterListener() {
+        mListener = null;
+    }
+
     @Override
     public int getItemViewType(int position) {
+        //TODO: this break the recycler of the viewHolder, the RecyclerView doesn't know the type
         return position;
     }
 
@@ -51,7 +70,8 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         View viewToInflate = inflater.inflate(message.getIdView(), parent, false);
-        MessageViewHolder viewHolder = message.getViewHolder(viewToInflate);
+        MessageViewHolder viewHolder = message.newViewHolder(viewToInflate);
+        viewHolder.setViewHolderClickListener(this);
 
         return viewHolder;
     }
@@ -77,5 +97,18 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder> {
         mMessageList.clear();
         mMessageList.addAll(messagesVM);
         this.notifyDataSetChanged();
+    }
+
+
+    /* Listener from ViewHolder */
+    @Override
+    public void onBookmarkClicked(int adapterPosition) {
+        MessageVM msgToUpdate = mMessageList.get(adapterPosition);
+
+        // Update MessageVM associate with ViewHolder
+        msgToUpdate.setBookmarked(true);
+
+        // Notify fragment for the updating
+        mListener.onBookmarkClicked(msgToUpdate);
     }
 }

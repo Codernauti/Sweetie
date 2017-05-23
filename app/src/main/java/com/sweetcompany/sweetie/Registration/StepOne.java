@@ -1,9 +1,12 @@
 package com.sweetcompany.sweetie.Registration;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +25,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
-import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
@@ -35,21 +36,22 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
 
     private static final String TAG = "StepOne";
     private static final int RC_SIGN_IN = 9001;
+    Context mContext;
 
     private GoogleApiClient mGoogleApiClient;
-
     private SignInButton mRegisterGoogleButton;
     private ProgressBar mProgressBar;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.register_step_one, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.register_step_one, container, false);
+        mContext = getContext();
         // Assign fields
         mRegisterGoogleButton = (SignInButton) view.findViewById(R.id.register_google_button);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar_register);
@@ -68,17 +70,7 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                 .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-    }
-
-    private void handleFirebaseAuthResult(AuthResult authResult) {
-        if (authResult != null) {
-            // Welcome the user
-            FirebaseUser user = authResult.getUser();
-            Toast.makeText(getActivity(), "Welcome " + user.getEmail(), Toast.LENGTH_SHORT).show();
-
-            // Go back to the main activity
-            startActivity(new Intent(getActivity(), MainActivity.class));
-        }
+        return view;
     }
 
     @Override
@@ -149,7 +141,13 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                             Utility.saveStringPreference(getContext(),"mail",task.getResult().getUser().getEmail());
                             // go to Step 2
                             setProgressBarVisibile(false);
-                            ((RegisterActivity) getActivity()).onPageSelected(RegisterPagerAdapter.STEP_TWO);
+                            Fragment mFragment = new StepTwo();
+                            FragmentTransaction mTransaction = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
+                                    R.anim.slide_in_right,
+                                    R.anim.slide_out_left
+                            );
+                            mTransaction.replace(R.id.register_fragment_container,mFragment);
+                            mTransaction.commit();
                         }
                     }
                 });

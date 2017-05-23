@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,13 +30,15 @@ public class StepThree extends Fragment implements View.OnClickListener {
     private ImageButton mContactsButton;
     private String mPhoneNumber;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.register_step_three, container, false);
-    }
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.register_step_three, container, false);
         // Assign fields
         mForwardButton = (Button) view.findViewById(R.id.fordward_button);
         mPhoneText = (EditText) view.findViewById(R.id.phone_request_input);
@@ -51,13 +54,13 @@ public class StepThree extends Fragment implements View.OnClickListener {
 
             }
         });
+        return view;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fordward_button:
-                saveUserData();
                 saveRequest();
                 Toast.makeText(getActivity(), "Request successfully sent!",
                         Toast.LENGTH_SHORT).show();
@@ -98,13 +101,6 @@ public class StepThree extends Fragment implements View.OnClickListener {
             e.printStackTrace();
             return null;
         }
-    }
-
-    private void saveUserData(){
-        String token = Utility.getStringPreference(getContext(),"token");
-        UserVM user= new UserVM(Utility.getStringPreference(getContext(),"username"),Utility.getStringPreference(getContext(),"phoneNumber"), Utility.getStringPreference(getContext(),"mail"),Boolean.valueOf(Utility.getStringPreference(getContext(),"gender")));
-        mFireBaseController.getDatabase().getReference().child("users").child(token).setValue(user);
-
     }
 
     private void saveRequest(){

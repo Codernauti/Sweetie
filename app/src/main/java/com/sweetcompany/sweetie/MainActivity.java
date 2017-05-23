@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +16,7 @@ import com.sweetcompany.sweetie.Registration.RegisterActivity;
 public class MainActivity extends AppCompatActivity implements Button.OnClickListener{
 
     private final FirebaseController mFireBaseController = FirebaseController.getInstance();
+    private Button mRegisterButton;
 
     public static final String ALREADY_REGISTED = "rip.tutorial";
 
@@ -23,13 +25,16 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        mRegisterButton = (Button) findViewById(R.id.register_button);
+        mRegisterButton.setOnClickListener(this);
 
         //mFireBaseController.init();
 
         //se non si è mai registrato
-        /* if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
+
+         if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
             startActivity(new Intent(this, RegisterActivity.class));
-        }*/
+        }
         if (mFireBaseController.getFirebaseUser() != null)
         {
             startActivity(new Intent(this, DashboardActivity.class));

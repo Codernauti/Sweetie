@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
 import com.sweetcompany.sweetie.IPageChanger;
@@ -132,36 +133,50 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+
+                /*
+                ** hide FAB only during the scolling (UP or DOWN)
+                ** TODO : when reached the bottom hide anyway
+                **/
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                    onScrolledUp();
+                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    onScrolledDown();
+                } else {
+                    onScrolledUp();
+                }
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                //TODO adjust y coordinates range
-                if(dy > 0) //check for scroll down
-                {
-                    if(!mIsFabOpen){
-                        mFabNewAction.startAnimation(fab_close);
-                        mFabNewAction.setClickable(false);
-                    }
-                }else{
-                    if(!mIsFabOpen){
-                        mFabNewAction.startAnimation(fab_open);
-                        mFabNewAction.setClickable(true);
-                    }
-                }
             }
         });
 
+
         return root;
+    }
+
+    public void onScrolledDown(){
+        if(!mIsFabOpen){
+            mFabNewAction.startAnimation(fab_close);
+            mFabNewAction.setClickable(false);
+        }
+    }
+
+    public void onScrolledUp(){
+        if(!mIsFabOpen){
+            mFabNewAction.startAnimation(fab_open);
+            mFabNewAction.setClickable(true);
+        }
     }
 
     public void animateFAB(){
 
         if(mIsFabOpen){
             mFabNewAction.startAnimation(rotate_backward);
-            mFabNewChatAction.startAnimation(fab_close);
-            mFabNewPhotoAction.startAnimation(fab_close);
+            mFabNewChatAction.startAnimation(fab_small_close);
+            mFabNewPhotoAction.startAnimation(fab_small_close);
             mFabNewChatAction.setClickable(false);
             mFabNewChatAction.setClickable(false);
             mIsFabOpen = false;
@@ -170,8 +185,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFrameBackground.setAlpha(0f);
         } else {
             mFabNewAction.startAnimation(rotate_forward);
-            mFabNewChatAction.startAnimation(fab_open);
-            mFabNewPhotoAction.startAnimation(fab_open);
+            mFabNewChatAction.startAnimation(fab_small_open);
+            mFabNewPhotoAction.startAnimation(fab_small_open);
             mFabNewChatAction.setClickable(true);
             mFabNewPhotoAction.setClickable(true);
             mIsFabOpen = true;

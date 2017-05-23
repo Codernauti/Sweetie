@@ -102,11 +102,11 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
     /* Listener from ViewHolder */
     @Override
-    public void onBookmarkClicked(int adapterPosition) {
+    public void onBookmarkClicked(int adapterPosition, boolean isBookmarked) {
         MessageVM msgToUpdate = mMessageList.get(adapterPosition);
 
         // Update MessageVM associate with ViewHolder
-        msgToUpdate.setBookmarked(true);
+        msgToUpdate.setBookmarked(isBookmarked);
 
         // Notify fragment for the updating
         mListener.onBookmarkClicked(msgToUpdate);

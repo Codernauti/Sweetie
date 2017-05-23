@@ -99,11 +99,7 @@ public class FirebaseChatController {
 
     public void updateMessage(Message msg) {
         Log.d(TAG, "Update Message: " + msg);
-
-//        Map<String, Object> msgUpdate = new HashMap<>();
-//        msgUpdate.put(msg.getKey() + "/bookmarked", msg.isBookmarked());
-//
-//        mChatDbReference.updateChildren(msgUpdate);
+        // TODO: update only bookmarked??
         mChatDbReference.child(msg.getKey()).child("bookmarked").setValue(msg.isBookmarked());
     }
 

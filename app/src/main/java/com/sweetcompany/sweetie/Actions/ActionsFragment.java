@@ -30,7 +30,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     private FloatingActionButton mFabNewAction;
     private FloatingActionButton mFabNewChatAction;
     private FloatingActionButton mFabNewPhotoAction;
-    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private Animation fab_small_open,fab_small_close, fab_open, fab_close, rotate_forward,rotate_backward;
     private boolean mIsFabOpen = false;
 
     private FrameLayout mFrameBackground;
@@ -48,6 +48,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         mContext = getContext();
 
         //set animations
+        fab_small_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_actions_open);
+        fab_small_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_actions_close);
         fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
@@ -123,6 +125,31 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
                 animateFAB();
                 DialogFragment dialogFragment = ActionNewChatFragment.newInstance();
                 dialogFragment.show(getActivity().getFragmentManager(), ActionNewChatFragment.TAG);
+            }
+        });
+
+        mActionsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                //TODO adjust y coordinates range
+                if(dy > 0) //check for scroll down
+                {
+                    if(!mIsFabOpen){
+                        mFabNewAction.startAnimation(fab_close);
+                        mFabNewAction.setClickable(false);
+                    }
+                }else{
+                    if(!mIsFabOpen){
+                        mFabNewAction.startAnimation(fab_open);
+                        mFabNewAction.setClickable(true);
+                    }
+                }
             }
         });
 

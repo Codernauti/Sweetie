@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.sweetcompany.sweetie.Actions.ActionsFragment;
 import com.sweetcompany.sweetie.Actions.ActionsPresenter;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 /**
  * Created by ghiro on 11/05/2017.
@@ -32,7 +33,8 @@ public class ChatActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-        mPresenter = new ChatPresenter(view);
+        String userMail = Utility.getStringPreference(this, Utility.MAIL);
+        mPresenter = new ChatPresenter(view, userMail);
     }
 
 }

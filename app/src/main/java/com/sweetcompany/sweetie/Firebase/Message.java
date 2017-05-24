@@ -9,9 +9,10 @@ import com.google.firebase.database.Exclude;
  */
 
 public class Message {
-    //TODO: add user fields
     @Exclude
     private String key;
+
+    private String email;   //TODO: add a user identifier
     private String text;
     private String date;
     private boolean bookmarked;
@@ -19,36 +20,47 @@ public class Message {
     // For firebase serialization
     public Message() {}
 
-    public Message(String text, String date, boolean bookmarked) {
+    public Message(String email, String text, String date, boolean bookmarked) {
+        this.email = email;
         this.text = text;
         this.date = date;
         this.bookmarked = bookmarked;
     }
 
+
+    @Exclude
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    @Exclude
+    public String getKey() {
+        return key;
+    }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
     public String getText() {
         return text;
     }
-
     public void setText(String text) {
         this.text = text;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getDate() {
         return date;
     }
-
-    public boolean isBookmarked() {
-        return bookmarked;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public void setBookmarked(boolean bookmarked) {
         this.bookmarked = bookmarked;
     }
-
+    public boolean isBookmarked() {
+        return bookmarked;
+    }
 
     @Exclude
     public String getTime() {
@@ -69,19 +81,10 @@ public class Message {
     public String toString() {
         return "{" +
                 " key: " + key +
+                " email: " + email +
                 " text: " + text +
                 " date: " + date +
                 " bookmarked: " + bookmarked +
                 "}";
-    }
-
-    @Exclude
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    @Exclude
-    public String getKey() {
-        return key;
     }
 }

@@ -48,6 +48,10 @@ public class ActionFB {
         this.mDdata = data;
     }
 
+    public void setType(int type){
+        this.mType = type;
+    }
+
     /*** GETTER ***/ //TODO crate assert null function
 
     public String getTitle(){

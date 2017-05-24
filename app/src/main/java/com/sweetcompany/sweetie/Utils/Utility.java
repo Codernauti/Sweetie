@@ -14,8 +14,9 @@ import java.util.Date;
 public class Utility {
 
     // Key strings for get a shared preference
+    public static final String TOKEN = "token";
     public static final String MAIL = "mail";
-    public static final String USERNAME = "Username";
+    public static final String USERNAME = "username";
     public static final String PHONENUMBER = "phoneNumber";
     public static final String GENDER = "gender";
 

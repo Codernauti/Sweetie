@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.Chat;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,8 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         MessageViewHolder viewHolder = message.newViewHolder(viewToInflate);
         viewHolder.setViewHolderClickListener(this);
 
+        Log.d(TAG, "onCreateViewHolder(): " + message.getKey());
+
         return viewHolder;
     }
 
@@ -80,6 +83,8 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     public void onBindViewHolder(MessageViewHolder holder, int position) {
         MessageVM msgVM = mMessageList.get(position);
         msgVM.configViewHolder(holder);
+
+        Log.d(TAG, "onBindViewHolder(): " + msgVM.getKey());
     }
 
     @Override

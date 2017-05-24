@@ -34,6 +34,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private ImageButton mPhotoPickerButton; // TODO: implement PhotoPicker
     private Button mSendButton;
     private RecyclerView mChatListView;
+    private LinearLayoutManager mLinearLayoutManager;
 
     private ChatAdapter mChatAdapter;
     private ChatContract.Presenter mPresenter;
@@ -59,11 +60,11 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         mChatListView = (RecyclerView) root.findViewById(R.id.chat_list);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        mChatListView.setLayoutManager(layoutManager);
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mLinearLayoutManager.setReverseLayout(true);
+
+        mChatListView.setLayoutManager(mLinearLayoutManager);
         mChatListView.setAdapter(mChatAdapter);
-        // set focus from bottom of list
-        ((LinearLayoutManager)(mChatListView.getLayoutManager())).setStackFromEnd(true);
 
         mTextMessageInput = (EditText) root.findViewById(R.id.chat_text_message_input);
         mPhotoPickerButton = (ImageButton) root.findViewById(R.id.chat_photo_picker_button);
@@ -119,7 +120,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             // update view to feedback user if he is offline
             mChatAdapter.addMessage(newMessage);
             // TODO: smooth scroll is not good if user is upper of chat but scrollToPosition doesn't work
-            mChatListView.smoothScrollToPosition(mChatAdapter.getItemCount());
+            //mChatListView.smoothScrollToPosition(mChatAdapter.getItemCount());
+            mChatListView.smoothScrollToPosition(0);
 
             mPresenter.sendMessage(newMessage);
         }

@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
     private final FirebaseController mFireBaseController = FirebaseController.getInstance();
     private Button mRegisterButton;
+    private Button mLoginButton;
 
     public static final String ALREADY_REGISTED = "rip.tutorial";
 
@@ -25,8 +26,14 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(this);
+
         mRegisterButton = (Button) findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(this);
+
+
 
         //mFireBaseController.init();
 
@@ -35,14 +42,14 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         /* if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
             startActivity(new Intent(this, RegisterActivity.class));
         }*/
-        if (mFireBaseController.getFirebaseUser() != null)
-        {
-            startActivity(new Intent(this, DashboardActivity.class));
-            //startActivity(new Intent(this, LoginActivity.class));
-        } else if (mFireBaseController.getFirebaseUser() == null)
-        {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
+//        if (mFireBaseController.getFirebaseUser() != null)
+//        {
+//            startActivity(new Intent(this, DashboardActivity.class));
+//            //startActivity(new Intent(this, LoginActivity.class));
+//        } else if (mFireBaseController.getFirebaseUser() == null)
+//        {
+//            startActivity(new Intent(this, LoginActivity.class));
+//        }
 
     }
 

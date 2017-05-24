@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.sweetcompany.sweetie.Gallery.GalleryActivity;
+
 public class DashboardActivity extends AppCompatActivity implements IPageChanger {
 
     ViewPager mViewPager;
@@ -72,6 +74,10 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
                 return true;
             case R.id.fake_update_menu:
                 //mAdapter.mPresenter.updateActionsList();
+                return true;
+            case R.id.fake_gallery_menu:
+                startActivity(new Intent(this, GalleryActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

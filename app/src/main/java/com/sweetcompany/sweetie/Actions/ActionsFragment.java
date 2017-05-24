@@ -129,6 +129,16 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             }
         });
 
+        mFabNewPhotoAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // hide others action fab
+                animateFAB();
+                DialogFragment dialogFragment = ActionNewGalleryFragment.newInstance();
+                dialogFragment.show(getActivity().getFragmentManager(), ActionNewGalleryFragment.TAG);
+            }
+        });
+
         mActionsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -172,7 +182,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     }
 
     public void animateFAB(){
-
         if(mIsFabOpen){
             mFabNewAction.startAnimation(rotate_backward);
             mFabNewChatAction.startAnimation(fab_small_close);

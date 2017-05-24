@@ -52,7 +52,7 @@ public class ActionsPresenter implements ActionsContract.Presenter, FirebaseActi
                     mActionsList.add(newActionVM);
                     break;
                 case 1:
-                    newActionVM = new ActionPhotoVM(action.getTitle(), action.getDescription());
+                    newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(), action.getDataTime());
                     mActionsList.add(newActionVM);
                     break;
             }

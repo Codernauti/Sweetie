@@ -66,34 +66,33 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     @Override
     public int getItemViewType(int position) {
         //TODO: this break the recycler of the viewHolder, the RecyclerView doesn't know the type
-        return position;
-        //return mMessageList.get(position).getIdView();
+        //return position;
+        return mMessageList.get(position).getIdView();
     }
 
     @Override
     public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MessageVM message = mMessageList.get(viewType);
+        //MessageVM message = mMessageList.get(viewType);
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         // TODO: switch to this comment code
-        /*View viewToInflate = inflater.inflate(viewType, parent, false);
+        View viewToInflate = inflater.inflate(viewType, parent, false);
         MessageViewHolder viewHolder;
         switch (viewType) {
             case R.layout.chat_user_list_item:
                 viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_MAIN_USER);
-                viewHolder.setViewHolderClickListener(this);
                 break;
             case R.layout.chat_partner_list_item:
                 viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
-                viewHolder.setViewHolderClickListener(this);
                 break;
             default:
+                Log.w(TAG, "Error: no MessageViewHolder type match");
                 viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
                 break;
-        }*/
+        }
 
-        View viewToInflate = inflater.inflate(message.getIdView(), parent, false);
-        MessageViewHolder viewHolder = message.newViewHolder(viewToInflate);
+        /*View viewToInflate = inflater.inflate(message.getIdView(), parent, false);
+        MessageViewHolder viewHolder = message.newViewHolder(viewToInflate);*/
         viewHolder.setViewHolderClickListener(this);
 
         Log.d(TAG, "onCreateViewHolder(): " + viewHolder.toString());

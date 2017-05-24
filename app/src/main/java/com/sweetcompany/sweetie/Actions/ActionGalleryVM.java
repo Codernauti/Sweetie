@@ -5,21 +5,22 @@ import android.util.Log;
 import com.sweetcompany.sweetie.R;
 
 /**
- * Created by Eduard on 11/05/2017.
+ * Created by Federico Allegro on 24/05/2017.
  */
 
 //TODO complete class
-class ActionPhotoVM extends ActionVM {
+class ActionGalleryVM extends ActionVM {
 
-    ActionPhotoVM(String title, String description) {
+    ActionGalleryVM(String title, String description, String date) {
         // TODO: complete all fields
         super.setTitle(title);
         super.setTitle(description);
+        super.setDataTime(date);
     }
 
     @Override
     public void showAction() {
-        Log.d("ActionPhotoVM", getTitle() + " openAction");
+        Log.d("ActionGalleryVM", getTitle() + " openAction");
 
         // For SingleActivity App
         // mPageChanger.changePageTo(0);

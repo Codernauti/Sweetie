@@ -21,7 +21,7 @@ import com.sweetcompany.sweetie.R;
 
 public class DetailPhotoActivity extends AppCompatActivity {
 
-    public static final String EXTRA_SPACE_PHOTO = "SpacePhotoActivity.SPACE_PHOTO";
+    public static final String EXTRA_DETAIL_PHOTO = "DetailPhotoActivity.DETAIL_PHOTO";
 
     private ImageView mImageView;
 
@@ -31,12 +31,13 @@ public class DetailPhotoActivity extends AppCompatActivity {
         setContentView(R.layout.gallery_detail_layout);
 
         mImageView = (ImageView) findViewById(R.id.image);
-        Photo spacePhoto = getIntent().getParcelableExtra(EXTRA_SPACE_PHOTO);
+        Photo singlePhoto = getIntent().getParcelableExtra(EXTRA_DETAIL_PHOTO);
 
         Glide.with(this)
-                .load(spacePhoto.getUrl())
+                .load(singlePhoto.getUrl())
                 .asBitmap()
                 .error(R.drawable.action_photo_icon)
+                .crossFade()
                 .listener(new RequestListener<String, Bitmap>() {
 
                     @Override
@@ -56,7 +57,7 @@ public class DetailPhotoActivity extends AppCompatActivity {
                     public void onPalette(Palette palette) {
                         if (null != palette) {
                             ViewGroup parent = (ViewGroup) mImageView.getParent().getParent();
-                            parent.setBackgroundColor(palette.getDarkVibrantColor(Color.GRAY));
+                            parent.setBackgroundColor(Color.BLACK);
                         }
                     }
                 })

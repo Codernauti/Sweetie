@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
@@ -86,7 +84,7 @@ public class StepTwo extends Fragment implements RegisterContract.View, View.OnC
         String mPhoneNumber = mPhoneText.getText().toString();
         boolean mGender = mRadio.isChecked();
         Utility.saveStringPreference(mContext,Utility.USERNAME, mUsername);
-        Utility.saveStringPreference(mContext,Utility.PHONENUMBER, mPhoneNumber);
+        Utility.saveStringPreference(mContext,Utility.PHONE_NUMBER, mPhoneNumber);
         Utility.saveStringPreference(mContext,Utility.GENDER,String.valueOf(mGender));
     }
 

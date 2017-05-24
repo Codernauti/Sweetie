@@ -1,7 +1,9 @@
 package com.sweetcompany.sweetie.Actions;
 
+import android.content.Intent;
 import android.util.Log;
 
+import com.sweetcompany.sweetie.Gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
 
 /**
@@ -11,16 +13,20 @@ import com.sweetcompany.sweetie.R;
 //TODO complete class
 class ActionGalleryVM extends ActionVM {
 
-    ActionGalleryVM(String title, String description, String date) {
+    ActionGalleryVM(String title, String description, String date, int type) {
         // TODO: complete all fields
         super.setTitle(title);
         super.setTitle(description);
         super.setDataTime(date);
+        super.setType(type);
     }
 
     @Override
     public void showAction() {
         Log.d("ActionGalleryVM", getTitle() + " openAction");
+
+        Intent intent = new Intent(mContext, GalleryActivity.class);
+        mContext.startActivity(intent);
 
         // For SingleActivity App
         // mPageChanger.changePageTo(0);

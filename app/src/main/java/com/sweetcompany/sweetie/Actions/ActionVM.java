@@ -1,8 +1,6 @@
 package com.sweetcompany.sweetie.Actions;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;

@@ -8,6 +8,21 @@ import android.view.View;
  */
 
 abstract class MessageViewHolder extends RecyclerView.ViewHolder {
+
+    interface OnViewHolderClickListener {
+        void onBookmarkClicked(int adapterPosition, boolean isBookmarked);
+    }
+
+    protected OnViewHolderClickListener mListener;
+
+    void setViewHolderClickListener(OnViewHolderClickListener listener) {
+        mListener = listener;
+    }
+
+    void removeViewHolderClickListener() {
+        mListener = null;
+    }
+
     MessageViewHolder(View itemView) {
         super(itemView);
     }

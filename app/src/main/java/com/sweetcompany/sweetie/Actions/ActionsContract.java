@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.Actions;
 
+import com.sweetcompany.sweetie.Firebase.ActionFB;
+
 import java.util.List;
 
 /**
@@ -17,7 +19,6 @@ public interface ActionsContract {
         void start();
         void pause();
         void addActionChat(ActionFB action);
-        //void updateActionsList();
     }
 
 }

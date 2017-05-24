@@ -6,24 +6,23 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
-
-import org.w3c.dom.Text;
-
-import static android.app.Activity.RESULT_OK;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 
 public class StepThree extends Fragment implements View.OnClickListener {
+    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
     private static final int PICK_CONTACT = 1;
     private Button mForwardButton;
@@ -31,13 +30,15 @@ public class StepThree extends Fragment implements View.OnClickListener {
     private ImageButton mContactsButton;
     private String mPhoneNumber;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.register_step_three, container, false);
-    }
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.register_step_three, container, false);
         // Assign fields
         mForwardButton = (Button) view.findViewById(R.id.fordward_button);
         mPhoneText = (EditText) view.findViewById(R.id.phone_request_input);
@@ -53,15 +54,18 @@ public class StepThree extends Fragment implements View.OnClickListener {
 
             }
         });
+        return view;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fordward_button:
-
+                saveRequest();
+                Toast.makeText(getActivity(), "Request successfully sent!",
+                        Toast.LENGTH_SHORT).show();
+                ((RegisterActivity) getActivity()).registrationCompleted();
                 break;
-            case R.id.image_contacts_icon:
 
             default:
                 return;
@@ -76,6 +80,7 @@ public class StepThree extends Fragment implements View.OnClickListener {
             case (PICK_CONTACT) :
                 if (resultCode == Activity.RESULT_OK) {
                     mPhoneNumber = contactPicked(data);
+                    mPhoneNumber = mPhoneNumber.replaceAll("^00\\d{2}|\\+\\d{2}|\\s|\\-","");
                     mPhoneText.setText(mPhoneNumber);
                 }
                 break;
@@ -96,5 +101,10 @@ public class StepThree extends Fragment implements View.OnClickListener {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void saveRequest(){
+        RequestVM request = new RequestVM(Utility.getStringPreference(getContext(),"phoneNumber"),mPhoneNumber);
+        mFireBaseController.getDatabase().getReference().child("requests").push().setValue(request);
     }
 }

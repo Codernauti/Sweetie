@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
 import com.sweetcompany.sweetie.IPageChanger;
@@ -22,14 +23,17 @@ import java.util.List;
 
 public class ActionsFragment extends Fragment implements ActionsContract.View {
 
+    private static final String TAG = "ActionsFragment";
+
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
 
     private FloatingActionButton mFabNewAction;
     private FloatingActionButton mFabNewChatAction;
     private FloatingActionButton mFabNewPhotoAction;
-    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private Animation fab_small_open,fab_small_close, fab_open, fab_close, rotate_forward,rotate_backward;
     private boolean mIsFabOpen = false;
+
     private FrameLayout mFrameBackground;
 
     private ActionsContract.Presenter mPresenter;
@@ -45,14 +49,31 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         mContext = getContext();
 
         //set animations
+        fab_small_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_actions_open);
+        fab_small_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_actions_close);
         fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(mContext ,R.anim.rotate_backward);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         mPresenter.start();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mPresenter.pause();
+    }
+
+    @Override
+    public void setPresenter(ActionsContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -108,15 +129,54 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             }
         });
 
+        mActionsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                /*
+                ** hide FAB only during the scolling (UP or DOWN)
+                ** TODO : when reached the bottom hide anyway
+                **/
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+                    onScrolledUp();
+                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                    onScrolledDown();
+                } else {
+                    onScrolledUp();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+
         return root;
+    }
+
+    public void onScrolledDown(){
+        if(!mIsFabOpen){
+            mFabNewAction.startAnimation(fab_close);
+            mFabNewAction.setClickable(false);
+        }
+    }
+
+    public void onScrolledUp(){
+        if(!mIsFabOpen){
+            mFabNewAction.startAnimation(fab_open);
+            mFabNewAction.setClickable(true);
+        }
     }
 
     public void animateFAB(){
 
         if(mIsFabOpen){
             mFabNewAction.startAnimation(rotate_backward);
-            mFabNewChatAction.startAnimation(fab_close);
-            mFabNewPhotoAction.startAnimation(fab_close);
+            mFabNewChatAction.startAnimation(fab_small_close);
+            mFabNewPhotoAction.startAnimation(fab_small_close);
             mFabNewChatAction.setClickable(false);
             mFabNewChatAction.setClickable(false);
             mIsFabOpen = false;
@@ -125,8 +185,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFrameBackground.setAlpha(0f);
         } else {
             mFabNewAction.startAnimation(rotate_forward);
-            mFabNewChatAction.startAnimation(fab_open);
-            mFabNewPhotoAction.startAnimation(fab_open);
+            mFabNewChatAction.startAnimation(fab_small_open);
+            mFabNewPhotoAction.startAnimation(fab_small_open);
             mFabNewChatAction.setClickable(true);
             mFabNewPhotoAction.setClickable(true);
             mIsFabOpen = true;
@@ -134,11 +194,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             mFrameBackground.setClickable(true);
             mFrameBackground.setAlpha(0.5f);
         }
-    }
-
-    @Override
-    public void setPresenter(ActionsContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     @Override

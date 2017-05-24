@@ -11,8 +11,8 @@ import com.sweetcompany.sweetie.R;
 class TextMessageVM extends MessageVM {
     private String mText;
 
-    TextMessageVM(String text, int who) {
-        super(who);
+    TextMessageVM(String text, boolean mainUser, String date, boolean bookMarked, String key) {
+        super(mainUser, date, bookMarked, key);
         mText = text;
     }
 
@@ -23,7 +23,11 @@ class TextMessageVM extends MessageVM {
     @Override
     void configViewHolder(MessageViewHolder viewHolder) {
         // TODO: This downcast is secure?
-        ((TextMessageViewHolder)viewHolder).setText(mText);
+        TextMessageViewHolder view = (TextMessageViewHolder) viewHolder;
+
+        view.setText(mText);
+        view.setTextTime(super.getDate());
+        view.setBookmark(super.isBookmarked());
     }
 
     @Override
@@ -37,7 +41,7 @@ class TextMessageVM extends MessageVM {
     }
 
     @Override
-    TextMessageViewHolder getViewHolder(View inflatedView) {
+    TextMessageViewHolder newViewHolder(View inflatedView) {
         return new TextMessageViewHolder(inflatedView, isTheMainUser());
     }
 }

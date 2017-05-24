@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.sweetcompany.sweetie.Chat.ChatActivity;
+import com.sweetcompany.sweetie.Firebase.ActionFB;
+import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
+import com.sweetcompany.sweetie.Firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 
@@ -25,7 +28,8 @@ import java.util.Calendar;
 // TODO: decide if use DialogFragment of this class or go to ChatsActivity
 public class ActionNewChatFragment extends DialogFragment {
 
-    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
+    private FirebaseController mFirebaseController = FirebaseController.getInstance();
+    private FirebaseActionsController mFireBaseActionsController;
 
     public static final String TAG = "ActionNewChatFragment";
 
@@ -33,11 +37,6 @@ public class ActionNewChatFragment extends DialogFragment {
 
     private static final String USER_POSITIVE_RESPONSE = "Ok";
     private static final String USER_NEGATIVE_RESPONSE = "Cancel";
-
-    private DateFormat df = new SimpleDateFormat("dd/MM HH:mm");
-    private String date;
-
-    private ActionsContract.Presenter mPresenter;
 
     private EditText mTitleChatEditText;
 
@@ -47,7 +46,6 @@ public class ActionNewChatFragment extends DialogFragment {
         return fragment;
     }
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         String dialogTitle = getString(R.string.action_new_chat_title_dialog);
@@ -55,6 +53,8 @@ public class ActionNewChatFragment extends DialogFragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View dialogLayout = inflater.inflate(R.layout.action_new_chat_dialog, null);
         mTitleChatEditText = (EditText) dialogLayout.findViewById(R.id.action_new_chat_title);
+
+        mFireBaseActionsController = FirebaseActionsController.getInstance();
 
         return new AlertDialog.Builder(getActivity())
                 //.setIcon(R.drawable.alert_dialog_icon)
@@ -67,11 +67,10 @@ public class ActionNewChatFragment extends DialogFragment {
 
                                 if (!userInputChatTitle.isEmpty()) {
 
-                                    //make ChatFB object
-                                    //date = df.format(Calendar.getInstance().getTime());
-                                    //ActionFB action = new ActionFB(userInputChatTitle, mFireBaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
-                                    //TODO collegare presenter a questo fragment
-                                    // mPresenter.addActionChat(action);
+                                    DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
+                                    String date = df.format(Calendar.getInstance().getTime());
+                                    ActionFB action = new ActionFB(userInputChatTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
+                                    mFireBaseActionsController.pushActions(action);
 
 
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);
@@ -92,4 +91,5 @@ public class ActionNewChatFragment extends DialogFragment {
                 .create();
 
     }
+
 }

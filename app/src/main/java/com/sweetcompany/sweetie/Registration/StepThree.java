@@ -163,10 +163,12 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
 
     @Override
     public void updateRequest(List<PairingRequestVM> pairingRequestsVM){
-        for(PairingRequestVM rqstVM: pairingRequestsVM){
-            if(rqstVM.getReceiverNumber().equals(mPersonalPhoneNumber)){
-                mPhoneView.setText(rqstVM.getSenderNumber());
-                mLinearLayout.setVisibility(View.VISIBLE);
+        if(pairingRequestsVM.size() != 0) {
+            for (PairingRequestVM rqstVM : pairingRequestsVM) {
+                if (rqstVM.getReceiverNumber().equals(mPersonalPhoneNumber)) {
+                    mPhoneView.setText(rqstVM.getSenderNumber());
+                    mLinearLayout.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

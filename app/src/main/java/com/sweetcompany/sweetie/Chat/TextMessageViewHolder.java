@@ -1,6 +1,6 @@
 package com.sweetcompany.sweetie.Chat;
 
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -13,6 +13,7 @@ import com.sweetcompany.sweetie.R;
 
 class TextMessageViewHolder extends MessageViewHolder implements View.OnClickListener {
     private TextView mTextMessage;
+    private TextView mTextTime;
     private ImageButton mBookmarkButton;
 
     TextMessageViewHolder(View itemView, boolean isMainUser) {
@@ -20,10 +21,12 @@ class TextMessageViewHolder extends MessageViewHolder implements View.OnClickLis
 
         if (isMainUser) {
             mTextMessage = (TextView) itemView.findViewById(R.id.chat_item_text_view);
+            mTextTime = (TextView) itemView.findViewById(R.id.chat_item_time_text_view);
             mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_bookmark_button);
         }
         else {  // THE_PARTNER
             mTextMessage = (TextView) itemView.findViewById(R.id.chat_partner_item_text_view);
+            mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_time_text_view);
             mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_partner_item_bookmark_button);
         }
 
@@ -32,8 +35,18 @@ class TextMessageViewHolder extends MessageViewHolder implements View.OnClickLis
 
     public void setText(String text) { mTextMessage.setText(text);}
 
+    public void setTextTime(String time) {
+        mTextTime.setText(time);
+    }
+
+    public void setBookmark(boolean isBookmarked) {
+        mBookmarkButton.setSelected(isBookmarked);
+    }
+
     @Override
     public void onClick(View v) {
-        mBookmarkButton.setSelected(!mBookmarkButton.isSelected());
+        boolean wasBookmarked = mBookmarkButton.isSelected();
+        mBookmarkButton.setSelected(!wasBookmarked);
+        mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked);
     }
 }

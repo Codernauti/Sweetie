@@ -10,12 +10,13 @@ public interface ChatContract {
 
     interface View {
         void setPresenter(ChatContract.Presenter presenter);
-        void updateMessages(List<TextMessageVM> messages);
+        void updateMessages(List<MessageVM> messages);
     }
 
     interface Presenter {
         void start();
         void pause();
-        void sendMessage(TextMessageVM message);
+        void sendMessage(MessageVM message);
+        void bookmarkMessage(MessageVM message);
     }
 }

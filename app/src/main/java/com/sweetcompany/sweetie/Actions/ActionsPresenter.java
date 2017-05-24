@@ -48,11 +48,11 @@ public class ActionsPresenter implements ActionsContract.Presenter, FirebaseActi
             // for example use ActionConverter.convertToViewModel(action);
             switch (action.getType()) {
                 case 0:
-                    newActionVM = new ActionChatVM(action.getTitle(), action.getDescription(), action.getDataTime());
+                    newActionVM = new ActionChatVM(action.getTitle(), action.getDescription(), action.getDataTime(), action.getType());
                     mActionsList.add(newActionVM);
                     break;
                 case 1:
-                    newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(), action.getDataTime());
+                    newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(), action.getDataTime(), action.getType());
                     mActionsList.add(newActionVM);
                     break;
             }

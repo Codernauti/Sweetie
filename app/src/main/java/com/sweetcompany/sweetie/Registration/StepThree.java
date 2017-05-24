@@ -18,11 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
@@ -68,7 +65,7 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
         mAcceptButton = (Button) view.findViewById(R.id.accept_button);
         mDeclineButton = (Button) view.findViewById(R.id.decline_button);
         mReference = FirebaseDatabase.getInstance().getReference().child("request");
-        mPersonalPhoneNumber = Utility.getStringPreference(mContext,Utility.PHONENUMBER);
+        mPersonalPhoneNumber = Utility.getStringPreference(mContext,Utility.PHONE_NUMBER);
 
         mLinearLayout.setVisibility(View.GONE);
 

@@ -38,7 +38,7 @@ public class RegisterPresenter implements RegisterContract.Presenter, FirebaseRe
     public void saveUserData(Context mContext){
         String token = Utility.getStringPreference(mContext,Utility.TOKEN);
         UserVM user= new UserVM(Utility.getStringPreference(mContext,Utility.USERNAME),
-                Utility.getStringPreference(mContext,Utility.PHONENUMBER),
+                Utility.getStringPreference(mContext,Utility.PHONE_NUMBER),
                 Utility.getStringPreference(mContext,Utility.MAIL),
                 Boolean.valueOf(Utility.getStringPreference(mContext,Utility.GENDER)));
         mFirebaseController.saveUserData(token,user);

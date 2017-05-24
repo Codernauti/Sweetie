@@ -12,15 +12,29 @@ import java.util.Date;
  */
 
 public class Utility {
-     static public boolean saveStringPreference(Context context, String name, String data){
-        SharedPreferences settings = context.getSharedPreferences(name, 0);
+
+    // Key strings for get a shared preference
+    public static final String MAIL = "mail";
+    public static final String USERNAME = "Username";
+    public static final String PHONENUMBER = "phoneNumber";
+    public static final String GENDER = "gender";
+
+    //Method for saving a shared preference
+    //How to use: pass the context, a key string and the data string; returns true if successfully saved
+    //
+     static public boolean saveStringPreference(Context context, String key, String data){
+        SharedPreferences settings = context.getSharedPreferences(key, 0);
         SharedPreferences.Editor editor = settings.edit();
-        editor.putString(name,data);
+        editor.putString(key,data);
         return editor.commit();
     }
-    static public String getStringPreference(Context context,String name){
-        SharedPreferences setting = context.getSharedPreferences(name, 0);
-        return setting.getString(name,"error");
+
+    //Method for getting a string from shared preferences
+    //How to use: pass the context and one of key strings above
+    //if the result string doesn't exist it returns the string "error"
+    static public String getStringPreference(Context context,String key){
+        SharedPreferences setting = context.getSharedPreferences(key, 0);
+        return setting.getString(key,"error");
     }
 
     // TODO

@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.Registration;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -13,22 +14,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
+import java.util.List;
 
-public class StepThree extends Fragment implements View.OnClickListener {
+
+public class StepThree extends Fragment implements RegisterContract.View, View.OnClickListener {
     private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
     private static final int PICK_CONTACT = 1;
-    private Button mForwardButton;
+
+    Context mContext;
+    private Button mForwardButton, mAcceptButton, mDeclineButton, mContactsButton;
+    private LinearLayout mLinearLayout;
     private EditText mPhoneText;
-    private ImageButton mContactsButton;
+    private TextView mPhoneView, mUsernameView;
+    private String mPersonalPhoneNumber;
     private String mPhoneNumber;
+    private DatabaseReference mReference;
+
+    private RegisterContract.Presenter mPresenter;
 
 
     @Override
@@ -39,22 +55,48 @@ public class StepThree extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.register_step_three, container, false);
+
+
         // Assign fields
+        mContext = getContext();
+        mLinearLayout = (LinearLayout) view.findViewById(R.id.pairing_request_layout);
         mForwardButton = (Button) view.findViewById(R.id.fordward_button);
         mPhoneText = (EditText) view.findViewById(R.id.phone_request_input);
-        mContactsButton = (ImageButton) view.findViewById(R.id.image_contacts_icon);
+        mContactsButton = (Button) view.findViewById(R.id.image_contacts_icon);
+        mPhoneView = (TextView) view.findViewById(R.id.phone_text_view);
+        mUsernameView = (TextView) view.findViewById(R.id.username_text_view);
+        mAcceptButton = (Button) view.findViewById(R.id.accept_button);
+        mDeclineButton = (Button) view.findViewById(R.id.decline_button);
+        mReference = FirebaseDatabase.getInstance().getReference().child("request");
+        mPersonalPhoneNumber = Utility.getStringPreference(mContext,Utility.PHONENUMBER);
+
+        mLinearLayout.setVisibility(View.GONE);
+
+
         // Set click listeners
         mForwardButton.setOnClickListener(this);
+        mDeclineButton.setOnClickListener(this);
 
         mContactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(Intent.ACTION_PICK,  ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
-                startActivityForResult(intent, PICK_CONTACT);
+
 
             }
         });
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mPresenter.pause();
     }
 
     @Override
@@ -66,6 +108,12 @@ public class StepThree extends Fragment implements View.OnClickListener {
                         Toast.LENGTH_SHORT).show();
                 ((RegisterActivity) getActivity()).registrationCompleted();
                 break;
+            case  R.id.image_contacts_icon:
+                Intent intent= new Intent(Intent.ACTION_PICK,  ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
+                startActivityForResult(intent, PICK_CONTACT);
+                break;
+            case R.id.decline_button:
+
 
             default:
                 return;
@@ -104,7 +152,22 @@ public class StepThree extends Fragment implements View.OnClickListener {
     }
 
     private void saveRequest(){
-        RequestVM request = new RequestVM(Utility.getStringPreference(getContext(),"phoneNumber"),mPhoneNumber);
+        PairingRequestVM request = new PairingRequestVM(Utility.getStringPreference(getContext(),"phoneNumber"),mPhoneNumber);
         mFireBaseController.getDatabase().getReference().child("requests").push().setValue(request);
+    }
+
+    @Override
+    public void setPresenter(RegisterContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void updateRequest(List<PairingRequestVM> pairingRequestsVM){
+        for(PairingRequestVM rqstVM: pairingRequestsVM){
+            if(rqstVM.getReceiverNumber().equals(mPersonalPhoneNumber)){
+                mPhoneView.setText(rqstVM.getSenderNumber());
+                mLinearLayout.setVisibility(View.VISIBLE);
+            }
+        }
     }
 }

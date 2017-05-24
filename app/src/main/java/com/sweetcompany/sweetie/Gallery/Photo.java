@@ -66,6 +66,12 @@ public class Photo implements Parcelable {
                 new Photo("http://i.imgur.com/qpr5LR2.jpg", "Earth"),
                 new Photo("http://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
                 new Photo("http://i.imgur.com/3wQcZeY.jpg", "Satellite"),
+                new Photo("http://i.imgur.com/zuG2bGQ.jpg", "Galaxy"),
+                new Photo("http://i.imgur.com/ovr0NAF.jpg", "Space Shuttle"),
+                new Photo("http://i.imgur.com/n6RfJX2.jpg", "Galaxy Orion"),
+                new Photo("http://i.imgur.com/qpr5LR2.jpg", "Earth"),
+                new Photo("http://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
+                new Photo("http://i.imgur.com/3wQcZeY.jpg", "Satellite"),
         };
     }
 

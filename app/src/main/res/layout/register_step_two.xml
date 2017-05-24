@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:text="CREDENZIALI"
+        android:text="CREDENTIALS"
         android:textSize="30sp"
         android:textStyle="bold" />
 

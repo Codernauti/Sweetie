@@ -30,7 +30,9 @@ import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
-public class StepOne extends Fragment implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+import java.util.List;
+
+public class StepOne extends Fragment implements RegisterContract.View, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
@@ -41,6 +43,7 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     private GoogleApiClient mGoogleApiClient;
     private SignInButton mRegisterGoogleButton;
     private ProgressBar mProgressBar;
+    private RegisterContract.Presenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,8 +128,6 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-
-
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
@@ -141,13 +142,14 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
                             Utility.saveStringPreference(getContext(),"mail",task.getResult().getUser().getEmail());
                             // go to Step 2
                             setProgressBarVisibile(false);
-                            Fragment mFragment = new StepTwo();
+                            StepTwo mFragment = new StepTwo();
                             FragmentTransaction mTransaction = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
                                     R.anim.slide_in_right,
                                     R.anim.slide_out_left
                             );
                             mTransaction.replace(R.id.register_fragment_container,mFragment);
                             mTransaction.commit();
+                            ((RegisterActivity) getActivity()).setPresenter(mFragment);
                         }
                     }
                 });
@@ -162,5 +164,13 @@ public class StepOne extends Fragment implements View.OnClickListener, GoogleApi
     }
 
 
+    @Override
+    public void setPresenter(RegisterContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
 
+    @Override
+    public void updateRequest(List<PairingRequestVM> pairingRequestsVM) {
+
+    }
 }

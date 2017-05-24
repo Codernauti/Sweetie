@@ -18,8 +18,10 @@ import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
+import java.util.List;
 
-public class StepTwo extends Fragment implements View.OnClickListener {
+
+public class StepTwo extends Fragment implements RegisterContract.View, View.OnClickListener {
 
     private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
@@ -31,6 +33,7 @@ public class StepTwo extends Fragment implements View.OnClickListener {
     private EditText mPhoneText;
     private RadioButton mRadio;
     private Context mContext;
+    private RegisterContract.Presenter mPresenter;
 
 
     @Override
@@ -55,14 +58,13 @@ public class StepTwo extends Fragment implements View.OnClickListener {
 
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fordward_button:
                 savePreferences();
-                saveUserData();
-                Fragment mFragment = new StepThree();
+                mPresenter.saveUserData(mContext);
+                StepThree mFragment = new StepThree();
                 FragmentTransaction mTransaction = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left,
@@ -72,6 +74,7 @@ public class StepTwo extends Fragment implements View.OnClickListener {
                 mTransaction.addToBackStack("stepTwo");
                 mTransaction.replace(R.id.register_fragment_container,mFragment);
                 mTransaction.commit();
+                ((RegisterActivity) getActivity()).setPresenter(mFragment);
                 break;
             default:
                 return;
@@ -82,14 +85,19 @@ public class StepTwo extends Fragment implements View.OnClickListener {
         String mUsername = mUsernameText.getText().toString();
         String mPhoneNumber = mPhoneText.getText().toString();
         boolean mGender = mRadio.isChecked();
-        Utility.saveStringPreference(mContext,"username", mUsername);
-        Utility.saveStringPreference(mContext,"phoneNumber", mPhoneNumber);
-        Utility.saveStringPreference(mContext,"gender",String.valueOf(mGender));
+        Utility.saveStringPreference(mContext,Utility.USERNAME, mUsername);
+        Utility.saveStringPreference(mContext,Utility.PHONENUMBER, mPhoneNumber);
+        Utility.saveStringPreference(mContext,Utility.GENDER,String.valueOf(mGender));
     }
 
-    private void saveUserData(){
-        String token = Utility.getStringPreference(getContext(),"token");
-        UserVM user= new UserVM(Utility.getStringPreference(getContext(),"username"),Utility.getStringPreference(getContext(),"phoneNumber"), Utility.getStringPreference(getContext(),"mail"),Boolean.valueOf(Utility.getStringPreference(getContext(),"gender")));
-        mFireBaseController.getDatabase().getReference().child("users").child(token).setValue(user);
+
+    @Override
+    public void setPresenter(RegisterContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void updateRequest(List<PairingRequestVM> pairingRequestsVM) {
+
     }
 }

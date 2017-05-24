@@ -4,54 +4,120 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:weightSum="1">
 
     <TextView
+        android:id="@+id/pairing_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textStyle="bold"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:text="ACCOPPIAMENTO"/>
+        android:text="PAIRING"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
-    <RelativeLayout
-        android:layout_width="377dp"
-        android:layout_height="113dp"
-        android:layout_weight="0.22">
+    <LinearLayout
+        android:id="@+id/pairing_request_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/phone_request_input"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="21dp"
-            android:hint="Numero del tuo partner"
-            android:inputType="textCapSentences"
-            android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@+id/image_contacts_icon" />
-
-        <ImageButton
-            android:id="@+id/image_contacts_icon"
+        <ImageView
+            android:id="@+id/pairing_image_view"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_weight="1"
+            android:src="@drawable/test_female_user_icon_192x192" />
 
-            android:layout_alignBottom="@+id/phone_request_input"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="11dp"
-            android:background="@drawable/common_full_open_on_phone"
-            android:scaleType="centerCrop"
-            android:src="@drawable/contact_icon" />
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/fordward_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="250dp"
-        android:text="INVIA RICHIESTA" />
+            <TextView
+                android:id="@+id/username_text_view"
+                android:layout_width="170dp"
+                android:layout_height="30dp"
+                android:paddingLeft="10dp"
+                android:text="Username" />
 
+            <TextView
+                android:id="@+id/phone_text_view"
+                android:layout_width="170dp"
+                android:layout_height="30dp"
+                android:paddingLeft="10dp"
+                android:text="Phone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/accept_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/check_circle_green"
+                android:layout_marginTop="5dp" />
+
+            <Button
+                android:id="@+id/decline_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/close_circle_red"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="121dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/phone_request_input"
+                android:layout_width="220dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="40dp"
+                android:hint="Numero del tuo partner"
+                android:inputType="phone" />
+
+            <Button
+                android:id="@+id/image_contacts_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:paddingLeft="20dp"
+                android:background="@drawable/account_circle" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/fordward_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:text="INVIA RICHIESTA" />
+
+    </LinearLayout>
 </LinearLayout>

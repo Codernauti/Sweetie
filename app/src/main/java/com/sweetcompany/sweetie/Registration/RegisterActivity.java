@@ -13,8 +13,9 @@ import com.sweetcompany.sweetie.R;
 public class RegisterActivity extends AppCompatActivity{
 
     Context mContext;
-    Fragment mFragment;
+    StepOne mFragment;
     FragmentTransaction mTransaction;
+    RegisterPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,11 @@ public class RegisterActivity extends AppCompatActivity{
         mTransaction.add(R.id.register_fragment_container,mFragment);
         mTransaction.commit();
 
+        mPresenter = new RegisterPresenter(mFragment);
+    }
+
+    public void setPresenter(RegisterContract.View view){
+        mPresenter = mPresenter.setView(view);
     }
     public void registrationCompleted(){
         startActivity(new Intent(this, DashboardActivity.class));

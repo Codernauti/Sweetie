@@ -6,7 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sweetcompany.sweetie.Firebase.Message;
+import com.sweetcompany.sweetie.R;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -63,18 +67,36 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     public int getItemViewType(int position) {
         //TODO: this break the recycler of the viewHolder, the RecyclerView doesn't know the type
         return position;
+        //return mMessageList.get(position).getIdView();
     }
 
     @Override
-    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        MessageVM message = mMessageList.get(position);
+    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        MessageVM message = mMessageList.get(viewType);
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+        // TODO: switch to this comment code
+        /*View viewToInflate = inflater.inflate(viewType, parent, false);
+        MessageViewHolder viewHolder;
+        switch (viewType) {
+            case R.layout.chat_user_list_item:
+                viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_MAIN_USER);
+                viewHolder.setViewHolderClickListener(this);
+                break;
+            case R.layout.chat_partner_list_item:
+                viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
+                viewHolder.setViewHolderClickListener(this);
+                break;
+            default:
+                viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
+                break;
+        }*/
 
         View viewToInflate = inflater.inflate(message.getIdView(), parent, false);
         MessageViewHolder viewHolder = message.newViewHolder(viewToInflate);
         viewHolder.setViewHolderClickListener(this);
 
-        Log.d(TAG, "onCreateViewHolder(): " + message.getKey());
+        Log.d(TAG, "onCreateViewHolder(): " + viewHolder.toString());
 
         return viewHolder;
     }
@@ -101,6 +123,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     void updateActionsList(List<MessageVM> messagesVM) {
         mMessageList.clear();
         mMessageList.addAll(messagesVM);
+        Collections.reverse(mMessageList);
         this.notifyDataSetChanged();
     }
 

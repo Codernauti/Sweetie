@@ -9,5 +9,8 @@
     <item android:id="@+id/fake_update_menu"
           android:title="Fake update"
           app:showAsAction="never" />
+    <item android:id="@+id/fake_gallery_menu"
+        android:title="Test Gallery"
+        app:showAsAction="never" />
 
 </menu>

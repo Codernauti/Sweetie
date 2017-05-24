@@ -13,11 +13,12 @@ import com.sweetcompany.sweetie.R;
 // TODO complete class
 class ActionChatVM extends ActionVM {
 
-    ActionChatVM(String title, String description, String date) {
+    ActionChatVM(String title, String description, String date, int type) {
         // TODO: complete all fields
         super.setTitle(title);
         super.setDescription(description);
         super.setDataTime(date);
+        super.setType(type);
     }
 
     @Override

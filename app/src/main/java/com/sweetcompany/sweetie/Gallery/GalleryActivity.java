@@ -89,7 +89,7 @@ public class GalleryActivity extends AppCompatActivity {
                     Photo singlePhoto = mPhotos[position];
 
                     Intent intent = new Intent(mContext, DetailPhotoActivity.class);
-                    intent.putExtra(DetailPhotoActivity.EXTRA_SPACE_PHOTO, singlePhoto);
+                    intent.putExtra(DetailPhotoActivity.EXTRA_DETAIL_PHOTO, singlePhoto);
                     startActivity(intent);
                 }
             }

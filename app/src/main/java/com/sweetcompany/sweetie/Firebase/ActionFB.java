@@ -13,11 +13,11 @@ public class ActionFB {
     public final static int CHAT = 0;
     public final static int PHOTO = 1;
 
-    private String mTitle;
-    private String mLastUser;
-    private String mDescription;
-    private String mDdata;
-    private int mType;
+    private String title;
+    private String lastUser;
+    private String description;
+    private String data;
+    private int type;
     private String date;
 
     ActionFB(){
@@ -25,50 +25,50 @@ public class ActionFB {
     }
 
     public ActionFB(String title, String lastUser, String description, String date, int type) {
-        this.mTitle = title;
-        this.mLastUser = lastUser;
-        this.mDescription = description;
-        this.mDdata = date;
-        this.mType = type;
+        this.title = title;
+        this.lastUser = lastUser;
+        this.description = description;
+        this.data = date;
+        this.type = type;
     }
 
 
     /*** SETTER ***/
 
     public void setTitle(String title){
-        this.mTitle = title;
+        this.title = title;
     }
 
     public void setDescription(String description){
-        this.mDescription = description;
+        this.description = description;
     }
 
     public void setDataTime(String data){
         //setData e getData sono keyword già occupate
-        this.mDdata = data;
+        this.data = data;
     }
 
     public void setType(int type){
-        this.mType = type;
+        this.type = type;
     }
 
     /*** GETTER ***/ //TODO crate assert null function
 
     public String getTitle(){
-        return mTitle;
+        return title;
     }
 
-    public String getLastUser() { return mLastUser; }
+    public String getLastUser() { return lastUser; }
 
     public String getDescription(){
-        return mDescription;
+        return description;
     }
 
     public String getDataTime(){
-        return mDdata;
+        return data;
     }
 
-    public int getType() { return mType; }
+    public int getType() { return type; }
 
     @Exclude
     public String getTime() {

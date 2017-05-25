@@ -95,7 +95,9 @@ public class StepTwo extends Fragment implements RegisterContract.View, View.OnC
     }
 
     @Override
-    public void updateRequest(List<PairingRequestVM> pairingRequestsVM) {
+    public void updateRequest(List<PairingRequestVM> pairingRequestsVM) {}
 
-    }
+    @Override
+    public void notifyUsers(UserVM usersVM) {}
+
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.sweetcompany.sweetie.Firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.Firebase.PairingRequest;
+import com.sweetcompany.sweetie.Firebase.SweetUser;
 import com.sweetcompany.sweetie.Utils.Utility;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by lucas on 22/05/2017.
  */
 
-public class RegisterPresenter implements RegisterContract.Presenter, FirebaseRegisterController.OnFirebaseRegisterDataChange{
+public class RegisterPresenter implements RegisterContract.Presenter, FirebaseRegisterController.OnFirebaseRegisterDataChange, FirebaseRegisterController.OnFirebaseUserDataFound{
     public static final String TAG = "Registration.presenter";
     FirebaseRegisterController mFirebaseController;
     RegisterContract.View mView;
@@ -45,6 +46,22 @@ public class RegisterPresenter implements RegisterContract.Presenter, FirebaseRe
     }
 
     @Override
+    public void savePairingRequest(PairingRequestVM pairingRequest) {
+        mFirebaseController.saveRequest(pairingRequest);
+    }
+
+    @Override
+    public void attachUserDataListener(String orderByType,String equalsToData) {
+        mFirebaseController.retrieveUserDataFromQuery(orderByType,equalsToData);
+        mFirebaseController.addUserDataListener(this);
+    }
+
+    @Override
+    public void deletePairingRequest(String keyPairingRequest) {
+        mFirebaseController.deletePairingRequest(keyPairingRequest);
+    }
+
+    @Override
     public void start() {
         mFirebaseController.attachNetworkDatabase();
         mFirebaseController.addListener(this);
@@ -67,5 +84,8 @@ public class RegisterPresenter implements RegisterContract.Presenter, FirebaseRe
         mView.updateRequest(requestsVM);
     }
 
-
+    @Override
+    public void notifyUserFound(SweetUser sweetUser) {
+        mView.notifyUsers(new UserVM(sweetUser));
+    }
 }

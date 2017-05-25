@@ -30,7 +30,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
     private FloatingActionButton mFabNewAction;
     private FloatingActionButton mFabNewChatAction;
-    private FloatingActionButton mFabNewPhotoAction;
+    private FloatingActionButton mFabNewGalleryAction;
     private Animation fab_small_open,fab_small_close, fab_open, fab_close, rotate_forward,rotate_backward;
     private boolean mIsFabOpen = false;
 
@@ -106,8 +106,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         mFabNewChatAction = (FloatingActionButton) root.findViewById(R.id.fab_new_chat);
         mFabNewChatAction.setClickable(false);
 
-        mFabNewPhotoAction = (FloatingActionButton) root.findViewById(R.id.fab_new_photo);
-        mFabNewPhotoAction.setClickable(false);
+        mFabNewGalleryAction = (FloatingActionButton) root.findViewById(R.id.fab_new_photo);
+        mFabNewGalleryAction.setClickable(false);
 
 
         // Add listener
@@ -129,7 +129,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             }
         });
 
-        mFabNewPhotoAction.setOnClickListener(new View.OnClickListener() {
+        mFabNewGalleryAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // hide others action fab
@@ -184,20 +184,26 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     public void animateFAB(){
         if(mIsFabOpen){
             mFabNewAction.startAnimation(rotate_backward);
+
             mFabNewChatAction.startAnimation(fab_small_close);
-            mFabNewPhotoAction.startAnimation(fab_small_close);
+            mFabNewGalleryAction.startAnimation(fab_small_close);
+
             mFabNewChatAction.setClickable(false);
-            mFabNewChatAction.setClickable(false);
+            mFabNewGalleryAction.setClickable(false);
+
             mIsFabOpen = false;
             mFrameBackground.setVisibility(View.INVISIBLE);
             mFrameBackground.setClickable(false);
             mFrameBackground.setAlpha(0f);
         } else {
             mFabNewAction.startAnimation(rotate_forward);
+
             mFabNewChatAction.startAnimation(fab_small_open);
-            mFabNewPhotoAction.startAnimation(fab_small_open);
+            mFabNewGalleryAction.startAnimation(fab_small_open);
+
             mFabNewChatAction.setClickable(true);
-            mFabNewPhotoAction.setClickable(true);
+            mFabNewGalleryAction.setClickable(true);
+
             mIsFabOpen = true;
             mFrameBackground.setVisibility(View.VISIBLE);
             mFrameBackground.setClickable(true);

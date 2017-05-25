@@ -35,21 +35,27 @@ public class Photo implements Parcelable {
         }
     };
 
-    public String getUrl() {
-        return mUrl;
+    /*** SETTER ***/
+
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
     public void setUrl(String url) {
         mUrl = url;
     }
 
+    /*** GETTER ***/
+
+    public String getUrl() {
+        return mUrl;
+    }
+
     public String getTitle() {
         return mTitle;
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
-    }
+
 
     public static  Photo[] getPhotos() {
 

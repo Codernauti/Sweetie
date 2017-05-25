@@ -12,6 +12,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.Registration.RegisterActivity;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 public class MainActivity extends AppCompatActivity implements Button.OnClickListener{
 
@@ -33,13 +34,14 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         mRegisterButton = (Button) findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(this);
 
+        Utility.saveStringPreference(getBaseContext(),Utility.MAIL,mFireBaseController.getFirebaseUser().getEmail());
 
 
         //mFireBaseController.init();
 
         //se non si è mai registrato
 
-        /*if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
             startActivity(new Intent(this, RegisterActivity.class));
         }
         if (mFireBaseController.getFirebaseUser() != null)
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         } else if (mFireBaseController.getFirebaseUser() == null)
         {
             startActivity(new Intent(this, LoginActivity.class));
-        }*/
+        }
 
     }
 

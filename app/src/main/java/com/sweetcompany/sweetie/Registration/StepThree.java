@@ -73,14 +73,7 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
         // Set click listeners
         mForwardButton.setOnClickListener(this);
         mDeclineButton.setOnClickListener(this);
-
-        mContactsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
+        mContactsButton.setOnClickListener(this);
         return view;
     }
 
@@ -149,7 +142,7 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
     }
 
     private void saveRequest(){
-        PairingRequestVM request = new PairingRequestVM(Utility.getStringPreference(getContext(),"phoneNumber"),mPhoneNumber);
+        PairingRequestVM request = new PairingRequestVM(Utility.getStringPreference(getContext(),"phoneNumber"),mPhoneText.getText().toString());
         mFireBaseController.getDatabase().getReference().child("requests").push().setValue(request);
     }
 

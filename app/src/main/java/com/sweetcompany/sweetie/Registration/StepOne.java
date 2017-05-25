@@ -142,8 +142,17 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
                             Utility.saveStringPreference(getContext(),"mail",task.getResult().getUser().getEmail());
                             // go to Step 2
                             setProgressBarVisibile(false);
-
-                            ((RegisterActivity) getActivity()).registrationCompleted();
+                            StepTwo mFragment = new StepTwo();
+                            FragmentTransaction mTransaction = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
+                                    R.anim.slide_in_right,
+                                    R.anim.slide_out_left,
+                                    R.anim.slide_in_left,
+                                    R.anim.slide_out_right
+                            );
+                            mTransaction.addToBackStack("stepOne");
+                            mTransaction.replace(R.id.register_fragment_container,mFragment);
+                            mTransaction.commit();
+                            ((RegisterActivity) getActivity()).setPresenter(mFragment);
                         }
                     }
                 });

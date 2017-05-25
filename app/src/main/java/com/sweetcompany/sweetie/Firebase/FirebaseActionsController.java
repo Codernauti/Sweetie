@@ -20,9 +20,14 @@ public class FirebaseActionsController {
 
     private static final String TAG = "FireBActionsController";
 
-    private final DatabaseReference mActionsDbReference;
+    private static final String ACTIONS_DB_REFERENCE = "actions";
+    private static final String CHATS_DB_REFERENCE = "chats";
 
     private static FirebaseActionsController mInstance;
+
+    private final DatabaseReference mActionsDbReference;
+    private final DatabaseReference mChatsDbReference;
+
     private List<OnFirebaseActionsDataChange> mListeners;
     private ValueEventListener mActionsEventListener;
 
@@ -33,8 +38,8 @@ public class FirebaseActionsController {
 
     private FirebaseActionsController() {
         mListeners = new ArrayList<>();
-        mActionsDbReference = FirebaseDatabase.getInstance()
-                                           .getReference().child("actions");
+        mActionsDbReference = FirebaseDatabase.getInstance().getReference().child(ACTIONS_DB_REFERENCE);
+        mChatsDbReference = FirebaseDatabase.getInstance().getReference().child(CHATS_DB_REFERENCE);
     }
 
     public static FirebaseActionsController getInstance() {
@@ -86,9 +91,26 @@ public class FirebaseActionsController {
         mActionsEventListener = null;
     }
 
-    public void pushActions(ActionFB act) {
+    public void pushAction(ActionFB act) {
         DatabaseReference newActionPush = mActionsDbReference.push();
         newActionPush.setValue(act);
+    }
+
+    public String pushChatAction(ActionFB actionFB, String chatTitle) {
+        DatabaseReference newChatPush = mChatsDbReference.push();
+        String newChatKey = newChatPush.getKey();
+        DatabaseReference newActionPush = mActionsDbReference.push();
+
+        // prepare objects to send
+        actionFB.setChildKey(newChatKey);
+        ChatFB chat = new ChatFB();
+        chat.setTitle(chatTitle);
+
+        // send to network
+        newChatPush.setValue(chat);
+        newActionPush.setValue(actionFB);
+
+        return newChatKey;
     }
 
 }

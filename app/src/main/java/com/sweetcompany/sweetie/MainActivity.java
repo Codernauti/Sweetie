@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -34,14 +35,14 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         mRegisterButton = (Button) findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(this);
 
-        Utility.saveStringPreference(getBaseContext(),Utility.MAIL,mFireBaseController.getFirebaseUser().getEmail());
 
+        Log.d("Prova",Utility.getStringPreference(this,Utility.MAIL));
 
         //mFireBaseController.init();
 
         //se non si è mai registrato
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
+        /*if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
             startActivity(new Intent(this, RegisterActivity.class));
         }
         if (mFireBaseController.getFirebaseUser() != null)
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         } else if (mFireBaseController.getFirebaseUser() == null)
         {
             startActivity(new Intent(this, LoginActivity.class));
-        }
+        }*/
 
     }
 

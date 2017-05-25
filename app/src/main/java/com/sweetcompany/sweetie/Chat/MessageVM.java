@@ -1,11 +1,6 @@
 package com.sweetcompany.sweetie.Chat;
 
-import android.util.Log;
 import android.view.View;
-
-import com.sweetcompany.sweetie.Firebase.Message;
-
-import java.util.Date;
 
 /**
  * Created by Eduard on 18-May-17.
@@ -18,12 +13,12 @@ abstract class MessageVM {
     private final String mKey;
 
     private final boolean mWho;
-    private final String mDate;   // Format HH:mm
+    private final String mTime;   // Format HH:mm
     private boolean mBookMarked;
 
     MessageVM(boolean who, String date, boolean bookMarked, String key) {
         mWho = who;
-        mDate = date;
+        mTime = date;
         mBookMarked = bookMarked;
         mKey = key;
     }
@@ -35,8 +30,8 @@ abstract class MessageVM {
         return mWho;
     }
 
-    String getDate() {
-        return mDate;
+    String getTime() {
+        return mTime;
     }
 
     boolean isBookmarked() {return mBookMarked; }

@@ -40,7 +40,7 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
         // TODO: remove down cast -> use Factory method
         TextMessageVM messageVM = (TextMessageVM)message;
 
-        Message newMessage = new Message(mUserMail, messageVM.getText(), messageVM.getDate(), messageVM.isBookmarked());
+        Message newMessage = new Message(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());
         mFirebaseController.pushMessage(newMessage);
     }
 
@@ -50,7 +50,6 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
         for (Message msg : messages) {
             boolean who = MessageVM.THE_PARTNER;
 
-            // TODO: check if the user of the message is the main user
             if (msg.getEmail() != null) {   // TODO remove check in future
                 if (msg.getEmail().equals(mUserMail)) {
                     who = MessageVM.THE_MAIN_USER;
@@ -69,7 +68,7 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
     public void bookmarkMessage(MessageVM messageVM) {
         // TODO: remove down cast -> use Factory method
         TextMessageVM msgVM = (TextMessageVM) messageVM;
-        Message updateMessage = new Message(mUserMail, msgVM.getText(), msgVM.getDate(), msgVM.isBookmarked());
+        Message updateMessage = new Message(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked());
         updateMessage.setKey(msgVM.getKey());
 
         mFirebaseController.updateMessage(updateMessage);

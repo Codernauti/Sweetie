@@ -14,7 +14,7 @@ public class Message {
 
     private String email;   //TODO: add a user identifier
     private String text;
-    private String date;
+    private String dateTime;
     private boolean bookmarked;
 
     // For firebase serialization
@@ -23,19 +23,18 @@ public class Message {
     public Message(String email, String text, String date, boolean bookmarked) {
         this.email = email;
         this.text = text;
-        this.date = date;
+        this.dateTime = date;
         this.bookmarked = bookmarked;
     }
 
 
     @Exclude
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    @Exclude
     public String getKey() {
         return key;
+    }
+    @Exclude
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getEmail() { return email; }
@@ -48,32 +47,32 @@ public class Message {
         this.text = text;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateTime() {
+        return dateTime;
     }
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
-    public void setBookmarked(boolean bookmarked) {
-        this.bookmarked = bookmarked;
-    }
     public boolean isBookmarked() {
         return bookmarked;
+    }
+    public void setBookmarked(boolean bookmarked) {
+        this.bookmarked = bookmarked;
     }
 
     @Exclude
     public String getTime() {
         // TODO: not reliable method; Hardcoded indexes
-        if (date != null) {
-            int indexStartHours = 11; //date.lastIndexOf(" " + 1);
-            int indexEndMinutes = 16; //date.lastIndexOf(":");
+        if (dateTime != null) {
+            int indexStartHours = 11; //dateTime.lastIndexOf(" " + 1);
+            int indexEndMinutes = 16; //dateTime.lastIndexOf(":");
             // take substring from char[12] to char[16]
-            String time = date.substring(indexStartHours, indexEndMinutes);
+            String time = dateTime.substring(indexStartHours, indexEndMinutes);
             Log.d("DateTime Debug", "Time from substring: " + time);
             return time;
         }
-        else return null;
+        else return "no time";
     }
 
     @Exclude
@@ -83,7 +82,7 @@ public class Message {
                 " key: " + key +
                 " email: " + email +
                 " text: " + text +
-                " date: " + date +
+                " dateTime: " + dateTime +
                 " bookmarked: " + bookmarked +
                 "}";
     }

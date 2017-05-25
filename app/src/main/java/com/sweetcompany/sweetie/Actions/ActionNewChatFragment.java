@@ -69,7 +69,8 @@ public class ActionNewChatFragment extends DialogFragment {
 
                                 if (!userInputChatTitle.isEmpty()) {
 
-                                    DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
+                                    // TODO this is a responsability for a Presenter
+                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
                                     String date = df.format(Calendar.getInstance().getTime());
                                     ActionFB action = new ActionFB(userInputChatTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
                                     String chatKey = mFireBaseActionsController.pushChatAction(action, userInputChatTitle);

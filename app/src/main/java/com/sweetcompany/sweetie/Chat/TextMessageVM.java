@@ -26,7 +26,7 @@ class TextMessageVM extends MessageVM {
         TextMessageViewHolder view = (TextMessageViewHolder) viewHolder;
 
         view.setText(mText);
-        view.setTextTime(super.getDate());
+        view.setTextTime(super.getTime());
         view.setBookmark(super.isBookmarked());
     }
 

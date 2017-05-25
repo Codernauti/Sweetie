@@ -19,6 +19,7 @@ public class ActionFB {
     private String data;
     private int type;
     private String date;
+    private String childKey;
 
     ActionFB(){
 
@@ -82,4 +83,12 @@ public class ActionFB {
         else return null;
     }
 
+
+    public String getChildKey() {
+        return this.childKey;
+    }
+
+    public void setChildKey(String childKey) {
+        this.childKey = childKey;
+    }
 }

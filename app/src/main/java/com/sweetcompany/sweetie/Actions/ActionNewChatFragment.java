@@ -28,17 +28,19 @@ import java.util.Calendar;
 // TODO: decide if use DialogFragment of this class or go to ChatsActivity
 public class ActionNewChatFragment extends DialogFragment {
 
-    private FirebaseController mFirebaseController = FirebaseController.getInstance();
-    private FirebaseActionsController mFireBaseActionsController;
-
     public static final String TAG = "ActionNewChatFragment";
 
-    static final String INPUT_CHAT_TITLE_KEY = "ChatTitle";
+    public static final String DATABASE_CHAT_KEY = "DatabaseChatKey";
+    public static final String INPUT_CHAT_TITLE_KEY = "InputChatTitle";
 
     private static final String USER_POSITIVE_RESPONSE = "Ok";
     private static final String USER_NEGATIVE_RESPONSE = "Cancel";
 
     private EditText mTitleChatEditText;
+
+    // TODO: NO, a Fragment mustn't have reference to firebase
+    private FirebaseController mFirebaseController = FirebaseController.getInstance();
+    private FirebaseActionsController mFireBaseActionsController;
 
     static ActionNewChatFragment newInstance() {
         ActionNewChatFragment fragment = new ActionNewChatFragment();
@@ -70,11 +72,12 @@ public class ActionNewChatFragment extends DialogFragment {
                                     DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
                                     String date = df.format(Calendar.getInstance().getTime());
                                     ActionFB action = new ActionFB(userInputChatTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
-                                    mFireBaseActionsController.pushActions(action);
+                                    String chatKey = mFireBaseActionsController.pushChatAction(action, userInputChatTitle);
 
 
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                                     intent.putExtra(INPUT_CHAT_TITLE_KEY, userInputChatTitle);
+                                    intent.putExtra(DATABASE_CHAT_KEY, chatKey);
 
                                     startActivity(intent);
                                 }

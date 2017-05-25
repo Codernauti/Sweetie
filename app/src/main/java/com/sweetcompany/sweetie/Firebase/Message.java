@@ -54,6 +54,10 @@ public class Message {
         this.dateTime = dateTime;
     }
 
+    // TODO: for firebase, remove in future
+    public String getDate() { return dateTime; }
+    public void setDate(String date) { this.dateTime = date; }
+
     public boolean isBookmarked() {
         return bookmarked;
     }

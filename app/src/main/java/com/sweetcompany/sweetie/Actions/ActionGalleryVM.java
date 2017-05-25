@@ -16,7 +16,7 @@ class ActionGalleryVM extends ActionVM {
     ActionGalleryVM(String title, String description, String date, int type) {
         // TODO: complete all fields
         super.setTitle(title);
-        super.setTitle(description);
+        super.setDescription(description);
         super.setDataTime(date);
         super.setType(type);
     }

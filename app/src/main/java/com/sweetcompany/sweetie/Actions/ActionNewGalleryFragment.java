@@ -66,7 +66,7 @@ public class ActionNewGalleryFragment extends DialogFragment {
 
                                 if (!userInputGalleryTitle.isEmpty()) {
 
-                                    DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
+                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                     String date = df.format(Calendar.getInstance().getTime());
                                     ActionFB action = new ActionFB(userInputGalleryTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.PHOTO);
                                     mFireBaseActionsController.pushAction(action);

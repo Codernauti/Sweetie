@@ -12,6 +12,7 @@ public class PairingRequestVM {
     String senderNumber, receiverNumber;
 
     PairingRequestVM(){}
+
     PairingRequestVM(String sender, String receiver){
         this.senderNumber = sender;
         this.receiverNumber = receiver;

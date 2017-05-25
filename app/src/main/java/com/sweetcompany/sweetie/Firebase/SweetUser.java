@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.Firebase;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.File;
 import java.sql.Date;
 
@@ -7,34 +9,53 @@ import java.sql.Date;
  * Created by ghiro on 17/05/2017.
  */
 
-class SweetUser {
+public class SweetUser {
+    private String username;
+    private boolean gender;
+    private String phone;
+    private String email;
 
-    private String mUserID;
-    private String mUsername;
-    private String mAvatarUrl;
-    private String mGender;
-    private String mPhone;
-    private String mEmail;
+    public SweetUser(){}
 
-    public SweetUser(String userId, String phone, String gender) {
-        mUserID = userId;
-        //mEmail = email;
-        mPhone = phone;
-        mGender = gender;
+    public SweetUser(String username, String email, String phone, boolean gender) {
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+        this.gender = gender;
     }
 
-    //TODO
-    /*** SETTER ***/
-
-    /*** GETTER ***/ //TODO crate assert null function
-
-    public String getUserID(){
-        return mUserID;
+    public String getUsername() {
+        return username;
     }
 
-    public  String getUsername(){
-        return mUsername;
+    public void setUsername(String mUsername) {
+        this.username = mUsername;
     }
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean mGender) {
+        this.gender = mGender;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String mPhone) {
+        this.phone = mPhone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setmEmail(String mEmail) {
+        this.email = mEmail;
+    }
+
 
     //TODO ...
 }

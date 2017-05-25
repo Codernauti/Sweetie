@@ -39,6 +39,7 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
     private TextView mPhoneView, mUsernameView;
     private String mPersonalPhoneNumber;
     private String mPhoneNumber;
+    private String mKeyPairingRequest;
     private DatabaseReference mReference;
 
     private RegisterContract.Presenter mPresenter;
@@ -93,7 +94,9 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fordward_button:
-                saveRequest();
+                PairingRequestVM pairingRequest = new PairingRequestVM(Utility.getStringPreference(mContext,Utility.PHONE_NUMBER),
+                        mPhoneText.getText().toString());
+                mPresenter.savePairingRequest(pairingRequest);
                 Toast.makeText(getActivity(), "Request successfully sent!",
                         Toast.LENGTH_SHORT).show();
                 ((RegisterActivity) getActivity()).registrationCompleted();
@@ -103,7 +106,8 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
                 startActivityForResult(intent, PICK_CONTACT);
                 break;
             case R.id.decline_button:
-
+                mPresenter.deletePairingRequest(mKeyPairingRequest);
+                mLinearLayout.setVisibility(View.GONE);
 
             default:
                 return;
@@ -141,11 +145,6 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
         }
     }
 
-    private void saveRequest(){
-        PairingRequestVM request = new PairingRequestVM(Utility.getStringPreference(getContext(),"phoneNumber"),mPhoneText.getText().toString());
-        mFireBaseController.getDatabase().getReference().child("requests").push().setValue(request);
-    }
-
     @Override
     public void setPresenter(RegisterContract.Presenter presenter) {
         mPresenter = presenter;
@@ -156,10 +155,19 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
         if(pairingRequestsVM.size() != 0) {
             for (PairingRequestVM rqstVM : pairingRequestsVM) {
                 if (rqstVM.getReceiverNumber().equals(mPersonalPhoneNumber)) {
-                    mPhoneView.setText(rqstVM.getSenderNumber());
-                    mLinearLayout.setVisibility(View.VISIBLE);
+                    mKeyPairingRequest = rqstVM.getKey();
+                    mPresenter.attachUserDataListener("phone",rqstVM.getSenderNumber());
                 }
             }
         }
     }
+
+    @Override
+    public void notifyUsers(UserVM userVM) {
+        mPhoneView.setText(userVM.getPhone());
+        mUsernameView.setText(userVM.getUsername());
+        mLinearLayout.setVisibility(View.VISIBLE);
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.Firebase;
 
 import com.google.firebase.database.Exclude;
+import com.sweetcompany.sweetie.Registration.PairingRequestVM;
 
 /**
  * Created by lucas on 24/05/2017.
@@ -17,6 +18,11 @@ public class PairingRequest {
     public PairingRequest(String senderNumber,String receiverNumber) {
         this.senderNumber = senderNumber;
         this.receiverNumber = receiverNumber;
+    }
+
+    PairingRequest(PairingRequestVM pairingRequestVM){
+        this.receiverNumber = pairingRequestVM.getReceiverNumber();
+        this.senderNumber = pairingRequestVM.getSenderNumber();
     }
 
     public String getSenderNumber() {

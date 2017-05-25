@@ -27,6 +27,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
+import com.sweetcompany.sweetie.Firebase.SweetUser;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
@@ -140,6 +141,7 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
                             //save id token
                             Utility.saveStringPreference(getContext(),"token",task.getResult().getUser().getUid());
                             Utility.saveStringPreference(getContext(),"mail",task.getResult().getUser().getEmail());
+                            
                             // go to Step 2
                             setProgressBarVisibile(false);
                             StepTwo mFragment = new StepTwo();
@@ -173,7 +175,9 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
     }
 
     @Override
-    public void updateRequest(List<PairingRequestVM> pairingRequestsVM) {
+    public void updateRequest(List<PairingRequestVM> pairingRequestsVM) {}
 
-    }
+    @Override
+    public void notifyUsers(UserVM usersVM) {}
+
 }

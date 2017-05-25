@@ -35,28 +35,34 @@ public class Photo implements Parcelable {
         }
     };
 
-    public String getUrl() {
-        return mUrl;
+    /*** SETTER ***/
+
+    public void setTitle(String title) {
+        mTitle = title;
     }
 
     public void setUrl(String url) {
         mUrl = url;
     }
 
+    /*** GETTER ***/
+
+    public String getUrl() {
+        return mUrl;
+    }
+
     public String getTitle() {
         return mTitle;
     }
 
-    public void setTitle(String title) {
-        mTitle = title;
-    }
+
 
     public static  Photo[] getPhotos() {
 
         return new Photo[]{
                 new Photo("http://i.imgur.com/zuG2bGQ.jpg", "Galaxy"),
                 new Photo("http://i.imgur.com/ovr0NAF.jpg", "Space Shuttle"),
-                new Photo("http://i.imgur.com/n6RfJX2.jpg", "Galaxy Orion"),
+                new Photo("https://i.ytimg.com/vi/KEkrWRHCDQU/maxresdefault.jpg", "Galaxy Orion"),
                 new Photo("http://i.imgur.com/qpr5LR2.jpg", "Earth"),
                 new Photo("http://i.imgur.com/pSHXfu5.jpg", "Astronaut"),
                 new Photo("http://i.imgur.com/3wQcZeY.jpg", "Satellite"),

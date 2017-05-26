@@ -20,17 +20,19 @@ abstract class ActionVM {
     private String mDescription;
     private String mDdata; // TODO change format
     private int mType;
+    private String mChildKey;
 
     ActionVM() {
     }
 
-    ActionVM(String title, String lastUser, String description, String date, int type) {
+    ActionVM(String title, String lastUser, String description, String date, int type, String childKey) {
         // TODO assertion function true value
-        this.mTitle = title;
-        this.mLastUser = lastUser;
-        this.mDescription = description;
-        this.mDdata = date;
-        this.mType = type;
+        mTitle = title;
+        mLastUser = lastUser;
+        mDescription = description;
+        mDdata = date;
+        mType = type;
+        mChildKey = childKey;
     }
 
 
@@ -60,6 +62,10 @@ abstract class ActionVM {
         this.mType = type;
     }
 
+    public void setChildKey(String childKey) {
+        this.mChildKey = childKey;
+    }
+
     /*** GETTER ***/ //TODO crate assert null function
 
     public String getTitle(){
@@ -76,6 +82,8 @@ abstract class ActionVM {
 
     public int getType() { return mType; }
 
+
+    String getChildKey() { return mChildKey; }
 
     /*** override method ***/
 

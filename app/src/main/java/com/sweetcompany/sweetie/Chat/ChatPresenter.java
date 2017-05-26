@@ -1,5 +1,8 @@
 package com.sweetcompany.sweetie.Chat;
 
+import android.util.Log;
+
+import com.sweetcompany.sweetie.Firebase.ChatFB;
 import com.sweetcompany.sweetie.Firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.Firebase.MessageFB;
 
@@ -12,15 +15,19 @@ import java.util.List;
 
 public class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.OnFirebaseChatDataChange {
 
+    private static final String TAG = "ChatPresenter";
+
     private ChatContract.View mView;
     private FirebaseChatController mFirebaseController;
     private String mUserMail;   // id of messages of main user
+    private String mChatKey;
 
-    public ChatPresenter(ChatContract.View view, String userMail){
+    public ChatPresenter(ChatContract.View view, String userMail, String chatKey){
         mView = view;
         mView.setPresenter(this);
         mFirebaseController = FirebaseChatController.getInstance();
         mUserMail = userMail;
+        mChatKey = chatKey;
     }
 
     @Override
@@ -62,6 +69,21 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
         }
 
         mView.updateMessages(messagesVM);
+    }
+
+    @Override
+    public void notifyChats(List<ChatFB> chats) {
+        ChatVM chatVM = new ChatVM("", "");
+        for (ChatFB chat : chats) {
+            // search for the exact chat opened
+            if (chat.getKey().equals(mChatKey)) {
+                chatVM = new ChatVM(chat.getKey(), chat.getTitle());
+            }
+            else {
+                Log.w(TAG, "notifyChats(): can't find Chat in database");
+            }
+        }
+        mView.updateChatInfo(chatVM);
     }
 
     @Override

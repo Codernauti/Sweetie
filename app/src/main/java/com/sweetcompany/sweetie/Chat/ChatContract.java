@@ -11,6 +11,7 @@ public interface ChatContract {
     interface View {
         void setPresenter(ChatContract.Presenter presenter);
         void updateMessages(List<MessageVM> messages);
+        void updateChatInfo(ChatVM chat);
     }
 
     interface Presenter {

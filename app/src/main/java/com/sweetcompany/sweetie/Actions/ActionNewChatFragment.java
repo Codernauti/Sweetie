@@ -13,7 +13,6 @@ import android.widget.EditText;
 import com.sweetcompany.sweetie.Chat.ChatActivity;
 import com.sweetcompany.sweetie.Firebase.ActionFB;
 import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
-import com.sweetcompany.sweetie.Firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 
@@ -30,8 +29,8 @@ public class ActionNewChatFragment extends DialogFragment {
 
     public static final String TAG = "ActionNewChatFragment";
 
-    public static final String DATABASE_CHAT_KEY = "DatabaseChatKey";
-    public static final String INPUT_CHAT_TITLE_KEY = "InputChatTitle";
+/*    public static final String DATABASE_CHAT_KEY = "DatabaseChatKey";
+    public static final String INPUT_CHAT_TITLE_KEY = "InputChatTitle";*/
 
     private static final String USER_POSITIVE_RESPONSE = "Ok";
     private static final String USER_NEGATIVE_RESPONSE = "Cancel";
@@ -77,8 +76,8 @@ public class ActionNewChatFragment extends DialogFragment {
 
 
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);
-                                    intent.putExtra(INPUT_CHAT_TITLE_KEY, userInputChatTitle);
-                                    intent.putExtra(DATABASE_CHAT_KEY, chatKey);
+                                    intent.putExtra(ChatActivity.CHAT_TITLE, userInputChatTitle);
+                                    intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, chatKey);
 
                                     startActivity(intent);
                                 }

@@ -2,8 +2,10 @@ package com.sweetcompany.sweetie.Chat;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.sweetcompany.sweetie.Actions.ActionNewChatFragment;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
@@ -30,17 +33,20 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     private static final String TAG = "ChatFragment";
 
-    private EditText mTextMessageInput;
-    private ImageButton mPhotoPickerButton; // TODO: implement PhotoPicker
-    private Button mSendButton;
+    private Toolbar mToolBar;
     private RecyclerView mChatListView;
     private LinearLayoutManager mLinearLayoutManager;
+    private ImageButton mPhotoPickerButton; // TODO: implement PhotoPicker
+    private EditText mTextMessageInput;
+    private Button mSendButton;
 
     private ChatAdapter mChatAdapter;
     private ChatContract.Presenter mPresenter;
 
-    public static ChatFragment newInstance() {
+    public static ChatFragment newInstance(Bundle bundle) {
         ChatFragment newChatFragment = new ChatFragment();
+        newChatFragment.setArguments(bundle);
+
         return newChatFragment;
     }
 
@@ -58,7 +64,18 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.chat_fragment, container, false);
 
+        String titleChat;
+        titleChat = getArguments().getString(ChatActivity.CHAT_TITLE);
+        Log.d(TAG, "from Intent CHAT_TITLE: " +
+                getArguments().getString(ChatActivity.CHAT_TITLE));
+        Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
+                getArguments().getString(ChatActivity.CHAT_DATABASE_KEY));
+
         mChatListView = (RecyclerView) root.findViewById(R.id.chat_list);
+
+        mToolBar = (Toolbar) root.findViewById(R.id.my_toolbar);
+        //((AppCompatActivity) getActivity()).setSupportActionBar(mToolBar);
+        mToolBar.setTitle(titleChat);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setReverseLayout(true);
@@ -95,6 +112,11 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     @Override
     public void updateMessages(List<MessageVM> messagesVM) {
         mChatAdapter.updateActionsList(messagesVM);
+    }
+
+    @Override
+    public void updateChatInfo(ChatVM chat) {
+        mToolBar.setTitle(chat.getTitle());
     }
 
 

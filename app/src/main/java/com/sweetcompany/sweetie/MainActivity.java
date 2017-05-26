@@ -42,10 +42,10 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
         //se non si è mai registrato
 
-        if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
-            startActivity(new Intent(this, RegisterActivity.class));
-        }
-        else if (mFireBaseController.getFirebaseUser() != null)
+//        if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
+//            startActivity(new Intent(this, RegisterActivity.class));
+//        }
+        if (mFireBaseController.getFirebaseUser() != null)
         {
             startActivity(new Intent(this, DashboardActivity.class));
             //startActivity(new Intent(this, LoginActivity.class));

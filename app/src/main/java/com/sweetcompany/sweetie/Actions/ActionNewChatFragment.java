@@ -19,6 +19,7 @@ import com.sweetcompany.sweetie.R;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * Created by Eduard on 13-May-17.
@@ -28,9 +29,6 @@ import java.util.Calendar;
 public class ActionNewChatFragment extends DialogFragment {
 
     public static final String TAG = "ActionNewChatFragment";
-
-/*    public static final String DATABASE_CHAT_KEY = "DatabaseChatKey";
-    public static final String INPUT_CHAT_TITLE_KEY = "InputChatTitle";*/
 
     private static final String USER_POSITIVE_RESPONSE = "Ok";
     private static final String USER_NEGATIVE_RESPONSE = "Cancel";
@@ -68,12 +66,11 @@ public class ActionNewChatFragment extends DialogFragment {
 
                                 if (!userInputChatTitle.isEmpty()) {
 
-                                    // TODO this is a responsability for a Presenter
-                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    // TODO this is a responsability of the Presenter
+                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                                     String date = df.format(Calendar.getInstance().getTime());
                                     ActionFB action = new ActionFB(userInputChatTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
                                     String chatKey = mFireBaseActionsController.pushChatAction(action, userInputChatTitle);
-
 
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                                     intent.putExtra(ChatActivity.CHAT_TITLE, userInputChatTitle);

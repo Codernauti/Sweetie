@@ -2,7 +2,6 @@ package com.sweetcompany.sweetie.Firebase;
 
 import android.util.Log;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -10,9 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Eduard on 21-May-17.
@@ -30,7 +27,7 @@ public class FirebaseChatController {
 
 
     public interface OnFirebaseChatDataChange {
-        void notifyNewMessages(List<Message> messages);
+        void notifyNewMessages(List<MessageFB> messages);
     }
 
 
@@ -60,16 +57,16 @@ public class FirebaseChatController {
             mChatEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    List<Message> messages = new ArrayList<>();
+                    List<MessageFB> messageFBs = new ArrayList<>();
 
                     for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                        Message message = messageSnapshot.getValue(Message.class);
-                        message.setKey(messageSnapshot.getKey());
-                        messages.add(message);
+                        MessageFB messageFB = messageSnapshot.getValue(MessageFB.class);
+                        messageFB.setKey(messageSnapshot.getKey());
+                        messageFBs.add(messageFB);
                     }
 
                     for (OnFirebaseChatDataChange listener : mListeners) {
-                        listener.notifyNewMessages(messages);
+                        listener.notifyNewMessages(messageFBs);
                     }
 
                 }
@@ -91,14 +88,14 @@ public class FirebaseChatController {
         mChatEventListener = null;
     }
 
-    public void pushMessage(Message msg) {
-        Log.d(TAG, "Push Message: " + msg);
+    public void pushMessage(MessageFB msg) {
+        Log.d(TAG, "Push MessageFB: " + msg);
         DatabaseReference newMessagePush = mChatDbReference.push();
         newMessagePush.setValue(msg);
     }
 
-    public void updateMessage(Message msg) {
-        Log.d(TAG, "Update Message: " + msg);
+    public void updateMessage(MessageFB msg) {
+        Log.d(TAG, "Update MessageFB: " + msg);
         // TODO: update only bookmarked??
         mChatDbReference.child(msg.getKey()).child("bookmarked").setValue(msg.isBookmarked());
     }

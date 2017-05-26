@@ -26,9 +26,6 @@ abstract class MessageVM {
     boolean isTheMainUser() {
         return mWho;
     }
-    boolean isThePartner() {
-        return mWho;
-    }
 
     String getTime() {
         return mTime;
@@ -43,5 +40,6 @@ abstract class MessageVM {
 
     abstract int getIdView();
 
+    @Deprecated
     abstract MessageViewHolder newViewHolder(View inflatedView);
 }

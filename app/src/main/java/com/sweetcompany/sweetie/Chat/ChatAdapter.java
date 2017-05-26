@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sweetcompany.sweetie.Firebase.Message;
 import com.sweetcompany.sweetie.R;
 
 import java.util.ArrayList;

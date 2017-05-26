@@ -8,7 +8,7 @@ import com.google.firebase.database.Exclude;
  * Created by Eduard on 21-May-17.
  */
 
-public class Message {
+public class MessageFB {
     @Exclude
     private String key;
 
@@ -18,9 +18,9 @@ public class Message {
     private boolean bookmarked;
 
     // For firebase serialization
-    public Message() {}
+    public MessageFB() {}
 
-    public Message(String email, String text, String date, boolean bookmarked) {
+    public MessageFB(String email, String text, String date, boolean bookmarked) {
         this.email = email;
         this.text = text;
         this.dateTime = date;

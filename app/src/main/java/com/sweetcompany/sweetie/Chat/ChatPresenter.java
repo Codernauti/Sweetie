@@ -1,7 +1,7 @@
 package com.sweetcompany.sweetie.Chat;
 
 import com.sweetcompany.sweetie.Firebase.FirebaseChatController;
-import com.sweetcompany.sweetie.Firebase.Message;
+import com.sweetcompany.sweetie.Firebase.MessageFB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +40,14 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
         // TODO: remove down cast -> use Factory method
         TextMessageVM messageVM = (TextMessageVM)message;
 
-        Message newMessage = new Message(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());
+        MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());
         mFirebaseController.pushMessage(newMessage);
     }
 
     @Override
-    public void notifyNewMessages(List<Message> messages) {
+    public void notifyNewMessages(List<MessageFB> messages) {
         List<MessageVM> messagesVM = new ArrayList<>();
-        for (Message msg : messages) {
+        for (MessageFB msg : messages) {
             boolean who = MessageVM.THE_PARTNER;
 
             if (msg.getEmail() != null) {   // TODO remove check in future
@@ -68,7 +68,7 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
     public void bookmarkMessage(MessageVM messageVM) {
         // TODO: remove down cast -> use Factory method
         TextMessageVM msgVM = (TextMessageVM) messageVM;
-        Message updateMessage = new Message(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked());
+        MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked());
         updateMessage.setKey(msgVM.getKey());
 
         mFirebaseController.updateMessage(updateMessage);

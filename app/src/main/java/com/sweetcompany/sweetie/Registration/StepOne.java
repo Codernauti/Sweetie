@@ -25,22 +25,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.sweetcompany.sweetie.Firebase.FirebaseController;
-import com.sweetcompany.sweetie.Firebase.SweetUser;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
 import java.util.List;
 
-public class StepOne extends Fragment implements RegisterContract.View, View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class StepOne extends Fragment implements RegisterContract.View, View.OnClickListener,GoogleApiClient.OnConnectionFailedListener{
 
-    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
     private static final String TAG = "StepOne";
     private static final int RC_SIGN_IN = 9001;
     Context mContext;
-
+    FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
     private SignInButton mRegisterGoogleButton;
     private ProgressBar mProgressBar;
@@ -59,6 +57,7 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
         // Assign fields
         mRegisterGoogleButton = (SignInButton) view.findViewById(R.id.register_google_button);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar_register);
+        mAuth = FirebaseAuth.getInstance();
 
         // Initialize progress bar
         setProgressBarVisibile(false);
@@ -124,7 +123,8 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mFireBaseController.getAuth().signInWithCredential(credential)//TODO !!! warning thread pool shared
+
+        mAuth.signInWithCredential(credential)//TODO !!! warning thread pool shared
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -150,8 +150,8 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
+         //An unresolvable error has occurred and Google APIs (including Sign-In) will not
+         //be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
         Toast.makeText(getActivity(), "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }

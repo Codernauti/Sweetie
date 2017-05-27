@@ -14,6 +14,7 @@ import java.util.List;
  * Created by ghiro on 17/05/2017.
  */
 
+@Deprecated
 public class FirebaseController {
 
     interface OnFirebaseDataChange {

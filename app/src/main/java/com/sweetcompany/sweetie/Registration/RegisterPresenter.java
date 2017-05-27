@@ -1,8 +1,10 @@
 package com.sweetcompany.sweetie.Registration;
 
+import android.app.Activity;
 import android.content.Context;
 
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.sweetcompany.sweetie.Firebase.FirebaseLoginController;
 import com.sweetcompany.sweetie.Firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.Firebase.PairingRequest;

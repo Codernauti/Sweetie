@@ -71,11 +71,11 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mChatListView = (RecyclerView) root.findViewById(R.id.chat_list);
 
         mToolBar = (Toolbar) root.findViewById(R.id.my_toolbar);
-        //((AppCompatActivity) getActivity()).setSupportActionBar(mToolBar);
         mToolBar.setTitle(titleChat);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mLinearLayoutManager.setReverseLayout(true);
+        //mLinearLayoutManager.setReverseLayout(true);
+        mLinearLayoutManager.setStackFromEnd(true);
 
         mChatListView.setLayoutManager(mLinearLayoutManager);
         mChatListView.setAdapter(mChatAdapter);
@@ -119,7 +119,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     @Override
     public void updateMessage(MessageVM msgVM) {
         mChatAdapter.addMessage(msgVM);
-        mChatListView.scrollToPosition(0);
+        mChatListView.scrollToPosition(mChatAdapter.getItemCount() - 1);
     }
 
     @Override
@@ -151,11 +151,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             MessageVM newMessage =
                     new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, stringCurrentTime, false, null);
 
-            // update view to feedback user if he is offline
+            // TODO: update view to feedback user if he is offline
             //mChatAdapter.addMessage(newMessage);
-            // TODO: smooth scroll is not good if user is upper of chat but scrollToPosition has a graphical bug
-            //mChatListView.smoothScrollToPosition(mChatAdapter.getItemCount());
-            //mChatListView.smoothScrollToPosition(0);
 
             mPresenter.sendMessage(newMessage);
         }

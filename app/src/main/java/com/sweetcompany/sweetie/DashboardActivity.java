@@ -72,9 +72,6 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
                 startActivity(new Intent(DashboardActivity.this, MainActivity.class));
                 finish();
                 return true;
-            case R.id.fake_update_menu:
-                //mAdapter.mPresenter.updateActionsList();
-                return true;
             case R.id.fake_gallery_menu:
                 startActivity(new Intent(this, GalleryActivity.class));
                 return true;

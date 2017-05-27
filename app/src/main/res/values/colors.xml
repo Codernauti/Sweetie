@@ -12,5 +12,6 @@
     <color name="pink_light">#FFCCCC</color>
 
     <color name="chat_background">#e6e6e6</color>
+    <color name="textHighlight">#FFFFFF</color>
 
 </resources>

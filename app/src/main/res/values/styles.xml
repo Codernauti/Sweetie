@@ -10,6 +10,11 @@
         <item name = "android:windowNoTitle">true</item>
     </style>
 
+    <style name="ToolBarStyle">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabBackground">@color/rosa_sweetie</item>
         <item name="tabIndicatorHeight">5dp</item>

@@ -65,4 +65,10 @@ public class ChatActivity extends AppCompatActivity {
         mPresenter = new ChatPresenter(view, userMail, chatKey);
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }

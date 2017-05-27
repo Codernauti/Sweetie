@@ -34,14 +34,14 @@ public class ChatActivity extends AppCompatActivity {
 
         String chatKey = null;
         if (savedInstanceState == null) { // first Activity open
-            Bundle bundle = getIntent().getExtras();
-            if (bundle != null) {
-                chatKey = bundle.getString(CHAT_DATABASE_KEY);
+            Bundle chatBundle = getIntent().getExtras();
+            if (chatBundle != null) {
+                chatKey = chatBundle.getString(CHAT_DATABASE_KEY);
 
                 Log.d(TAG, "from Intent CHAT_TITLE: " +
-                        bundle.getString(CHAT_TITLE));
+                        chatBundle.getString(CHAT_TITLE));
                 Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
-                        bundle.getString(CHAT_DATABASE_KEY));
+                        chatBundle.getString(CHAT_DATABASE_KEY));
             }
             else {
                 Log.w(TAG, "getIntent FAILED!");
@@ -54,6 +54,7 @@ public class ChatActivity extends AppCompatActivity {
                                         .findFragmentById(R.id.chat_fragment_container);
 
         if (view == null) {
+            // TODO: not sure if ChatFragment need extras
             view = ChatFragment.newInstance(getIntent().getExtras());
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.chat_fragment_container, view);

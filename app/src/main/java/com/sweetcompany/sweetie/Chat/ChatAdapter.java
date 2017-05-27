@@ -23,42 +23,23 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
     interface ChatAdapterListener {
         void onBookmarkClicked(MessageVM messageVM);
-        //...
     }
 
     private List<MessageVM> mMessageList = new ArrayList<>();
     private ChatAdapterListener mListener;
 
-    ChatAdapter(){
-        // Populate items for TEST
-        /*for (int i = 0; i < 5000; i++) {
-            mMessageList.add(new TextMessageVM("Amore hai chiamato?", MessageVM.THE_PARTNER));
-            mMessageList.add(new TextMessageVM("Dammi 10 minuti e scendo", MessageVM.THE_PARTNER));
-            mMessageList.add(new TextMessageVM("Sono in macchina più avanti al palazzo", MessageVM.THE_MAIN_USER));
-            mMessageList.add(new TextMessageVM("Ok", MessageVM.THE_MAIN_USER));
-            mMessageList.add(new TextMessageVM(":) Scendi qualcosa di cibo?o magari da bere", MessageVM.THE_MAIN_USER));
-            mMessageList.add(new TextMessageVM("Se puoi", MessageVM.THE_MAIN_USER));
-            mMessageList.add(new TextMessageVM("Se vuoi torno", MessageVM.THE_MAIN_USER));
-            mMessageList.add(new TextMessageVM("Che cosa ha fatto di male?", MessageVM.THE_MAIN_USER));
-            mMessageList.add(new TextMessageVM("Buongiorno", MessageVM.THE_PARTNER));
-            mMessageList.add(new TextMessageVM("Hey! :)", MessageVM.THE_MAIN_USER));
-            mMessageList.add(new TextMessageVM("Allora...?", MessageVM.THE_PARTNER));
-            mMessageList.add(new TextMessageVM("Che c'è?", MessageVM.THE_MAIN_USER));
-        }*/
-    }
-
     /**
      * Call when create ChatAdapter
      * @param listener
      */
-    public void setChatAdapterListener(ChatAdapterListener listener) {
+    void setChatAdapterListener(ChatAdapterListener listener) {
         mListener = listener;
     }
 
     /**
      *  Call when destroy ChatAdapterListener
      */
-    public void removeChatAdapterListener() {
+    void removeChatAdapterListener() {
         mListener = null;
     }
 
@@ -86,6 +67,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
                 break;
             default:
                 Log.w(TAG, "Error: no MessageViewHolder type match");
+                // TODO: create a ErrorMessageViewHolder
                 viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
                 break;
         }
@@ -114,11 +96,38 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
 
     void addMessage(MessageVM message) {
-        mMessageList.add(message);
-        notifyItemInserted(mMessageList.size());
+        mMessageList.add(0, message);
+        notifyItemInserted(0);
     }
 
-    void updateActionsList(List<MessageVM> messagesVM) {
+    void removeMessage(MessageVM msgVM) {
+        int indexOldMessage = searchIndexMessageOf(msgVM);
+        if (indexOldMessage != -1) {
+            mMessageList.remove(indexOldMessage);
+            notifyItemRemoved(indexOldMessage);
+        }
+    }
+
+    void changeMessage(MessageVM msgVM) {
+        int indexOldMessage = searchIndexMessageOf(msgVM);
+        if (indexOldMessage != -1) {
+            mMessageList.set(indexOldMessage, msgVM);
+            notifyItemChanged(indexOldMessage);
+        }
+    }
+
+    private int searchIndexMessageOf(MessageVM msg) {
+        String modifyMsgKey = msg.getKey();
+        for (int i = 0; i < mMessageList.size(); i++) {
+            String msgKey = mMessageList.get(i).getKey();
+            if (msgKey.equals(modifyMsgKey)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void updateMessageList(List<MessageVM> messagesVM) {
         mMessageList.clear();
         mMessageList.addAll(messagesVM);
         Collections.reverse(mMessageList);

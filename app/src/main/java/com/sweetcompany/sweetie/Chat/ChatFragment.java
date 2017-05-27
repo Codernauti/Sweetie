@@ -2,7 +2,6 @@ package com.sweetcompany.sweetie.Chat;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -14,9 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import com.sweetcompany.sweetie.Actions.ActionNewChatFragment;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.Utility;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -111,12 +108,28 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     @Override
     public void updateMessages(List<MessageVM> messagesVM) {
-        mChatAdapter.updateActionsList(messagesVM);
+        mChatAdapter.updateMessageList(messagesVM);
     }
 
     @Override
     public void updateChatInfo(ChatVM chat) {
         mToolBar.setTitle(chat.getTitle());
+    }
+
+    @Override
+    public void updateMessage(MessageVM msgVM) {
+        mChatAdapter.addMessage(msgVM);
+        mChatListView.scrollToPosition(0);
+    }
+
+    @Override
+    public void removeMessage(MessageVM msgVM) {
+        mChatAdapter.removeMessage(msgVM);
+    }
+
+    @Override
+    public void changeMessage(MessageVM msgVM) {
+        mChatAdapter.changeMessage(msgVM);
     }
 
 
@@ -139,10 +152,10 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                     new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, stringCurrentTime, false, null);
 
             // update view to feedback user if he is offline
-            mChatAdapter.addMessage(newMessage);
+            //mChatAdapter.addMessage(newMessage);
             // TODO: smooth scroll is not good if user is upper of chat but scrollToPosition has a graphical bug
             //mChatListView.smoothScrollToPosition(mChatAdapter.getItemCount());
-            mChatListView.smoothScrollToPosition(0);
+            //mChatListView.smoothScrollToPosition(0);
 
             mPresenter.sendMessage(newMessage);
         }

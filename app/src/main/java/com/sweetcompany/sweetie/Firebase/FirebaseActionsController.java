@@ -101,12 +101,14 @@ public class FirebaseActionsController {
         String newChatKey = newChatPush.getKey();
         DatabaseReference newActionPush = mActionsDbReference.push();
 
-        // prepare objects to send
+        // Set Action
         actionFB.setChildKey(newChatKey);
+
+        // Create Chat and set Chat
         ChatFB chat = new ChatFB();
         chat.setTitle(chatTitle);
 
-        // send to network
+        // put into queue for network
         newChatPush.setValue(chat);
         newActionPush.setValue(actionFB);
 

@@ -14,12 +14,14 @@ public interface RegisterContract {
     interface View {
         void setPresenter(RegisterContract.Presenter presenter);
         void updateRequest(List<PairingRequestVM> pairingRequestsVM);
-        void notifyUsers(UserVM usersVM);
+        void notifyUser(UserVM usersVM);
+        void notifyUserCheck(UserVM userVM);
     }
     interface Presenter {
         void saveUserData(Context mContext);
         void savePairingRequest(PairingRequestVM pairingRequest);
         void attachUserDataListener(String orderByType, String equalsToData);
+        void attachUserCheckListener(String key);
         void deletePairingRequest(String keyPairingRequest);
         void start();
         void pause();

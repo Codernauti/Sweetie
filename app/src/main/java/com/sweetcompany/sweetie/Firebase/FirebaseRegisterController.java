@@ -62,7 +62,6 @@ public class FirebaseRegisterController {
 
     public void addUserDataListener(OnFirebaseUserDataFound listener) {mUserDataListeners.add(listener);}
 
-    public void removeUserDataListener(OnFirebaseUserDataFound listener) {mUserDataListeners.remove(listener);}
 
     public void addListener(OnFirebaseRegisterDataChange listener) {mListeners.add(listener);}
 

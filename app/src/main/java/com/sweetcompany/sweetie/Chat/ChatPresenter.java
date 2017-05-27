@@ -13,7 +13,7 @@ import java.util.List;
  * Created by ghiro on 11/05/2017.
  */
 
-public class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.OnFirebaseChatDataChange {
+class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.OnFirebaseChatDataChange {
 
     private static final String TAG = "ChatPresenter";
 
@@ -22,7 +22,7 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
     private String mUserMail;   // id of messages of main user
     private String mChatKey;
 
-    public ChatPresenter(ChatContract.View view, String userMail, String chatKey){
+    ChatPresenter(ChatContract.View view, String userMail, String chatKey){
         mView = view;
         mView.setPresenter(this);
         mFirebaseController = FirebaseChatController.getInstance();
@@ -32,8 +32,13 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
 
     @Override
     public void start() {
-        mFirebaseController.attachNetworkDatabase();
-        mFirebaseController.addListener(this);
+        if (mChatKey != null) {
+            mFirebaseController.attachNetworkDatabase(mChatKey);
+            mFirebaseController.addListener(this);
+        }
+        else {
+            Log.w(TAG, "start(): impossible attach to database because mChatKey is NULL");
+        }
     }
 
     @Override
@@ -46,30 +51,23 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
     public void sendMessage(MessageVM message) {
         // TODO: remove down cast -> use Factory method
         TextMessageVM messageVM = (TextMessageVM)message;
-
         MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());
-        mFirebaseController.pushMessage(newMessage);
+
+        mFirebaseController.sendMessage(newMessage);
     }
 
     @Override
-    public void notifyNewMessages(List<MessageFB> messages) {
-        List<MessageVM> messagesVM = new ArrayList<>();
-        for (MessageFB msg : messages) {
-            boolean who = MessageVM.THE_PARTNER;
+    public void bookmarkMessage(MessageVM messageVM) {
+        // TODO: remove down cast -> use Factory method
+        TextMessageVM msgVM = (TextMessageVM) messageVM;
+        MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked());
+        updateMessage.setKey(msgVM.getKey());
 
-            if (msg.getEmail() != null) {   // TODO remove check in future
-                if (msg.getEmail().equals(mUserMail)) {
-                    who = MessageVM.THE_MAIN_USER;
-                }
-            }
-
-            TextMessageVM msgVM = new TextMessageVM(msg.getText(), who, msg.getTime(),
-                    msg.isBookmarked(), msg.getKey());
-            messagesVM.add(msgVM);
-        }
-
-        mView.updateMessages(messagesVM);
+        mFirebaseController.updateMessage(updateMessage);
     }
+
+
+    // Callback from Database
 
     @Override
     public void notifyChats(List<ChatFB> chats) {
@@ -87,13 +85,39 @@ public class ChatPresenter implements ChatContract.Presenter, FirebaseChatContro
     }
 
     @Override
-    public void bookmarkMessage(MessageVM messageVM) {
-        // TODO: remove down cast -> use Factory method
-        TextMessageVM msgVM = (TextMessageVM) messageVM;
-        MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked());
-        updateMessage.setKey(msgVM.getKey());
+    public void notifyNewMessage(MessageFB message) {
+        MessageVM msgVM = createMessageVM(message);
+        mView.updateMessage(msgVM);
+    }
 
-        mFirebaseController.updateMessage(updateMessage);
+    @Override
+    public void notifyRemovedMessage(MessageFB message) {
+        MessageVM msgVM = createMessageVM(message);
+        mView.removeMessage(msgVM);
+    }
+
+    @Override
+    public void notifyChangedMessage(MessageFB message) {
+        MessageVM msgVM = createMessageVM(message);
+        mView.changeMessage(msgVM);
+    }
+
+    /**
+     * Convert MessageFB to TextMessageVM
+     * @param message
+     * @return
+     */
+    private MessageVM createMessageVM(MessageFB message) {
+        // Understand if the message is of Main User
+        boolean who = MessageVM.THE_PARTNER;
+        if (message.getEmail() != null) {   // TODO remove check in future
+            if (message.getEmail().equals(mUserMail)) {
+                who = MessageVM.THE_MAIN_USER;
+            }
+        }
+        // Create respective ViewModel
+        return new TextMessageVM(message.getText(), who, message.getTime(),
+                message.isBookmarked(), message.getKey());
     }
 
 }

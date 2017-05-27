@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie.Firebase;
 
 import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,27 +20,42 @@ public class FirebaseChatController {
 
     private static final String TAG = "FirebaseChatController";
 
-    private final DatabaseReference mMessagesDbReference;
-    private final DatabaseReference mChatsDbReference;
-
     private static FirebaseChatController mInstance;
     private List<OnFirebaseChatDataChange> mListeners;
 
-    private ValueEventListener mMessagesEventListener;
+    private final DatabaseReference mChatMessagesReference;
+
+    // TODO: FirebaseChatController is specific for a single Chat
+    // uri: /chat-messages/id_chat
+    private DatabaseReference mSingleChatMessagesReference;
+    private ChildEventListener mSingleChatMessagesListener;
+
+    // TODO: choice between Chats or SingleChat (*)
+    // uri: /chats
+    private final DatabaseReference mChatsDbReference;
     private ValueEventListener mChatsEventListener;
 
+    // TODO: (*)
+    // uri: /chats/id_chat
+    private DatabaseReference mSingleChatReference;
+    private ValueEventListener mSingleChatListener;
+
+
     public interface OnFirebaseChatDataChange {
-        void notifyNewMessages(List<MessageFB> messages);
         void notifyChats(List<ChatFB> chats);
+
+        void notifyNewMessage(MessageFB message);
+        void notifyRemovedMessage(MessageFB message);
+        void notifyChangedMessage(MessageFB message);
     }
 
 
     private FirebaseChatController() {
         mListeners = new ArrayList<>();
-        mMessagesDbReference = FirebaseDatabase.getInstance()
-                                            .getReference().child("messages");
         mChatsDbReference = FirebaseDatabase.getInstance()
                                             .getReference().child("chats");
+        mChatMessagesReference = FirebaseDatabase.getInstance()
+                .getReference().child("chat-messages");
     }
 
     public static FirebaseChatController getInstance() {
@@ -57,32 +73,56 @@ public class FirebaseChatController {
         mListeners.remove(listener);
     }
 
-    public void attachNetworkDatabase() {
-        if (mMessagesEventListener == null) {
-            mMessagesEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    List<MessageFB> messages = new ArrayList<>();
+    public void attachNetworkDatabase(String chatKey) {
+        // Get the reference for messages of a single chat
+        mSingleChatMessagesReference = mChatMessagesReference.child(chatKey);
 
-                    for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                        MessageFB messageFB = messageSnapshot.getValue(MessageFB.class);
-                        messageFB.setKey(messageSnapshot.getKey());
-                        messages.add(messageFB);
-                    }
+        // Attach a new Listener to this chat reference
+        if (mSingleChatMessagesListener == null) {
+            mSingleChatMessagesListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    MessageFB newMessage = dataSnapshot.getValue(MessageFB.class);
+                    newMessage.setKey(dataSnapshot.getKey());
+                    Log.d(TAG, "onMessageAdded to chat: " + newMessage.getText());
 
                     for (OnFirebaseChatDataChange listener : mListeners) {
-                        listener.notifyNewMessages(messages);
+                        listener.notifyNewMessage(newMessage);
                     }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    MessageFB newMessage = dataSnapshot.getValue(MessageFB.class);
+                    newMessage.setKey(dataSnapshot.getKey());
+                    Log.d(TAG, "onChildChanged of chat: " + newMessage.getText());
+
+                    for (OnFirebaseChatDataChange listener : mListeners) {
+                        listener.notifyChangedMessage(newMessage);
+                    }
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    MessageFB removedMessage = dataSnapshot.getValue(MessageFB.class);
+                    Log.d(TAG, "onMessageRemoved from chat: " + removedMessage.getText());
+
+                    for (OnFirebaseChatDataChange listener : mListeners) {
+                        listener.notifyRemovedMessage(removedMessage);
+                    }
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Log.d(TAG, databaseError.getMessage());
+
                 }
             };
-
-            mMessagesDbReference.addValueEventListener(mMessagesEventListener);
+            mSingleChatMessagesReference.addChildEventListener(mSingleChatMessagesListener);
         }
 
         if (mChatsEventListener == null) {
@@ -112,27 +152,33 @@ public class FirebaseChatController {
     }
 
     public void detachNetworkDatabase() {
-        if (mMessagesEventListener != null) {
-            mMessagesDbReference.removeEventListener(mMessagesEventListener);
+        if (mSingleChatMessagesListener != null) {
+            mSingleChatMessagesReference.removeEventListener(mSingleChatMessagesListener);
         }
         if (mChatsEventListener != null) {
             mChatsDbReference.removeEventListener(mChatsEventListener);
         }
-        // TODO why put at null?
-        mMessagesEventListener = null;
+        // Put to null for GC, because they have outer ref to this singleton class
+        mSingleChatMessagesListener = null;
         mChatsEventListener = null;
-    }
-
-    public void pushMessage(MessageFB msg) {
-        Log.d(TAG, "Push MessageFB: " + msg);
-        DatabaseReference newMessagePush = mMessagesDbReference.push();
-        newMessagePush.setValue(msg);
     }
 
     public void updateMessage(MessageFB msg) {
         Log.d(TAG, "Update MessageFB: " + msg);
         // TODO: update only bookmarked??
-        mMessagesDbReference.child(msg.getKey()).child("bookmarked").setValue(msg.isBookmarked());
+        DatabaseReference ref = mSingleChatMessagesReference.child(msg.getKey()).child("bookmarked");
+        ref.setValue(msg.isBookmarked());
+    }
+
+    // TEST
+    public void sendMessage(MessageFB msg) {
+        if (mSingleChatMessagesReference != null) {
+            Log.d(TAG, "Send MessageFB: " + msg);
+            mSingleChatMessagesReference.push().setValue(msg);
+        }
+        else {
+            Log.w(TAG, "sendMessage(): chat reference doesn't instantiate. Impossible to send message.");
+        }
     }
 
 }

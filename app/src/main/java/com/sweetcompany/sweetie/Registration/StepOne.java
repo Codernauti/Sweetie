@@ -139,22 +139,10 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
                             setProgressBarVisibile(true);
                         } else {
                             //save id token
-                            Utility.saveStringPreference(getContext(),"token",task.getResult().getUser().getUid());
-                            Utility.saveStringPreference(getContext(),"mail",task.getResult().getUser().getEmail());
-                            
-                            // go to Step 2
-                            setProgressBarVisibile(false);
-                            StepTwo mFragment = new StepTwo();
-                            FragmentTransaction mTransaction = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
-                                    R.anim.slide_in_right,
-                                    R.anim.slide_out_left,
-                                    R.anim.slide_in_left,
-                                    R.anim.slide_out_right
-                            );
-                            mTransaction.addToBackStack("stepOne");
-                            mTransaction.replace(R.id.register_fragment_container,mFragment);
-                            mTransaction.commit();
-                            ((RegisterActivity) getActivity()).setPresenter(mFragment);
+                            Utility.saveStringPreference(mContext,Utility.TOKEN,task.getResult().getUser().getUid());
+                            Utility.saveStringPreference(mContext,Utility.MAIL,task.getResult().getUser().getEmail());
+
+                            mPresenter.attachUserCheckListener(task.getResult().getUser().getUid());
                         }
                     }
                 });
@@ -178,6 +166,30 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
     public void updateRequest(List<PairingRequestVM> pairingRequestsVM) {}
 
     @Override
-    public void notifyUsers(UserVM usersVM) {}
+    public void notifyUser(UserVM usersVM) {}
 
+    @Override
+    public void notifyUserCheck(UserVM userVM) {
+        if (userVM != null) {
+            Utility.saveStringPreference(mContext, Utility.USERNAME, userVM.getUsername());
+            Utility.saveStringPreference(mContext, Utility.PHONE_NUMBER, userVM.getPhone());
+            Utility.saveStringPreference(mContext, Utility.GENDER, String.valueOf(userVM.isGender()));
+            ((RegisterActivity) getActivity()).registrationCompleted();
+        }
+        else{
+            // go to Step 2
+            setProgressBarVisibile(false);
+            StepTwo mFragment = new StepTwo();
+            FragmentTransaction mTransaction = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+            );
+            mTransaction.addToBackStack("stepOne");
+            mTransaction.replace(R.id.register_fragment_container,mFragment);
+            mTransaction.commit();
+            ((RegisterActivity) getActivity()).setPresenter(mFragment);
+        }
+    }
 }

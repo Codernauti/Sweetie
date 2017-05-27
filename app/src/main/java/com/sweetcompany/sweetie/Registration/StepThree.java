@@ -163,11 +163,14 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
     }
 
     @Override
-    public void notifyUsers(UserVM userVM) {
+    public void notifyUser(UserVM userVM) {
         mPhoneView.setText(userVM.getPhone());
         mUsernameView.setText(userVM.getUsername());
         mLinearLayout.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    public void notifyUserCheck(UserVM userVM) {}
 
 
 }

@@ -32,13 +32,23 @@ public class Utility {
          return editor.commit();
     }
 
+    //
+    static public boolean checkPreferencesSetted(Context context){
+        if(getStringPreference(context,TOKEN) != "error"){
+            if(getStringPreference(context,MAIL) != "error"){
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Method for getting a string from shared preferences
     //How to use: pass the context and one of key strings above
     //if the result string doesn't exist it returns the string "error"
     static public String getStringPreference(Context context,String key){
         SharedPreferences setting = context.getSharedPreferences(key, 0);
         return setting.getString(key,"error");
-    }
+    };
 
     // TODO
     // Give dateTime

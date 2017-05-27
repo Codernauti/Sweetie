@@ -15,7 +15,7 @@ import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.Registration.RegisterActivity;
 import com.sweetcompany.sweetie.Utils.Utility;
 
-public class MainActivity extends AppCompatActivity implements Button.OnClickListener{
+public class MainActivity extends AppCompatActivity{
 
     private final FirebaseController mFireBaseController = FirebaseController.getInstance();
     private Button mRegisterButton;
@@ -29,23 +29,29 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        mLoginButton = (Button) findViewById(R.id.login_button);
+        /*mLoginButton = (Button) findViewById(R.id.login_button);
         mLoginButton.setOnClickListener(this);
 
         mRegisterButton = (Button) findViewById(R.id.register_button);
-        mRegisterButton.setOnClickListener(this);
+        mRegisterButton.setOnClickListener(this);*/
 
 
         Log.d("Saved Mail User",Utility.getStringPreference(this,Utility.MAIL));
 
-        //mFireBaseController.init();
+        if(Utility.checkPreferencesSetted(getApplicationContext())){
+            startActivity(new Intent(this, DashboardActivity.class));
+        }
+        else{
+            startActivity(new Intent(this, RegisterActivity.class));
+        }
+
 
         //se non si è mai registrato
 
 //        if (PreferenceManager.getDefaultSharedPreferences(this).getInt(ALREADY_REGISTED, 0) == 0) {
 //            startActivity(new Intent(this, RegisterActivity.class));
 //        }
-        if (mFireBaseController.getFirebaseUser() != null)
+        /*if (mFireBaseController.getFirebaseUser() != null)
         {
             startActivity(new Intent(this, DashboardActivity.class));
             //startActivity(new Intent(this, LoginActivity.class));
@@ -66,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
             case R.id.login_button:
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
-        }
-
+        }*/
     }
 }

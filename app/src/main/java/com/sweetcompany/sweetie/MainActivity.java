@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         mRegisterButton.setOnClickListener(this);
 
 
-        Log.d("Prova",Utility.getStringPreference(this,Utility.MAIL));
+        Log.d("Saved Mail User",Utility.getStringPreference(this,Utility.MAIL));
 
         //mFireBaseController.init();
 

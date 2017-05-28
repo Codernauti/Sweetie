@@ -61,10 +61,4 @@ public class ActionsPresenter implements ActionsContract.Presenter, FirebaseActi
         mView.updateActionsList(mActionsList);
     }
 
-    // Push ActionChat on Server
-    public void addActionChat(ActionFB newAction){
-        //DatabaseReference newActionRef = mFireBaseController.getDatabaseActionsReferences().push();
-        //newActionRef.setValue(newAction);
-    }
-
 }

@@ -18,7 +18,6 @@ public interface ActionsContract {
     interface Presenter {
         void start();
         void pause();
-        void addActionChat(ActionFB action);
     }
 
 }

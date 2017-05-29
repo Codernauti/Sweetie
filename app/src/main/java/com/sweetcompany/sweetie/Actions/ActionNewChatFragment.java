@@ -19,6 +19,7 @@ import com.sweetcompany.sweetie.R;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -70,11 +71,12 @@ public class ActionNewChatFragment extends DialogFragment {
                                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                                     String date = df.format(Calendar.getInstance().getTime());
                                     ActionFB action = new ActionFB(userInputChatTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
-                                    String chatKey = mFireBaseActionsController.pushChatAction(action, userInputChatTitle);
+                                    List<String> keys = mFireBaseActionsController.pushChatAction(action, userInputChatTitle); // [0] : chatKey, [1] : actionKey
 
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                                     intent.putExtra(ChatActivity.CHAT_TITLE, userInputChatTitle);
-                                    intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, chatKey);
+                                    intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, keys.get(0));
+                                    intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, keys.get(1));
 
                                     startActivity(intent);
                                 }

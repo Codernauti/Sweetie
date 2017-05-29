@@ -100,10 +100,15 @@ public class FirebaseActionsController {
         newActionPush.setValue(act);
     }
 
-    public String pushChatAction(ActionFB actionFB, String chatTitle) {
+    public List<String> pushChatAction(ActionFB actionFB, String chatTitle) {
+        List<String> newKeys =  new ArrayList<String>();
+
         DatabaseReference newChatPush = mChatsDbReference.push();
         String newChatKey = newChatPush.getKey();
+        newKeys.add(newChatKey);
         DatabaseReference newActionPush = mActionsDbReference.push();
+        String newActionKey = newActionPush.getKey();
+        newKeys.add(newActionKey);
 
         // Set Action
         actionFB.setChildKey(newChatKey);
@@ -116,7 +121,7 @@ public class FirebaseActionsController {
         newChatPush.setValue(chat);
         newActionPush.setValue(actionFB);
 
-        return newChatKey;
+        return newKeys;
     }
 
 }

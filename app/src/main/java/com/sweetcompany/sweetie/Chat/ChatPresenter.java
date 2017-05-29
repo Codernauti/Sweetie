@@ -21,7 +21,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.On
     private FirebaseChatController mFirebaseController;
     private String mUserMail;   // id of messages of main user
     private String mChatKey;    // id of chat opened
-    private String mActionKey;
+    private String mActionKey;  // id of actionChat references
 
     ChatPresenter(ChatContract.View view, String userMail, String chatKey, String actionKey){
         mView = view;

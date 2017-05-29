@@ -39,7 +39,6 @@ public class FirebaseChatController {
     // uri: /chats/id_chat
     private DatabaseReference mSingleChatReference;
     private ValueEventListener mSingleChatListener;
-    private DatabaseReference mActionReference;
 
 
     public interface OnFirebaseChatDataChange {
@@ -171,31 +170,23 @@ public class FirebaseChatController {
         ref.setValue(msg.isBookmarked());
     }
 
-    public void updateAction(String actionKey, String description, String date){
-
-        //FirebaseActionsController and ActionsPresenter are not necessary here
-        // Actions Update Callbacks are attached only in ActionsFragment
-
-        DatabaseReference mActionsReferences = FirebaseDatabase.getInstance()
-                .getReference().child("actions").child(actionKey);
-        DatabaseReference mActionDescriptionReference = mActionsReferences.child("description");
-        DatabaseReference mActionDataTimeReference = mActionsReferences.child("dataTime");
-        mActionDescriptionReference.setValue(description);
-        mActionDataTimeReference.setValue(date);
-        //TODO add last user sender (wait until couple is done)
+    private void updateActionLastMessage(String actionKey, MessageFB msg){
+        DatabaseReference mActionReference = FirebaseDatabase.getInstance()
+                .getReference().child("actions").child(actionKey).child("description");
+        mActionReference.setValue(msg.getText());
     }
 
-    // TEST
+    // TEST GHIRO
     public void sendMessage(MessageFB msg, String actionKey) {
         if (mSingleChatMessagesReference != null) {
             Log.d(TAG, "Send MessageFB: " + msg);
             mSingleChatMessagesReference.push().setValue(msg);
-            //TODO Best Practices : call methods inside or earlier?
-            updateAction(actionKey, msg.getText(), msg.getDateTime());
+            updateActionLastMessage(actionKey, msg);
         }
         else {
             Log.w(TAG, "sendMessage(): chat reference doesn't instantiate. Impossible to send message.");
         }
     }
+
 
 }

@@ -21,13 +21,15 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.On
     private FirebaseChatController mFirebaseController;
     private String mUserMail;   // id of messages of main user
     private String mChatKey;    // id of chat opened
+    private String mActionKey;
 
-    ChatPresenter(ChatContract.View view, String userMail, String chatKey){
+    ChatPresenter(ChatContract.View view, String userMail, String chatKey, String actionKey){
         mView = view;
         mView.setPresenter(this);
         mFirebaseController = FirebaseChatController.getInstance();
         mUserMail = userMail;
         mChatKey = chatKey;
+        mActionKey = actionKey;
     }
 
     @Override
@@ -53,7 +55,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.On
         TextMessageVM messageVM = (TextMessageVM)message;
         MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());
 
-        mFirebaseController.sendMessage(newMessage);
+        mFirebaseController.sendMessage(newMessage, mActionKey);
     }
 
     @Override

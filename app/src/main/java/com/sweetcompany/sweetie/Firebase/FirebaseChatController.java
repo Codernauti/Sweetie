@@ -39,6 +39,7 @@ public class FirebaseChatController {
     // uri: /chats/id_chat
     private DatabaseReference mSingleChatReference;
     private ValueEventListener mSingleChatListener;
+    private DatabaseReference mActionReference;
 
 
     public interface OnFirebaseChatDataChange {
@@ -170,11 +171,18 @@ public class FirebaseChatController {
         ref.setValue(msg.isBookmarked());
     }
 
+    public void updateActionDescription(String actionKey, String description){
+        mActionReference = FirebaseDatabase.getInstance()
+                .getReference().child("actions").child(actionKey).child("description");
+        mActionReference.setValue(description);
+    }
+
     // TEST
-    public void sendMessage(MessageFB msg) {
+    public void sendMessage(MessageFB msg, String actionKey) {
         if (mSingleChatMessagesReference != null) {
             Log.d(TAG, "Send MessageFB: " + msg);
             mSingleChatMessagesReference.push().setValue(msg);
+            updateActionDescription(actionKey, msg.getText());
         }
         else {
             Log.w(TAG, "sendMessage(): chat reference doesn't instantiate. Impossible to send message.");

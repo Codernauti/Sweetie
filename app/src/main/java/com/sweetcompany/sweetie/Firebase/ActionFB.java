@@ -26,6 +26,7 @@ public class ActionFB {
     private String dateTime;
     private int type;
     private String childKey;
+    private String actionKey;
 
     ActionFB() {}
 
@@ -62,6 +63,10 @@ public class ActionFB {
 
     public void setChildKey(String childKey) {
         this.childKey = childKey;
+    }
+
+    public void setActionKey(String childKey) {
+        this.actionKey = actionKey;
     }
 
     /*** GETTER ***/ //TODO crate assert null function

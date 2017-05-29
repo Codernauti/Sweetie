@@ -24,7 +24,7 @@ public class ChatActivity extends AppCompatActivity {
     // key for Intent extras
     public static final String CHAT_DATABASE_KEY = "ChatDatabaseKey";
     public static final String CHAT_TITLE = "ChatTitle";    // For offline user
-    public static final String ACTION_FB_DATABASE_KEY = "ActionFbDatabaseKey";
+    public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
     ChatPresenter mPresenter;
 
@@ -33,21 +33,20 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_activity);
 
-        String actionKey = null;
         String chatKey = null;
-
+        String actionKey = null;
         if (savedInstanceState == null) { // first Activity open
             Bundle chatBundle = getIntent().getExtras();
             if (chatBundle != null) {
-                actionKey = chatBundle.getString(ACTION_FB_DATABASE_KEY);
                 chatKey = chatBundle.getString(CHAT_DATABASE_KEY);
+                actionKey = chatBundle.getString(ACTION_DATABASE_KEY);
 
-                Log.d(TAG, "from Intent ACTION_FB_DATABASE_KEY: " +
-                        chatBundle.getString(ACTION_FB_DATABASE_KEY));
                 Log.d(TAG, "from Intent CHAT_TITLE: " +
                         chatBundle.getString(CHAT_TITLE));
                 Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
                         chatBundle.getString(CHAT_DATABASE_KEY));
+                Log.d(TAG, "from Intent CHAT_ACTION_KEY: " +
+                        chatBundle.getString(ACTION_DATABASE_KEY));
             }
             else {
                 Log.w(TAG, "getIntent FAILED!");

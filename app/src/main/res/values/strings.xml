@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Sweetie</string>
-    <string name="calendar_tab_name">Calendar</string>
+    <string name="calendar_tab_name">Diary</string>
     <string name="home_tab_name">Home</string>
     <string name="folders_tab_name">Folders</string>
     <string name="map_tab_name">Map</string>

@@ -65,7 +65,11 @@ public class FirebaseActionsController {
                     List<ActionFB> actions = new ArrayList<>();
 
                     for (DataSnapshot actionSnapshot : actionsSnapshot.getChildren()) {
+                        String actionKey = actionSnapshot.getKey();
+                        Log.d("actions_Key", actionKey); // key of Actions FB Database
+
                         ActionFB action = actionSnapshot.getValue(ActionFB.class);
+                        action.setKey(actionKey);
                         actions.add(action);
                     }
 

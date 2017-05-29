@@ -14,13 +14,14 @@ import com.sweetcompany.sweetie.R;
 // TODO complete class
 class ActionChatVM extends ActionVM {
 
-    ActionChatVM(String title, String description, String date, int type, String childKey) {
+    ActionChatVM(String key, String title, String description, String date, int type, String childKey) {
         // TODO: complete all fields
         super.setTitle(title);
         super.setDescription(description);
         super.setDataTime(date);
         super.setType(type);
         super.setChildKey(childKey);
+        super.setKey(key);
     }
 
     @Override
@@ -30,6 +31,7 @@ class ActionChatVM extends ActionVM {
         Intent intent = new Intent(mContext, ChatActivity.class);
         intent.putExtra(ChatActivity.CHAT_TITLE, super.getTitle());
         intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, super.getChildKey());
+        intent.putExtra(ChatActivity.ACTION_FB_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);
 

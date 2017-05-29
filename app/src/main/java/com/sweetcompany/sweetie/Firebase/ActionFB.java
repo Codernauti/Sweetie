@@ -19,6 +19,7 @@ public class ActionFB {
     public final static int CHAT = 0;
     public final static int PHOTO = 1;
 
+    private String key;
     private String title;
     private String lastUser;
     private String description;
@@ -38,6 +39,10 @@ public class ActionFB {
 
 
     /*** SETTER ***/
+
+    public void setKey(String key){
+        this.key = key;
+    }
 
     public void setTitle(String title){
         this.title = title;
@@ -60,6 +65,10 @@ public class ActionFB {
     }
 
     /*** GETTER ***/ //TODO crate assert null function
+
+    public String getKey(){
+        return key;
+    }
 
     public String getTitle(){
         return title;

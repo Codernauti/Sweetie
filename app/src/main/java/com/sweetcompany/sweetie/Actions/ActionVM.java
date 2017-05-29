@@ -15,6 +15,7 @@ abstract class ActionVM {
     protected IPageChanger mPageChanger;
     protected Context mContext;
 
+    private String mKeyFB; //FB actions references
     private String mTitle;
     private String mLastUser;
     private String mDescription;
@@ -25,8 +26,9 @@ abstract class ActionVM {
     ActionVM() {
     }
 
-    ActionVM(String title, String lastUser, String description, String date, int type, String childKey) {
+    ActionVM(String key, String title, String lastUser, String description, String date, int type, String childKey) {
         // TODO assertion function true value
+        mKeyFB = key;
         mTitle = title;
         mLastUser = lastUser;
         mDescription = description;
@@ -44,6 +46,10 @@ abstract class ActionVM {
     }
 
     /*** SETTER ***/
+
+    public void setKey(String key){
+        this.mKeyFB = key;
+    }
 
     public void setTitle(String title){
         this.mTitle = title;
@@ -68,6 +74,10 @@ abstract class ActionVM {
 
     /*** GETTER ***/ //TODO crate assert null function
 
+    public String getKey(){
+        return mKeyFB;
+    }
+
     public String getTitle(){
         return mTitle;
     }
@@ -81,7 +91,6 @@ abstract class ActionVM {
     }
 
     public int getType() { return mType; }
-
 
     String getChildKey() { return mChildKey; }
 

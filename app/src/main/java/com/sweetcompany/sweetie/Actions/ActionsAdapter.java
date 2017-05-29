@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
         ActionVM actionVM = mActionsList.get(position);
         holder.title.setText(actionVM.getTitle() + " " + position);
         holder.description.setText(actionVM.getDescription());
-        holder.date.setText(actionVM.getDataTime());
+        holder.date.setText(Utility.getDateFormattedForActions(actionVM.getDataTime()));
         holder.type.setImageResource(actionVM.getIconId());
     }
 

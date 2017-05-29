@@ -172,10 +172,14 @@ public class FirebaseChatController {
     }
 
     public void updateAction(String actionKey, String description, String date){
-        DatabaseReference mActionDescriptionReference = FirebaseDatabase.getInstance()
-                .getReference().child("actions").child(actionKey).child("description");
-        DatabaseReference mActionDataTimeReference = FirebaseDatabase.getInstance()
-                .getReference().child("actions").child(actionKey).child("dataTime");
+
+        //FirebaseActionsController and ActionsPresenter are not necessary here
+        // Actions Update Callbacks are attached only in ActionsFragment
+
+        DatabaseReference mActionsReferences = FirebaseDatabase.getInstance()
+                .getReference().child("actions").child(actionKey);
+        DatabaseReference mActionDescriptionReference = mActionsReferences.child("description");
+        DatabaseReference mActionDataTimeReference = mActionsReferences.child("dataTime");
         mActionDescriptionReference.setValue(description);
         mActionDataTimeReference.setValue(date);
         //TODO add last user sender (wait until couple is done)

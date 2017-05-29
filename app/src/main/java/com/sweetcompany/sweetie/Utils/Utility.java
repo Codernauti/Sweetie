@@ -6,7 +6,10 @@ import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.util.Log;
 
+import java.util.Calendar;
 import java.util.Date;
+
+import static java.util.Calendar.DATE;
 
 /**
  * Created by lucas on 22/05/2017.
@@ -57,8 +60,11 @@ public class Utility {
     //     if date of today             return "22:00"
     //     if date of yesterday         return "TOMORROW/IERI"
     //     if date past                 return "24/05/17"
-    public String getDateFormattedForActions(String data){
+    public static String getDateFormattedForActions(String data){
         String mData = data;
+
+        //Calendar rightNow = Calendar.getInstance();
+        //rightNow.getTime();
 
         return mData;
     }

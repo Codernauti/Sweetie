@@ -8,7 +8,7 @@
         android:background="@color/chat_background">
 
     <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar"
+            android:id="@+id/chat_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:elevation="4dp"
@@ -22,6 +22,7 @@
         android:id="@+id/chat_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/chat_toolbar"
         android:layout_above="@+id/chat_user_input_panel"
         />
 

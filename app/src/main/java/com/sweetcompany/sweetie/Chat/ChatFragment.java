@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.Chat;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -95,14 +96,14 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onAttach(Context context) {
+        super.onAttach(context);
         mPresenter.start();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDetach() {
+        super.onDetach();
         mPresenter.pause();
     }
 

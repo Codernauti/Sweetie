@@ -171,10 +171,14 @@ public class FirebaseChatController {
         ref.setValue(msg.isBookmarked());
     }
 
-    public void updateActionDescription(String actionKey, String description){
-        mActionReference = FirebaseDatabase.getInstance()
+    public void updateAction(String actionKey, String description, String date){
+        DatabaseReference mActionDescriptionReference = FirebaseDatabase.getInstance()
                 .getReference().child("actions").child(actionKey).child("description");
-        mActionReference.setValue(description);
+        DatabaseReference mActionDataTimeReference = FirebaseDatabase.getInstance()
+                .getReference().child("actions").child(actionKey).child("dataTime");
+        mActionDescriptionReference.setValue(description);
+        mActionDataTimeReference.setValue(date);
+        //TODO add last user sender (wait until couple is done)
     }
 
     // TEST
@@ -182,7 +186,8 @@ public class FirebaseChatController {
         if (mSingleChatMessagesReference != null) {
             Log.d(TAG, "Send MessageFB: " + msg);
             mSingleChatMessagesReference.push().setValue(msg);
-            updateActionDescription(actionKey, msg.getText());
+            //TODO Best Practices : call methods inside or earlier?
+            updateAction(actionKey, msg.getText(), msg.getDateTime());
         }
         else {
             Log.w(TAG, "sendMessage(): chat reference doesn't instantiate. Impossible to send message.");

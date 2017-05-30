@@ -6,6 +6,7 @@ import android.content.Context;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.sweetcompany.sweetie.Firebase.FirebaseLoginController;
+import com.sweetcompany.sweetie.Firebase.FirebasePairingController;
 import com.sweetcompany.sweetie.Firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.Firebase.PairingRequest;
 import com.sweetcompany.sweetie.Firebase.SweetUser;
@@ -18,10 +19,11 @@ import java.util.List;
  * Created by lucas on 22/05/2017.
  */
 
-public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLoginController.OnFirebaseLoginChecked, FirebaseRegisterController.OnFirebaseRegisterDataChange, FirebaseRegisterController.OnFirebaseUserDataFound{
+public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLoginController.OnFirebaseLoginChecked, FirebasePairingController.OnFirebasePairingDataChange, FirebaseRegisterController.OnFirebaseUserDataFound{
     public static final String TAG = "Registration.presenter";
     FirebaseRegisterController mFirebaseRegisterController;
     FirebaseLoginController mFirebaseLoginController;
+    FirebasePairingController mFirebasePairingController;
     RegisterContract.View mView;
 
     RegisterPresenter(RegisterContract.View view){
@@ -29,6 +31,7 @@ public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLog
         mView.setPresenter(this);
         mFirebaseRegisterController = FirebaseRegisterController.getInstance();
         mFirebaseLoginController = FirebaseLoginController.getInstance();
+        mFirebasePairingController = FirebasePairingController.getInstance();
     }
 
 
@@ -51,7 +54,7 @@ public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLog
 
     @Override
     public void savePairingRequest(PairingRequestVM pairingRequest) {
-        mFirebaseRegisterController.saveRequest(pairingRequest);
+        mFirebasePairingController.saveRequest(pairingRequest);
     }
 
     @Override
@@ -68,19 +71,19 @@ public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLog
 
     @Override
     public void deletePairingRequest(String keyPairingRequest) {
-        mFirebaseRegisterController.deletePairingRequest(keyPairingRequest);
+        mFirebasePairingController.deletePairingRequest(keyPairingRequest);
     }
 
     @Override
     public void start() {
-        mFirebaseRegisterController.attachNetworkDatabase();
-        mFirebaseRegisterController.addListener(this);
+        mFirebasePairingController.attachNetworkDatabase();
+        mFirebasePairingController.addListener(this);
     }
 
     @Override
     public void pause() {
-        mFirebaseRegisterController.detachNetworkDatabase();
-        mFirebaseRegisterController.removeListener(this);
+        mFirebasePairingController.detachNetworkDatabase();
+        mFirebasePairingController.removeListener(this);
     }
 
     @Override

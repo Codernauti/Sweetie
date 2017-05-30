@@ -5,6 +5,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sweetcompany.sweetie.Registration.CoupleVM;
 import com.sweetcompany.sweetie.Registration.PairingRequestVM;
 
 import java.util.ArrayList;
@@ -71,8 +72,8 @@ public class FirebasePairingController {
         mPairingEventListener = null;
     }
 
-    public void saveRequest(PairingRequestVM pairingRequest){
-        mPairingDbReference.child("pairing-requests").push().setValue(new PairingRequest(pairingRequest));
+    public void saveRequest(PairingRequest pairingRequest){
+        mPairingDbReference.child("pairing-requests").push().setValue(pairingRequest);
     }
 
     public void addListener(OnFirebasePairingDataChange listener) {mListeners.add(listener);}
@@ -81,5 +82,9 @@ public class FirebasePairingController {
 
     public void deletePairingRequest(String keyPairingRequest){
         mPairingDbReference.child("pairing-requests").child(keyPairingRequest).removeValue();
+    }
+
+    public void saveCouple(Couple couple){
+        mPairingDbReference.child("couples").push().setValue(couple);
     }
 }

@@ -7,20 +7,23 @@ import com.google.firebase.database.Exclude;
  */
 
 public class PairingRequestVM {
-    @Exclude
-    String key;
-    String senderNumber, receiverNumber;
+    String key, senderNumber, receiverNumber;
 
     PairingRequestVM(){}
 
-    PairingRequestVM(String sender, String receiver){
+    PairingRequestVM(String key,String sender, String receiver){
+        this.key = key;
         this.senderNumber = sender;
         this.receiverNumber = receiver;
     }
 
     public String getSenderNumber(){ return senderNumber; }
 
+    public void setSenderNumber(String senderNumber) {this.senderNumber = senderNumber;}
+
     public String getReceiverNumber(){ return receiverNumber; }
+
+    public void setReceiverNumber(String receiverNumber) {this.receiverNumber = receiverNumber;}
 
     public String getKey() {
         return key;

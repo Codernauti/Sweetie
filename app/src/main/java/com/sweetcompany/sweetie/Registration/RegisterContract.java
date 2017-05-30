@@ -20,8 +20,9 @@ public interface RegisterContract {
         void notifyUserCheck(UserVM userVM);
     }
     interface Presenter {
+        void saveCoupleData(String idFirst, String idSecond);
         void saveUserData(Context mContext);
-        void savePairingRequest(PairingRequestVM pairingRequest);
+        void savePairingRequest(String phoneSender,String phoneReceiver);
         void attachUserDataListener(String orderByType, String equalsToData);
         void attachUserCheckListener(String key);
         void deletePairingRequest(String keyPairingRequest);

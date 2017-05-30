@@ -1,6 +1,5 @@
 package com.sweetcompany.sweetie.Firebase;
 
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,8 +41,9 @@ public class FirebaseRegisterController {
         return mInstance;
     }
 
-    public void saveUserData(String token, UserVM user) {
-        mRegisterDbReference.child("users").child(token).setValue(user);
+    public void saveUserData(UserVM user) {
+        SweetUser sweetUser= new SweetUser(user.getUsername(),user.getMail(),user.getPhone(),user.isGender());
+        mRegisterDbReference.child("users").child(user.getKey()).setValue(sweetUser);
     }
 
 
@@ -57,9 +57,11 @@ public class FirebaseRegisterController {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataSnapshot=dataSnapshot.getChildren().iterator().next();
-                SweetUser users = dataSnapshot.getValue(SweetUser.class);
+                String key = dataSnapshot.getKey();
+                SweetUser user = dataSnapshot.getValue(SweetUser.class);
+                user.setKey(key);
                 for (FirebaseRegisterController.OnFirebaseUserDataFound listener : mUserDataListeners) {
-                    listener.notifyUserFound(users);
+                    listener.notifyUserFound(user);
                 }
             }
 

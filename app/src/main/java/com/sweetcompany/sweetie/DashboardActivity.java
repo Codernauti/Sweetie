@@ -34,7 +34,7 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
         mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
         mViewPager.setAdapter(mAdapter);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.dashboard_toolbar);
         setSupportActionBar(myToolbar);
 
         setupTopTabber();

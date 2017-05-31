@@ -12,7 +12,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:elevation="4dp"
-
             android:background="?attr/colorPrimary"
             app2:theme="@style/ToolBarStyle"
         />
@@ -24,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/chat_toolbar"
         android:layout_above="@+id/chat_user_input_panel"
+        android:layout_marginTop="56dp"
         />
 
     <!--android.support.v7.recyclerview:stackFromEnd-->

@@ -4,6 +4,7 @@ package com.sweetcompany.sweetie.Registration;
 import com.sweetcompany.sweetie.Firebase.SweetUser;
 
 public class UserVM {
+    private String key;
     private String username;
     private String phone;
     private boolean gender;
@@ -11,18 +12,12 @@ public class UserVM {
 
     UserVM(){}
 
-    UserVM(String u, String p, String m, boolean g){
+    UserVM(String k,String u, String p, String m, boolean g){
+        this.key = k;
         this.username = u;
         this.phone = p;
         this.mail = m;
         this.gender = g;
-    }
-    UserVM(SweetUser sweetUser){
-
-        this.username = sweetUser.getUsername();
-        this.phone = sweetUser.getPhone();
-        this.gender = sweetUser.isGender();
-        this.mail = sweetUser.getEmail();
     }
 
     public String getUsername() {
@@ -38,4 +33,14 @@ public class UserVM {
     public boolean isGender() {
         return gender;
     }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+
 }

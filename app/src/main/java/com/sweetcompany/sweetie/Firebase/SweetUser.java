@@ -10,6 +10,8 @@ import java.sql.Date;
  */
 
 public class SweetUser {
+        @Exclude
+    private String key;
     private String username;
     private boolean gender;
     private String phone;
@@ -56,6 +58,11 @@ public class SweetUser {
         this.email = mEmail;
     }
 
+    public String getKey() {
+        return key;
+    }
 
-    //TODO ...
+    public void setKey(String key) {
+        this.key = key;
+    }
 }

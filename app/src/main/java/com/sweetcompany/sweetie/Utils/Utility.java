@@ -23,6 +23,7 @@ public class Utility {
     public static final String USERNAME = "username";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String GENDER = "gender";
+    public static final String TOKEN_PARTNER = "tokenPartner";
 
     //Method for saving a shared preference
     //How to use: pass the context, a key string and the data string; returns true if successfully saved

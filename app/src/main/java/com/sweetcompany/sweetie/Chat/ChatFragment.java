@@ -1,7 +1,9 @@
 package com.sweetcompany.sweetie.Chat;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -74,7 +76,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         mChatListView = (RecyclerView) root.findViewById(R.id.chat_list);
 
-        mToolBar = (Toolbar) root.findViewById(R.id.my_toolbar);
+        mToolBar = (Toolbar) root.findViewById(R.id.chat_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(mToolBar);
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -97,14 +99,14 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onAttach(Context context) {
+        super.onAttach(context);
         mPresenter.start();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDetach() {
+        super.onDetach();
         mPresenter.pause();
     }
 

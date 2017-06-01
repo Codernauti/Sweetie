@@ -5,7 +5,9 @@ import android.content.Context;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.sweetcompany.sweetie.Firebase.Couple;
 import com.sweetcompany.sweetie.Firebase.FirebaseLoginController;
+import com.sweetcompany.sweetie.Firebase.FirebasePairingController;
 import com.sweetcompany.sweetie.Firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.Firebase.PairingRequest;
 import com.sweetcompany.sweetie.Firebase.SweetUser;
@@ -18,10 +20,11 @@ import java.util.List;
  * Created by lucas on 22/05/2017.
  */
 
-public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLoginController.OnFirebaseLoginChecked, FirebaseRegisterController.OnFirebaseRegisterDataChange, FirebaseRegisterController.OnFirebaseUserDataFound{
+public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLoginController.OnFirebaseLoginChecked, FirebasePairingController.OnFirebasePairingDataChange, FirebaseRegisterController.OnFirebaseUserDataFound{
     public static final String TAG = "Registration.presenter";
     FirebaseRegisterController mFirebaseRegisterController;
     FirebaseLoginController mFirebaseLoginController;
+    FirebasePairingController mFirebasePairingController;
     RegisterContract.View mView;
 
     RegisterPresenter(RegisterContract.View view){
@@ -29,6 +32,7 @@ public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLog
         mView.setPresenter(this);
         mFirebaseRegisterController = FirebaseRegisterController.getInstance();
         mFirebaseLoginController = FirebaseLoginController.getInstance();
+        mFirebasePairingController = FirebasePairingController.getInstance();
     }
 
 
@@ -40,18 +44,25 @@ public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLog
     }
 
     @Override
-    public void saveUserData(Context mContext){
-        String token = Utility.getStringPreference(mContext,Utility.TOKEN);
-        UserVM user= new UserVM(Utility.getStringPreference(mContext,Utility.USERNAME),
-                Utility.getStringPreference(mContext,Utility.PHONE_NUMBER),
-                Utility.getStringPreference(mContext,Utility.MAIL),
-                Boolean.valueOf(Utility.getStringPreference(mContext,Utility.GENDER)));
-        mFirebaseRegisterController.saveUserData(token,user);
+    public void saveCoupleData(String idFirst, String idSecond) {
+        Couple couple = new Couple(idFirst,idSecond);
+        mFirebasePairingController.saveCouple(couple);
     }
 
     @Override
-    public void savePairingRequest(PairingRequestVM pairingRequest) {
-        mFirebaseRegisterController.saveRequest(pairingRequest);
+    public void saveUserData(Context mContext){
+        UserVM user= new UserVM(Utility.getStringPreference(mContext,Utility.TOKEN),
+                Utility.getStringPreference(mContext,Utility.USERNAME),
+                Utility.getStringPreference(mContext,Utility.PHONE_NUMBER),
+                Utility.getStringPreference(mContext,Utility.MAIL),
+                Boolean.valueOf(Utility.getStringPreference(mContext,Utility.GENDER)));
+        mFirebaseRegisterController.saveUserData(user);
+    }
+
+    @Override
+    public void savePairingRequest(String phoneSender,String phoneReceiver) {
+        PairingRequest pairingRequest = new PairingRequest(phoneSender,phoneReceiver);
+        mFirebasePairingController.saveRequest(pairingRequest);
     }
 
     @Override
@@ -68,27 +79,26 @@ public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLog
 
     @Override
     public void deletePairingRequest(String keyPairingRequest) {
-        mFirebaseRegisterController.deletePairingRequest(keyPairingRequest);
+        mFirebasePairingController.deletePairingRequest(keyPairingRequest);
     }
 
     @Override
     public void start() {
-        mFirebaseRegisterController.attachNetworkDatabase();
-        mFirebaseRegisterController.addListener(this);
+        mFirebasePairingController.attachNetworkDatabase();
+        mFirebasePairingController.addListener(this);
     }
 
     @Override
     public void pause() {
-        mFirebaseRegisterController.detachNetworkDatabase();
-        mFirebaseRegisterController.removeListener(this);
+        mFirebasePairingController.detachNetworkDatabase();
+        mFirebasePairingController.removeListener(this);
     }
 
     @Override
     public void notifyNewRequests(List<PairingRequest> pairingRequests) {
         List<PairingRequestVM> requestsVM = new ArrayList<>();
         for (PairingRequest rqst : pairingRequests) {
-            PairingRequestVM rqstVM = new PairingRequestVM(rqst.getSenderNumber(),rqst.getReceiverNumber());
-            rqstVM.setKey(rqst.getKey());
+            PairingRequestVM rqstVM = new PairingRequestVM(rqst.getKey(),rqst.getSenderNumber(),rqst.getReceiverNumber());
             requestsVM.add(rqstVM);
         }
         mView.updateRequest(requestsVM);
@@ -96,16 +106,21 @@ public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLog
 
     @Override
     public void notifyUserFound(SweetUser sweetUser) {
-        mView.notifyUser(new UserVM(sweetUser));
+        UserVM userVM = new UserVM(sweetUser.getKey(),sweetUser.getUsername(),sweetUser.getPhone(),
+                sweetUser.getEmail(),sweetUser.isGender());
+        mView.notifyUser(userVM);
     }
 
 
     @Override
-    public void notifyUserChecked(SweetUser user) {
-        if(user != null){
-        mView.notifyUserCheck(new UserVM(user));
+    public void notifyUserChecked(SweetUser sweetUser) {
+        if(sweetUser != null){
+        mView.notifyUserCheck(new UserVM(sweetUser.getKey(),sweetUser.getUsername(),sweetUser.getPhone(),
+                sweetUser.getEmail(),sweetUser.isGender()));
         }
         else
             mView.notifyUserCheck(null);
     }
+
+
 }

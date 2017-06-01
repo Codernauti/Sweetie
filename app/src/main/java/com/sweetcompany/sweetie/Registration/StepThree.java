@@ -28,7 +28,6 @@ import java.util.List;
 
 
 public class StepThree extends Fragment implements RegisterContract.View, View.OnClickListener {
-    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
 
     private static final int PICK_CONTACT = 1;
 
@@ -40,8 +39,6 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
     private String mPersonalPhoneNumber;
     private String mPhoneNumber;
     private String mKeyPairingRequest;
-    private DatabaseReference mReference;
-
     private RegisterContract.Presenter mPresenter;
 
 
@@ -65,7 +62,6 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
         mUsernameView = (TextView) view.findViewById(R.id.username_text_view);
         mAcceptButton = (Button) view.findViewById(R.id.accept_button);
         mDeclineButton = (Button) view.findViewById(R.id.decline_button);
-        mReference = FirebaseDatabase.getInstance().getReference().child("request");
         mPersonalPhoneNumber = Utility.getStringPreference(mContext,Utility.PHONE_NUMBER);
 
         mLinearLayout.setVisibility(View.GONE);
@@ -74,6 +70,7 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
         // Set click listeners
         mForwardButton.setOnClickListener(this);
         mDeclineButton.setOnClickListener(this);
+        mAcceptButton.setOnClickListener(this);
         mContactsButton.setOnClickListener(this);
         return view;
     }
@@ -94,12 +91,10 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fordward_button:
-                PairingRequestVM pairingRequest = new PairingRequestVM(Utility.getStringPreference(mContext,Utility.PHONE_NUMBER),
+                mPresenter.savePairingRequest(Utility.getStringPreference(mContext,Utility.PHONE_NUMBER),
                         mPhoneText.getText().toString());
-                mPresenter.savePairingRequest(pairingRequest);
                 Toast.makeText(getActivity(), "Request successfully sent!",
                         Toast.LENGTH_SHORT).show();
-                ((RegisterActivity) getActivity()).registrationCompleted();
                 break;
             case  R.id.image_contacts_icon:
                 Intent intent= new Intent(Intent.ACTION_PICK,  ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
@@ -108,7 +103,12 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
             case R.id.decline_button:
                 mPresenter.deletePairingRequest(mKeyPairingRequest);
                 mLinearLayout.setVisibility(View.GONE);
-
+                break;
+            case R.id.accept_button:
+                mPresenter.saveCoupleData(Utility.getStringPreference(mContext,Utility.TOKEN),Utility.getStringPreference(mContext,Utility.TOKEN_PARTNER));
+                mPresenter.deletePairingRequest(mKeyPairingRequest);
+                mLinearLayout.setVisibility(View.GONE);
+                ((RegisterActivity) getActivity()).registrationCompleted();
             default:
                 return;
         }
@@ -164,9 +164,12 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
 
     @Override
     public void notifyUser(UserVM userVM) {
-        mPhoneView.setText(userVM.getPhone());
-        mUsernameView.setText(userVM.getUsername());
-        mLinearLayout.setVisibility(View.VISIBLE);
+        if(userVM != null) {
+            mPhoneView.setText(userVM.getPhone());
+            mUsernameView.setText(userVM.getUsername());
+            mLinearLayout.setVisibility(View.VISIBLE);
+            Utility.saveStringPreference(mContext, Utility.TOKEN_PARTNER,userVM.getKey());
+        }
     }
 
     @Override

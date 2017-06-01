@@ -49,7 +49,7 @@ public class ActionsPresenter implements ActionsContract.Presenter, FirebaseActi
             switch (action.getType()) {
                 case 0:
                     newActionVM = new ActionChatVM(action.getTitle(), action.getDescription(),
-                            action.getTime(), action.getType(), action.getChildKey(), action.getA);
+                            action.getTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
                 case 1:

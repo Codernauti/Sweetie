@@ -70,7 +70,13 @@ public class ActionNewChatFragment extends DialogFragment {
                                     // TODO this is a responsability of the Presenter
                                     DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
                                     String date = df.format(Calendar.getInstance().getTime());
-                                    ActionFB action = new ActionFB(userInputChatTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
+
+                                    // TODO Se è stato tolto FirebaseConteoller e si utilizza solo il LoginController riaccorpare a lui le sue funzioni
+                                    // Come getFirebaseUser()
+
+                                    //ActionFB action = new ActionFB(userInputChatTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
+
+                                    ActionFB action = new ActionFB(userInputChatTitle, "Utente qualsiasi", "desc...", date, ActionFB.CHAT);
                                     List<String> keys = mFireBaseActionsController.pushChatAction(action, userInputChatTitle); // [0] : chatKey, [1] : actionKey
 
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);

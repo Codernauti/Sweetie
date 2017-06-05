@@ -51,7 +51,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
         ActionVM actionVM = mActionsList.get(position);
         holder.title.setText(actionVM.getTitle() + " " + position);
         holder.description.setText(actionVM.getDescription());
-        holder.date.setText(actionVM.getDataTime());
+        holder.date.setText(DataMaker.get_dd_MM_Local(actionVM.getDataTime()));
         holder.type.setImageResource(actionVM.getIconId());
     }
 

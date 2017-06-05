@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie.Chat;
 import android.view.View;
 
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.Utils.DataMaker;
 
 /**
  * Created by ghiro on 16/05/2017.
@@ -26,7 +27,7 @@ class TextMessageVM extends MessageVM {
         TextMessageViewHolder view = (TextMessageViewHolder) viewHolder;
 
         view.setText(mText);
-        view.setTextTime(super.getTime());
+        view.setTextTime(DataMaker.getHH_ss_Local(super.getTime()));
         view.setBookmark(super.isBookmarked());
     }
 

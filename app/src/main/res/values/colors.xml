@@ -14,4 +14,8 @@
     <color name="chat_background">#e6e6e6</color>
     <color name="textHighlight">#FFFFFF</color>
 
+    <color name="titleAction">#000000</color>
+    <color name="separatorAction">#E0E0E0</color>
+
+
 </resources>

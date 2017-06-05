@@ -71,7 +71,7 @@ public class ActionNewGalleryFragment extends DialogFragment {
 
                                     ActionFB action = null;
                                     try {
-                                        action = new ActionFB(userInputGalleryTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", DataMaker.get_UTC_DateTime(), ActionFB.PHOTO);
+                                        action = new ActionFB(userInputGalleryTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "", DataMaker.get_UTC_DateTime(), ActionFB.PHOTO);
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }

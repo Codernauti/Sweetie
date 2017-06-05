@@ -74,7 +74,7 @@ public class ActionNewChatFragment extends DialogFragment {
 
                                     ActionFB action = null;
                                     try {
-                                        action = new ActionFB(userInputChatTitle, "Utente qualsiasi", "desc...", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
+                                        action = new ActionFB(userInputChatTitle, "Utente qualsiasi", "", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }

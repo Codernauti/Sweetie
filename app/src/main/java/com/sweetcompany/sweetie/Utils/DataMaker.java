@@ -77,8 +77,8 @@ public class DataMaker {
     //     else (European and other)    return "dd/MM/yy"
     public static String get_Date_4_Action(String utc) throws ParseException {
         Date local = UTC_to_Local(utc);
-        String out;
 
+        String out = "";
         DateFormat localFormatDate = null;
         DateFormat localFormatTime = null;
 

@@ -83,6 +83,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         mActionsListView = (RecyclerView) root.findViewById(R.id.actions_list);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setReverseLayout(true); //
+        layoutManager.setStackFromEnd(true);  // ascendant order
         mActionsListView.setLayoutManager(layoutManager);
         mActionsListView.setAdapter(mActionAdapter);
 

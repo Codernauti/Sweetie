@@ -95,33 +95,4 @@ public class ActionFB {
         return this.childKey;
     }
 
-    @Exclude
-    public String getTime() {
-        if (dateTime != null) {
-            // TODO: hardcoded indexes!
-            /*int indexSpace = 11;
-            int indexLastDots = 16;
-            String time = dateTime.substring(indexSpace, indexLastDots);*/
-
-            try {
-                // get Date from dateTime (standard format)
-                DateFormat standardFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-                Date date = standardFormat.parse(dateTime);
-
-                // TODO: choice date based from local device settings
-                DateFormat viewFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm", Locale.US);
-
-                // convert Date to the view format to show to user
-                String viewFormatString = viewFormat.format(date);
-
-                Log.d("DateTime Debug", "Time from substring: " + viewFormatString);
-                return viewFormatString;
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return "no time";
-            }
-        }
-        else return "no time";
-    }
 }

@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app2="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_action_item">
 
@@ -11,9 +12,8 @@
             android:id="@+id/image_action_list_item"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="2.5dp"
-            android:layout_marginStart="6dp"
+            android:layout_marginTop="3dp"
+        android:layout_marginStart="6dp"
             android:elevation="3dp"
 
             android:src="@drawable/test_female_user_icon_192x192"
@@ -63,7 +63,6 @@
         android:id="@+id/date_action_list_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="18dp"
         android:gravity="center"
@@ -93,11 +92,11 @@
         />
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
+        android:layout_width="368dp"
+        android:layout_height="1dp"
         android:background="@color/separatorAction"
 
         app2:layout_constraintBottom_toBottomOf="parent"
-        />
+        tools:layout_editor_absoluteX="8dp" />
 
 </android.support.constraint.ConstraintLayout>

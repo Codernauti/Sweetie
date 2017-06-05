@@ -174,6 +174,9 @@ public class FirebaseChatController {
         DatabaseReference mActionReference = FirebaseDatabase.getInstance()
                 .getReference().child("actions").child(actionKey).child("description");
         mActionReference.setValue(msg.getText());
+        mActionReference = FirebaseDatabase.getInstance()
+                .getReference().child("actions").child(actionKey).child("dataTime");
+        mActionReference.setValue(msg.getDateTime());
     }
 
     // TEST GHIRO

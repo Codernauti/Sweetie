@@ -15,8 +15,10 @@ import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.Gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.Utils.DataMaker;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -66,9 +68,13 @@ public class ActionNewGalleryFragment extends DialogFragment {
 
                                 if (!userInputGalleryTitle.isEmpty()) {
 
-                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                    String date = df.format(Calendar.getInstance().getTime());
-                                    ActionFB action = new ActionFB(userInputGalleryTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.PHOTO);
+
+                                    ActionFB action = null;
+                                    try {
+                                        action = new ActionFB(userInputGalleryTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", DataMaker.get_UTC_DateTime(), ActionFB.PHOTO);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                     mFireBaseActionsController.pushAction(action);
 
 

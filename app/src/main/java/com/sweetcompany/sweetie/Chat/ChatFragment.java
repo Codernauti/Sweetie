@@ -18,7 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.Utils.DataMaker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -151,14 +153,13 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         if (!inputText.isEmpty()) {
             // TODO: is this responsibility of fragment?
 
-            Date currentTime = Calendar.getInstance().getTime();
-            // TODO: search correct time zone and change DataFormate based to android setting
-            // check http://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
-            String stringCurrentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(currentTime);
-            Log.d(TAG, "Current time: " + stringCurrentTime);
 
-            MessageVM newMessage =
-                    new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, stringCurrentTime, false, null);
+            MessageVM newMessage = null;
+            try {
+                newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
             // TODO: update view to feedback user if he is offline
             //mChatAdapter.addMessage(newMessage);

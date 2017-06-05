@@ -15,8 +15,10 @@ import com.sweetcompany.sweetie.Firebase.ActionFB;
 import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.Utils.DataMaker;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -67,16 +69,15 @@ public class ActionNewChatFragment extends DialogFragment {
 
                                 if (!userInputChatTitle.isEmpty()) {
 
-                                    // TODO this is a responsability of the Presenter
-                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
-                                    String date = df.format(Calendar.getInstance().getTime());
-
-                                    // TODO Se è stato tolto FirebaseConteoller e si utilizza solo il LoginController riaccorpare a lui le sue funzioni
-                                    // Come getFirebaseUser()
-
+                                    // TODO ripristinare getDisplayName()
                                     //ActionFB action = new ActionFB(userInputChatTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
 
-                                    ActionFB action = new ActionFB(userInputChatTitle, "Utente qualsiasi", "desc...", date, ActionFB.CHAT);
+                                    ActionFB action = null;
+                                    try {
+                                        action = new ActionFB(userInputChatTitle, "Utente qualsiasi", "desc...", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                     List<String> keys = mFireBaseActionsController.pushChatAction(action, userInputChatTitle); // [0] : chatKey, [1] : actionKey
 
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);

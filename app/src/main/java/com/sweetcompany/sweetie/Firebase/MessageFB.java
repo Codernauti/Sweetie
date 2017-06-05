@@ -66,20 +66,6 @@ public class MessageFB {
     }
 
     @Exclude
-    public String getTime() {
-        // TODO: not reliable method; Hardcoded indexes
-        if (dateTime != null) {
-            int indexStartHours = 11; //dateTime.lastIndexOf(" " + 1);
-            int indexEndMinutes = 16; //dateTime.lastIndexOf(":");
-            // take substring from char[12] to char[16]
-            String time = dateTime.substring(indexStartHours, indexEndMinutes);
-            Log.d("DateTime Debug", "Time from substring: " + time);
-            return time;
-        }
-        else return "no time";
-    }
-
-    @Exclude
     @Override
     public String toString() {
         return "{" +

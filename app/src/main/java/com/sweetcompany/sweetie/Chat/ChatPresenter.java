@@ -118,7 +118,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.On
             }
         }
         // Create respective ViewModel
-        return new TextMessageVM(message.getText(), who, message.getTime(),
+        return new TextMessageVM(message.getText(), who, message.getDateTime(),
                 message.isBookmarked(), message.getKey());
     }
 

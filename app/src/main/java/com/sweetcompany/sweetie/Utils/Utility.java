@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
+import android.icu.util.TimeZone;
 import android.util.Log;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static java.util.Calendar.DATE;
 
@@ -52,21 +55,6 @@ public class Utility {
     static public String getStringPreference(Context context,String key){
         SharedPreferences setting = context.getSharedPreferences(key, 0);
         return setting.getString(key,"error");
-    };
-
-    // TODO
-    // Give dateTime
-    // return data formatted for Actions
-    // es: Give (24/05/17 22:00:01)
-    //     if date of today             return "22:00"
-    //     if date of yesterday         return "TOMORROW/IERI"
-    //     if date past                 return "24/05/17"
-    public static String getDateFormattedForActions(String data){
-        String mData = data;
-
-        //Calendar rightNow = Calendar.getInstance();
-        //rightNow.getTime();
-
-        return mData;
     }
+
 }

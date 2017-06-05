@@ -84,7 +84,8 @@ public class FirebaseActionsController {
                 }
             };
 
-            mActionsDbReference.addValueEventListener(mActionsEventListener);
+            // TODO test much more sorting
+            mActionsDbReference.orderByChild("dataTime").addValueEventListener(mActionsEventListener);
         }
     }
 

@@ -54,7 +54,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_photo_camera_black_48dp"/>
+                android:src="@drawable/ic_photo_camera"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

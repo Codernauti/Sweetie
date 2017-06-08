@@ -34,6 +34,6 @@ class ActionGalleryVM extends ActionVM {
 
     @Override
     public int getIconId() {
-        return R.drawable.ic_photo_camera_black_48dp;
+        return R.drawable.ic_photo_camera;
     }
 }

@@ -41,6 +41,6 @@ class ActionChatVM extends ActionVM {
 
     @Override
     public int getIconId() {
-        return R.drawable.ic_message;
+        return R.drawable.action_chat_icon;
     }
 }

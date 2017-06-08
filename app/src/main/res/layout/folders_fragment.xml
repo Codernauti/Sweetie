@@ -8,6 +8,7 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="390dp"
+        android:layout_marginTop="20dp"
         android:columnCount="2"
         android:rowCount="2">
 
@@ -28,7 +29,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_message"/>
+                android:src="@drawable/action_chat_icon"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -54,7 +55,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_photo_camera"/>
+                android:src="@drawable/action_photo_icon"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

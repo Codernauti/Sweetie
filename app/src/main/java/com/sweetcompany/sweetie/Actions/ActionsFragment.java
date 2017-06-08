@@ -141,15 +141,15 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             }
         });
 
-        mActionsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*mActionsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                /*
-                ** hide FAB only during the scolling (UP or DOWN)
-                ** TODO : when reached the bottom hide anyway
-                **/
+
+                //** hide FAB only during the scolling (UP or DOWN)
+                //** TODO : when reached the bottom hide anyway
+
                 if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
                     onScrolledUp();
                 } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
@@ -163,7 +163,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
             }
-        });
+        });*/
 
 
         return root;

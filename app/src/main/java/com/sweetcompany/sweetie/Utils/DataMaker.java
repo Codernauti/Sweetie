@@ -18,10 +18,9 @@ import java.util.Locale;
 
 public class DataMaker {
 
-
+    public static SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public static String get_UTC_DateTime() throws ParseException {
-        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Calendar today = Calendar.getInstance();
 
@@ -29,7 +28,6 @@ public class DataMaker {
     }
 
     public static String get_Local_DateTime() throws ParseException {
-        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         isoFormat.setTimeZone(TimeZone.getDefault());
         Calendar today = Calendar.getInstance();
 
@@ -37,7 +35,6 @@ public class DataMaker {
     }
 
     public static Date UTC_to_Local (String utc){
-        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date parsed = null;
         try {

@@ -46,6 +46,7 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,7 +66,6 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
         mPersonalPhoneNumber = Utility.getStringPreference(mContext,Utility.PHONE_NUMBER);
 
         mLinearLayout.setVisibility(View.GONE);
-
 
         // Set click listeners
         mForwardButton.setOnClickListener(this);
@@ -93,8 +93,7 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
             case R.id.fordward_button:
                 mPresenter.savePairingRequest(Utility.getStringPreference(mContext,Utility.PHONE_NUMBER),
                         mPhoneText.getText().toString());
-                Toast.makeText(getActivity(), "Request successfully sent!",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Request successfully sent!", Toast.LENGTH_SHORT).show();
                 break;
             case  R.id.image_contacts_icon:
                 Intent intent= new Intent(Intent.ACTION_PICK,  ContactsContract.CommonDataKinds.Phone.CONTENT_URI);
@@ -105,12 +104,13 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
                 mLinearLayout.setVisibility(View.GONE);
                 break;
             case R.id.accept_button:
-                mPresenter.saveCoupleData(Utility.getStringPreference(mContext,Utility.TOKEN),Utility.getStringPreference(mContext,Utility.TOKEN_PARTNER));
+                mPresenter.saveCoupleData(Utility.getStringPreference(mContext,Utility.TOKEN),
+                                    Utility.getStringPreference(mContext,Utility.TOKEN_PARTNER));
                 mPresenter.deletePairingRequest(mKeyPairingRequest);
                 mLinearLayout.setVisibility(View.GONE);
                 ((RegisterActivity) getActivity()).registrationCompleted();
             default:
-                return;
+                break;
         }
     }
 
@@ -136,7 +136,7 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
             Uri uri = data.getData();
             cursor = getContext().getContentResolver().query(uri, null, null, null, null);
             cursor.moveToFirst();
-            int  phoneIndex =cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            int  phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
             phoneNo = cursor.getString(phoneIndex);
             return phoneNo;
         } catch (Exception e) {

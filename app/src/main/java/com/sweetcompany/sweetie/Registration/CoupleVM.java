@@ -8,18 +8,9 @@ import com.sweetcompany.sweetie.Firebase.Couple;
  */
 
 public class CoupleVM {
-    String key;
-    String idFirst;
-    String idSecond;
-
-
-    public CoupleVM(){}
-
-    public CoupleVM(String key, String idFirst, String idSecond) {
-        this.key = key;
-        this.idFirst = idFirst;
-        this.idSecond = idSecond;
-    }
+    private String key;
+    private String idFirst;
+    private String idSecond;
 
     public String getIdFirst() {
         return idFirst;

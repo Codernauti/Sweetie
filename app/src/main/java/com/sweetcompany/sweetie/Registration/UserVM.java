@@ -1,8 +1,5 @@
 package com.sweetcompany.sweetie.Registration;
 
-
-import com.sweetcompany.sweetie.Firebase.SweetUser;
-
 public class UserVM {
     private String key;
     private String username;

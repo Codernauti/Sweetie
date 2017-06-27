@@ -12,7 +12,7 @@ import java.util.List;
  * Created by lucas on 16/05/2017.
  */
 
-public interface RegisterContract {
+interface RegisterContract {
     interface View {
         void setPresenter(RegisterContract.Presenter presenter);
         void updateRequest(List<PairingRequestVM> pairingRequestsVM);
@@ -20,11 +20,14 @@ public interface RegisterContract {
         void notifyUserCheck(UserVM userVM);
     }
     interface Presenter {
+        // StepOne
+        void attachUserCheckListener(String key);
+        // StepTwo
         void saveCoupleData(String idFirst, String idSecond);
+        // StepThree
         void saveUserData(Context mContext);
         void savePairingRequest(String phoneSender,String phoneReceiver);
         void attachUserDataListener(String orderByType, String equalsToData);
-        void attachUserCheckListener(String key);
         void deletePairingRequest(String keyPairingRequest);
         void start();
         void pause();

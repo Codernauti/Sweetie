@@ -20,12 +20,17 @@ import java.util.List;
  * Created by lucas on 22/05/2017.
  */
 
-public class RegisterPresenter implements RegisterContract.Presenter,FirebaseLoginController.OnFirebaseLoginChecked, FirebasePairingController.OnFirebasePairingDataChange, FirebaseRegisterController.OnFirebaseUserDataFound{
+public class RegisterPresenter implements RegisterContract.Presenter,
+                                        FirebaseLoginController.OnFirebaseLoginChecked,
+                                        FirebasePairingController.OnFirebasePairingDataChange,
+                                        FirebaseRegisterController.OnFirebaseUserDataFound {
+
     public static final String TAG = "Registration.presenter";
-    FirebaseRegisterController mFirebaseRegisterController;
-    FirebaseLoginController mFirebaseLoginController;
-    FirebasePairingController mFirebasePairingController;
-    RegisterContract.View mView;
+
+    private FirebaseRegisterController mFirebaseRegisterController;
+    private FirebaseLoginController mFirebaseLoginController;
+    private FirebasePairingController mFirebasePairingController;
+    private RegisterContract.View mView;
 
     RegisterPresenter(RegisterContract.View view){
         mView = view;

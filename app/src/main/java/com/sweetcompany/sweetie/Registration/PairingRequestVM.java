@@ -7,7 +7,9 @@ import com.google.firebase.database.Exclude;
  */
 
 public class PairingRequestVM {
-    String key, senderNumber, receiverNumber;
+    private String key;
+    private String senderNumber;
+    private String receiverNumber;
 
     PairingRequestVM(){}
 

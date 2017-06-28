@@ -179,10 +179,11 @@ public class FirebaseChatController {
         mActionReference.setValue(msg.getDateTime());
     }
 
-    // TEST GHIRO
+    // push message to db and update action of this chat
     public void sendMessage(MessageFB msg, String actionKey) {
         if (mSingleChatMessagesReference != null) {
             Log.d(TAG, "Send MessageFB: " + msg);
+            // TODO: use updateChildren not two setValue calls, it is not an atomic operation
             mSingleChatMessagesReference.push().setValue(msg);
             updateActionLastMessage(actionKey, msg);
         }

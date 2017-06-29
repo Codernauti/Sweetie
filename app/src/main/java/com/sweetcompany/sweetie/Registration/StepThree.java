@@ -94,6 +94,7 @@ public class StepThree extends Fragment implements RegisterContract.View, View.O
                 mPresenter.savePairingRequest(Utility.getStringPreference(mContext,Utility.PHONE_NUMBER),
                         mPhoneText.getText().toString());
                 Toast.makeText(getActivity(), "Request successfully sent!", Toast.LENGTH_SHORT).show();
+                ((RegisterActivity) getActivity()).registrationCompleted();
                 break;
             case  R.id.image_contacts_icon:
                 Intent intent= new Intent(Intent.ACTION_PICK,  ContactsContract.CommonDataKinds.Phone.CONTENT_URI);

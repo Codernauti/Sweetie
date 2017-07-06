@@ -8,29 +8,38 @@ import com.sweetcompany.sweetie.DashboardActivity;
 import com.sweetcompany.sweetie.R;
 
 
-public class RegisterActivity extends AppCompatActivity{
+public class RegisterActivity extends AppCompatActivity {
 
-    StepOne mFragment;
-    FragmentTransaction mTransaction;
-    RegisterPresenter mPresenter;
+    private StepOne mView;
+    private FragmentTransaction mTransaction;
+
+    private RegisterPresenter mPresenter;
+    private PairingPresenter mPairingPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_layout);
-        mFragment = new StepOne();
+
+        mView = new StepOne();
         mTransaction = getSupportFragmentManager().beginTransaction();
-        mTransaction.add(R.id.register_fragment_container,mFragment);
+        mTransaction.add(R.id.register_fragment_container, mView);
         mTransaction.commit();
 
-        mPresenter = new RegisterPresenter(mFragment);
+        mPresenter = new RegisterPresenter(mView);
     }
 
     public void setPresenter(RegisterContract.View view){
         mPresenter = mPresenter.setView(view);
     }
+
     public void registrationCompleted(){
         startActivity(new Intent(this, DashboardActivity.class));
+    }
+
+    public void initAndOpenPairingFragment() {
+        Intent intent = new Intent(this, PairingActivity.class);
+        startActivity(intent);
     }
 
 }

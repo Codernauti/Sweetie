@@ -32,6 +32,7 @@ import com.sweetcompany.sweetie.Utils.Utility;
 
 import java.util.List;
 
+// TODO: extract firebase dependencies
 public class StepOne extends Fragment implements RegisterContract.View, View.OnClickListener,GoogleApiClient.OnConnectionFailedListener{
 
 
@@ -139,7 +140,7 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
                             setProgressBarVisibile(true);
                         } else {
                             //save id token
-                            Utility.saveStringPreference(mContext,Utility.TOKEN,task.getResult().getUser().getUid());
+                            Utility.saveStringPreference(mContext,Utility.USER_UID,task.getResult().getUser().getUid());
                             Utility.saveStringPreference(mContext,Utility.MAIL,task.getResult().getUser().getEmail());
 
                             mPresenter.attachUserCheckListener(task.getResult().getUser().getUid());

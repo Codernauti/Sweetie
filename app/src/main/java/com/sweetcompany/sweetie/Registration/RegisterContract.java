@@ -1,10 +1,6 @@
 package com.sweetcompany.sweetie.Registration;
 
-import android.app.Activity;
 import android.content.Context;
-
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.sweetcompany.sweetie.Firebase.PairingRequest;
 
 import java.util.List;
 
@@ -19,18 +15,13 @@ interface RegisterContract {
         void notifyUser(UserVM usersVM);
         void notifyUserCheck(UserVM userVM);
     }
+
     interface Presenter {
         // StepOne
         void attachUserCheckListener(String key);
         // StepTwo
-        void saveCoupleData(String idFirst, String idSecond);
-        // StepThree
         void saveUserData(Context mContext);
-        void savePairingRequest(String phoneSender,String phoneReceiver);
-        void attachUserDataListener(String orderByType, String equalsToData);
-        void deletePairingRequest(String keyPairingRequest);
-        void start();
-        void pause();
     }
+
 }
 

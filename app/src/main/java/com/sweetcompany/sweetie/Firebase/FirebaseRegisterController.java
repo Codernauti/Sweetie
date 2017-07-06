@@ -31,7 +31,7 @@ public class FirebaseRegisterController {
     }
 
     public interface OnFirebaseUserDataFound {
-        void notifyUserFound(SweetUser sweetUser);
+        void notifyUserFound(UserFB userFB);
     }
 
     public static FirebaseRegisterController getInstance() {
@@ -42,8 +42,8 @@ public class FirebaseRegisterController {
     }
 
     public void saveUserData(UserVM user) {
-        SweetUser sweetUser= new SweetUser(user.getUsername(),user.getMail(),user.getPhone(),user.isGender());
-        mRegisterDbReference.child("users").child(user.getKey()).setValue(sweetUser);
+        UserFB userFB = new UserFB(user.getUsername(),user.getMail(),user.getPhone(),user.isGender());
+        mRegisterDbReference.child("users").child(user.getKey()).setValue(userFB);
     }
 
 
@@ -58,7 +58,7 @@ public class FirebaseRegisterController {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataSnapshot=dataSnapshot.getChildren().iterator().next();
                 String key = dataSnapshot.getKey();
-                SweetUser user = dataSnapshot.getValue(SweetUser.class);
+                UserFB user = dataSnapshot.getValue(UserFB.class);
                 user.setKey(key);
                 for (FirebaseRegisterController.OnFirebaseUserDataFound listener : mUserDataListeners) {
                     listener.notifyUserFound(user);

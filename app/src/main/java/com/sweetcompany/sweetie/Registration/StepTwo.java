@@ -83,6 +83,7 @@ public class StepTwo extends Fragment implements RegisterContract.View, View.OnC
     }
 
     private void savePreferences() {
+        //TODO Check if not empty
         String mUsername = mUsernameText.getText().toString();
         String mPhoneNumber = mPhoneText.getText().toString();
         boolean mGender = mRadio.isChecked();

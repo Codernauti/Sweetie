@@ -74,7 +74,7 @@ class PairingPresenter implements PairingContract.Presenter,
 
     @Override
     public void onSearchUserWithPhoneNumberFinished(UserFB user) {
-        mFirebasePairingController.createNewPairingRequest(user);
+        mFirebasePairingController.createNewPairingRequest(user, mUserPhoneNumber);
     }
 
     @Override

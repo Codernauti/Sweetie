@@ -14,7 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.sweetcompany.sweetie.Gallery.GalleryActivity;
+import com.sweetcompany.sweetie.Registration.PairingActivity;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 public class DashboardActivity extends AppCompatActivity implements IPageChanger {
 
@@ -68,12 +71,19 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.sign_out_menu:
-                startActivity(new Intent(DashboardActivity.this, MainActivity.class));
-                finish();
+            case R.id.menu_sign_out:
+                // TODO: extract these lines of code
+                Utility.saveStringPreference(this, Utility.USER_UID, "error");
+                Utility.saveStringPreference(this, Utility.MAIL, "error");
+                FirebaseAuth.getInstance().signOut();
+
+                startActivity(new Intent(this, MainActivity.class));
                 return true;
-            case R.id.fake_gallery_menu:
+            case R.id.menu_fake_gallery:
                 startActivity(new Intent(this, GalleryActivity.class));
+                return true;
+            case R.id.menu_send_couple_request:
+                startActivity(new Intent(this, PairingActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

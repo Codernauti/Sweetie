@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,7 @@ public class StepTwo extends Fragment implements RegisterContract.View, View.OnC
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.register_step_two, container, false);
         // Assign fields
-        mForwardButton = (Button) view.findViewById(R.id.fordward_button);
+        mForwardButton = (Button) view.findViewById(R.id.pairing_send_button);
         mUsernameText = (EditText) view.findViewById(R.id.username_input);
         mPhoneText = (EditText) view.findViewById(R.id.phone_input);
         mRadio = (RadioButton)view.findViewById(R.id.radio_button_male);
@@ -59,10 +58,13 @@ public class StepTwo extends Fragment implements RegisterContract.View, View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.fordward_button:
+            case R.id.pairing_send_button:
                 savePreferences();
                 mPresenter.saveUserData(mContext);
-                StepThree mFragment = new StepThree();
+
+                ((RegisterActivity) getActivity()).initAndOpenPairingFragment();
+
+                /*PairingFragment nextFragment = new PairingFragment();
                 FragmentTransaction mTransaction = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left,
@@ -70,9 +72,10 @@ public class StepTwo extends Fragment implements RegisterContract.View, View.OnC
                         R.anim.slide_out_right
                 );
                 mTransaction.addToBackStack("stepTwo");
-                mTransaction.replace(R.id.register_fragment_container,mFragment);
+                mTransaction.replace(R.id.register_fragment_container, nextFragment);
                 mTransaction.commit();
-                ((RegisterActivity) getActivity()).setPresenter(mFragment);
+                ((RegisterActivity) getActivity()).setPresenter(nextFragment);*/
+
                 break;
             default:
                 return;

@@ -2,17 +2,7 @@ package com.sweetcompany.sweetie.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.TimeZone;
 import android.util.Log;
-
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-import static java.util.Calendar.DATE;
 
 /**
  * Created by lucas on 22/05/2017.
@@ -21,12 +11,12 @@ import static java.util.Calendar.DATE;
 public class Utility {
 
     // Key strings for get a shared preference
-    public static final String TOKEN = "token";
+    public static final String USER_UID = "user_uid";
     public static final String MAIL = "mail";
     public static final String USERNAME = "username";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String GENDER = "gender";
-    public static final String TOKEN_PARTNER = "tokenPartner";
+    public static final String PARTNER_UID = "partner_uid";
 
     //Method for saving a shared preference
     //How to use: pass the context, a key string and the data string; returns true if successfully saved
@@ -41,7 +31,7 @@ public class Utility {
 
     //
     static public boolean checkPreferencesSetted(Context context){
-        if(getStringPreference(context,TOKEN) != "error"){
+        if(getStringPreference(context, USER_UID) != "error"){
             if(getStringPreference(context,MAIL) != "error"){
                 return true;
             }

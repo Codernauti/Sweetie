@@ -57,7 +57,7 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/fordward_button"
+        android:id="@+id/pairing_send_button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"

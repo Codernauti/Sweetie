@@ -51,6 +51,8 @@ public class FirebasePairingController {
         mUsers = database.getReference().child(USERS_NODE);
         mPairingRequests = database.getReference().child(PAIRING_REQUESTS_NODE);
         mCouples = database.getReference().child(COUPLES_NODE);
+
+        mUserPairingRequests.keepSynced(true);
     }
 
 
@@ -129,8 +131,8 @@ public class FirebasePairingController {
         });
     }
 
-    public void createNewPairingRequest(UserFB user) {
-        PairingRequestFB newRequest = new PairingRequestFB(user.getPhone());
+    public void createNewPairingRequest(UserFB user, String userPhoneNumber) {
+        PairingRequestFB newRequest = new PairingRequestFB(userPhoneNumber);
         mPairingRequests.child(user.getKey())
                         .child(mUserId)
                         .setValue(newRequest)

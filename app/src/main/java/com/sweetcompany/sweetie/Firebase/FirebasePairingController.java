@@ -15,7 +15,9 @@ import com.sweetcompany.sweetie.Utils.DataMaker;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lucas on 30/05/2017.
@@ -23,9 +25,6 @@ import java.util.List;
 
 public class FirebasePairingController {
     private static final String TAG = "FirebasePairingControl";
-    private static final String PAIRING_REQUESTS_NODE = "pairing-requests";
-    private static final String USERS_NODE = "users";
-    private static final String COUPLES_NODE = "couples";
 
     private List<OnFirebasePairingListener> mListeners;
     private final String mUserId;
@@ -47,10 +46,10 @@ public class FirebasePairingController {
         mUserId = userUid;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mUserPairingRequests = database.getReference().child(PAIRING_REQUESTS_NODE).child(mUserId);
-        mUsers = database.getReference().child(USERS_NODE);
-        mPairingRequests = database.getReference().child(PAIRING_REQUESTS_NODE);
-        mCouples = database.getReference().child(COUPLES_NODE);
+        mUserPairingRequests = database.getReference().child(Constraints.PAIRING_REQUESTS_NODE).child(mUserId);
+        mUsers = database.getReference().child(Constraints.USERS_NODE);
+        mPairingRequests = database.getReference().child(Constraints.PAIRING_REQUESTS_NODE);
+        mCouples = database.getReference().child(Constraints.COUPLES_NODE);
 
         mUserPairingRequests.keepSynced(true);
     }
@@ -62,7 +61,8 @@ public class FirebasePairingController {
 
 
     public void downloadPairingRequest() {
-        // N.B. if we attach a ValueEventListener when we remove the request this listener start a callback
+        // N.B. we use a SingleEventListener because
+        // if we attach a ValueEventListener when we remove the request this listener start a callback
         mUserPairingRequests.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -87,9 +87,12 @@ public class FirebasePairingController {
 
     public void createNewCouple(String userUid, String partnerUid) {
         try {
-            CoupleFB newCouple = new CoupleFB(userUid, partnerUid, DataMaker.get_UTC_DateTime());
+            String now = DataMaker.get_UTC_DateTime();
+            CoupleFB newCouple = new CoupleFB(userUid, partnerUid, now);
             mUserPairingRequests.child(partnerUid).removeValue();
-            mCouples.push().setValue(newCouple)
+
+            DatabaseReference newCoupleRef = mCouples.push();
+            newCoupleRef.setValue(newCouple)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -98,11 +101,20 @@ public class FirebasePairingController {
                     }
                 }
             });
+
+            // create a couple-info object
+            CoupleInfoFB coupleInfo = new CoupleInfoFB(newCoupleRef.getKey(), now);
+
+            // update "/users/<userUid>/couple-info/" and "/users/<partnerUid>/couple-info/"
+            Map<String, Object> usersCoupleUpdates = new HashMap<>();
+            usersCoupleUpdates.put(userUid + "/" + Constraints.COUPLE_INFO_NODE, coupleInfo);
+            usersCoupleUpdates.put(partnerUid + "/" + Constraints.COUPLE_INFO_NODE, coupleInfo);
+
+            mUsers.updateChildren(usersCoupleUpdates);
         }
         catch (ParseException ex) {
             Log.d(TAG, ex.getMessage());
         }
-
     }
 
     public void searchUserWithPhoneNumber(final String phonePartner) {

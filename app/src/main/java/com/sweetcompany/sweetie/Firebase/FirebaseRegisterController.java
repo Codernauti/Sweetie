@@ -1,12 +1,12 @@
 package com.sweetcompany.sweetie.Firebase;
 
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.sweetcompany.sweetie.Registration.UserVM;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,51 +17,50 @@ import java.util.List;
  */
 
 public class FirebaseRegisterController {
-    private static final String TAG = "FirebaseRegistrerController";
+    private static final String TAG = "FbRegistrerController";
 
-    private final DatabaseReference mRegisterDbReference;
-    private List<OnFirebaseUserDataFound> mUserDataListeners;
-    private static FirebaseRegisterController mInstance;
+    private final DatabaseReference mUsers;
+    private List<FbRegisterControllerListener> mListeners = new ArrayList<>();
 
-
-    private FirebaseRegisterController() {
-        mUserDataListeners = new ArrayList<>();
-        this.mRegisterDbReference = FirebaseDatabase.getInstance()
-                .getReference();
+    public interface FbRegisterControllerListener {
+        void onUserPushed();
     }
 
-    public interface OnFirebaseUserDataFound {
-        void notifyUserFound(UserFB userFB);
+    public FirebaseRegisterController() {
+        mUsers = FirebaseDatabase.getInstance().getReference(Constraints.USERS_NODE);
     }
 
-    public static FirebaseRegisterController getInstance() {
-        if (mInstance == null) {
-            mInstance = new FirebaseRegisterController();
-        }
-        return mInstance;
+    public void saveUserData(UserFB user) {
+        // use auth user uid for id of firebase /users/<user_uid>/"user"
+        mUsers.child(user.getKey())
+                .setValue(user)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        for(FbRegisterControllerListener listener : mListeners) {
+                            listener.onUserPushed();
+                        }
+                    }
+                });
     }
 
-    public void saveUserData(UserVM user) {
-        UserFB userFB = new UserFB(user.getUsername(),user.getMail(),user.getPhone(),user.isGender());
-        mRegisterDbReference.child("users").child(user.getKey()).setValue(userFB);
+    public void addListener(FbRegisterControllerListener listener) {
+        mListeners.add(listener);
     }
-
-
-    public void addUserDataListener(OnFirebaseUserDataFound listener) {mUserDataListeners.add(listener);}
-
 
 
     //method for quering the database for getting data
-    public void retrieveUserDataFromQuery(String orderBy, String endAt){
-        mRegisterDbReference.child("users").orderByChild(orderBy).equalTo(endAt).addListenerForSingleValueEvent(new ValueEventListener() {
+    /*public void retrieveUserDataFromQuery(String orderBy, String endAt){
+        mUsers.orderByChild(orderBy).equalTo(endAt).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dataSnapshot=dataSnapshot.getChildren().iterator().next();
                 String key = dataSnapshot.getKey();
                 UserFB user = dataSnapshot.getValue(UserFB.class);
                 user.setKey(key);
-                for (FirebaseRegisterController.OnFirebaseUserDataFound listener : mUserDataListeners) {
-                    listener.notifyUserFound(user);
+                for (FbRegisterControllerListener listener : mListeners) {
+                    listener.onUserPushed(user);
                 }
             }
 
@@ -69,5 +68,5 @@ public class FirebaseRegisterController {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-    }
+    }*/
 }

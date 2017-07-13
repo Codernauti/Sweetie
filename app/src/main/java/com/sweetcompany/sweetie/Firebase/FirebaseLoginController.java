@@ -14,39 +14,31 @@ import java.util.List;
  */
 
 public class FirebaseLoginController{
-    private static final String TAG = "FirebaseRegistrerController";
-    private static final int RC_SIGN_IN = 9001;
+    private static final String TAG = "FbRegistrerController";
 
     private final DatabaseReference mRegisterDbReference;
-    private List<FirebaseLoginController.OnFirebaseLoginChecked> mListeners;
-    private static FirebaseLoginController mInstance;
+    private List<FbLoginControllerListener> mListeners = new ArrayList<>();;
 
-    private FirebaseLoginController() {
-        mListeners = new ArrayList<>();
-        this.mRegisterDbReference = FirebaseDatabase.getInstance()
-                .getReference();
+    public interface FbLoginControllerListener {
+        void onUserDownloadFinished(UserFB user);
     }
 
-    public interface OnFirebaseLoginChecked {
-        void notifyUserChecked(UserFB user);
+    public FirebaseLoginController() {
+        mRegisterDbReference = FirebaseDatabase.getInstance().getReference();
     }
 
-    public static FirebaseLoginController getInstance() {
-        if (mInstance == null) {
-            mInstance = new FirebaseLoginController();
-        }
-        return mInstance;
-    }
 
-    public void addUserCheckListener(OnFirebaseLoginChecked listener) {mListeners.add(listener);}
+    public void addListener(FbLoginControllerListener listener) { mListeners.add(listener); }
+
+    public void removeListener(FbLoginControllerListener listener) { mListeners.remove(listener); }
 
     public void retrieveUserDataFromQuery(String key){
         mRegisterDbReference.child("users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserFB user = dataSnapshot.getValue(UserFB.class);
-                for (FirebaseLoginController.OnFirebaseLoginChecked listener : mListeners) {
-                    listener.notifyUserChecked(user);
+                for (FbLoginControllerListener listener : mListeners) {
+                    listener.onUserDownloadFinished(user);
                 }
             }
 

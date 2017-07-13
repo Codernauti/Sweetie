@@ -1,76 +1,40 @@
 package com.sweetcompany.sweetie.Registration;
 
-import android.content.Context;
 
-
-import com.sweetcompany.sweetie.Firebase.FirebaseLoginController;
-import com.sweetcompany.sweetie.Firebase.FirebasePairingController;
 import com.sweetcompany.sweetie.Firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.Firebase.UserFB;
-import com.sweetcompany.sweetie.Utils.Utility;
 
 /**
  * Created by lucas on 22/05/2017.
  */
 
-public class RegisterPresenter implements RegisterContract.Presenter,
-                                        FirebaseLoginController.OnFirebaseLoginChecked,
-                                        FirebaseRegisterController.OnFirebaseUserDataFound {
+public class RegisterPresenter implements RegisterContract.RegisterPresenter,
+        FirebaseRegisterController.FbRegisterControllerListener {
 
     public static final String TAG = "RegisterPresenter";
 
-    private FirebaseRegisterController mFirebaseRegisterController;
-    private FirebaseLoginController mFirebaseLoginController;
-    private RegisterContract.View mView;
+    private FirebaseRegisterController mController;
+    private RegisterContract.RegisterView mView;
 
-    RegisterPresenter(RegisterContract.View view){
+    RegisterPresenter(RegisterContract.RegisterView view, FirebaseRegisterController controller){
         mView = view;
         mView.setPresenter(this);
-        mFirebaseRegisterController = FirebaseRegisterController.getInstance();
-        mFirebaseLoginController = FirebaseLoginController.getInstance();
-    }
-
-    public RegisterPresenter setView(RegisterContract.View view){
-        mView = null;
-        mView = view;
-        mView.setPresenter(this);
-        return this;
+        mController = controller;
     }
 
     @Override
-    public void saveUserData(Context mContext){
-        UserVM user= new UserVM(Utility.getStringPreference(mContext,Utility.USER_UID),
-                Utility.getStringPreference(mContext,Utility.USERNAME),
-                Utility.getStringPreference(mContext,Utility.PHONE_NUMBER),
-                Utility.getStringPreference(mContext,Utility.MAIL),
-                Boolean.valueOf(Utility.getStringPreference(mContext,Utility.GENDER)));
-        mFirebaseRegisterController.saveUserData(user);
-    }
-
-    @Override
-    public void attachUserCheckListener(String key) {
-        mFirebaseLoginController.retrieveUserDataFromQuery(key);
-        mFirebaseLoginController.addUserCheckListener(this);
+    public void saveUserData(String uid, String email, String username, String phoneNumber, boolean gender) {
+        UserFB user= new UserFB(uid, email, phoneNumber, gender);
+        user.setKey(uid);
+        mController.saveUserData(user);
     }
 
     // Firebase callback
 
+    // TODO: move this callback to activity
     @Override
-    public void notifyUserFound(UserFB userFB) {
-        UserVM userVM = new UserVM(userFB.getKey(), userFB.getUsername(), userFB.getPhone(),
-                userFB.getEmail(), userFB.isGender());
-        mView.notifyUser(userVM);
+    public void onUserPushed() {
+        mView.startPairingActivity();
+        // TODO: give other feedback to the user
     }
-
-    @Override
-    public void notifyUserChecked(UserFB userFB) {
-        if(userFB != null){
-        mView.notifyUserCheck(new UserVM(userFB.getKey(), userFB.getUsername(), userFB.getPhone(),
-                userFB.getEmail(), userFB.isGender()));
-        }
-        else
-            mView.notifyUserCheck(null);
-    }
-
-
 }

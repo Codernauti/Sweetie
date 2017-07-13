@@ -15,32 +15,31 @@ import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
-import java.util.List;
 
-
-public class StepTwo extends Fragment implements RegisterContract.View, View.OnClickListener {
-
-    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
+public class StepTwo extends Fragment implements RegisterContract.RegisterView, View.OnClickListener {
 
     private static final String TAG = "StepTwo";
-
 
     private Button mForwardButton;
     private EditText mUsernameText;
     private EditText mPhoneText;
     private RadioButton mRadio;
     private Context mContext;
-    private RegisterContract.Presenter mPresenter;
 
+    private RegisterContract.RegisterPresenter mPresenter;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public static StepTwo newInstance(Bundle extras) {
+        StepTwo newFragment = new StepTwo();
+        newFragment.setArguments(extras);
+        return newFragment;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.register_step_two, container, false);
+        mContext = getContext();
+
         // Assign fields
         mForwardButton = (Button) view.findViewById(R.id.pairing_send_button);
         mUsernameText = (EditText) view.findViewById(R.id.username_input);
@@ -50,61 +49,47 @@ public class StepTwo extends Fragment implements RegisterContract.View, View.OnC
         // Set click listeners
         mForwardButton.setOnClickListener(this);
 
-        mContext = getContext();
         return view;
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pairing_send_button:
-                savePreferences();
-                mPresenter.saveUserData(mContext);
+                // get data of Auth
+                String userUid = Utility.getStringPreference(mContext, Utility.USER_UID);
+                String userEmail = Utility.getStringPreference(mContext, Utility.MAIL);
 
-                ((RegisterActivity) getActivity()).initAndOpenPairingFragment();
+                // get user's input
+                //TODO Check if not empty
+                String username = mUsernameText.getText().toString();
+                String phoneNumber = mPhoneText.getText().toString();
+                boolean gender = mRadio.isChecked();
 
-                /*PairingFragment nextFragment = new PairingFragment();
-                FragmentTransaction mTransaction = getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                );
-                mTransaction.addToBackStack("stepTwo");
-                mTransaction.replace(R.id.register_fragment_container, nextFragment);
-                mTransaction.commit();
-                ((RegisterActivity) getActivity()).setPresenter(nextFragment);*/
+                savePreferences(username, phoneNumber, gender);
+                mPresenter.saveUserData(userUid, userEmail, username, phoneNumber, gender);
 
                 break;
             default:
-                return;
+                break;
         }
     }
 
-    private void savePreferences() {
-        //TODO Check if not empty
-        String mUsername = mUsernameText.getText().toString();
-        String mPhoneNumber = mPhoneText.getText().toString();
-        boolean mGender = mRadio.isChecked();
-        Utility.saveStringPreference(mContext,Utility.USERNAME, mUsername);
-        Utility.saveStringPreference(mContext,Utility.PHONE_NUMBER, mPhoneNumber);
-        Utility.saveStringPreference(mContext,Utility.GENDER,String.valueOf(mGender));
+    // TODO: move this method in register activity?
+    private void savePreferences(String username, String phoneNumber, boolean gender) {
+        Utility.saveStringPreference(mContext,Utility.USERNAME, username);
+        Utility.saveStringPreference(mContext,Utility.PHONE_NUMBER, phoneNumber);
+        Utility.saveStringPreference(mContext,Utility.GENDER,String.valueOf(gender));
     }
 
 
     @Override
-    public void setPresenter(RegisterContract.Presenter presenter) {
+    public void setPresenter(RegisterContract.RegisterPresenter presenter) {
         mPresenter = presenter;
     }
 
     @Override
-    public void updateRequest(List<PairingRequestVM> pairingRequestsVM) {}
-
-    @Override
-    public void notifyUser(UserVM usersVM) {}
-
-    @Override
-    public void notifyUserCheck(UserVM userVM) {}
-
+    public void startPairingActivity() {
+        ((RegisterActivity) getActivity()).initAndOpenPairingFragment();
+    }
 }

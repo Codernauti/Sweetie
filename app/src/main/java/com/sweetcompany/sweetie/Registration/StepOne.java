@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,20 +29,28 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
-import java.util.List;
-
 // TODO: extract firebase dependencies
-public class StepOne extends Fragment implements RegisterContract.View, View.OnClickListener,GoogleApiClient.OnConnectionFailedListener{
-
+public class StepOne extends Fragment implements RegisterContract.LoginView,
+        View.OnClickListener,
+        GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = "StepOne";
     private static final int RC_SIGN_IN = 9001;
-    Context mContext;
-    FirebaseAuth mAuth;
+
+    private Context mContext;
+    private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
+
+    private RegisterContract.LoginPresenter mLoginPresenter;
+
     private SignInButton mRegisterGoogleButton;
     private ProgressBar mProgressBar;
-    private RegisterContract.Presenter mPresenter;
+
+    public static StepOne newInstance(Bundle bundle) {
+        StepOne newFragment = new StepOne();
+        newFragment.setArguments(bundle);
+        return newFragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,27 +60,29 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.register_step_one, container, false);
         mContext = getContext();
+
         // Assign fields
         mRegisterGoogleButton = (SignInButton) view.findViewById(R.id.register_google_button);
         mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar_register);
         mAuth = FirebaseAuth.getInstance();
 
-        // Initialize progress bar
-        setProgressBarVisibile(false);
-
         // Set click listeners
         mRegisterGoogleButton.setOnClickListener(this);
 
+        // TODO: move this code into a Controller
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
         return view;
     }
 
@@ -81,7 +90,7 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.register_google_button:
-                setProgressBarVisibile(true);
+                setProgressBarVisible(true);
                 signIn();
                 break;
             default:
@@ -92,14 +101,6 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    private void setProgressBarVisibile(Boolean b){
-        if(b){
-            mProgressBar.setVisibility(View.VISIBLE);
-        }else{
-            mProgressBar.setVisibility(View.INVISIBLE);
-        }
     }
 
     @Override
@@ -121,29 +122,29 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
         }
     }
 
-    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount account) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
-        mAuth.signInWithCredential(credential)//TODO !!! warning thread pool shared
+        //TODO: warning thread pool shared!
+        mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(getActivity(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            setProgressBarVisibile(true);
-                        } else {
+                            Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            setProgressBarVisible(false);
+                        }
+                        else {
                             //save id token
+                            // TODO: here or after into RegisterActivity?
                             Utility.saveStringPreference(mContext,Utility.USER_UID,task.getResult().getUser().getUid());
                             Utility.saveStringPreference(mContext,Utility.MAIL,task.getResult().getUser().getEmail());
 
-                            mPresenter.attachUserCheckListener(task.getResult().getUser().getUid());
+                            mLoginPresenter.attachUserCheckListener(task.getResult().getUser().getUid());
                         }
                     }
                 });
@@ -151,25 +152,17 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-         //An unresolvable error has occurred and Google APIs (including Sign-In) will not
-         //be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
         Toast.makeText(getActivity(), "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
 
     @Override
-    public void setPresenter(RegisterContract.Presenter presenter) {
-        mPresenter = presenter;
+    public void setPresenter(RegisterContract.LoginPresenter loginPresenter) {
+        mLoginPresenter = loginPresenter;
     }
 
-    @Override
-    public void updateRequest(List<PairingRequestVM> pairingRequestsVM) {}
-
-    @Override
-    public void notifyUser(UserVM usersVM) {}
-
-    @Override
+    /*@Override
     public void notifyUserCheck(UserVM userVM) {
         if (userVM != null) {
             Utility.saveStringPreference(mContext, Utility.USERNAME, userVM.getUsername());
@@ -191,6 +184,15 @@ public class StepOne extends Fragment implements RegisterContract.View, View.OnC
             mTransaction.replace(R.id.register_fragment_container,mFragment);
             mTransaction.commit();
             ((RegisterActivity) getActivity()).setPresenter(mFragment);
+        }
+    }*/
+
+    @Override
+    public void setProgressBarVisible(boolean b) {
+        if(b){
+            mProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            mProgressBar.setVisibility(View.INVISIBLE);
         }
     }
 }

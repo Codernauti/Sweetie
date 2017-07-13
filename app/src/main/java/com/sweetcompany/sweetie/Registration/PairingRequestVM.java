@@ -6,7 +6,8 @@ import com.google.firebase.database.Exclude;
  * Created by lucas on 22/05/2017.
  */
 
-public class PairingRequestVM {
+@Deprecated
+class PairingRequestVM {
     private String key;
     private String senderNumber;
     private String receiverNumber;

@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.Registration;
 
+@Deprecated
 public class UserVM {
     private String key;
     private String username;

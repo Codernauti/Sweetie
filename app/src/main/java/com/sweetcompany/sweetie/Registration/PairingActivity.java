@@ -45,4 +45,9 @@ public class PairingActivity extends AppCompatActivity {
         mController.addListener(mPresenter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mController.detachFromFirebase();
+    }
 }

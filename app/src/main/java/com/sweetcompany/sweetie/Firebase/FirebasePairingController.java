@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,13 +25,16 @@ import java.util.Map;
 public class FirebasePairingController {
     private static final String TAG = "FirebasePairingControl";
 
-    private List<OnFirebasePairingListener> mListeners;
+    private List<OnFirebasePairingListener> mListeners = new ArrayList<>();
     private final String mUserId;
 
     private final DatabaseReference mUserPairingRequests;
     private final DatabaseReference mUsers;
     private final DatabaseReference mPairingRequests;
     private final DatabaseReference mCouples;
+
+    private ValueEventListener mUserPairingRequestsListener;
+    private ValueEventListener mUsersEqualToListener;
 
     public interface OnFirebasePairingListener {
         void onDownloadPairingRequestsCompleted(List<PairingRequestFB> userPairingRequests);
@@ -42,7 +44,6 @@ public class FirebasePairingController {
     }
 
     public FirebasePairingController(String userUid) {
-        mListeners = new ArrayList<>();
         mUserId = userUid;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -59,11 +60,20 @@ public class FirebasePairingController {
 
     public void removeListener(OnFirebasePairingListener listener) {mListeners.remove(listener);}
 
+    public void detachFromFirebase() {
+        if (mUserPairingRequests != null) {
+            mUserPairingRequests.removeEventListener(mUserPairingRequestsListener);
+        }
+        if (mUsersEqualToListener != null) {
+            mUsers.removeEventListener(mUsersEqualToListener);
+        }
+    }
+
 
     public void downloadPairingRequest() {
         // N.B. we use a SingleEventListener because
         // if we attach a ValueEventListener when we remove the request this listener start a callback
-        mUserPairingRequests.addListenerForSingleValueEvent(new ValueEventListener() {
+        mUserPairingRequestsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d(TAG, dataSnapshot.toString());
@@ -82,7 +92,8 @@ public class FirebasePairingController {
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
-        });
+        };
+        mUserPairingRequests.addListenerForSingleValueEvent(mUserPairingRequestsListener);
     }
 
     public void createNewCouple(String userUid, String partnerUid) {
@@ -118,7 +129,7 @@ public class FirebasePairingController {
     }
 
     public void searchUserWithPhoneNumber(final String phonePartner) {
-        mUsers.orderByChild("phone").equalTo(phonePartner).addListenerForSingleValueEvent(new ValueEventListener() {
+        mUsersEqualToListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // only one user could have that phone number
@@ -140,7 +151,8 @@ public class FirebasePairingController {
 
             @Override
             public void onCancelled(DatabaseError databaseError) { }
-        });
+        };
+        mUsers.orderByChild("phone").equalTo(phonePartner).addListenerForSingleValueEvent(mUsersEqualToListener);
     }
 
     public void createNewPairingRequest(UserFB user, String userPhoneNumber) {

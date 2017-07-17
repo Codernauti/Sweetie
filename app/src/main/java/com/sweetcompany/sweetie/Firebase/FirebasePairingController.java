@@ -15,6 +15,7 @@ import com.sweetcompany.sweetie.Utils.DataMaker;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -101,6 +102,7 @@ public class FirebasePairingController {
             String now = DataMaker.get_UTC_DateTime();
             CoupleFB newCouple = new CoupleFB(userUid, partnerUid, now);
             mUserPairingRequests.child(partnerUid).removeValue();
+            // TODO: remove all the pairing request
 
             DatabaseReference newCoupleRef = mCouples.push();
             newCoupleRef.setValue(newCouple)
@@ -133,19 +135,21 @@ public class FirebasePairingController {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // only one user could have that phone number
-                DataSnapshot data = dataSnapshot.getChildren().iterator().next();
-                Log.d(TAG, data.toString());
-                UserFB user = data.getValue(UserFB.class);
-                user.setKey(data.getKey());
+                Iterator<DataSnapshot> resultIterator = dataSnapshot.getChildren().iterator();
+                if (resultIterator.hasNext()) {
+                    DataSnapshot userDataSnapshot = resultIterator.next();
+                    Log.d(TAG, userDataSnapshot.toString());
 
-                /*for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Log.d(TAG, data.toString());
-                    UserFB user = data.getValue(UserFB.class);
-                    user.setKey(data.getKey());
-                }*/
+                    UserFB user = userDataSnapshot.getValue(UserFB.class);
+                    user.setKey(userDataSnapshot.getKey());
 
-                for (OnFirebasePairingListener listener : mListeners) {
-                    listener.onSearchUserWithPhoneNumberFinished(user);
+                    for (OnFirebasePairingListener listener : mListeners) {
+                        listener.onSearchUserWithPhoneNumberFinished(user);
+                    }
+                }
+                else {
+                    Log.d(TAG, "No user with that phone number.");
+                    // TODO: tell to the user no phone number found, send an invite to Sweetie
                 }
             }
 

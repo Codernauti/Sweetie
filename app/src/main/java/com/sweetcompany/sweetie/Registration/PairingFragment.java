@@ -140,6 +140,7 @@ public class PairingFragment extends Fragment implements PairingContract.View,
 
     @Override
     public void startDashboardActivity() {
+        // TODO: go to MainActivity for new check
         Intent intent = new Intent(getActivity(), DashboardActivity.class);
         startActivity(intent);
     }

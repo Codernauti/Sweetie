@@ -62,12 +62,15 @@ public class FirebasePairingController {
     public void removeListener(OnFirebasePairingListener listener) {mListeners.remove(listener);}
 
     public void detachFromFirebase() {
-        if (mUserPairingRequests != null) {
+        if (mUserPairingRequestsListener != null) {
             mUserPairingRequests.removeEventListener(mUserPairingRequestsListener);
         }
+        mUserPairingRequestsListener = null;
+
         if (mUsersEqualToListener != null) {
             mUsers.removeEventListener(mUsersEqualToListener);
         }
+        mUsersEqualToListener = null;
     }
 
 
@@ -131,32 +134,34 @@ public class FirebasePairingController {
     }
 
     public void searchUserWithPhoneNumber(final String phonePartner) {
-        mUsersEqualToListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // only one user could have that phone number
-                Iterator<DataSnapshot> resultIterator = dataSnapshot.getChildren().iterator();
-                if (resultIterator.hasNext()) {
-                    DataSnapshot userDataSnapshot = resultIterator.next();
-                    Log.d(TAG, userDataSnapshot.toString());
+        if (mUsersEqualToListener == null) {
+            mUsersEqualToListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // only one user could have that phone number
+                    Iterator<DataSnapshot> resultIterator = dataSnapshot.getChildren().iterator();
+                    if (resultIterator.hasNext()) {
+                        DataSnapshot userDataSnapshot = resultIterator.next();
+                        Log.d(TAG, userDataSnapshot.toString());
 
-                    UserFB user = userDataSnapshot.getValue(UserFB.class);
-                    user.setKey(userDataSnapshot.getKey());
+                        UserFB user = userDataSnapshot.getValue(UserFB.class);
+                        user.setKey(userDataSnapshot.getKey());
 
-                    for (OnFirebasePairingListener listener : mListeners) {
-                        listener.onSearchUserWithPhoneNumberFinished(user);
+                        for (OnFirebasePairingListener listener : mListeners) {
+                            listener.onSearchUserWithPhoneNumberFinished(user);
+                        }
+                    }
+                    else {
+                        Log.d(TAG, "No user with that phone number.");
+                        // TODO: tell to the user no phone number found, send an invite to Sweetie
                     }
                 }
-                else {
-                    Log.d(TAG, "No user with that phone number.");
-                    // TODO: tell to the user no phone number found, send an invite to Sweetie
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        };
-        mUsers.orderByChild("phone").equalTo(phonePartner).addListenerForSingleValueEvent(mUsersEqualToListener);
+                @Override
+                public void onCancelled(DatabaseError databaseError) { }
+            };
+            mUsers.orderByChild("phone").equalTo(phonePartner).addListenerForSingleValueEvent(mUsersEqualToListener);
+        }
     }
 
     public void createNewPairingRequest(UserFB user, String userPhoneNumber) {

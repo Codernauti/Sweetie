@@ -11,6 +11,8 @@ public class CoupleInfoFB {
     private String brokeTime;
     /* TODO: put other data */
 
+    public CoupleInfoFB() {}
+
     public CoupleInfoFB(String activeCoupleUid, String creationTime) {
         this.activeCoupleUid = activeCoupleUid;
         this.creationTime = creationTime;

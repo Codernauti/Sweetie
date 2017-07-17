@@ -12,10 +12,12 @@ import java.sql.Date;
 public class UserFB {
     @Exclude
     private String key;
+
     private String username;
     private boolean gender;
     private String phone;
     private String email;
+    private CoupleInfoFB coupleInfo;
 
     public UserFB(){}
 
@@ -64,5 +66,13 @@ public class UserFB {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public CoupleInfoFB getCoupleInfo() {
+        return coupleInfo;
+    }
+
+    public void setCoupleInfo(CoupleInfoFB coupleInfo) {
+        this.coupleInfo = coupleInfo;
     }
 }

@@ -7,7 +7,7 @@ package com.sweetcompany.sweetie.Firebase;
 interface Constraints {
 
     String USERS_NODE = "users";
-        String COUPLE_INFO_NODE = "couple-info";
+        String COUPLE_INFO_NODE = "coupleInfo";
 
     String COUPLES_NODE = "couples";
 

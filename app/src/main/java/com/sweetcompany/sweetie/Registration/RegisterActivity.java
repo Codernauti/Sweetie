@@ -8,6 +8,7 @@ import com.sweetcompany.sweetie.DashboardActivity;
 import com.sweetcompany.sweetie.Firebase.FirebaseLoginController;
 import com.sweetcompany.sweetie.Firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.Firebase.UserFB;
+import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
@@ -60,8 +61,7 @@ public class RegisterActivity extends AppCompatActivity
             Utility.saveStringPreference(this, Utility.USERNAME, user.getUsername());
             Utility.saveStringPreference(this, Utility.PHONE_NUMBER, user.getPhone());
             Utility.saveStringPreference(this, Utility.GENDER, String.valueOf(user.isGender()));
-            // TODO: go to MainActivity for new check
-            startActivity(new Intent(this, DashboardActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         }
         else {  // user == null, he need to sign in
             // Initialization of fragment StepTwo
@@ -97,7 +97,5 @@ public class RegisterActivity extends AppCompatActivity
         // remove all listeners from firebase to avoid memory leak
         mLoginController.removeListener(this);
         mLoginController.removeListener(mLoginPresenter);
-
-        // TODO: mRegisterController.removeAllListener();
     }
 }

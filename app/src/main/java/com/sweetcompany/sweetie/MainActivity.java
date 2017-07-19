@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.sweetcompany.sweetie.Registration.RegisterActivity;
+import com.sweetcompany.sweetie.registration.RegisterActivity;
 import com.sweetcompany.sweetie.Utils.Utility;
 
 public class MainActivity extends AppCompatActivity{

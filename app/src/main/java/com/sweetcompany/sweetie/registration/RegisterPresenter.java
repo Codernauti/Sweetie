@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Registration;
+package com.sweetcompany.sweetie.registration;
 
 
 import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;

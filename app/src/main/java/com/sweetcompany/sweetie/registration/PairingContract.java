@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Registration;
+package com.sweetcompany.sweetie.registration;
 
 /**
  * Created by Eduard on 29-Jun-17.

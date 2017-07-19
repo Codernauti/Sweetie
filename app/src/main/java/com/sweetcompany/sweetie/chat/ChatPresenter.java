@@ -1,12 +1,8 @@
-package com.sweetcompany.sweetie.Chat;
-
-import android.util.Log;
+package com.sweetcompany.sweetie.chat;
 
 import com.sweetcompany.sweetie.Firebase.ChatFB;
 import com.sweetcompany.sweetie.Firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.Firebase.MessageFB;
-
-import java.util.List;
 
 /**
  * Created by ghiro on 11/05/2017.

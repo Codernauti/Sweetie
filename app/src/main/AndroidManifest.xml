@@ -32,7 +32,7 @@
         <activity android:name=".Registration.RegisterActivity" android:theme="@style/AppTheme" />
         <activity android:name=".Registration.PairingActivity" android:theme="@style/AppTheme" />
 
-        <activity android:name=".Chat.ChatActivity"
+        <activity android:name=".chat.ChatActivity"
                   android:theme="@style/AppTheme"/>
         <activity android:name=".Gallery.GalleryActivity"
             android:theme="@style/AppTheme"/>

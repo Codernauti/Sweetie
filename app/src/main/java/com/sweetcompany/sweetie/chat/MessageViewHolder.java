@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Chat;
+package com.sweetcompany.sweetie.chat;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

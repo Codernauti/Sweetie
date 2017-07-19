@@ -1,10 +1,7 @@
-package com.sweetcompany.sweetie.Chat;
+package com.sweetcompany.sweetie.chat;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,11 +18,7 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.DataMaker;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by ghiro on 11/05/2017.

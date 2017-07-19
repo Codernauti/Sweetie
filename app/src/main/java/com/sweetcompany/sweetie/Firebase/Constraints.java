@@ -17,4 +17,6 @@ interface Constraints {
 
     String CHATS_NODE = "chats";
 
+    String CHAT_MESSAGES_NODE = "chat-messages";
+
 }

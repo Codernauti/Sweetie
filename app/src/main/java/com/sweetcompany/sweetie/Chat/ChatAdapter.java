@@ -55,7 +55,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         //MessageVM message = mMessageList.get(viewType);
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        // TODO: switch to this comment code
+
         View viewToInflate = inflater.inflate(viewType, parent, false);
         MessageViewHolder viewHolder;
         switch (viewType) {

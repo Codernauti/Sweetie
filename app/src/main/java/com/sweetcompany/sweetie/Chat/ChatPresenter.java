@@ -6,47 +6,27 @@ import com.sweetcompany.sweetie.Firebase.ChatFB;
 import com.sweetcompany.sweetie.Firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.Firebase.MessageFB;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by ghiro on 11/05/2017.
  */
 
-class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.OnFirebaseChatDataChange {
+class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.ChatControllerListener {
 
     private static final String TAG = "ChatPresenter";
 
     private ChatContract.View mView;
-    private FirebaseChatController mFirebaseController;
+    private FirebaseChatController mController;
     private String mUserMail;   // id of messages of main user
-    private String mChatKey;    // id of chat opened
-    private String mActionKey;  // id of actionChat references
 
-    ChatPresenter(ChatContract.View view, String userMail, String chatKey, String actionKey){
+    ChatPresenter(ChatContract.View view, FirebaseChatController controller, String userMail){
         mView = view;
         mView.setPresenter(this);
-        mFirebaseController = FirebaseChatController.getInstance();
+        mController = controller;
+        mController.addListener(this);
+
         mUserMail = userMail;
-        mChatKey = chatKey;
-        mActionKey = actionKey;
-    }
-
-    @Override
-    public void start() {
-        if (mChatKey != null) {
-            mFirebaseController.attachNetworkDatabase(mChatKey);
-            mFirebaseController.addListener(this);
-        }
-        else {
-            Log.w(TAG, "start(): impossible attach to database because mChatKey is NULL");
-        }
-    }
-
-    @Override
-    public void pause() {
-        mFirebaseController.detachNetworkDatabase();
-        mFirebaseController.removeListener(this);
     }
 
     @Override
@@ -55,7 +35,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.On
         TextMessageVM messageVM = (TextMessageVM)message;
         MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());
 
-        mFirebaseController.sendMessage(newMessage, mActionKey);
+        mController.sendMessage(newMessage);
     }
 
     @Override
@@ -65,41 +45,32 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.On
         MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked());
         updateMessage.setKey(msgVM.getKey());
 
-        mFirebaseController.updateMessage(updateMessage);
+        mController.updateMessage(updateMessage);
     }
 
 
     // Callback from Database
 
     @Override
-    public void notifyChats(List<ChatFB> chats) {
-        ChatVM chatVM = new ChatVM("", "");
-        for (ChatFB chat : chats) {
-            // search for the exact chat opened
-            if (chat.getKey().equals(mChatKey)) {
-                chatVM = new ChatVM(chat.getKey(), chat.getTitle());
-            }
-            else {
-                Log.w(TAG, "notifyChats(): can't find Chat in database");
-            }
-        }
+    public void onChatChanged(ChatFB chat) {
+        ChatVM chatVM = new ChatVM(chat.getKey(), chat.getTitle());
         mView.updateChatInfo(chatVM);
     }
 
     @Override
-    public void notifyNewMessage(MessageFB message) {
+    public void onMessageAdded(MessageFB message) {
         MessageVM msgVM = createMessageVM(message);
         mView.updateMessage(msgVM);
     }
 
     @Override
-    public void notifyRemovedMessage(MessageFB message) {
+    public void onMessageRemoved(MessageFB message) {
         MessageVM msgVM = createMessageVM(message);
         mView.removeMessage(msgVM);
     }
 
     @Override
-    public void notifyChangedMessage(MessageFB message) {
+    public void onMessageChanged(MessageFB message) {
         MessageVM msgVM = createMessageVM(message);
         mView.changeMessage(msgVM);
     }

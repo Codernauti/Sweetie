@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Utils;
+package com.sweetcompany.sweetie.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

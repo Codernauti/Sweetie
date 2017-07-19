@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.DataMaker;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.text.ParseException;
 import java.util.List;

@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sweetcompany.sweetie.firebase.FirebasePairingController;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by Eduard on 29-Jun-17.

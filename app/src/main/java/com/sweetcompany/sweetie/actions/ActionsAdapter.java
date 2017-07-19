@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.DataMaker;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.text.ParseException;
 import java.util.ArrayList;

@@ -1,9 +1,13 @@
 package com.sweetcompany.sweetie.Actions;
 
 
+import android.util.Log;
+
 import com.sweetcompany.sweetie.Firebase.ActionFB;
 import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
+import com.sweetcompany.sweetie.Utils.DataMaker;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,32 +15,65 @@ import java.util.List;
  * Created by Eduard on 10/05/2017.
  */
 
-public class ActionsPresenter implements ActionsContract.Presenter, FirebaseActionsController.OnFirebaseActionsDataChange {
+public class ActionsPresenter implements ActionsContract.Presenter,
+                                        FirebaseActionsController.OnFirebaseActionsDataChange {
 
     public static final String TAG = "Action.presenter" ;
 
-    private ActionsContract.View mView;
-    FirebaseActionsController mFireBaseController;
+    private final ActionsContract.View mView;
+    private final FirebaseActionsController mController;
 
     private List<ActionVM> mActionsList = new ArrayList<>();
 
 
-    public ActionsPresenter(ActionsContract.View view) {
+    public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller) {
         mView = view;
         mView.setPresenter(this);
-        mFireBaseController = FirebaseActionsController.getInstance();
-        mFireBaseController.addListener(this);
+        mController = controller;
+        mController.addListener(this);
     }
 
     @Override
     public void start() {
-        mFireBaseController.attachNetworkDatabase();
+        mController.attachNetworkDatabase();
     }
 
     @Override
     public void pause() {
-        mFireBaseController.detachNetworkDatabase();
+        mController.detachNetworkDatabase();
     }
+
+    @Override
+    public List<String> pushChatAction(String userInputChatTitle, String username) {
+        ActionFB action = null;
+        // TODO: add description and fix username variable, what username???
+        try {
+            action = new ActionFB(userInputChatTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (action != null) {
+            return mController.pushChatAction(action, userInputChatTitle);
+        }
+        else {
+            Log.d(TAG, "An error in the creation of a new ChatAction occurs!");
+            return null;
+        }
+    }
+
+    @Override
+    public void pushAction(String userInputGalleryTitle, String username) {
+        ActionFB action = null;
+        try {
+            action = new ActionFB(userInputGalleryTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.PHOTO);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        mController.pushAction(action);
+    }
+
+    // Controller callbacks
 
     // Clear actions, retrieve all actions on server
     public void updateActionsList(List<ActionFB> actionsFB) {

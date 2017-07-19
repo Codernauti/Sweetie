@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.DataMaker;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -38,13 +40,12 @@ public class ActionNewChatFragment extends DialogFragment {
 
     private EditText mTitleChatEditText;
 
-    // TODO: NO, a Fragment mustn't have reference to firebase
-    private FirebaseController mFirebaseController = FirebaseController.getInstance();
-    private FirebaseActionsController mFireBaseActionsController;
+    // TODO: remove the static reference
+    private static ActionsContract.Presenter mPresenter;
 
-    static ActionNewChatFragment newInstance() {
+    static ActionNewChatFragment newInstance(ActionsContract.Presenter presenter) {
         ActionNewChatFragment fragment = new ActionNewChatFragment();
-
+        mPresenter = presenter;
         return fragment;
     }
 
@@ -56,8 +57,6 @@ public class ActionNewChatFragment extends DialogFragment {
         View dialogLayout = inflater.inflate(R.layout.action_new_chat_dialog, null);
         mTitleChatEditText = (EditText) dialogLayout.findViewById(R.id.action_new_chat_title);
 
-        mFireBaseActionsController = FirebaseActionsController.getInstance();
-
         return new AlertDialog.Builder(getActivity())
                 //.setIcon(R.drawable.alert_dialog_icon)
                 .setView(dialogLayout)
@@ -68,24 +67,17 @@ public class ActionNewChatFragment extends DialogFragment {
                                 String userInputChatTitle = mTitleChatEditText.getText().toString();
 
                                 if (!userInputChatTitle.isEmpty()) {
+                                    // [0] : chatKey, [1] : actionKey
+                                    String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
+                                    List<String> keys = mPresenter.pushChatAction(userInputChatTitle, userName);
 
-                                    // TODO ripristinare getDisplayName()
-                                    //ActionFB action = new ActionFB(userInputChatTitle, mFirebaseController.getFirebaseUser().getDisplayName(), "desc...", date, ActionFB.CHAT);
-
-                                    ActionFB action = null;
-                                    try {
-                                        action = new ActionFB(userInputChatTitle, "Utente qualsiasi", "", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
+                                    if (keys != null) {
+                                        Intent intent = new Intent(getActivity(), ChatActivity.class);
+                                        intent.putExtra(ChatActivity.CHAT_TITLE, userInputChatTitle);
+                                        intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, keys.get(0));
+                                        intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, keys.get(1));
+                                        startActivity(intent);
                                     }
-                                    List<String> keys = mFireBaseActionsController.pushChatAction(action, userInputChatTitle); // [0] : chatKey, [1] : actionKey
-
-                                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                                    intent.putExtra(ChatActivity.CHAT_TITLE, userInputChatTitle);
-                                    intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, keys.get(0));
-                                    intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, keys.get(1));
-
-                                    startActivity(intent);
                                 }
                             }
                         }

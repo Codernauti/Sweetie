@@ -126,7 +126,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             public void onClick(View v) {
                 // hide others action fab
                 animateFAB();
-                DialogFragment dialogFragment = ActionNewChatFragment.newInstance();
+                DialogFragment dialogFragment = ActionNewChatFragment.newInstance(mPresenter);
                 dialogFragment.show(getActivity().getFragmentManager(), ActionNewChatFragment.TAG);
             }
         });
@@ -136,7 +136,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             public void onClick(View v) {
                 // hide others action fab
                 animateFAB();
-                DialogFragment dialogFragment = ActionNewGalleryFragment.newInstance();
+                DialogFragment dialogFragment = ActionNewGalleryFragment.newInstance(mPresenter);
                 dialogFragment.show(getActivity().getFragmentManager(), ActionNewGalleryFragment.TAG);
             }
         });

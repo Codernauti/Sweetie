@@ -24,7 +24,7 @@ public class RegisterPresenter implements RegisterContract.RegisterPresenter,
 
     @Override
     public void saveUserData(String uid, String email, String username, String phoneNumber, boolean gender) {
-        UserFB user= new UserFB(uid, email, phoneNumber, gender);
+        UserFB user= new UserFB(username, email, phoneNumber, gender);
         user.setKey(uid);
         mController.saveUserData(user);
     }

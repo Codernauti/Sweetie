@@ -24,7 +24,7 @@ import java.util.Map;
  */
 
 public class FirebasePairingController {
-    private static final String TAG = "FirebasePairingControl";
+    private static final String TAG = "FbPairingController";
 
     private List<OnFirebasePairingListener> mListeners = new ArrayList<>();
     private final String mUserId;
@@ -75,8 +75,6 @@ public class FirebasePairingController {
 
 
     public void downloadPairingRequest() {
-        // N.B. we use a SingleEventListener because
-        // if we attach a ValueEventListener when we remove the request this listener start a callback
         mUserPairingRequestsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -97,6 +95,8 @@ public class FirebasePairingController {
             @Override
             public void onCancelled(DatabaseError databaseError) { }
         };
+        // N.B. we use a addForSingleValueEvent because
+        // if we use addForValueEventListener when we remove the request this listener start a callback
         mUserPairingRequests.addListenerForSingleValueEvent(mUserPairingRequestsListener);
     }
 

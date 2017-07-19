@@ -12,4 +12,9 @@ interface Constraints {
     String COUPLES_NODE = "couples";
 
     String PAIRING_REQUESTS_NODE = "pairing-requests";
+
+    String ACTIONS_NODE = "actions";
+
+    String CHATS_NODE = "chats";
+
 }

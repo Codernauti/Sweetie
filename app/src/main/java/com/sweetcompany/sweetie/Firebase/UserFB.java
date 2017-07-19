@@ -60,10 +60,12 @@ public class UserFB {
         this.email = mEmail;
     }
 
+    @Exclude
     public String getKey() {
         return key;
     }
 
+    @Exclude
     public void setKey(String key) {
         this.key = key;
     }

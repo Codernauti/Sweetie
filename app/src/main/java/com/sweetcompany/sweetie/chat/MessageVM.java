@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Chat;
+package com.sweetcompany.sweetie.chat;
 
 import android.view.View;
 

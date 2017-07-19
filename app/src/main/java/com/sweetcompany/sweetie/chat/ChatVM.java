@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Chat;
+package com.sweetcompany.sweetie.chat;
 
 /**
  * Created by Eduard on 26/05/2017.

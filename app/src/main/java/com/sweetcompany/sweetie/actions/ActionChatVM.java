@@ -3,7 +3,7 @@ package com.sweetcompany.sweetie.actions;
 import android.content.Intent;
 import android.util.Log;
 
-import com.sweetcompany.sweetie.Chat.ChatActivity;
+import com.sweetcompany.sweetie.chat.ChatActivity;
 import com.sweetcompany.sweetie.R;
 
 /**

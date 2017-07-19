@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import com.sweetcompany.sweetie.DashboardActivity;
-import com.sweetcompany.sweetie.Firebase.FirebaseLoginController;
-import com.sweetcompany.sweetie.Firebase.FirebaseRegisterController;
-import com.sweetcompany.sweetie.Firebase.UserFB;
+
+import com.sweetcompany.sweetie.firebase.FirebaseLoginController;
+import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
+import com.sweetcompany.sweetie.firebase.UserFB;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;

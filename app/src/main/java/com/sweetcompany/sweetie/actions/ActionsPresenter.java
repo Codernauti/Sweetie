@@ -3,8 +3,8 @@ package com.sweetcompany.sweetie.actions;
 
 import android.util.Log;
 
-import com.sweetcompany.sweetie.Firebase.ActionFB;
-import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
+import com.sweetcompany.sweetie.firebase.ActionFB;
+import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Utils.DataMaker;
 
 import java.text.ParseException;

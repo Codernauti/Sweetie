@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.sweetcompany.sweetie.actions.ActionsContract;
 import com.sweetcompany.sweetie.actions.ActionsPresenter;
 import com.sweetcompany.sweetie.Calendar.CalendarFragment;
-import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
+import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Folders.FoldersFragment;
 import com.sweetcompany.sweetie.actions.ActionsFragment;
 import com.sweetcompany.sweetie.Map.MapFragment;

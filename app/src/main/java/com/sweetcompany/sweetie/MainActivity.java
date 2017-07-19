@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Button;
 
-import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.Registration.RegisterActivity;
 import com.sweetcompany.sweetie.Utils.Utility;
 

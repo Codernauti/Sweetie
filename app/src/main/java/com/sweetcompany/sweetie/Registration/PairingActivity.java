@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.sweetcompany.sweetie.Firebase.FirebasePairingController;
+import com.sweetcompany.sweetie.firebase.FirebasePairingController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 

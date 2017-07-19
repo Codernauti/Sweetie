@@ -1,8 +1,8 @@
 package com.sweetcompany.sweetie.chat;
 
-import com.sweetcompany.sweetie.Firebase.ChatFB;
-import com.sweetcompany.sweetie.Firebase.FirebaseChatController;
-import com.sweetcompany.sweetie.Firebase.MessageFB;
+import com.sweetcompany.sweetie.firebase.ChatFB;
+import com.sweetcompany.sweetie.firebase.FirebaseChatController;
+import com.sweetcompany.sweetie.firebase.MessageFB;
 
 /**
  * Created by ghiro on 11/05/2017.

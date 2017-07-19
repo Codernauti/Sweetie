@@ -1,14 +1,4 @@
-package com.sweetcompany.sweetie.Firebase;
-
-import android.util.Log;
-
-import com.google.firebase.database.Exclude;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+package com.sweetcompany.sweetie.firebase;
 
 /**
  * Created by ghiro on 18/05/2017.

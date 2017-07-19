@@ -3,45 +3,29 @@ package com.sweetcompany.sweetie;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.FirebaseUser;
 import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.Registration.RegisterActivity;
 import com.sweetcompany.sweetie.Utils.Utility;
 
 public class MainActivity extends AppCompatActivity{
 
-    private final FirebaseController mFireBaseController = FirebaseController.getInstance();
-    private Button mRegisterButton;
-    private Button mLoginButton;
-
-    public static final String ALREADY_REGISTED = "rip.tutorial";
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        /*mLoginButton = (Button) findViewById(R.id.login_button);
-        mLoginButton.setOnClickListener(this);
-
-        mRegisterButton = (Button) findViewById(R.id.register_button);
-        mRegisterButton.setOnClickListener(this);*/
-
-
         Log.d("Saved Mail User",Utility.getStringPreference(this,Utility.MAIL));
 
-        if(Utility.checkPreferencesSetted(getApplicationContext())){
+        if (Utility.checkPreferencesSetted(getApplicationContext())) {
+            // User logged, start Service UserMonitorService
+            startService(new Intent(this, UserMonitorService.class));
             startActivity(new Intent(this, DashboardActivity.class));
         }
-        else{
+        else {
             startActivity(new Intent(this, RegisterActivity.class));
         }
 

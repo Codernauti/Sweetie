@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sweetcompany.sweetie.firebase.FirebaseLoginController;
 import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
-import com.sweetcompany.sweetie.firebase.UserFB;
+import com.sweetcompany.sweetie.model.UserFB;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;

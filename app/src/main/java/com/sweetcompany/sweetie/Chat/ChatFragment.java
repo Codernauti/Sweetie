@@ -46,8 +46,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private ChatAdapter mChatAdapter;
     private ChatContract.Presenter mPresenter;
 
-    String actionKey;
-
     public static ChatFragment newInstance(Bundle bundle) {
         ChatFragment newChatFragment = new ChatFragment();
         newChatFragment.setArguments(bundle);
@@ -98,18 +96,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mSendButton.setOnClickListener(this);
 
         return root;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mPresenter.start();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mPresenter.pause();
     }
 
     @Override

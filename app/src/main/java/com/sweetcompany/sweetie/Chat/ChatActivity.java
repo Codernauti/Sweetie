@@ -4,12 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
-import com.sweetcompany.sweetie.Actions.ActionNewChatFragment;
-import com.sweetcompany.sweetie.Actions.ActionsFragment;
-import com.sweetcompany.sweetie.Actions.ActionsPresenter;
+import com.sweetcompany.sweetie.Firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
@@ -26,7 +23,8 @@ public class ChatActivity extends AppCompatActivity {
     public static final String CHAT_TITLE = "ChatTitle";    // For offline user
     public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
-    ChatPresenter mPresenter;
+    private ChatPresenter mPresenter;
+    private FirebaseChatController mController;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,15 +57,35 @@ public class ChatActivity extends AppCompatActivity {
                                         .findFragmentById(R.id.chat_fragment_container);
 
         if (view == null) {
-            // TODO: not sure if ChatFragment need extras
             view = ChatFragment.newInstance(getIntent().getExtras());
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
             transaction.add(R.id.chat_fragment_container, view);
             transaction.commit();
         }
 
         String userMail = Utility.getStringPreference(this, Utility.MAIL);
-        mPresenter = new ChatPresenter(view, userMail, chatKey, actionKey);
+        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+
+        if (chatKey != null) {
+            mController = new FirebaseChatController(coupleUid, chatKey, actionKey);
+            mPresenter = new ChatPresenter(view, mController, userMail);
+        }
+        else {
+            Log.w(TAG, "Impossible to create ChatController and ChatPresenter because chatKey is NULL");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mController.attachListeners();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mController.detachListeners();
     }
 
     @Override

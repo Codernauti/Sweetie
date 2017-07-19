@@ -19,8 +19,6 @@ interface ChatContract {
     }
 
     interface Presenter {
-        void start();
-        void pause();
         void sendMessage(MessageVM message);
         void bookmarkMessage(MessageVM message);
     }

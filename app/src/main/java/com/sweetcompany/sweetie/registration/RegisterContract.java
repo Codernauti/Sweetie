@@ -1,6 +1,4 @@
-package com.sweetcompany.sweetie.Registration;
-
-import android.content.Context;
+package com.sweetcompany.sweetie.registration;
 
 /**
  * Created by lucas on 16/05/2017.

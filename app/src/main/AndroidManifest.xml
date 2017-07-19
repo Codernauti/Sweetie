@@ -29,8 +29,8 @@
         <activity android:name=".LoginActivity"
                   android:theme="@style/AppTheme"/>
 
-        <activity android:name=".Registration.RegisterActivity" android:theme="@style/AppTheme" />
-        <activity android:name=".Registration.PairingActivity" android:theme="@style/AppTheme" />
+        <activity android:name=".registration.RegisterActivity" android:theme="@style/AppTheme" />
+        <activity android:name=".registration.PairingActivity" android:theme="@style/AppTheme" />
 
         <activity android:name=".chat.ChatActivity"
                   android:theme="@style/AppTheme"/>

@@ -1,6 +1,4 @@
-package com.sweetcompany.sweetie.Registration;
-
-import com.google.firebase.database.Exclude;
+package com.sweetcompany.sweetie.registration;
 
 /**
  * Created by lucas on 22/05/2017.

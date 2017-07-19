@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Registration;
+package com.sweetcompany.sweetie.registration;
 
 import android.content.Intent;
 import android.os.Bundle;

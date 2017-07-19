@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Registration;
+package com.sweetcompany.sweetie.registration;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

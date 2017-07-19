@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Folders;
+package com.sweetcompany.sweetie.folders;
 
 import android.content.Context;
 import android.os.Bundle;

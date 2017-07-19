@@ -34,9 +34,9 @@
 
         <activity android:name=".chat.ChatActivity"
                   android:theme="@style/AppTheme"/>
-        <activity android:name=".Gallery.GalleryActivity"
+        <activity android:name=".gallery.GalleryActivity"
             android:theme="@style/AppTheme"/>
-        <activity android:name=".Gallery.DetailPhotoActivity"
+        <activity android:name=".gallery.DetailPhotoActivity"
             android:theme="@style/AppTheme"/>
         <activity android:name=".couple.CoupleActivity"
             android:theme="@style/AppTheme"/>

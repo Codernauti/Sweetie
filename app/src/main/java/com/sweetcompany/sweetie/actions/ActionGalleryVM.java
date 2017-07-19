@@ -3,7 +3,7 @@ package com.sweetcompany.sweetie.actions;
 import android.content.Intent;
 import android.util.Log;
 
-import com.sweetcompany.sweetie.Gallery.GalleryActivity;
+import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
 
 /**

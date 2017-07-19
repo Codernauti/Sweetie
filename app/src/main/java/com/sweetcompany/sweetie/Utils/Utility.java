@@ -18,6 +18,8 @@ public class Utility {
     public static final String GENDER = "gender";
     public static final String PARTNER_UID = "partner_uid";
     public static final String COUPLE_UID = "couple_uid";
+    public static final String FUTURE_PARTNER_PAIRING_REQUEST = "futurePartner";
+    public static final String DEFAULT_VALUE = "error";
 
     //Method for saving a shared preference
     //How to use: pass the context, a key string and the data string; returns true if successfully saved
@@ -32,8 +34,8 @@ public class Utility {
 
     //
     static public boolean checkPreferencesSetted(Context context){
-        if(getStringPreference(context, USER_UID) != "error"){
-            if(getStringPreference(context,MAIL) != "error"){
+        if(getStringPreference(context, USER_UID) != DEFAULT_VALUE){
+            if(getStringPreference(context,MAIL) != DEFAULT_VALUE){
                 return true;
             }
         }
@@ -45,7 +47,7 @@ public class Utility {
     //if the result string doesn't exist it returns the string "error"
     static public String getStringPreference(Context context,String key){
         SharedPreferences setting = context.getSharedPreferences(key, 0);
-        return setting.getString(key,"error");
+        return setting.getString(key, DEFAULT_VALUE);
     }
 
 }

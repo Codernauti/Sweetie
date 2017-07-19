@@ -67,8 +67,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.chat_fragment, container, false);
 
-        String titleChat;
-        titleChat = getArguments().getString(ChatActivity.CHAT_TITLE);
+        String titleChat = getArguments().getString(ChatActivity.CHAT_TITLE);
         Log.d(TAG, "from Intent CHAT_TITLE: " +
                 getArguments().getString(ChatActivity.CHAT_TITLE));
         Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
@@ -80,7 +79,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(mToolBar);
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolBar.setTitle(titleChat);
+        parentActivity.getSupportActionBar().setTitle(titleChat);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         //mLinearLayoutManager.setReverseLayout(true);

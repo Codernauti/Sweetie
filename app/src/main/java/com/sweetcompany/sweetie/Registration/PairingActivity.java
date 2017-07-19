@@ -13,7 +13,8 @@ import com.sweetcompany.sweetie.Utils.Utility;
  * Created by Eduard on 29-Jun-17.
  */
 
-public class PairingActivity extends AppCompatActivity {
+public class PairingActivity extends AppCompatActivity
+        implements FirebasePairingController.NewPairingListener {
 
     private PairingFragment mView;
     private PairingPresenter mPresenter;
@@ -38,16 +39,23 @@ public class PairingActivity extends AppCompatActivity {
         // get active user data
         String userUid = Utility.getStringPreference(this, Utility.USER_UID);
         String userPhoneNumber = Utility.getStringPreference(this, Utility.PHONE_NUMBER);
+        String userPairingRequestSent = Utility.getStringPreference(this, Utility.FUTURE_PARTNER_PAIRING_REQUEST);
 
         mController = new FirebasePairingController(userUid);
-        mPresenter = new PairingPresenter(mView, mController, userUid, userPhoneNumber);
+        mPresenter = new PairingPresenter(mView, mController, userPhoneNumber, userPairingRequestSent);
 
         mController.addListener(mPresenter);
+        mController.setPairingListener(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mController.detachFromFirebase();
+        mController.detachListeners();
+    }
+
+    @Override
+    public void onCreateNewPairingRequestComplete(String futurePartnerUid) {
+        Utility.saveStringPreference(this, Utility.FUTURE_PARTNER_PAIRING_REQUEST, futurePartnerUid);
     }
 }

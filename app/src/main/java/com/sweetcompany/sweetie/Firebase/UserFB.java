@@ -2,9 +2,6 @@ package com.sweetcompany.sweetie.Firebase;
 
 import com.google.firebase.database.Exclude;
 
-import java.io.File;
-import java.sql.Date;
-
 /**
  * Created by ghiro on 17/05/2017.
  */
@@ -18,6 +15,7 @@ public class UserFB {
     private String phone;
     private String email;
     private CoupleInfoFB coupleInfo;
+    private String futurePartner;
 
     public UserFB(){}
 
@@ -76,5 +74,13 @@ public class UserFB {
 
     public void setCoupleInfo(CoupleInfoFB coupleInfo) {
         this.coupleInfo = coupleInfo;
+    }
+
+    public String getFuturePartner() {
+        return futurePartner;
+    }
+
+    public void setFuturePartner(String futurePartner) {
+        this.futurePartner = futurePartner;
     }
 }

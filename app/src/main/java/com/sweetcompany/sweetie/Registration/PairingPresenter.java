@@ -13,26 +13,47 @@ import java.util.List;
  */
 
 class PairingPresenter implements PairingContract.Presenter,
-        FirebasePairingController.OnFirebasePairingListener {
+        FirebasePairingController.PairingControllerListener {
+
+    private static final String TAG = "PairingPresenter";
 
     private final String mUserPhoneNumber;
-    private String mUserUid;
-    private PairingContract.View mView;
+    private final String mUserPairingRequestSent;
+    private final PairingContract.View mView;
 
-    private FirebasePairingController mFirebasePairingController;
+    private final FirebasePairingController mController;
+
     private String mParterPhone;
 
     PairingPresenter(PairingContract.View view, FirebasePairingController controller,
-                     String userUid, String userPhoneNumber) {
-        mUserUid = userUid;
+                     String userPhoneNumber, String userPairingRequestSent) {
         mUserPhoneNumber = userPhoneNumber;
+        mUserPairingRequestSent = userPairingRequestSent;
+
         mView = view;
         mView.setPresenter(this);
-        mFirebasePairingController = controller;
+
+        if (!mUserPairingRequestSent.equals("error")) {
+            // TODO
+            // mView.showMessagePairingRequestAlreadySent();
+        }
+
+        mController = controller;
     }
 
     @Override
     public void sendPairingRequest(String partnerPhone) {
+        // TODO: check user input
+
+        if (mUserPairingRequestSent.equals("error")) {
+            // go ahead
+            Log.d(TAG, "mUserPairingRequestSent == error");
+        }
+        else {
+            // warning the user
+            Log.d(TAG, "show advise");
+        }
+
         if (partnerPhone.equals(mUserPhoneNumber)) {
             mView.showMessage("You can't send a request to yourself");
         }
@@ -40,7 +61,7 @@ class PairingPresenter implements PairingContract.Presenter,
             mView.showMessage("Check if you have pending request...");
             mView.showLoadingProgress();
             mParterPhone = partnerPhone;
-            mFirebasePairingController.downloadPairingRequest();
+            mController.downloadPairingRequest();
         }
         else {
             mView.showMessage("Please insert the phone number of your partner");
@@ -52,13 +73,12 @@ class PairingPresenter implements PairingContract.Presenter,
     @Override
     public void onDownloadPairingRequestsCompleted(List<PairingRequestFB> userPairingRequests) {
         String partnerUid = getPartnerUidFromPairingRequests(userPairingRequests);
-        // CheckUserInput
         if (partnerUid != null) {
-            Log.d("PairingPresenter", "The user has already this request from " + mParterPhone);
-            mFirebasePairingController.createNewCouple(mUserUid, partnerUid);
+            Log.d(TAG, "Implicitly couple because the user has already this request from " + mParterPhone);
+            mController.createNewCouple(partnerUid);
         }
         else {
-            mFirebasePairingController.searchUserWithPhoneNumber(mParterPhone);
+            mController.searchUserWithPhoneNumber(mParterPhone);
         }
 
     }
@@ -74,7 +94,7 @@ class PairingPresenter implements PairingContract.Presenter,
 
     @Override
     public void onSearchUserWithPhoneNumberFinished(UserFB user) {
-        mFirebasePairingController.createNewPairingRequest(user, mUserPhoneNumber);
+        mController.createNewPairingRequest(user, mUserPhoneNumber, mUserPairingRequestSent);
     }
 
     @Override

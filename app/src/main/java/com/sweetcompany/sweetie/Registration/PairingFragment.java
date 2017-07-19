@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sweetcompany.sweetie.DashboardActivity;
+import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 
@@ -140,8 +141,7 @@ public class PairingFragment extends Fragment implements PairingContract.View,
 
     @Override
     public void startDashboardActivity() {
-        // TODO: go to MainActivity for new check
-        Intent intent = new Intent(getActivity(), DashboardActivity.class);
+        Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
     }
 

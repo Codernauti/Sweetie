@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Actions;
+package com.sweetcompany.sweetie.actions;
 
 
 import android.app.DialogFragment;
@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
 import com.sweetcompany.sweetie.IPageChanger;

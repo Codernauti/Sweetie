@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Actions;
+package com.sweetcompany.sweetie.actions;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -6,25 +6,15 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
 import com.sweetcompany.sweetie.Chat.ChatActivity;
-import com.sweetcompany.sweetie.Firebase.ActionFB;
-import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
-import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.DataMaker;
 import com.sweetcompany.sweetie.Utils.Utility;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Eduard on 13-May-17.

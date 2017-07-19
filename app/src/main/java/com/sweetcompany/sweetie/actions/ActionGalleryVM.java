@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Actions;
+package com.sweetcompany.sweetie.actions;
 
 import android.content.Intent;
 import android.util.Log;

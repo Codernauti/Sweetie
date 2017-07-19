@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.sweetcompany.sweetie.Actions.ActionsPresenter;
+import com.sweetcompany.sweetie.actions.ActionsPresenter;
 import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Gallery.GalleryActivity;
 import com.sweetcompany.sweetie.Registration.PairingActivity;

@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Actions;
+package com.sweetcompany.sweetie.actions;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,14 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.sweetcompany.sweetie.Firebase.ActionFB;
-import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.DataMaker;
 import com.sweetcompany.sweetie.Utils.Utility;
-
-import java.text.ParseException;
 
 /**
  * Created by Federico Allegro on 24-May-17.

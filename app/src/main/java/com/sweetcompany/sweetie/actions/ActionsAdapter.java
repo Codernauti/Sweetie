@@ -1,7 +1,6 @@
-package com.sweetcompany.sweetie.Actions;
+package com.sweetcompany.sweetie.actions;
 
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +11,7 @@ import android.widget.TextView;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.DataMaker;
-import com.sweetcompany.sweetie.Utils.Utility;
 
-import java.text.Format;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;

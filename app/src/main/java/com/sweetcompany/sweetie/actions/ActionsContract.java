@@ -1,6 +1,4 @@
-package com.sweetcompany.sweetie.Actions;
-
-import com.sweetcompany.sweetie.Firebase.ActionFB;
+package com.sweetcompany.sweetie.actions;
 
 import java.util.List;
 

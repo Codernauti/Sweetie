@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Firebase;
+package com.sweetcompany.sweetie.firebase;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

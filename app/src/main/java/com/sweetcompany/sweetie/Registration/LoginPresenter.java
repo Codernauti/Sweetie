@@ -1,8 +1,7 @@
 package com.sweetcompany.sweetie.Registration;
 
-import com.sweetcompany.sweetie.Firebase.FirebaseLoginController;
-import com.sweetcompany.sweetie.Firebase.UserFB;
-import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.firebase.FirebaseLoginController;
+import com.sweetcompany.sweetie.firebase.UserFB;
 
 /**
  * Created by Eduard on 13-Jul-17.

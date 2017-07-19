@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.sweetcompany.sweetie.Firebase.FirebaseChatController;
+import com.sweetcompany.sweetie.firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 

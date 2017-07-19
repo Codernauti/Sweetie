@@ -3,8 +3,6 @@ package com.sweetcompany.sweetie;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.IntDef;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -12,7 +10,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.sweetcompany.sweetie.Firebase.UserFB;
+import com.sweetcompany.sweetie.firebase.UserFB;
 import com.sweetcompany.sweetie.Utils.Utility;
 import com.sweetcompany.sweetie.couple.CoupleActivity;
 

@@ -2,7 +2,6 @@ package com.sweetcompany.sweetie.Registration;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
-import com.sweetcompany.sweetie.Firebase.FirebaseController;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 

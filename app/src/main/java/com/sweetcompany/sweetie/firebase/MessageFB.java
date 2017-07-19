@@ -1,6 +1,4 @@
-package com.sweetcompany.sweetie.Firebase;
-
-import android.util.Log;
+package com.sweetcompany.sweetie.firebase;
 
 import com.google.firebase.database.Exclude;
 

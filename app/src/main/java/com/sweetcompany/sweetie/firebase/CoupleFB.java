@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Firebase;
+package com.sweetcompany.sweetie.firebase;
 
 import java.util.ArrayList;
 import java.util.List;

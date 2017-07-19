@@ -2,9 +2,9 @@ package com.sweetcompany.sweetie.Registration;
 
 import android.util.Log;
 
-import com.sweetcompany.sweetie.Firebase.FirebasePairingController;
-import com.sweetcompany.sweetie.Firebase.PairingRequestFB;
-import com.sweetcompany.sweetie.Firebase.UserFB;
+import com.sweetcompany.sweetie.firebase.FirebasePairingController;
+import com.sweetcompany.sweetie.firebase.PairingRequestFB;
+import com.sweetcompany.sweetie.firebase.UserFB;
 
 import java.util.List;
 

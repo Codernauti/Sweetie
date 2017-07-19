@@ -2,7 +2,6 @@ package com.sweetcompany.sweetie.Firebase;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,17 +17,12 @@ import java.util.List;
 
 public class FirebaseActionsController {
 
-    private static final String TAG = "FireBActionsController";
-
-    private static final String ACTIONS_DB_REFERENCE = "actions";
-    private static final String CHATS_DB_REFERENCE = "chats";
-
-    private static FirebaseActionsController mInstance;
+    private static final String TAG = "FbActionsController";
 
     private final DatabaseReference mActionsDbReference;
     private final DatabaseReference mChatsDbReference;
 
-    private List<OnFirebaseActionsDataChange> mListeners;
+    private List<OnFirebaseActionsDataChange> mListeners = new ArrayList<>();
     private ValueEventListener mActionsEventListener;
 
     public interface OnFirebaseActionsDataChange {
@@ -36,17 +30,9 @@ public class FirebaseActionsController {
     }
 
 
-    private FirebaseActionsController() {
-        mListeners = new ArrayList<>();
-        mActionsDbReference = FirebaseDatabase.getInstance().getReference().child(ACTIONS_DB_REFERENCE);
-        mChatsDbReference = FirebaseDatabase.getInstance().getReference().child(CHATS_DB_REFERENCE);
-    }
-
-    public static FirebaseActionsController getInstance() {
-        if (mInstance == null) {
-            mInstance = new FirebaseActionsController();
-        }
-        return mInstance;
+    public FirebaseActionsController(String coupleUid) {
+        mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS_NODE + "/" + coupleUid);
+        mChatsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.CHATS_NODE + "/" + coupleUid);
     }
 
     public void addListener(OnFirebaseActionsDataChange listener) {

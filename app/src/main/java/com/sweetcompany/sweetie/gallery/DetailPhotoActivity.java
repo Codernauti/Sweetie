@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Gallery;
+package com.sweetcompany.sweetie.gallery;
 
 /**
  * Created by Federico on 22/05/2017.

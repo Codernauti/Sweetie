@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.Gallery;
+package com.sweetcompany.sweetie.gallery;
 
 import android.content.Context;
 

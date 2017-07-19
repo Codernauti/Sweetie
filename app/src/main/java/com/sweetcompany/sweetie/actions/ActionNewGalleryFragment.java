@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.sweetcompany.sweetie.Gallery.GalleryActivity;
+import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.Utils.Utility;
 

@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.Utils.DataMaker;
+import com.sweetcompany.sweetie.Utils.Utility;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -26,7 +27,8 @@ import java.util.Map;
 public class FirebasePairingController {
     private static final String TAG = "FbPairingController";
 
-    private List<OnFirebasePairingListener> mListeners = new ArrayList<>();
+    private List<PairingControllerListener> mListeners = new ArrayList<>();
+    private NewPairingListener mActivityListener;
     private final String mUserId;
 
     private final DatabaseReference mUserPairingRequests;
@@ -37,12 +39,17 @@ public class FirebasePairingController {
     private ValueEventListener mUserPairingRequestsListener;
     private ValueEventListener mUsersEqualToListener;
 
-    public interface OnFirebasePairingListener {
+    public interface NewPairingListener {
+        void onCreateNewPairingRequestComplete(String futurePartnerUid);
+    }
+
+    public interface PairingControllerListener {
         void onDownloadPairingRequestsCompleted(List<PairingRequestFB> userPairingRequests);
         void onSearchUserWithPhoneNumberFinished(UserFB user);
         void onCreateNewCoupleComplete();
         void onCreateNewPairingRequestComplete();
     }
+
 
     public FirebasePairingController(String userUid) {
         mUserId = userUid;
@@ -57,11 +64,14 @@ public class FirebasePairingController {
     }
 
 
-    public void addListener(OnFirebasePairingListener listener) {mListeners.add(listener);}
+    public void addListener(PairingControllerListener listener) {mListeners.add(listener);}
 
-    public void removeListener(OnFirebasePairingListener listener) {mListeners.remove(listener);}
+    public void removeListener(PairingControllerListener listener) {mListeners.remove(listener);}
 
-    public void detachFromFirebase() {
+    public void setPairingListener(NewPairingListener listener) { mActivityListener = listener; }
+
+
+    public void detachListeners() {
         if (mUserPairingRequestsListener != null) {
             mUserPairingRequests.removeEventListener(mUserPairingRequestsListener);
         }
@@ -87,7 +97,7 @@ public class FirebasePairingController {
                     userPairingRequests.add(pairingRequest);
                 }
 
-                for (OnFirebasePairingListener listener : mListeners) {
+                for (PairingControllerListener listener : mListeners) {
                     listener.onDownloadPairingRequestsCompleted(userPairingRequests);
                 }
             }
@@ -100,19 +110,18 @@ public class FirebasePairingController {
         mUserPairingRequests.addListenerForSingleValueEvent(mUserPairingRequestsListener);
     }
 
-    public void createNewCouple(String userUid, String partnerUid) {
+    public void createNewCouple(String partnerUid) {
         try {
             String now = DataMaker.get_UTC_DateTime();
-            CoupleFB newCouple = new CoupleFB(userUid, partnerUid, now);
+            CoupleFB newCouple = new CoupleFB(mUserId, partnerUid, now);
             mUserPairingRequests.child(partnerUid).removeValue();
-            // TODO: remove all the pairing request
 
             DatabaseReference newCoupleRef = mCouples.push();
             newCoupleRef.setValue(newCouple)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    for (OnFirebasePairingListener listener : mListeners) {
+                    for (PairingControllerListener listener : mListeners) {
                         listener.onCreateNewCoupleComplete();
                     }
                 }
@@ -123,7 +132,7 @@ public class FirebasePairingController {
 
             // update "/users/<userUid>/couple-info/" and "/users/<partnerUid>/couple-info/"
             Map<String, Object> usersCoupleUpdates = new HashMap<>();
-            usersCoupleUpdates.put(userUid + "/" + Constraints.COUPLE_INFO_NODE, coupleInfo);
+            usersCoupleUpdates.put(mUserId + "/" + Constraints.COUPLE_INFO_NODE, coupleInfo);
             usersCoupleUpdates.put(partnerUid + "/" + Constraints.COUPLE_INFO_NODE, coupleInfo);
 
             mUsers.updateChildren(usersCoupleUpdates);
@@ -147,7 +156,7 @@ public class FirebasePairingController {
                         UserFB user = userDataSnapshot.getValue(UserFB.class);
                         user.setKey(userDataSnapshot.getKey());
 
-                        for (OnFirebasePairingListener listener : mListeners) {
+                        for (PairingControllerListener listener : mListeners) {
                             listener.onSearchUserWithPhoneNumberFinished(user);
                         }
                     }
@@ -164,19 +173,35 @@ public class FirebasePairingController {
         }
     }
 
-    public void createNewPairingRequest(UserFB user, String userPhoneNumber) {
+    public void createNewPairingRequest(UserFB futurePartner, String userPhoneNumber, String oldPairingRequestedUserUid) {
         PairingRequestFB newRequest = new PairingRequestFB(userPhoneNumber);
-        mPairingRequests.child(user.getKey())
+
+        if (!oldPairingRequestedUserUid.equals(Utility.DEFAULT_VALUE)) {
+            // remove previous pairing request send by mUserId
+            // "pairing-request/<oldPairingRequestUserUid>/<mUserId>/"
+            mPairingRequests.child(oldPairingRequestedUserUid).child(mUserId).removeValue();
+        }
+
+        // TODO: save pairing request into shared preferences
+        mActivityListener.onCreateNewPairingRequestComplete(futurePartner.getKey());
+
+
+        // mUserId push a pairing-request to user.getKey
+        // "pairing-request/<futurePartner.getKey()>/<mUserId>/<newRequest>"
+        mPairingRequests.child(futurePartner.getKey())
                         .child(mUserId)
                         .setValue(newRequest)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                for (OnFirebasePairingListener listener : mListeners) {
+                                for (PairingControllerListener listener : mListeners) {
                                     listener.onCreateNewPairingRequestComplete();
                                 }
                             }
                         });
+
+        // save new pairing request sent by mUserId
+        mUsers.child(mUserId + "/futurePartner").setValue(futurePartner.getKey());
     }
 
 }

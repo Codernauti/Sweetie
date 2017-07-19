@@ -47,11 +47,14 @@ public class UserMonitorService extends Service {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserFB newUserData = dataSnapshot.getValue(UserFB.class);
-                String newCoupleUidData = newUserData.getCoupleInfo().getActiveCoupleUid();
 
-                if (!newCoupleUidData.equals(mCoupleUid)) {
-                    Log.d(TAG, "couple_uid is changed!");
-                    startCoupleActivity(newCoupleUidData);
+                if (newUserData.getCoupleInfo() != null) {
+                    String newCoupleUidData = newUserData.getCoupleInfo().getActiveCoupleUid();
+
+                    if (!newCoupleUidData.equals(mCoupleUid)) {
+                        Log.d(TAG, "couple_uid is changed!");
+                        startCoupleActivity(newCoupleUidData);
+                    }
                 }
             }
 

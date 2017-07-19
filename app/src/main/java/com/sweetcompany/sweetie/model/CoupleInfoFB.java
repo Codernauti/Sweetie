@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.firebase;
+package com.sweetcompany.sweetie.model;
 
 /**
  * Created by Eduard on 11-Jul-17.

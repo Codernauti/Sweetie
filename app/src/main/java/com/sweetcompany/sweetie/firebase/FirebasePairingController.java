@@ -12,6 +12,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.Utils.DataMaker;
 import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.model.CoupleFB;
+import com.sweetcompany.sweetie.model.CoupleInfoFB;
+import com.sweetcompany.sweetie.model.PairingRequestFB;
+import com.sweetcompany.sweetie.model.UserFB;
 
 import java.text.ParseException;
 import java.util.ArrayList;

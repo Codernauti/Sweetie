@@ -3,8 +3,8 @@ package com.sweetcompany.sweetie.Registration;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.firebase.FirebasePairingController;
-import com.sweetcompany.sweetie.firebase.PairingRequestFB;
-import com.sweetcompany.sweetie.firebase.UserFB;
+import com.sweetcompany.sweetie.model.PairingRequestFB;
+import com.sweetcompany.sweetie.model.UserFB;
 
 import java.util.List;
 

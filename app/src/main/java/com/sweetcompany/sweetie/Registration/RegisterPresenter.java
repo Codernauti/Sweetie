@@ -2,7 +2,7 @@ package com.sweetcompany.sweetie.Registration;
 
 
 import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
-import com.sweetcompany.sweetie.firebase.UserFB;
+import com.sweetcompany.sweetie.model.UserFB;
 
 /**
  * Created by lucas on 22/05/2017.

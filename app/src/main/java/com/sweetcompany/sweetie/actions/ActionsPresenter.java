@@ -3,7 +3,7 @@ package com.sweetcompany.sweetie.actions;
 
 import android.util.Log;
 
-import com.sweetcompany.sweetie.firebase.ActionFB;
+import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Utils.DataMaker;
 

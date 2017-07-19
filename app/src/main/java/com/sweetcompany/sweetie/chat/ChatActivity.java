@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by ghiro on 11/05/2017.

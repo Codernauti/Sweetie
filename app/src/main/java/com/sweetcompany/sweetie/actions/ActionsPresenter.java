@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
-import com.sweetcompany.sweetie.Utils.DataMaker;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.text.ParseException;
 import java.util.ArrayList;

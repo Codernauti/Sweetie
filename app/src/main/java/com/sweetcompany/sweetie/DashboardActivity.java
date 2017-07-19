@@ -19,7 +19,7 @@ import com.sweetcompany.sweetie.actions.ActionsPresenter;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.pairing.PairingActivity;
-import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.utils.Utility;
 
 public class DashboardActivity extends AppCompatActivity implements IPageChanger {
 

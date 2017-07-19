@@ -10,7 +10,7 @@ import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.model.UserFB;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.utils.Utility;
 import com.sweetcompany.sweetie.pairing.PairingActivity;
 
 

@@ -3,7 +3,7 @@ package com.sweetcompany.sweetie.chat;
 import android.view.View;
 
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.DataMaker;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 /**
  * Created by ghiro on 16/05/2017.

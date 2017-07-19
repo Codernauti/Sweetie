@@ -12,7 +12,7 @@ import android.widget.EditText;
 
 import com.sweetcompany.sweetie.chat.ChatActivity;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.List;
 

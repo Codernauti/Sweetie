@@ -11,7 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.UserFB;
-import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.utils.Utility;
 import com.sweetcompany.sweetie.couple.CoupleActivity;
 
 /**

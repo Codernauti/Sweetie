@@ -1,11 +1,10 @@
-package com.sweetcompany.sweetie.Utils;
+package com.sweetcompany.sweetie.utils;
 
 
 import android.icu.text.DateFormat;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.TimeZone;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;

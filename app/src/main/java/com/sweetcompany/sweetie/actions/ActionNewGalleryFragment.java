@@ -12,7 +12,7 @@ import android.widget.EditText;
 
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by Federico Allegro on 24-May-17.

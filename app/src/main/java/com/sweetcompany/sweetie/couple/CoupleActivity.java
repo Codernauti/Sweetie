@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.sweetcompany.sweetie.DashboardActivity;
-import com.sweetcompany.sweetie.Utils.Utility;
 
 /**
  * Created by Eduard on 17-Jul-17.

@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.Utils.Utility;
+import com.sweetcompany.sweetie.utils.Utility;
 
 
 public class StepTwo extends Fragment implements RegisterContract.RegisterView, View.OnClickListener {

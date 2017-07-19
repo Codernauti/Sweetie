@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.sweetcompany.sweetie.Actions.ActionsContract;
 import com.sweetcompany.sweetie.Actions.ActionsPresenter;
 import com.sweetcompany.sweetie.Calendar.CalendarFragment;
+import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Folders.FoldersFragment;
 import com.sweetcompany.sweetie.Actions.ActionsFragment;
 import com.sweetcompany.sweetie.Map.MapFragment;
@@ -22,14 +23,15 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
     private final static int MAP_TAB = 3;
 
     // For getString From Resource
-    Context mContext;
+    private final Context mContext;
 
-    public ActionsContract.Presenter mPresenter;
+    private final FirebaseActionsController mActionsController;
+    private ActionsContract.Presenter mActionsPresenter;
 
-
-    DashboardPagerAdapter(FragmentManager fm, Context context) {
+    DashboardPagerAdapter(FragmentManager fm, Context context, FirebaseActionsController actionsController) {
         super(fm);
         mContext = context;
+        mActionsController = actionsController;
     }
 
     @Override
@@ -39,8 +41,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
                 return new CalendarFragment();
             case HOME_TAB:
                 ActionsFragment view = new ActionsFragment();
-                mPresenter = new ActionsPresenter(view);
-                view.setPresenter(mPresenter);
+                mActionsPresenter = new ActionsPresenter(view, mActionsController);
                 return view;
             case FOLDERS_TAB:
                 return new FoldersFragment();

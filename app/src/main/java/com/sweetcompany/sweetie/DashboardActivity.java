@@ -15,16 +15,21 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.sweetcompany.sweetie.Actions.ActionsPresenter;
+import com.sweetcompany.sweetie.Firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.Gallery.GalleryActivity;
 import com.sweetcompany.sweetie.Registration.PairingActivity;
 import com.sweetcompany.sweetie.Utils.Utility;
 
 public class DashboardActivity extends AppCompatActivity implements IPageChanger {
 
-    ViewPager mViewPager;
-    DashboardPagerAdapter mAdapter;
-    Context mContext;
-    TabLayout tabLayout;
+    private ViewPager mViewPager;
+    private DashboardPagerAdapter mAdapter;
+    private Context mContext;
+    private TabLayout tabLayout;
+
+    private FirebaseActionsController mActionsController;
+    private ActionsPresenter mActionsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +37,15 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
         setContentView(R.layout.dashboard_activity);
 
         mContext = getApplicationContext();
-        mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext);
+
+        // init the Controllers for fragments
+        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+
+        mActionsController = new FirebaseActionsController(coupleUid);
+        // mCalendarController = ...
+        // mMapsController = ...
+
+        mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext, mActionsController);
 
         mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
         mViewPager.setAdapter(mAdapter);
@@ -41,7 +54,6 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
         setSupportActionBar(myToolbar);
 
         setupTopTabber();
-
     }
 
     private void setupTopTabber() {

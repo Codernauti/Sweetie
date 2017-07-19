@@ -17,6 +17,7 @@ public class Utility {
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String GENDER = "gender";
     public static final String PARTNER_UID = "partner_uid";
+    public static final String COUPLE_UID = "couple_uid";
 
     //Method for saving a shared preference
     //How to use: pass the context, a key string and the data string; returns true if successfully saved

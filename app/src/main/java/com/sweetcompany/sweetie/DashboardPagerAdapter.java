@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
+import android.view.ViewGroup;
 
 import com.sweetcompany.sweetie.actions.ActionsContract;
 import com.sweetcompany.sweetie.actions.ActionsPresenter;
@@ -40,15 +43,38 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
             case CALENDAR_TAB:
                 return new CalendarFragment();
             case HOME_TAB:
-                ActionsFragment view = new ActionsFragment();
-                mActionsPresenter = new ActionsPresenter(view, mActionsController);
-                return view;
+                //ActionsFragment view = new ActionsFragment();
+                //mActionsPresenter = new ActionsPresenter(view, mActionsController);
+                //return view;
+                return new ActionsFragment();
             case FOLDERS_TAB:
                 return new FoldersFragment();
             case MAP_TAB:
                 return new MapFragment();
         }
         return null;
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+        // save the appropriate reference depending on position
+        switch (position) {
+            case CALENDAR_TAB:
+                break;
+            case HOME_TAB:
+                ActionsContract.View view = (ActionsContract.View) createdFragment;
+                mActionsPresenter = new ActionsPresenter(view, mActionsController);
+                break;
+            case FOLDERS_TAB:
+                break;
+            case MAP_TAB:
+                break;
+            default:
+                Log.d("DashboardPagerAdapter", "No fragment position found!");
+                break;
+        }
+        return createdFragment;
     }
 
     @Override

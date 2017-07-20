@@ -57,7 +57,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
     }
 
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
         mPresenter.start();
@@ -67,7 +67,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     public void onStop() {
         super.onStop();
         mPresenter.pause();
-    }
+    }*/
 
     @Override
     public void setPresenter(ActionsContract.Presenter presenter) {

@@ -29,7 +29,6 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
     private TabLayout tabLayout;
 
     private FirebaseActionsController mActionsController;
-    private ActionsPresenter mActionsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +70,19 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) tab1.getLayoutParams();
         layoutParams.weight = 0.5f;
         tab1.setLayoutParams(layoutParams);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mActionsController.attachNetworkDatabase();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // TODO: clean up adapter?
+        mActionsController.detachNetworkDatabase();
     }
 
     @Override

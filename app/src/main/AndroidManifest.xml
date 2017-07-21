@@ -40,6 +40,8 @@
             android:theme="@style/AppTheme"/>
         <activity android:name=".couple.CoupleActivity"
             android:theme="@style/AppTheme"/>
+        <activity android:name=".couple.CoupleDetailsActivity"
+            android:theme="@style/AppTheme"/>
 
         <service
             android:name=".UserMonitorService"

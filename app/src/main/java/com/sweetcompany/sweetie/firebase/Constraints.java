@@ -8,8 +8,11 @@ interface Constraints {
 
     String USERS_NODE = "users";
         String COUPLE_INFO_NODE = "coupleInfo";
+            String ACTIVE_COUPLE = "activeCouple";
+            String ARCHIVED_COUPLES = "archivedCouples";
 
     String COUPLES_NODE = "couples";
+        String ACTIVE = "active";
 
     String PAIRING_REQUESTS_NODE = "pairing-requests";
 
@@ -19,4 +22,5 @@ interface Constraints {
 
     String CHAT_MESSAGES_NODE = "chat-messages";
 
+    String BREAK_TIME = "brokenTime";
 }

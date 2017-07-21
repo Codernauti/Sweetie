@@ -88,6 +88,6 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
 
     @Override
     public void startPairingActivity() {
-        ((RegisterActivity) getActivity()).initAndOpenPairingFragment();
+        ((RegisterActivity) getActivity()).initServiceAndOpenPairingScreen();
     }
 }

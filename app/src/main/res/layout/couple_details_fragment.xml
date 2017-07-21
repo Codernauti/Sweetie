@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/couple_photo_default"
+        android:adjustViewBounds="true"
+        />
+
+    <Button
+        android:id="@+id/couple_details_find_partner_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find Partner"/>
+
+    <Button
+        android:id="@+id/couple_details_break_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Break"/>
+
+</LinearLayout>

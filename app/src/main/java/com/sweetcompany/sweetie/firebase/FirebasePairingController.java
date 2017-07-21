@@ -132,12 +132,18 @@ public class FirebasePairingController {
             });
 
             // create a couple-info object
-            CoupleInfoFB coupleInfo = new CoupleInfoFB(newCoupleRef.getKey(), now);
 
             // update "/users/<userUid>/couple-info/" and "/users/<partnerUid>/couple-info/"
+            String userActiveCouplePath = mUserId + "/" +
+                                        Constraints.COUPLE_INFO_NODE + "/" +
+                                        Constraints.ACTIVE_COUPLE;
+            String partnerActiveCouplePath = partnerUid + "/" +
+                                        Constraints.COUPLE_INFO_NODE + "/" +
+                                        Constraints.ACTIVE_COUPLE;
+
             Map<String, Object> usersCoupleUpdates = new HashMap<>();
-            usersCoupleUpdates.put(mUserId + "/" + Constraints.COUPLE_INFO_NODE, coupleInfo);
-            usersCoupleUpdates.put(partnerUid + "/" + Constraints.COUPLE_INFO_NODE, coupleInfo);
+            usersCoupleUpdates.put(userActiveCouplePath, newCoupleRef.getKey());
+            usersCoupleUpdates.put(partnerActiveCouplePath, newCoupleRef.getKey());
 
             mUsers.updateChildren(usersCoupleUpdates);
         }
@@ -186,7 +192,7 @@ public class FirebasePairingController {
             mPairingRequests.child(oldPairingRequestedUserUid).child(mUserId).removeValue();
         }
 
-        // TODO: save pairing request into shared preferences
+        // save pairing request into shared preferences
         mActivityListener.onCreateNewPairingRequestComplete(futurePartner.getKey());
 
 

@@ -20,6 +20,7 @@ import com.sweetcompany.sweetie.map.MapFragment;
 public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
     private final static int NUM_TAB = 4;
+
     private final static int CALENDAR_TAB = 0;
     public final static int HOME_TAB = 1;
     private final static int FOLDERS_TAB = 2;
@@ -43,9 +44,6 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
             case CALENDAR_TAB:
                 return new CalendarFragment();
             case HOME_TAB:
-                //ActionsFragment view = new ActionsFragment();
-                //mActionsPresenter = new ActionsPresenter(view, mActionsController);
-                //return view;
                 return new ActionsFragment();
             case FOLDERS_TAB:
                 return new FoldersFragment();
@@ -58,7 +56,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
-        // save the appropriate reference depending on position
+        // instantiate presenters here
         switch (position) {
             case CALENDAR_TAB:
                 break;

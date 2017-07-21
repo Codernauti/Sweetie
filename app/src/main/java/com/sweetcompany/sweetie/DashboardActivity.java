@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.sweetcompany.sweetie.actions.ActionsPresenter;
+import com.sweetcompany.sweetie.couple.CoupleActivity;
+import com.sweetcompany.sweetie.couple.CoupleDetailsActivity;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.pairing.PairingActivity;
@@ -106,8 +108,8 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
             case R.id.menu_fake_gallery:
                 startActivity(new Intent(this, GalleryActivity.class));
                 return true;
-            case R.id.menu_send_couple_request:
-                startActivity(new Intent(this, PairingActivity.class));
+            case R.id.menu_couple_details:
+                startActivity(new Intent(this, CoupleDetailsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

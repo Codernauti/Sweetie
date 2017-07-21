@@ -38,7 +38,7 @@
             android:layout_marginEnd="16dp"
             android:visibility="invisible"
             android:src="@drawable/action_chat_icon"
-            app2:backgroundTint="@color/rosa_sweetie"
+            app2:backgroundTint="@color/yellow_sweetie"
             app2:elevation="6dp"
             app2:pressedTranslationZ="12dp" />
 

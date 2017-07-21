@@ -15,8 +15,19 @@ import com.sweetcompany.sweetie.R;
 
 public class GalleryActivity extends AppCompatActivity {
 
+    private static final String TAG = "GalleryActivity";
+
+    // key for Intent extras
+    public static final String GALLERY_DATABASE_KEY = "GalleryDatabaseKey";
+    public static final String GALLERY_TITLE = "GalleryTitle";    // For offline user
+    public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
+
     private ImageGalleryAdapter mGalleryAdapter;
     private Context mContext;
+
+    // TODO
+    //private GalleryPresenter mPresenter;
+    //private FirebaseGalleryController mController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +45,19 @@ public class GalleryActivity extends AppCompatActivity {
         recyclerView.setAdapter(mGalleryAdapter);
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //mController.attachListeners();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //mController.detachListeners();
+    }
+
 
 }
 

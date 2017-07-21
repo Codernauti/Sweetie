@@ -26,6 +26,7 @@ class ActionGalleryVM extends ActionVM {
         Log.d("ActionGalleryVM", getTitle() + " openAction");
 
         Intent intent = new Intent(mContext, GalleryActivity.class);
+        intent.putExtra(GalleryActivity.GALLERY_TITLE, super.getTitle());
         mContext.startActivity(intent);
 
         // For SingleActivity App

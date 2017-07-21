@@ -5,13 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/couple_photo_default"
-        android:adjustViewBounds="true"
-        />
-
     <Button
         android:id="@+id/couple_details_find_partner_button"
         android:layout_width="match_parent"

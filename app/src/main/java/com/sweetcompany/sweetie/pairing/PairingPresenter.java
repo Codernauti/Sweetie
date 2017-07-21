@@ -46,11 +46,11 @@ class PairingPresenter implements PairingContract.Presenter,
         // TODO: check user input
 
         if (mUserPairingRequestSent.equals("error")) {
-            // go ahead
+            // TODO: go ahead
             Log.d(TAG, "mUserPairingRequestSent == error");
         }
         else {
-            // warning the user
+            // TODO: warning the user
             Log.d(TAG, "show advise");
         }
 
@@ -100,8 +100,6 @@ class PairingPresenter implements PairingContract.Presenter,
     @Override
     public void onCreateNewCoupleComplete() {
         mView.hideLoadingProgress();
-        mView.showMessage("You are now coupled!");
-        mView.startDashboardActivity();
     }
 
     @Override

@@ -11,8 +11,8 @@
         android:title="Test Gallery"
         app:showAsAction="never" />
 
-    <item android:id="@+id/menu_send_couple_request"
-        android:title="@string/menu_send_couple_request"
+    <item android:id="@+id/menu_couple_details"
+        android:title="@string/menu_couple_details"
         app:showAsAction="never" />
 
 </menu>

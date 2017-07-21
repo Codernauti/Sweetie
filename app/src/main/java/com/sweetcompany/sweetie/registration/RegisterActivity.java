@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.sweetcompany.sweetie.UserMonitorService;
 import com.sweetcompany.sweetie.firebase.FirebaseLoginController;
 import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.model.UserFB;
@@ -51,9 +52,9 @@ public class RegisterActivity extends AppCompatActivity
         mLoginController.addListener(this);
     }
 
-    public void initAndOpenPairingFragment() {
-        Intent intent = new Intent(this, PairingActivity.class);
-        startActivity(intent);
+    public void initServiceAndOpenPairingScreen() {
+        startService(new Intent(this, UserMonitorService.class));
+        startActivity(new Intent(this, PairingActivity.class));
     }
 
     @Override

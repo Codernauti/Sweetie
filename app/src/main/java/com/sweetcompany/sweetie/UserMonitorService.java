@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -10,6 +11,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sweetcompany.sweetie.couple.CoupleDetailsActivity;
 import com.sweetcompany.sweetie.model.UserFB;
 import com.sweetcompany.sweetie.utils.Utility;
 import com.sweetcompany.sweetie.couple.CoupleActivity;
@@ -47,11 +49,23 @@ public class UserMonitorService extends Service {
                 UserFB newUserData = dataSnapshot.getValue(UserFB.class);
 
                 if (newUserData.getCoupleInfo() != null) {
-                    String newCoupleUidData = newUserData.getCoupleInfo().getActiveCoupleUid();
+                    String newCoupleUidData = newUserData.getCoupleInfo().getActiveCouple();
+                    // TODO: get partner username not UID
+                    String partnerName = newUserData.getFuturePartner();
 
-                    if (!newCoupleUidData.equals(mCoupleUid)) {
-                        Log.d(TAG, "couple_uid is changed!");
-                        startCoupleActivity(newCoupleUidData);
+                    if (newCoupleUidData != null) {
+                        if (!newCoupleUidData.equals(mCoupleUid)) {
+                            Log.d(TAG, "couple_uid is changed!");
+                            startCoupleActivity(newCoupleUidData, "You are now coupled with " + partnerName);
+                        }
+                        // else coupleUid remains the same
+                    }
+                    else {
+                        if (!mCoupleUid.equals(Utility.DEFAULT_VALUE)) {
+                            Log.d(TAG, "couple break!");
+                            startCoupleActivity(Utility.DEFAULT_VALUE, "You break up with " + partnerName);
+                        }
+                        // else mCouple == DEFAULT.VALUE -> the user is single
                     }
                 }
             }
@@ -64,13 +78,12 @@ public class UserMonitorService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void startCoupleActivity(String newCoupleUid) {
+    private void startCoupleActivity(String newCoupleUid, String messageToShow) {
         Utility.saveStringPreference(this, Utility.COUPLE_UID, newCoupleUid);
-
-        // TODO save into intent extra the partner user name?
 
         // start activity and clean the Task (back stack of activity)
         Intent intent = new Intent(this, CoupleActivity.class);
+        intent.putExtra(CoupleActivity.MESSAGE_TO_SHOW_KEY, messageToShow);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }

@@ -8,6 +8,7 @@
     <!-- dashboard menu -->
     <string name="menu_sign_out">Sign Out</string>
     <string name="menu_send_couple_request">Find your partner</string>
+    <string name="menu_couple_details">Couples</string>
 
     <!-- ActionNewChatFragment dialog -->
     <string name="action_new_chat_title_dialog">Insert new chat title</string>

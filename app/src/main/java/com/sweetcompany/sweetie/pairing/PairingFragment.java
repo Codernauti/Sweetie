@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.sweetcompany.sweetie.DashboardActivity;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 
@@ -134,7 +135,7 @@ public class PairingFragment extends Fragment implements PairingContract.View,
 
     @Override
     public void startDashboardActivity() {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
+        Intent intent = new Intent(getActivity(), DashboardActivity.class);
         startActivity(intent);
     }
 
@@ -145,7 +146,7 @@ public class PairingFragment extends Fragment implements PairingContract.View,
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
 }

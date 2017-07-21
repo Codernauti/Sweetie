@@ -186,6 +186,17 @@ public class FirebasePairingController {
     public void createNewPairingRequest(UserFB futurePartner, String userPhoneNumber, String oldPairingRequestedUserUid) {
         PairingRequestFB newRequest = new PairingRequestFB(userPhoneNumber);
 
+        Map<String, Object> updates = new HashMap<>();
+
+        // pairing-request/<oldPairingRequestUserUid>/<mUserId>/
+        String oldUserPairingRequestUrl = Constraints.PAIRING_REQUESTS_NODE + "/" +
+                                            oldPairingRequestedUserUid + "/" +
+                                            mUserId;
+
+
+        updates.put(oldPairingRequestedUserUid, null);
+
+
         if (!oldPairingRequestedUserUid.equals(Utility.DEFAULT_VALUE)) {
             // remove previous pairing request send by mUserId
             // "pairing-request/<oldPairingRequestUserUid>/<mUserId>/"

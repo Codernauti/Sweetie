@@ -41,7 +41,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
-            android:background="@android:drawable/ic_menu_gallery" />
+            android:background="@drawable/chat_open_emoticon_image_button24x24" />
 
         <EditText
             android:id="@+id/chat_text_message_input"

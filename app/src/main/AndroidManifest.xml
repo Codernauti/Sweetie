@@ -34,9 +34,8 @@
 
         <activity android:name=".chat.ChatActivity"
                   android:theme="@style/AppTheme"/>
+
         <activity android:name=".gallery.GalleryActivity"
-            android:theme="@style/AppTheme"/>
-        <activity android:name=".gallery.DetailPhotoActivity"
             android:theme="@style/AppTheme"/>
         <activity android:name=".couple.CoupleActivity"
             android:noHistory="true"
@@ -57,5 +56,7 @@
             android:value="@string/google_maps_key" />
 
     </application>
+
+
 
 </manifest>

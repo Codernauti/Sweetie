@@ -28,7 +28,7 @@ public class FirebaseRegisterController {
     }
 
     public FirebaseRegisterController() {
-        mUsers = FirebaseDatabase.getInstance().getReference(Constraints.USERS_NODE);
+        mUsers = FirebaseDatabase.getInstance().getReference(Constraints.USERS);
     }
 
     public void saveUserData(UserFB user) {

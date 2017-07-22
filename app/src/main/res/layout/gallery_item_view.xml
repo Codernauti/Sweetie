@@ -6,13 +6,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<ImageView
-    android:id="@+id/iv_photo"
-    app:layout_widthPercent="100%"
-    app:layout_aspectRatio="100%"
-    android:padding="2dp"
-    android:scaleType="centerCrop"
-    android:cropToPadding="true"
-    tools:background="#efdbed"
-    />
+
+    <ImageView
+        android:id="@+id/iv_photo"
+        app:layout_widthPercent="100%"
+        app:layout_aspectRatio="100%"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
+        android:cropToPadding="true"
+        tools:background="#efdbed"
+        />
+
 </android.support.percent.PercentFrameLayout>

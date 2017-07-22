@@ -45,11 +45,11 @@ public class FirebaseChatController {
 
     public FirebaseChatController(String coupleUid, String chatKey, String actionKey) {
         mChat = FirebaseDatabase.getInstance()
-                .getReference(Constraints.CHATS_NODE + "/" + coupleUid + "/" + chatKey);
+                .getReference(Constraints.CHATS + "/" + coupleUid + "/" + chatKey);
         mChatMessages = FirebaseDatabase.getInstance()
-                .getReference(Constraints.CHAT_MESSAGES_NODE + "/" + coupleUid + "/" + chatKey);
+                .getReference(Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey);
         mAction = FirebaseDatabase.getInstance()
-                .getReference(Constraints.ACTIONS_NODE + "/" + coupleUid + "/" + actionKey);
+                .getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
     }
 
     public void addListener(ChatControllerListener listener) {

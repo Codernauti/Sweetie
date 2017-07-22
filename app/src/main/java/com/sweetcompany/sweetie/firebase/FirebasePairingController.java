@@ -59,8 +59,8 @@ public class FirebasePairingController {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference();
 
-        mUserPairingRequests = database.getReference().child(Constraints.PAIRING_REQUESTS_NODE).child(mUserId);
-        mUsers = database.getReference().child(Constraints.USERS_NODE);
+        mUserPairingRequests = database.getReference().child(Constraints.PAIRING_REQUESTS).child(mUserId);
+        mUsers = database.getReference().child(Constraints.USERS);
 
         mUserPairingRequests.keepSynced(true);
     }
@@ -117,7 +117,7 @@ public class FirebasePairingController {
             String now = DataMaker.get_UTC_DateTime();
             CoupleFB newCouple = new CoupleFB(mUserId, partnerUid, now);
 
-            DatabaseReference newCoupleRef = mDatabase.child(Constraints.COUPLES_NODE).push();
+            DatabaseReference newCoupleRef = mDatabase.child(Constraints.COUPLES).push();
             String newCoupleKey = newCoupleRef.getKey();
 
             Map<String, Object> updates = new HashMap<>();
@@ -145,7 +145,7 @@ public class FirebasePairingController {
     private void removeAcceptedPairingRequest(Map<String, Object> updates, String partnerUid) {
         // remove the pairing request received
         // pairing-request/<mUserId>/<partnerUid>
-        String userPairingRequestUrl = Constraints.PAIRING_REQUESTS_NODE + "/" +
+        String userPairingRequestUrl = Constraints.PAIRING_REQUESTS + "/" +
                 mUserId + "/" +
                 partnerUid;
         updates.put(userPairingRequestUrl, null);
@@ -153,22 +153,22 @@ public class FirebasePairingController {
 
     private void addNewCouple(Map<String, Object> updates, CoupleFB newCouple, String newCoupleKey) {
         // push the new couple: couples/<newCoupleUid>
-        String newCoupleUrl = Constraints.COUPLES_NODE + "/" + newCoupleKey;
+        String newCoupleUrl = Constraints.COUPLES + "/" + newCoupleKey;
         updates.put(newCoupleUrl, newCouple);
     }
 
     private void updateUsersCoupleInfo(Map<String, Object> updates, String newCoupleKey, String partnerUid) {
         // users/<userUid>/coupleInfo
-        String userActiveCoupleUrl = Constraints.USERS_NODE + "/" +
+        String userActiveCoupleUrl = Constraints.USERS + "/" +
                 mUserId + "/" +
-                Constraints.COUPLE_INFO_NODE + "/" +
+                Constraints.COUPLE_INFO + "/" +
                 Constraints.ACTIVE_COUPLE;
         updates.put(userActiveCoupleUrl, newCoupleKey);
 
         // users/<partnerUid>/coupleInfo
-        String partnerActiveCoupleUrl = Constraints.USERS_NODE + "/" +
+        String partnerActiveCoupleUrl = Constraints.USERS + "/" +
                 partnerUid + "/" +
-                Constraints.COUPLE_INFO_NODE + "/" +
+                Constraints.COUPLE_INFO + "/" +
                 Constraints.ACTIVE_COUPLE;
         updates.put(partnerActiveCoupleUrl, newCoupleKey);
     }
@@ -213,21 +213,21 @@ public class FirebasePairingController {
         if (!oldPairingRequestedUserUid.equals(Utility.DEFAULT_VALUE)) {
             // remove previous pairing request send by mUserId
             // pairing-request/<oldPairingRequestUserUid>/<mUserId>
-            String oldUserPairingRequestUrl =   Constraints.PAIRING_REQUESTS_NODE + "/" +
+            String oldUserPairingRequestUrl =   Constraints.PAIRING_REQUESTS + "/" +
                                                 oldPairingRequestedUserUid + "/" +
                                                 mUserId;
             updates.put(oldUserPairingRequestUrl, null);
         }
 
         // pairing-request/<futurePartner.getKey()>/<mUserId>
-        String receiverPairingRequestsUrl =     Constraints.PAIRING_REQUESTS_NODE + "/" +
+        String receiverPairingRequestsUrl =     Constraints.PAIRING_REQUESTS + "/" +
                                                 futurePartner.getKey() + "/" +
                                                 mUserId;
         updates.put(receiverPairingRequestsUrl, newRequest);
 
         // mUserId push a pairing-request to user.getKey
         // users/<mUserId>/futurePartner
-        String userFuturePartnerUrl =   Constraints.USERS_NODE + "/" +
+        String userFuturePartnerUrl =   Constraints.USERS + "/" +
                                         mUserId + "/" +
                                         Constraints.FUTURE_PARTNER;
         updates.put(userFuturePartnerUrl, futurePartner.getKey());

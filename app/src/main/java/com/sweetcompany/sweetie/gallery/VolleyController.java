@@ -5,25 +5,26 @@ package com.sweetcompany.sweetie.gallery;
  */
 
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-public class VolleyController extends Application {
+public class VolleyController {
 
     public static final String TAG = VolleyController.class
             .getSimpleName();
 
     private RequestQueue mRequestQueue;
+    private Context mContext;
 
     private static VolleyController mInstance;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    public VolleyController(Context applicationContext) {
         mInstance = this;
+        mContext = applicationContext;
     }
 
     public static synchronized VolleyController getInstance() {
@@ -32,7 +33,7 @@ public class VolleyController extends Application {
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
-            mRequestQueue = Volley.newRequestQueue(getApplicationContext());
+            mRequestQueue = Volley.newRequestQueue(mContext);
         }
 
         return mRequestQueue;

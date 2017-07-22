@@ -1,7 +1,9 @@
 package com.sweetcompany.sweetie.chat;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import com.sweetcompany.sweetie.R;
@@ -32,12 +36,15 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private Toolbar mToolBar;
     private RecyclerView mChatListView;
     private LinearLayoutManager mLinearLayoutManager;
-    private ImageButton mPhotoPickerButton; // TODO: implement PhotoPicker
+    // TODO: implement PhotoPicker
+    private ImageButton mEmoticonsButton;
     private EditText mTextMessageInput;
     private Button mSendButton;
+    private FrameLayout mEmoticonsLayout;
 
     private ChatAdapter mChatAdapter;
     private ChatContract.Presenter mPresenter;
+
 
     public static ChatFragment newInstance(Bundle bundle) {
         ChatFragment newChatFragment = new ChatFragment();
@@ -82,9 +89,11 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mChatListView.setAdapter(mChatAdapter);
 
         mTextMessageInput = (EditText) root.findViewById(R.id.chat_text_message_input);
-        mPhotoPickerButton = (ImageButton) root.findViewById(R.id.chat_photo_picker_button);
+        mEmoticonsButton = (ImageButton) root.findViewById(R.id.chat_emoticons_button);
         mSendButton = (Button) root.findViewById(R.id.chat_send_button);
+        mEmoticonsLayout = (FrameLayout) root.findViewById(R.id.chat_emoticons_container);
 
+        mEmoticonsButton.setOnClickListener(this);
         mSendButton.setOnClickListener(this);
 
         return root;
@@ -125,25 +134,43 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     // Callback bottom input bar
     @Override
     public void onClick(View v) {
-        String inputText = mTextMessageInput.getText().toString();
-        mTextMessageInput.setText("");
+        switch (v.getId()) {
+            case R.id.chat_text_message_input:
+                String inputText = mTextMessageInput.getText().toString();
+                mTextMessageInput.setText("");
 
-        if (!inputText.isEmpty()) {
-            // TODO: is this responsibility of fragment?
+                if (!inputText.isEmpty()) {
+                    // TODO: is this responsibility of fragment?
+                    MessageVM newMessage = null;
+                    try {
+                        newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
-
-            MessageVM newMessage = null;
-            try {
-                newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            // TODO: update view to feedback user if he is offline
-            //mChatAdapter.addMessage(newMessage);
-
-            mPresenter.sendMessage(newMessage);
+                    // TODO: update view to feedback user if he is offline
+                    //mChatAdapter.addMessage(newMessage);
+                    mPresenter.sendMessage(newMessage);
+                }
+                break;
+            case R.id.chat_emoticons_button:
+                //TODO: show emoji view
+                if (mEmoticonsLayout.getVisibility() == View.GONE) {
+                    mEmoticonsLayout.setVisibility(View.VISIBLE);
+                    View view = getActivity().getCurrentFocus();
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+                }
+                else {
+                    mEmoticonsLayout.setVisibility(View.GONE);
+                }
+                break;
+            default:
+                break;
         }
+
     }
 
     // ChatAdapter callback

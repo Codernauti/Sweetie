@@ -7,15 +7,15 @@ import java.io.Serializable;
  * Created by ghiro on 22/07/2017.
  */
 
-public class Image implements Serializable{
+public class PhotoVM implements Serializable{
     private String name;
     private String small, medium, large;
     private String timestamp;
 
-    public Image() {
+    public PhotoVM() {
     }
 
-    public Image(String name, String small, String medium, String large, String timestamp) {
+    public PhotoVM(String name, String small, String medium, String large, String timestamp) {
         this.name = name;
         this.small = small;
         this.medium = medium;

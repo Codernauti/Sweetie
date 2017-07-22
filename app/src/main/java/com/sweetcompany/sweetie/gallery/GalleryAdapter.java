@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.sweetcompany.sweetie.R;
 
@@ -26,8 +27,11 @@ import com.sweetcompany.sweetie.R;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHolder> {
 
-    private List<Image> images;
     private Context mContext;
+
+    private List<PhotoVM> mPhotoList = new ArrayList<>();
+
+    private static final String TAG = "GalleryAdapter";
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail;
@@ -36,12 +40,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
             super(view);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
         }
-    }
-
-
-    public GalleryAdapter(Context context, List<Image> images) {
-        mContext = context;
-        this.images = images;
     }
 
     @Override
@@ -54,9 +52,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Image image = images.get(position);
+        PhotoVM photoVM = mPhotoList.get(position);
 
-        Glide.with(mContext).load(image.getMedium())
+        Glide.with(mContext).load(photoVM.getMedium())
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -65,7 +63,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return mPhotoList.size();
     }
 
     public interface ClickListener {

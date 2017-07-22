@@ -1,14 +1,21 @@
 package com.sweetcompany.sweetie.chat;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.gallery.GalleryAdapter;
+import com.sweetcompany.sweetie.gallery.PhotoVM;
+import com.sweetcompany.sweetie.gallery.VolleyController;
 import com.sweetcompany.sweetie.utils.Utility;
+
+import java.util.ArrayList;
 
 /**
  * Created by ghiro on 11/05/2017.

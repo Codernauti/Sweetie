@@ -14,6 +14,8 @@ import android.view.View;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
+import com.sweetcompany.sweetie.utils.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,103 +26,84 @@ import java.util.ArrayList;
 public class GalleryActivity extends AppCompatActivity {
 
     private String TAG = GalleryActivity.class.getSimpleName();
-    private static final String endpoint = "https://api.androidhive.info/json/glide.json";
-    private ArrayList<Image> images;
-    private ProgressDialog pDialog;
-    private GalleryAdapter mAdapter;
-    private RecyclerView recyclerView;
 
-    private VolleyController mVolleyController;
+    // key for Intent extras
+    public static final String GALLERY_DATABASE_KEY = "gALLERYDatabaseKey";
+    public static final String GALLERY_TITLE = "gALLERYTitle";    // For offline user
+    public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
-    public static final String GALLERY_TITLE = "GalleryTitle";    // For offline user
+    private GalleryPresenter mPresenter;
+    private FirebaseGalleryController mController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gallery_main_view);
+        setContentView(R.layout.gallery_activity);
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        String chatKey = null;
+        String actionKey = null;
+        if (savedInstanceState == null) { // first Activity open
+            Bundle chatBundle = getIntent().getExtras();
+            if (chatBundle != null) {
+                chatKey = chatBundle.getString(GALLERY_DATABASE_KEY);
+                actionKey = chatBundle.getString(ACTION_DATABASE_KEY);
 
-        mVolleyController = new VolleyController(getApplicationContext());
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
-        pDialog = new ProgressDialog(this);
-        images = new ArrayList<>();
-        mAdapter = new GalleryAdapter(getApplicationContext(), images);
-
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
-
-        recyclerView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(getApplicationContext(), recyclerView, new GalleryAdapter.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("images", images);
-                bundle.putInt("position", position);
-
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
-                newFragment.setArguments(bundle);
-                newFragment.show(ft, "slideshow");
+                Log.d(TAG, "from Intent CHAT_TITLE: " +
+                        chatBundle.getString(GALLERY_TITLE));
+                Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
+                        chatBundle.getString(GALLERY_DATABASE_KEY));
+                Log.d(TAG, "from Intent CHAT_ACTION_KEY: " +
+                        chatBundle.getString(ACTION_DATABASE_KEY));
             }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
+            else {
+                Log.w(TAG, "getIntent FAILED!");
             }
-        }));
+        } else {
+            // TODO: restore data from savedInstanceState
+        }
 
-        fetchImages();
+        GalleryFragment view = (GalleryFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.gallery_fragment_container);
+
+        if (view == null) {
+            view = GalleryFragment.newInstance(getIntent().getExtras());
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            transaction.add(R.id.gallery_fragment_container, view);
+            transaction.commit();
+        }
+
+        String userMail = Utility.getStringPreference(this, Utility.MAIL);
+        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+
+        if (chatKey != null) {
+            //mController = new FirebaseChatController(coupleUid, chatKey, actionKey);
+            //mPresenter = new ChatPresenter(view, mController, userMail);
+        }
+        else {
+            Log.w(TAG, "Impossible to create ChatController and ChatPresenter because chatKey is NULL");
+        }
+
+
     }
 
-    private void fetchImages() {
 
-        pDialog.setMessage("Downloading json...");
-        pDialog.show();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //mController.attachListeners();
+    }
 
-        JsonArrayRequest req = new JsonArrayRequest(endpoint,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d(TAG, response.toString());
-                        pDialog.hide();
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //mController.detachListeners();
+    }
 
-                        images.clear();
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject object = response.getJSONObject(i);
-                                Image image = new Image();
-                                image.setName(object.getString("name"));
-
-                                JSONObject url = object.getJSONObject("url");
-                                image.setSmall(url.getString("small"));
-                                image.setMedium(url.getString("medium"));
-                                image.setLarge(url.getString("large"));
-                                image.setTimestamp(object.getString("timestamp"));
-
-                                images.add(image);
-
-                            } catch (JSONException e) {
-                                Log.e(TAG, "Json parsing error: " + e.getMessage());
-                            }
-                        }
-
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Error: " + error.getMessage());
-                pDialog.hide();
-            }
-        });
-
-        // Adding request to request queue
-        mVolleyController.getInstance().addToRequestQueue(req);
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
 

@@ -19,7 +19,7 @@ import com.sweetcompany.sweetie.utils.Utility;
  */
 
 // TODO: decide if use DialogFragment of this class or go to GalleryActivity
-public class ActionNewGalleryFragment extends DialogFragment {
+public class ActionNewGalleryFragment extends DialogFragment implements ActionsContract.DialogView {
 
     public static final String TAG = "ActionNewGalleryFragment";
 
@@ -29,13 +29,16 @@ public class ActionNewGalleryFragment extends DialogFragment {
 
     private EditText mTitleGalleryEditText;
 
-    // TODO: remove static field
-    private static ActionsContract.Presenter mPresenter;
+    private ActionsContract.Presenter mPresenter;
 
-    static ActionNewGalleryFragment newInstance(ActionsContract.Presenter presenter) {
+    static ActionNewGalleryFragment newInstance() {
         ActionNewGalleryFragment fragment = new ActionNewGalleryFragment();
-        mPresenter = presenter;
         return fragment;
+    }
+
+    @Override
+    public void setPresenter(ActionsContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     @Override

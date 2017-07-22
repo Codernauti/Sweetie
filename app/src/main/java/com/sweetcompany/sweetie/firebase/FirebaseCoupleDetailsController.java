@@ -18,8 +18,8 @@ public class FirebaseCoupleDetailsController {
 
     private static final String TAG = "CoupleDetailsController";
 
-    private static final String ACTIVE_COUPLE_PARTIAL_URL = Constraints.COUPLE_INFO_NODE + "/" + Constraints.ACTIVE_COUPLE;
-    private static final String ARCHIVED_COUPLES_PARTIAL_URL = Constraints.COUPLE_INFO_NODE + "/" + Constraints.ARCHIVED_COUPLES;
+    private static final String ACTIVE_COUPLE_PARTIAL_URL = Constraints.COUPLE_INFO + "/" + Constraints.ACTIVE_COUPLE;
+    private static final String ARCHIVED_COUPLES_PARTIAL_URL = Constraints.COUPLE_INFO + "/" + Constraints.ARCHIVED_COUPLES;
 
     private final DatabaseReference mDatabase;
 
@@ -39,14 +39,14 @@ public class FirebaseCoupleDetailsController {
         mPartnerArchivedCouplesUrl = buildArchivedCouplesUrl(partnerUid, coupleUid);
         mPartnerActiveCoupleUrl = buildActiveCoupleUrl(partnerUid);
 
-        mCoupleUidUrl = Constraints.COUPLES_NODE + "/" + coupleUid;
+        mCoupleUidUrl = Constraints.COUPLES + "/" + coupleUid;
     }
 
     private String buildArchivedCouplesUrl(String genericUserUid, String coupleUid) {
-        return Constraints.USERS_NODE + "/" + genericUserUid + "/" + ARCHIVED_COUPLES_PARTIAL_URL + "/" + coupleUid;
+        return Constraints.USERS + "/" + genericUserUid + "/" + ARCHIVED_COUPLES_PARTIAL_URL + "/" + coupleUid;
     }
     private String buildActiveCoupleUrl(String genericUserUid) {
-        return Constraints.USERS_NODE + "/" + genericUserUid + "/" + ACTIVE_COUPLE_PARTIAL_URL;
+        return Constraints.USERS + "/" + genericUserUid + "/" + ACTIVE_COUPLE_PARTIAL_URL;
     }
 
 

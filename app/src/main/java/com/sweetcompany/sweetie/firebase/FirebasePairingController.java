@@ -13,7 +13,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
 import com.sweetcompany.sweetie.model.CoupleFB;
-import com.sweetcompany.sweetie.model.CoupleInfoFB;
 import com.sweetcompany.sweetie.model.PairingRequestFB;
 import com.sweetcompany.sweetie.model.UserFB;
 
@@ -37,8 +36,7 @@ public class FirebasePairingController {
 
     private final DatabaseReference mUserPairingRequests;
     private final DatabaseReference mUsers;
-    private final DatabaseReference mPairingRequests;
-    private final DatabaseReference mCouples;
+    private final DatabaseReference mDatabase;
 
     private ValueEventListener mUserPairingRequestsListener;
     private ValueEventListener mUsersEqualToListener;
@@ -59,10 +57,10 @@ public class FirebasePairingController {
         mUserId = userUid;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mUserPairingRequests = database.getReference().child(Constraints.PAIRING_REQUESTS_NODE).child(mUserId);
-        mUsers = database.getReference().child(Constraints.USERS_NODE);
-        mPairingRequests = database.getReference().child(Constraints.PAIRING_REQUESTS_NODE);
-        mCouples = database.getReference().child(Constraints.COUPLES_NODE);
+        mDatabase = database.getReference();
+
+        mUserPairingRequests = database.getReference().child(Constraints.PAIRING_REQUESTS).child(mUserId);
+        mUsers = database.getReference().child(Constraints.USERS);
 
         mUserPairingRequests.keepSynced(true);
     }
@@ -118,11 +116,19 @@ public class FirebasePairingController {
         try {
             String now = DataMaker.get_UTC_DateTime();
             CoupleFB newCouple = new CoupleFB(mUserId, partnerUid, now);
-            mUserPairingRequests.child(partnerUid).removeValue();
 
-            DatabaseReference newCoupleRef = mCouples.push();
-            newCoupleRef.setValue(newCouple)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+            DatabaseReference newCoupleRef = mDatabase.child(Constraints.COUPLES).push();
+            String newCoupleKey = newCoupleRef.getKey();
+
+            Map<String, Object> updates = new HashMap<>();
+
+            removeAcceptedPairingRequest(updates, partnerUid);
+
+            addNewCouple(updates, newCouple, newCoupleKey);
+
+            updateUsersCoupleInfo(updates, newCoupleKey, partnerUid);
+
+            mDatabase.updateChildren(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     for (PairingControllerListener listener : mListeners) {
@@ -130,27 +136,43 @@ public class FirebasePairingController {
                     }
                 }
             });
-
-            // create a couple-info object
-
-            // update "/users/<userUid>/couple-info/" and "/users/<partnerUid>/couple-info/"
-            String userActiveCouplePath = mUserId + "/" +
-                                        Constraints.COUPLE_INFO_NODE + "/" +
-                                        Constraints.ACTIVE_COUPLE;
-            String partnerActiveCouplePath = partnerUid + "/" +
-                                        Constraints.COUPLE_INFO_NODE + "/" +
-                                        Constraints.ACTIVE_COUPLE;
-
-            Map<String, Object> usersCoupleUpdates = new HashMap<>();
-            usersCoupleUpdates.put(userActiveCouplePath, newCoupleRef.getKey());
-            usersCoupleUpdates.put(partnerActiveCouplePath, newCoupleRef.getKey());
-
-            mUsers.updateChildren(usersCoupleUpdates);
         }
         catch (ParseException ex) {
             Log.d(TAG, ex.getMessage());
         }
     }
+
+    private void removeAcceptedPairingRequest(Map<String, Object> updates, String partnerUid) {
+        // remove the pairing request received
+        // pairing-request/<mUserId>/<partnerUid>
+        String userPairingRequestUrl = Constraints.PAIRING_REQUESTS + "/" +
+                mUserId + "/" +
+                partnerUid;
+        updates.put(userPairingRequestUrl, null);
+    }
+
+    private void addNewCouple(Map<String, Object> updates, CoupleFB newCouple, String newCoupleKey) {
+        // push the new couple: couples/<newCoupleUid>
+        String newCoupleUrl = Constraints.COUPLES + "/" + newCoupleKey;
+        updates.put(newCoupleUrl, newCouple);
+    }
+
+    private void updateUsersCoupleInfo(Map<String, Object> updates, String newCoupleKey, String partnerUid) {
+        // users/<userUid>/coupleInfo
+        String userActiveCoupleUrl = Constraints.USERS + "/" +
+                mUserId + "/" +
+                Constraints.COUPLE_INFO + "/" +
+                Constraints.ACTIVE_COUPLE;
+        updates.put(userActiveCoupleUrl, newCoupleKey);
+
+        // users/<partnerUid>/coupleInfo
+        String partnerActiveCoupleUrl = Constraints.USERS + "/" +
+                partnerUid + "/" +
+                Constraints.COUPLE_INFO + "/" +
+                Constraints.ACTIVE_COUPLE;
+        updates.put(partnerActiveCoupleUrl, newCoupleKey);
+    }
+
 
     public void searchUserWithPhoneNumber(final String phonePartner) {
         if (mUsersEqualToListener == null) {
@@ -183,19 +205,46 @@ public class FirebasePairingController {
         }
     }
 
-    public void createNewPairingRequest(UserFB futurePartner, String userPhoneNumber, String oldPairingRequestedUserUid) {
+    public void createNewPairingRequest(final UserFB futurePartner, String userPhoneNumber, String oldPairingRequestedUserUid) {
         PairingRequestFB newRequest = new PairingRequestFB(userPhoneNumber);
 
         Map<String, Object> updates = new HashMap<>();
 
-        // pairing-request/<oldPairingRequestUserUid>/<mUserId>/
-        String oldUserPairingRequestUrl = Constraints.PAIRING_REQUESTS_NODE + "/" +
-                                            oldPairingRequestedUserUid + "/" +
-                                            mUserId;
+        if (!oldPairingRequestedUserUid.equals(Utility.DEFAULT_VALUE)) {
+            // remove previous pairing request send by mUserId
+            // pairing-request/<oldPairingRequestUserUid>/<mUserId>
+            String oldUserPairingRequestUrl =   Constraints.PAIRING_REQUESTS + "/" +
+                                                oldPairingRequestedUserUid + "/" +
+                                                mUserId;
+            updates.put(oldUserPairingRequestUrl, null);
+        }
+
+        // pairing-request/<futurePartner.getKey()>/<mUserId>
+        String receiverPairingRequestsUrl =     Constraints.PAIRING_REQUESTS + "/" +
+                                                futurePartner.getKey() + "/" +
+                                                mUserId;
+        updates.put(receiverPairingRequestsUrl, newRequest);
+
+        // mUserId push a pairing-request to user.getKey
+        // users/<mUserId>/futurePartner
+        String userFuturePartnerUrl =   Constraints.USERS + "/" +
+                                        mUserId + "/" +
+                                        Constraints.FUTURE_PARTNER;
+        updates.put(userFuturePartnerUrl, futurePartner.getKey());
+
+        mDatabase.updateChildren(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                mActivityListener.onCreateNewPairingRequestComplete(futurePartner.getKey());
+
+                for (PairingControllerListener listener : mListeners) {
+                    listener.onCreateNewPairingRequestComplete();
+                }
+            }
+        });
 
 
-        updates.put(oldPairingRequestedUserUid, null);
-
+        /* NOT ATOMIC OPERATION!!!s
 
         if (!oldPairingRequestedUserUid.equals(Utility.DEFAULT_VALUE)) {
             // remove previous pairing request send by mUserId
@@ -222,7 +271,7 @@ public class FirebasePairingController {
                         });
 
         // save new pairing request sent by mUserId
-        mUsers.child(mUserId + "/futurePartner").setValue(futurePartner.getKey());
+        mUsers.child(mUserId + "/futurePartner").setValue(futurePartner.getKey());*/
     }
 
 }

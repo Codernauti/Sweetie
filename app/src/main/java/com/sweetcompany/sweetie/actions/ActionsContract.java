@@ -21,4 +21,7 @@ public interface ActionsContract {
         void pushAction(String userInputGalleryTitle, String username);
     }
 
+    interface DialogView {
+        void setPresenter(Presenter presenter);
+    }
 }

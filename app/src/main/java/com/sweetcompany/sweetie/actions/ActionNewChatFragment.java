@@ -21,7 +21,7 @@ import java.util.List;
  */
 
 // TODO: decide if use DialogFragment of this class or go to ChatsActivity
-public class ActionNewChatFragment extends DialogFragment {
+public class ActionNewChatFragment extends DialogFragment implements ActionsContract.DialogView {
 
     public static final String TAG = "ActionNewChatFragment";
 
@@ -30,13 +30,16 @@ public class ActionNewChatFragment extends DialogFragment {
 
     private EditText mTitleChatEditText;
 
-    // TODO: remove the static reference
-    private static ActionsContract.Presenter mPresenter;
+    private ActionsContract.Presenter mPresenter;
 
-    static ActionNewChatFragment newInstance(ActionsContract.Presenter presenter) {
+    static ActionNewChatFragment newInstance() {
         ActionNewChatFragment fragment = new ActionNewChatFragment();
-        mPresenter = presenter;
         return fragment;
+    }
+
+    @Override
+    public void setPresenter(ActionsContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     @Override

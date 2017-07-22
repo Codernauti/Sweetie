@@ -31,12 +31,13 @@
         android:id="@+id/chat_user_input_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/chat_emoticons_container"
+        android:layout_alignWithParentIfMissing="true"
         android:orientation="horizontal"
         android:background="@color/white">
 
         <ImageButton
-            android:id="@+id/chat_photo_picker_button"
+            android:id="@+id/chat_emoticons_button"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center_vertical"
@@ -57,5 +58,12 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/chat_emoticons_container"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

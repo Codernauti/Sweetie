@@ -33,8 +33,8 @@ public class FirebaseActionsController {
 
 
     public FirebaseActionsController(String coupleUid) {
-        mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS_NODE + "/" + coupleUid);
-        mChatsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.CHATS_NODE + "/" + coupleUid);
+        mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS + "/" + coupleUid);
+        mChatsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.CHATS + "/" + coupleUid);
     }
 
     public void addListener(OnFirebaseActionsDataChange listener) {

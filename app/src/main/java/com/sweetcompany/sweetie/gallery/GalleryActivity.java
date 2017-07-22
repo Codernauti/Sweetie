@@ -32,7 +32,7 @@ public class GalleryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.gallery_grid_view);
+        setContentView(R.layout.gallery_main_view);
 
         mGalleryAdapter = new ImageGalleryAdapter(this, Photo.getPhotos());
         mContext = getApplicationContext();

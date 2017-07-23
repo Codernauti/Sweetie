@@ -24,7 +24,7 @@ interface Constraints {
 
     String CHAT_MESSAGES = "chat-messages";
 
-    String GALLERY = "gallery";
+    String GALLERIES = "galleries";
 
     String GALLERY_PHOTOS = "gallery-photos";
 }

@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
+import com.sweetcompany.sweetie.model.GalleryFB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class FirebaseActionsController {
 
     private final DatabaseReference mActionsDbReference;
     private final DatabaseReference mChatsDbReference;
+    private final DatabaseReference mGalleriesDbReference;
 
     private List<OnFirebaseActionsDataChange> mListeners = new ArrayList<>();
     private ValueEventListener mActionsEventListener;
@@ -35,6 +37,7 @@ public class FirebaseActionsController {
     public FirebaseActionsController(String coupleUid) {
         mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS + "/" + coupleUid);
         mChatsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.CHATS + "/" + coupleUid);
+        mGalleriesDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GALLERIES + "/" + coupleUid);
     }
 
     public void addListener(OnFirebaseActionsDataChange listener) {
@@ -108,6 +111,30 @@ public class FirebaseActionsController {
 
         // put into queue for network
         newChatPush.setValue(chat);
+        newActionPush.setValue(actionFB);
+
+        return newKeys;
+    }
+
+    public List<String> pushGalleryAction(ActionFB actionFB, String galleryTitle) {
+        List<String> newKeys =  new ArrayList<String>();
+
+        DatabaseReference newGalleryPush = mGalleriesDbReference.push();
+        String newGalleryKey = newGalleryPush.getKey();
+        newKeys.add(newGalleryKey);
+        DatabaseReference newActionPush = mActionsDbReference.push();
+        String newActionKey = newActionPush.getKey();
+        newKeys.add(newActionKey);
+
+        // Set Action
+        actionFB.setChildKey(newGalleryKey);
+
+        // Create Gallery and set Gallery
+        GalleryFB gallery = new GalleryFB();
+        gallery.setTitle(galleryTitle);
+
+        // put into queue for network
+        newGalleryPush.setValue(gallery);
         newActionPush.setValue(actionFB);
 
         return newKeys;

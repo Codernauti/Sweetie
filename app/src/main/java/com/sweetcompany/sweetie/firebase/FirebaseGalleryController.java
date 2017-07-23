@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class FirebaseGalleryController {
 
-    private static final String TAG = "FbChatController";
+    private static final String TAG = "FbGalleryController";
 
     private final DatabaseReference mGallery;
     private final DatabaseReference mGalleryPhotos;
@@ -34,7 +34,7 @@ public class FirebaseGalleryController {
     private List<GalleryControllerListener> mListeners = new ArrayList<>();
 
     public interface GalleryControllerListener {
-        void onGalleryChanged(PhotoFB chat);
+        void onGalleryChanged(PhotoFB gallery);
 
         void onPhotoAdded(PhotoFB message);
         void onPhotoRemoved(PhotoFB message);
@@ -44,7 +44,7 @@ public class FirebaseGalleryController {
 
     public FirebaseGalleryController(String coupleUid, String galleryKey, String actionKey) {
         mGallery = FirebaseDatabase.getInstance()
-                .getReference(Constraints.GALLERY + "/" + coupleUid + "/" + galleryKey);
+                .getReference(Constraints.GALLERIES + "/" + coupleUid + "/" + galleryKey);
         mGalleryPhotos = FirebaseDatabase.getInstance()
                 .getReference(Constraints.GALLERY_PHOTOS + "/" + coupleUid + "/" + galleryKey);
         mAction = FirebaseDatabase.getInstance()
@@ -78,7 +78,7 @@ public class FirebaseGalleryController {
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     PhotoFB newPhoto = dataSnapshot.getValue(PhotoFB.class);
                     newPhoto.setKey(dataSnapshot.getKey());
-                    Log.d(TAG, "onChildChanged of chat: " + newPhoto.getText());
+                    Log.d(TAG, "onChildChanged of gallery: " + newPhoto.getText());
 
                     for (GalleryControllerListener listener : mListeners) {
                         listener.onPhotoChanged(newPhoto);
@@ -88,7 +88,7 @@ public class FirebaseGalleryController {
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     PhotoFB removedPhoto = dataSnapshot.getValue(PhotoFB.class);
-                    //Log.d(TAG, "onPhotoRemoved from chat: " + removedPhoto.getText());
+                    //Log.d(TAG, "onPhotoRemoved from gallery: " + removedPhoto.getText());
 
                     for (GalleryControllerListener listener : mListeners) {
                         listener.onPhotoRemoved(removedPhoto);
@@ -147,14 +147,14 @@ public class FirebaseGalleryController {
         ref.setValue(photo.isBookmarked());
     }
 
-    // push message to db and update action of this chat
+    // push message to db and update action of this gallery
     public void sendMessage(PhotoFB photo) {
         Log.d(TAG, "Send PhotoFB: " + photo);
 
-        // push a message into mChatMessages reference
+        // push a message into mGalleryPhotos reference
         mGalleryPhotos.push().setValue(photo);
 
-        // update description and dataTime of action of this associated Chat
+        // update description and dataTime of action of this associated Gallery
         Map<String, Object> actionUpdates = new HashMap<>();
         actionUpdates.put("description", photo.getText());
         actionUpdates.put("dataTime", photo.getDateTime());

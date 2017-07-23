@@ -73,7 +73,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         }
 
         if (action != null) {
-            return mController.pushChatAction(action, userInputGalleryTitle);
+            return mController.pushGalleryAction(action, userInputGalleryTitle);
         }
         else {
             Log.d(TAG, "An error in the creation of a new GalleryAction occurs!");

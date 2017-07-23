@@ -63,7 +63,7 @@ public class GalleryActivity extends AppCompatActivity {
         }
 
         GalleryFragment view = (GalleryFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.gallery_fragment_container);
+                               .findFragmentById(R.id.gallery_fragment_container);
 
         if (view == null) {
             view = GalleryFragment.newInstance(getIntent().getExtras());
@@ -83,8 +83,6 @@ public class GalleryActivity extends AppCompatActivity {
         else {
             Log.w(TAG, "Impossible to create GalleryController and GalleryPresenter because galleryKey is NULL");
         }
-
-
     }
 
     @Override

@@ -28,8 +28,8 @@ public class GalleryActivity extends AppCompatActivity {
     private String TAG = GalleryActivity.class.getSimpleName();
 
     // key for Intent extras
-    public static final String GALLERY_DATABASE_KEY = "gALLERYDatabaseKey";
-    public static final String GALLERY_TITLE = "gALLERYTitle";    // For offline user
+    public static final String GALLERY_DATABASE_KEY = "GALLERYDatabaseKey";
+    public static final String GALLERY_TITLE = "GALLERYTitle";    // For offline user
     public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
     private GalleryPresenter mPresenter;

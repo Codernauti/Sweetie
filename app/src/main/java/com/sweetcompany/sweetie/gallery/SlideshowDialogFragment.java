@@ -1,30 +1,27 @@
 package com.sweetcompany.sweetie.gallery;
 
-/**
- * Created by ghiro on 22/07/2017.
- */
+        import android.content.Context;
+        import android.os.Bundle;
+        import android.support.v4.app.DialogFragment;
+        import android.support.v4.view.PagerAdapter;
+        import android.support.v4.view.ViewPager;
+        import android.util.Log;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.ImageView;
+        import android.widget.TextView;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+        import com.bumptech.glide.Glide;
+        import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+        import java.util.ArrayList;
+        import com.sweetcompany.sweetie.R;
 
-import java.util.ArrayList;
-import com.sweetcompany.sweetie.R;
 
 public class SlideshowDialogFragment extends DialogFragment {
     private String TAG = SlideshowDialogFragment.class.getSimpleName();
-    private ArrayList<PhotoVM> images;
+    private ArrayList<Image> images;
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private TextView lblCount, lblTitle, lblDate;
@@ -44,7 +41,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         lblTitle = (TextView) v.findViewById(R.id.title);
         lblDate = (TextView) v.findViewById(R.id.date);
 
-        images = (ArrayList<PhotoVM>) getArguments().getSerializable("images");
+        images = (ArrayList<Image>) getArguments().getSerializable("images");
         selectedPosition = getArguments().getInt("position");
 
         Log.e(TAG, "position: " + selectedPosition);
@@ -64,7 +61,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         displayMetaInfo(selectedPosition);
     }
 
-    //  page change listener
+    //	page change listener
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
@@ -86,9 +83,9 @@ public class SlideshowDialogFragment extends DialogFragment {
     private void displayMetaInfo(int position) {
         lblCount.setText((position + 1) + " of " + images.size());
 
-        PhotoVM photoVM = images.get(position);
-        lblTitle.setText(photoVM.getName());
-        lblDate.setText(photoVM.getTimestamp());
+        Image image = images.get(position);
+        lblTitle.setText(image.getName());
+        lblDate.setText(image.getTimestamp());
     }
 
     @Override
@@ -97,7 +94,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
     }
 
-    //  adapter
+    //	adapter
     public class MyViewPagerAdapter extends PagerAdapter {
 
         private LayoutInflater layoutInflater;
@@ -113,9 +110,9 @@ public class SlideshowDialogFragment extends DialogFragment {
 
             ImageView imageViewPreview = (ImageView) view.findViewById(R.id.image_preview);
 
-            PhotoVM photoVM = images.get(position);
+            Image image = images.get(position);
 
-            Glide.with(getActivity()).load(photoVM.getLarge())
+            Glide.with(getActivity()).load(image.getLarge())
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)

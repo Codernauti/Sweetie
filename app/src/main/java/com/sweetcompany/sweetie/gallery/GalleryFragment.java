@@ -47,10 +47,8 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     private GalleryContract.Presenter mPresenter;
 
     private static final String endpoint = "https://api.androidhive.info/json/glide.json";
-    private ArrayList<PhotoVM> images;
+    private ArrayList<Image> images;
     private ProgressDialog pDialog;
-    private GalleryAdapter mAdapter;
-    private RecyclerView recyclerView;
 
     private VolleyController mVolleyController;
 
@@ -71,7 +69,10 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mGalleryAdapter = new GalleryAdapter();
+        pDialog = new ProgressDialog(this.getContext());
+        images = new ArrayList<>();
+
+        mGalleryAdapter = new GalleryAdapter(this.getContext(), images);
         //mGalleryAdapter.setGalleryAdapterListener(this);
     }
 
@@ -104,9 +105,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         mVolleyController = new VolleyController(this.getContext());
 
 
-        pDialog = new ProgressDialog(this.getContext());
-        images = new ArrayList<>();
-
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), 3);
         mGalleryListView.setLayoutManager(mLayoutManager);
         mGalleryListView.setItemAnimator(new DefaultItemAnimator());
@@ -119,10 +117,10 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 bundle.putSerializable("images", images);
                 bundle.putInt("position", position);
 
-                /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
                 newFragment.setArguments(bundle);
-                newFragment.show(ft, "slideshow");*/
+                newFragment.show(ft, "slideshow");
             }
 
             @Override
@@ -131,7 +129,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
             }
         }));
 
-        //fetchImages();
+        fetchImages();
 
         return root;
     }
@@ -152,16 +150,17 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject object = response.getJSONObject(i);
-                                PhotoVM photoVM = new PhotoVM();
-                                photoVM.setName(object.getString("name"));
+                                Image image = new Image();
+                                image.setName(object.getString("name"));
 
                                 JSONObject url = object.getJSONObject("url");
-                                photoVM.setSmall(url.getString("small"));
-                                photoVM.setMedium(url.getString("medium"));
-                                photoVM.setLarge(url.getString("large"));
-                                photoVM.setTimestamp(object.getString("timestamp"));
+                                image.setSmall(url.getString("small"));
+                                image.setMedium(url.getString("medium"));
+                                image.setLarge(url.getString("large"));
+                                image.setTimestamp(object.getString("timestamp"));
 
-                                images.add(photoVM);
+                                images.add(image);
+                                images.add(image);
 
                             } catch (JSONException e) {
                                 Log.e(TAG, "Json parsing error: " + e.getMessage());

@@ -1,9 +1,5 @@
 package com.sweetcompany.sweetie.gallery;
 
-/**
- * Created by ghiro on 22/07/2017.
- */
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
@@ -20,9 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.sweetcompany.sweetie.R;
 
-
 /**
- * Created by Lincoln on 31/03/16.
+ * Created by ghiro on 22/07/2017.
  */
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHolder> {

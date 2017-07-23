@@ -14,6 +14,8 @@ import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.Utility;
 
+import java.util.List;
+
 /**
  * Created by Federico Allegro on 24-May-17.
  */
@@ -59,12 +61,16 @@ public class ActionNewGalleryFragment extends DialogFragment implements ActionsC
                                 String userInputGalleryTitle = mTitleGalleryEditText.getText().toString();
 
                                 if (!userInputGalleryTitle.isEmpty()) {
-                                    String username = Utility.getStringPreference(getActivity(), Utility.USER_UID);
-                                    mPresenter.pushAction(userInputGalleryTitle, username);
+                                    String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
+                                    List<String> keys = mPresenter.pushChatAction(userInputGalleryTitle, userName);
 
-                                    Intent intent = new Intent(getActivity(), GalleryActivity.class);
-                                    intent.putExtra(INPUT_GALLERY_TITLE_KEY, userInputGalleryTitle);
-                                    startActivity(intent);
+                                    if (keys != null) {
+                                        Intent intent = new Intent(getActivity(), GalleryActivity.class);
+                                        intent.putExtra(GalleryActivity.GALLERY_TITLE, userInputGalleryTitle);
+                                        intent.putExtra(GalleryActivity.GALLERY_DATABASE_KEY, keys.get(0));
+                                        intent.putExtra(GalleryActivity.ACTION_DATABASE_KEY, keys.get(1));
+                                        startActivity(intent);
+                                    }
                                 }
                             }
                         }

@@ -49,11 +49,13 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     private static final String endpoint = "https://api.androidhive.info/json/glide.json";
     private ArrayList<PhotoVM> images;
     private ProgressDialog pDialog;
+    private GalleryAdapter mAdapter;
+    private RecyclerView recyclerView;
 
     private VolleyController mVolleyController;
 
-    public static GalleryFragment newInstance(Bundle bundle) {
-        GalleryFragment newGalleryFragment = new GalleryFragment();
+    public static com.sweetcompany.sweetie.gallery.GalleryFragment newInstance(Bundle bundle) {
+        com.sweetcompany.sweetie.gallery.GalleryFragment newGalleryFragment = new com.sweetcompany.sweetie.gallery.GalleryFragment();
         newGalleryFragment.setArguments(bundle);
 
         return newGalleryFragment;
@@ -61,7 +63,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
     @Override
     public void setPresenter(GalleryContract.Presenter presenter) {
-        //mPresenter = presenter;
+        mPresenter = presenter;
     }
 
 
@@ -92,14 +94,15 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         parentActivity.getSupportActionBar().setTitle(titleGallery);
 
-        /*mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
         //mLinearLayoutManager.setReverseLayout(true);
-        mLinearLayoutManager.setStackFromEnd(true);*/
+        mLinearLayoutManager.setStackFromEnd(true);
 
-        //mGalleryListView.setLayoutManager(mLinearLayoutManager);
-        //mGalleryListView.setAdapter(mGalleryAdapter);
+        mGalleryListView.setLayoutManager(mLinearLayoutManager);
+        mGalleryListView.setAdapter(mGalleryAdapter);
 
         mVolleyController = new VolleyController(this.getContext());
+
 
         pDialog = new ProgressDialog(this.getContext());
         images = new ArrayList<>();
@@ -116,10 +119,10 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 bundle.putSerializable("images", images);
                 bundle.putInt("position", position);
 
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
                 newFragment.setArguments(bundle);
-                newFragment.show(ft, "slideshow");
+                newFragment.show(ft, "slideshow");*/
             }
 
             @Override
@@ -128,7 +131,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
             }
         }));
 
-        fetchImages();
+        //fetchImages();
 
         return root;
     }

@@ -87,17 +87,16 @@ public class GalleryActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
-        //mController.attachListeners();
+        mController.attachListeners();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //mController.detachListeners();
+        mController.detachListeners();
     }
 
     @Override

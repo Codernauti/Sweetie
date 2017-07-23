@@ -77,8 +77,8 @@ public class GalleryActivity extends AppCompatActivity {
         String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
 
         if (galleryKey != null) {
-            //mController = new FirebaseGalleryController(coupleUid, galleryKey, actionKey);
-            //mPresenter = new GalleryPresenter(view, mController, userMail);
+            mController = new FirebaseGalleryController(coupleUid, galleryKey, actionKey);
+            mPresenter = new GalleryPresenter(view, mController, userMail);
         }
         else {
             Log.w(TAG, "Impossible to create GalleryController and GalleryPresenter because galleryKey is NULL");

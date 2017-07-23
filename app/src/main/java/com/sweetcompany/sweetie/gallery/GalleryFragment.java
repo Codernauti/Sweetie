@@ -170,7 +170,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                             }
                         }
 
-                        mAdapter.notifyDataSetChanged();
+                        mGalleryAdapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override

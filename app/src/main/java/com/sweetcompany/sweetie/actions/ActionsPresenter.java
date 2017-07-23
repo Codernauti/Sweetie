@@ -90,7 +90,8 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     mActionsList.add(newActionVM);
                     break;
                 case 1:
-                    newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(), action.getDataTime(), action.getType());
+                    newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(),
+                            action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
             }

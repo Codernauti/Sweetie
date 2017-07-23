@@ -18,7 +18,8 @@ public interface ActionsContract {
         void pause();
 
         List<String> pushChatAction(String userInputChatTitle, String username);
-        void pushAction(String userInputGalleryTitle, String username);
+        List<String> pushGalleryAction(String userInputGalleryTitle, String username);
+        //void pushAction(String userInputGalleryTitle, String username);
     }
 
     interface DialogView {

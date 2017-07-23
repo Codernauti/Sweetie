@@ -62,7 +62,7 @@ public class ActionNewGalleryFragment extends DialogFragment implements ActionsC
 
                                 if (!userInputGalleryTitle.isEmpty()) {
                                     String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
-                                    List<String> keys = mPresenter.pushChatAction(userInputGalleryTitle, userName);
+                                    List<String> keys = mPresenter.pushGalleryAction(userInputGalleryTitle, userName);
 
                                     if (keys != null) {
                                         Intent intent = new Intent(getActivity(), GalleryActivity.class);

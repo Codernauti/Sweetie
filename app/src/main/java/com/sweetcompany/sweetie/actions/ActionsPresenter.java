@@ -63,6 +63,25 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     }
 
     @Override
+    public List<String> pushGalleryAction(String userInputGalleryTitle, String username) {
+        ActionFB action = null;
+        // TODO: add description and fix username variable, what username???
+        try {
+            action = new ActionFB(userInputGalleryTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GALLERY);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (action != null) {
+            return mController.pushChatAction(action, userInputGalleryTitle);
+        }
+        else {
+            Log.d(TAG, "An error in the creation of a new GalleryAction occurs!");
+            return null;
+        }
+    }
+
+    /*@Override
     public void pushAction(String userInputGalleryTitle, String username) {
         ActionFB action = null;
         try {
@@ -71,7 +90,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
             e.printStackTrace();
         }
         mController.pushAction(action);
-    }
+    }*/
 
     // Controller callbacks
 

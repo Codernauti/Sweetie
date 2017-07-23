@@ -7,7 +7,7 @@ package com.sweetcompany.sweetie.model;
 public class ActionFB {
 
     public final static int CHAT = 0;
-    public final static int PHOTO = 1;
+    public final static int GALLERY = 1;
 
     private String key;
     private String title;

@@ -10,7 +10,7 @@ import com.sweetcompany.sweetie.model.PhotoFB;
 
 class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryController.GalleryControllerListener {
 
-    private static final String TAG = "ChatPresenter";
+    private static final String TAG = "gALLERYPresenter";
 
     private GalleryContract.View mView;
     private FirebaseGalleryController mController;
@@ -45,7 +45,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
-    public void onGalleryChanged(PhotoFB chat) {
+    public void onGalleryChanged(PhotoFB gallery) {
 
     }
 

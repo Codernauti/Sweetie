@@ -40,20 +40,20 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery_activity);
 
-        String chatKey = null;
+        String galleryKey = null;
         String actionKey = null;
         if (savedInstanceState == null) { // first Activity open
-            Bundle chatBundle = getIntent().getExtras();
-            if (chatBundle != null) {
-                chatKey = chatBundle.getString(GALLERY_DATABASE_KEY);
-                actionKey = chatBundle.getString(ACTION_DATABASE_KEY);
+            Bundle galleryBundle = getIntent().getExtras();
+            if (galleryBundle != null) {
+                galleryKey = galleryBundle.getString(GALLERY_DATABASE_KEY);
+                actionKey = galleryBundle.getString(ACTION_DATABASE_KEY);
 
-                Log.d(TAG, "from Intent CHAT_TITLE: " +
-                        chatBundle.getString(GALLERY_TITLE));
-                Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
-                        chatBundle.getString(GALLERY_DATABASE_KEY));
-                Log.d(TAG, "from Intent CHAT_ACTION_KEY: " +
-                        chatBundle.getString(ACTION_DATABASE_KEY));
+                Log.d(TAG, "from Intent GALLERY_TITLE: " +
+                        galleryBundle.getString(GALLERY_TITLE));
+                Log.d(TAG, "from Intent GALLERY_DATABASE_KEY: " +
+                        galleryBundle.getString(GALLERY_DATABASE_KEY));
+                Log.d(TAG, "from Intent GALLERY_ACTION_KEY: " +
+                        galleryBundle.getString(ACTION_DATABASE_KEY));
             }
             else {
                 Log.w(TAG, "getIntent FAILED!");
@@ -76,12 +76,12 @@ public class GalleryActivity extends AppCompatActivity {
         String userMail = Utility.getStringPreference(this, Utility.MAIL);
         String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
 
-        if (chatKey != null) {
-            //mController = new FirebaseChatController(coupleUid, chatKey, actionKey);
-            //mPresenter = new ChatPresenter(view, mController, userMail);
+        if (galleryKey != null) {
+            //mController = new FirebaseGalleryController(coupleUid, galleryKey, actionKey);
+            //mPresenter = new GalleryPresenter(view, mController, userMail);
         }
         else {
-            Log.w(TAG, "Impossible to create ChatController and ChatPresenter because chatKey is NULL");
+            Log.w(TAG, "Impossible to create GalleryController and GalleryPresenter because galleryKey is NULL");
         }
 
 

@@ -3,12 +3,12 @@ package com.sweetcompany.sweetie.chat;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +17,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.text.ParseException;
 import java.util.List;
+
+import io.github.rockerhieu.emojicon.EmojiconsView;
 
 /**
  * Created by ghiro on 11/05/2017.
@@ -40,7 +44,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private ImageButton mEmoticonsButton;
     private EditText mTextMessageInput;
     private Button mSendButton;
-    private FrameLayout mEmoticonsLayout;
+    private EmojiconsView mEmoticonsView;
 
     private ChatAdapter mChatAdapter;
     private ChatContract.Presenter mPresenter;
@@ -91,8 +95,41 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mTextMessageInput = (EditText) root.findViewById(R.id.chat_text_message_input);
         mEmoticonsButton = (ImageButton) root.findViewById(R.id.chat_emoticons_button);
         mSendButton = (Button) root.findViewById(R.id.chat_send_button);
-        mEmoticonsLayout = (FrameLayout) root.findViewById(R.id.chat_emoticons_container);
+        mEmoticonsView = new EmojiconsView(getActivity());
+        mEmoticonsView.setId(View.generateViewId());
+        mEmoticonsView.setVisibility(View.GONE);
 
+
+        /*
+        <io.github.rockerhieu.emojicon.EmojiconsView
+            android:id="@+id/chat_emoticons_container"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone" />
+        */
+
+        // create layout params (compatible with RelativeLayout)
+        // transform pixel of 240dp
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, getResources().getDisplayMetrics());
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, height);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+
+        mEmoticonsView.setLayoutParams(params);
+
+        // root is the RelativeLaout of chat_fragment layout
+        ((RelativeLayout)root).addView(mEmoticonsView);
+
+
+
+        // android:layout_above="@+id/chat_emoticons_container"
+        LinearLayout inputLayout = (LinearLayout) root.findViewById(R.id.chat_user_input_panel);
+        RelativeLayout.LayoutParams paramsInput = (RelativeLayout.LayoutParams) inputLayout.getLayoutParams();
+        paramsInput.addRule(RelativeLayout.ABOVE, mEmoticonsView.getId());
+
+        mTextMessageInput.setOnClickListener(this);
         mEmoticonsButton.setOnClickListener(this);
         mSendButton.setOnClickListener(this);
 
@@ -136,6 +173,9 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.chat_text_message_input:
+                mEmoticonsView.setVisibility(View.GONE);
+                break;
+            case R.id.chat_send_button:
                 String inputText = mTextMessageInput.getText().toString();
                 mTextMessageInput.setText("");
 
@@ -155,16 +195,17 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 break;
             case R.id.chat_emoticons_button:
                 //TODO: show emoji view
-                if (mEmoticonsLayout.getVisibility() == View.GONE) {
-                    mEmoticonsLayout.setVisibility(View.VISIBLE);
+                if (mEmoticonsView.getVisibility() == View.GONE) {
                     View view = getActivity().getCurrentFocus();
+
                     if (view != null) {
                         InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
+                    mEmoticonsView.setVisibility(View.VISIBLE);
                 }
                 else {
-                    mEmoticonsLayout.setVisibility(View.GONE);
+                    mEmoticonsView.setVisibility(View.GONE);
                 }
                 break;
             default:

@@ -25,6 +25,8 @@ import android.widget.ImageButton;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.features.ImagePickerActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.actions.ActionNewChatFragment;
 
@@ -35,6 +37,9 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import com.esafirm.imagepicker.model.Image;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by ghiro on 22/07/2017.
@@ -44,7 +49,12 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
     private static final String TAG = "ChatFragment";
     int PICK_IMAGE_REQUEST = 111;
+    private static final int RC_CODE_PICKER = 2000;
+    private static final int RC_CAMERA = 3000;
+
     Uri filePath;
+
+    private ArrayList<Image> imagesPicked = new ArrayList<>();
 
     private Toolbar mToolBar;
     private RecyclerView mGalleryListView;
@@ -54,7 +64,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     private GalleryContract.Presenter mPresenter;
 
     private static final String endpoint = "https://api.androidhive.info/json/glide.json";
-    private ArrayList<Image> images;
+    private ArrayList<ImageVM> images;
     private ProgressDialog pDialog;
     private ProgressDialog pDialogPhoto;
 
@@ -134,10 +144,11 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         mFabAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
+                /*Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
+                startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);*/
+                start();
             }
         });
 
@@ -181,7 +192,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                         for (int i = 0; i < response.length(); i++) {
                             try {
                                 JSONObject object = response.getJSONObject(i);
-                                Image image = new Image();
+                                ImageVM image = new ImageVM();
                                 image.setName(object.getString("name"));
 
                                 JSONObject url = object.getJSONObject("url");
@@ -241,4 +252,44 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public void changePhoto(PhotoVM photoVM) {
 
     }
+
+    public void start() {
+
+        ImagePicker imagePicker = ImagePicker.create(this)
+                .theme(R.style.ImagePickerTheme)
+                .returnAfterFirst(true) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
+                .folderMode(false) // set folder mode (false by default)
+                .folderTitle("Folder") // folder selection title
+                .imageTitle("Tap to select"); // image selection title
+
+        //imagePicker.multi(); // multi mode (default mode)
+        imagePicker.single();
+
+        imagePicker.limit(10) // max images can be selected (99 by default)
+                .showCamera(true) // show camera or not (true by default)
+                .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
+                .origin(imagesPicked) // original selected images, used in multi mode
+                .start(RC_CODE_PICKER); // start image picker activity with request code
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
+            imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
+            //printImages(imagesPicked);
+            return;
+        }
+
+        /*if (requestCode == RC_CAMERA && resultCode == RESULT_OK) {
+            getCameraModule().getImage(this, data, new OnImageReadyListener() {
+                @Override
+                public void onImageReady(List<Image> resultImages) {
+                    images = (ArrayList<Image>) resultImages;
+                    printImages(images);
+                }
+            });
+        }*/
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

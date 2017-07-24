@@ -25,4 +25,10 @@
         <item name="textAllCaps">true</item>
     </style>
 
+    <style name="ImagePickerTheme" parent="ef_BaseTheme">
+        <item name="colorPrimary">#607D8B</item>
+        <item name="colorPrimaryDark">#455A64</item>
+        <item name="colorAccent">@color/ef_colorAccent</item>
+    </style>
+
 </resources>

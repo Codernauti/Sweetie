@@ -30,21 +30,19 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         mView = view;
         mView.setPresenter(this);
         mController = controller;
-        mController.addListener(this);
+        //
+
         mUserMail = userMail;
     }
 
     @Override
     public void sendPhoto(PhotoVM photo) {
         // TODO: remove down cast -> use Factory method
-        /*TextMessageVM messageVM = (TextMessageVM)message;
-        PhotoFB newMessage = new PhotoFB(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());
-        */
         String encode;
         encode = encodeBitmap(photo.getBitmap());
-        PhotoFB newPhoto = new PhotoFB(mUserMail, "", "datetime ***", false, encode);
+        PhotoFB newPhoto = new PhotoFB(mUserMail, photo.getName(), photo.getTimestamp(), false, encode);
 
-        mController.uploadPhoto(newPhoto);
+        mController.sendPhoto(newPhoto);
     }
 
     public String encodeBitmap(Bitmap bitmap){
@@ -80,8 +78,9 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
-    public void onGalleryChanged(PhotoFB gallery) {
-
+    public void onGalleryChanged(GalleryFB gallery) {
+        GalleryVM galleryVM = new GalleryVM(gallery.getKey(), gallery.getTitle());
+        mView.updateGalleryInfo(galleryVM);
     }
 
     @Override
@@ -91,13 +90,15 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
-    public void onPhotoRemoved(PhotoFB message) {
-
+    public void onPhotoRemoved(PhotoFB photo) {
+        PhotoVM photoVM = createPhotoVM(photo);
+        mView.removePhoto(photoVM);
     }
 
     @Override
-    public void onPhotoChanged(PhotoFB message) {
-
+    public void onPhotoChanged(PhotoFB photo) {
+        PhotoVM photoVM = createPhotoVM(photo);
+        mView.changePhoto(photoVM);
     }
 
 

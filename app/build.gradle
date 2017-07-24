@@ -69,6 +69,8 @@ dependencies {
 
     compile 'io.github.rockerhieu:emojicon:1.4.1'
 
+    compile 'gun0912.ted:tedbottompicker:1.0.12'
+
 }
 
 // Add to the bottom of the file

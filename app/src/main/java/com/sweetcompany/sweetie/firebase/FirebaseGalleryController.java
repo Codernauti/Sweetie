@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.PhotoFB;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class FirebaseGalleryController {
     private List<GalleryControllerListener> mListeners = new ArrayList<>();
 
     public interface GalleryControllerListener {
-        void onGalleryChanged(PhotoFB gallery);
+        void onGalleryChanged(GalleryFB gallery);
 
         void onPhotoAdded(PhotoFB message);
         void onPhotoRemoved(PhotoFB message);
@@ -109,7 +110,7 @@ public class FirebaseGalleryController {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // TODO: test
-                    PhotoFB photo = dataSnapshot.getValue(PhotoFB.class);
+                    GalleryFB photo = dataSnapshot.getValue(GalleryFB.class);
                     photo.setKey(dataSnapshot.getKey());
 
                     for (GalleryControllerListener listener : mListeners) {
@@ -148,19 +149,17 @@ public class FirebaseGalleryController {
     }
 
     // push message to db and update action of this gallery
-    public void uploadPhoto(PhotoFB photo) {
+    public void sendPhoto(PhotoFB photo) {
         Log.d(TAG, "Send PhotoFB: " + photo);
 
         // push a message into mGalleryPhotos reference
         mGalleryPhotos.push().setValue(photo);
 
         // update description and dataTime of action of this associated Gallery
-        /*
         Map<String, Object> actionUpdates = new HashMap<>();
-        actionUpdates.put("description", photo.getText());
+        //actionUpdates.put("description", photo.getText());
         actionUpdates.put("dataTime", photo.getDateTime());
         mAction.updateChildren(actionUpdates);
-        */
     }
 
     /*private void updateActionLastMessage(String actionKey, MessageFB msg){

@@ -1,25 +1,26 @@
 package com.sweetcompany.sweetie.gallery;
 
-        import android.content.Context;
-        import android.os.Bundle;
-        import android.support.v4.app.DialogFragment;
-        import android.support.v4.view.PagerAdapter;
-        import android.support.v4.view.ViewPager;
-        import android.util.Log;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ImageView;
-        import android.widget.TextView;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-        import com.bumptech.glide.Glide;
-        import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-        import java.util.ArrayList;
-        import com.sweetcompany.sweetie.R;
+import java.util.ArrayList;
+import com.sweetcompany.sweetie.R;
 
 
 public class SlideshowDialogFragment extends DialogFragment {
+
     private String TAG = SlideshowDialogFragment.class.getSimpleName();
     private ArrayList<Image> images;
     private ViewPager viewPager;

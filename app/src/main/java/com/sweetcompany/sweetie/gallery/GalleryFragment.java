@@ -3,8 +3,11 @@ package com.sweetcompany.sweetie.gallery;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -55,6 +58,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     Uri filePath;
 
     private ArrayList<Image> imagesPicked = new ArrayList<>();
+    private List<Bitmap> bitmapImages = new ArrayList<>();
 
     private Toolbar mToolBar;
     private RecyclerView mGalleryListView;
@@ -257,13 +261,13 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
         ImagePicker imagePicker = ImagePicker.create(this)
                 .theme(R.style.ImagePickerTheme)
-                .returnAfterFirst(true) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
-                .folderMode(false) // set folder mode (false by default)
+                .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
+                .folderMode(true) // set folder mode (false by default)
                 .folderTitle("Folder") // folder selection title
                 .imageTitle("Tap to select"); // image selection title
 
-        //imagePicker.multi(); // multi mode (default mode)
-        imagePicker.single();
+        imagePicker.multi(); // multi mode (default mode)
+        //imagePicker.single();
 
         imagePicker.limit(10) // max images can be selected (99 by default)
                 .showCamera(true) // show camera or not (true by default)
@@ -276,20 +280,27 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
-            //printImages(imagesPicked);
+            printImages(imagesPicked);
             return;
         }
 
-        /*if (requestCode == RC_CAMERA && resultCode == RESULT_OK) {
-            getCameraModule().getImage(this, data, new OnImageReadyListener() {
-                @Override
-                public void onImageReady(List<Image> resultImages) {
-                    images = (ArrayList<Image>) resultImages;
-                    printImages(images);
-                }
-            });
-        }*/
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+
+    private void printImages(List<Image> images) {
+        if (images == null) return;
+
+        for (int i = 0, l = images.size(); i < l; i++) {
+            try {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                //options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
+                bitmapImages.add(BitmapFactory.decodeFile(images.get(i).getPath(), options));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        mPresenter.uploadPhotos(bitmapImages);
+    }
 }

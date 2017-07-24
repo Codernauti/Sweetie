@@ -1,7 +1,11 @@
 package com.sweetcompany.sweetie.gallery;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.actions.ActionNewChatFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +43,8 @@ import java.util.List;
 public class GalleryFragment extends Fragment implements GalleryContract.View, View.OnClickListener{
 
     private static final String TAG = "ChatFragment";
+    int PICK_IMAGE_REQUEST = 111;
+    Uri filePath;
 
     private Toolbar mToolBar;
     private RecyclerView mGalleryListView;
@@ -49,8 +56,13 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     private static final String endpoint = "https://api.androidhive.info/json/glide.json";
     private ArrayList<Image> images;
     private ProgressDialog pDialog;
+    private ProgressDialog pDialogPhoto;
+
+    private FloatingActionButton mFabAddPhoto;
 
     private VolleyController mVolleyController;
+
+    private Context mContext;
 
     public static com.sweetcompany.sweetie.gallery.GalleryFragment newInstance(Bundle bundle) {
         com.sweetcompany.sweetie.gallery.GalleryFragment newGalleryFragment = new com.sweetcompany.sweetie.gallery.GalleryFragment();
@@ -69,10 +81,12 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        pDialog = new ProgressDialog(this.getContext());
+        mContext = getContext();
+
+        pDialog = new ProgressDialog(mContext);
         images = new ArrayList<>();
 
-        mGalleryAdapter = new GalleryAdapter(this.getContext(), images);
+        mGalleryAdapter = new GalleryAdapter(mContext, images);
         //mGalleryAdapter.setGalleryAdapterListener(this);
     }
 
@@ -102,15 +116,32 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         mGalleryListView.setLayoutManager(mLinearLayoutManager);
         mGalleryListView.setAdapter(mGalleryAdapter);
 
-        mVolleyController = new VolleyController(this.getContext());
+        mVolleyController = new VolleyController(mContext);
 
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), 3);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 3);
         mGalleryListView.setLayoutManager(mLayoutManager);
         mGalleryListView.setItemAnimator(new DefaultItemAnimator());
         mGalleryListView.setAdapter(mGalleryAdapter);
 
-        mGalleryListView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(this.getContext(), mGalleryListView, new GalleryAdapter.ClickListener() {
+
+        pDialogPhoto = new ProgressDialog(mContext);
+        pDialogPhoto.setMessage("Uploading....");
+
+        mFabAddPhoto = (FloatingActionButton) root.findViewById(R.id.fab_add_photo);
+        mFabAddPhoto.setClickable(false);
+
+        mFabAddPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_PICK);
+                startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);
+            }
+        });
+
+        mGalleryListView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(mContext, mGalleryListView, new GalleryAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Bundle bundle = new Bundle();

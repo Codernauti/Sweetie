@@ -1,8 +1,12 @@
 package com.sweetcompany.sweetie.gallery;
 
+import android.graphics.Bitmap;
+
 import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.PhotoFB;
+
+import java.util.List;
 
 /**
  * Created by ghiro on 22/07/2017.
@@ -10,7 +14,7 @@ import com.sweetcompany.sweetie.model.PhotoFB;
 
 class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryController.GalleryControllerListener {
 
-    private static final String TAG = "gALLERYPresenter";
+    private static final String TAG = "GALLERYPresenter";
 
     private GalleryContract.View mView;
     private FirebaseGalleryController mController;
@@ -26,7 +30,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
-    public void sendPhoto(PhotoVM photo) {
+    public void uploadPhotos(List<Bitmap> photos) {
         // TODO: remove down cast -> use Factory method
         /*TextMessageVM messageVM = (TextMessageVM)message;
         PhotoFB newMessage = new PhotoFB(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());

@@ -19,7 +19,7 @@ package com.sweetcompany.sweetie.gallery;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHolder> {
 
-    private List<Image> images;
+    private List<ImageVM> images;
     private Context mContext;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -32,7 +32,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
     }
 
 
-    public GalleryAdapter(Context context, List<Image> images) {
+    public GalleryAdapter(Context context, List<ImageVM> images) {
         mContext = context;
         this.images = images;
     }
@@ -47,7 +47,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Image image = images.get(position);
+        ImageVM image = images.get(position);
 
         Glide.with(mContext).load(image.getMedium())
                 .thumbnail(0.5f)

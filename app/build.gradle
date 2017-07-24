@@ -32,6 +32,9 @@ allprojects {
         maven {
             url 'https://maven.fabric.io/public'
         }
+        maven {
+            url 'https://jitpack.io'
+        }
     }
 }
 
@@ -69,7 +72,7 @@ dependencies {
 
     compile 'io.github.rockerhieu:emojicon:1.4.1'
 
-    compile 'gun0912.ted:tedbottompicker:1.0.12'
+    compile 'com.github.esafirm.android-image-picker:imagepicker:1.7.4@aar'
 
 }
 

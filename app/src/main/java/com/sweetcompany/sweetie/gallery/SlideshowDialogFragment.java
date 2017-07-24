@@ -22,7 +22,7 @@ import com.sweetcompany.sweetie.R;
 public class SlideshowDialogFragment extends DialogFragment {
 
     private String TAG = SlideshowDialogFragment.class.getSimpleName();
-    private ArrayList<ImageVM> images;
+    private ArrayList<PhotoVM> images;
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private TextView lblCount, lblTitle, lblDate;
@@ -42,7 +42,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         lblTitle = (TextView) v.findViewById(R.id.title);
         lblDate = (TextView) v.findViewById(R.id.date);
 
-        images = (ArrayList<ImageVM>) getArguments().getSerializable("images");
+        images = (ArrayList<PhotoVM>) getArguments().getSerializable("images");
         selectedPosition = getArguments().getInt("position");
 
         Log.e(TAG, "position: " + selectedPosition);
@@ -84,7 +84,7 @@ public class SlideshowDialogFragment extends DialogFragment {
     private void displayMetaInfo(int position) {
         lblCount.setText((position + 1) + " of " + images.size());
 
-        ImageVM image = images.get(position);
+        PhotoVM image = images.get(position);
         lblTitle.setText(image.getName());
         lblDate.setText(image.getTimestamp());
     }
@@ -111,13 +111,15 @@ public class SlideshowDialogFragment extends DialogFragment {
 
             ImageView imageViewPreview = (ImageView) view.findViewById(R.id.image_preview);
 
-            ImageVM image = images.get(position);
+            PhotoVM image = images.get(position);
 
-            Glide.with(getActivity()).load(image.getLarge())
+            /*Glide.with(getActivity()).load(image.getLarge())
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imageViewPreview);
+                    .into(imageViewPreview);*/
+
+            imageViewPreview.setImageBitmap(image.getBitmap());
 
             container.addView(view);
 

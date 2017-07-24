@@ -148,17 +148,19 @@ public class FirebaseGalleryController {
     }
 
     // push message to db and update action of this gallery
-    public void sendMessage(PhotoFB photo) {
+    public void uploadPhoto(PhotoFB photo) {
         Log.d(TAG, "Send PhotoFB: " + photo);
 
         // push a message into mGalleryPhotos reference
         mGalleryPhotos.push().setValue(photo);
 
         // update description and dataTime of action of this associated Gallery
+        /*
         Map<String, Object> actionUpdates = new HashMap<>();
         actionUpdates.put("description", photo.getText());
         actionUpdates.put("dataTime", photo.getDateTime());
         mAction.updateChildren(actionUpdates);
+        */
     }
 
     /*private void updateActionLastMessage(String actionKey, MessageFB msg){

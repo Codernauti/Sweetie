@@ -10,6 +10,8 @@ package com.sweetcompany.sweetie.gallery;
         import android.widget.ImageView;
         import com.bumptech.glide.Glide;
         import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
+        import java.util.ArrayList;
         import java.util.List;
         import com.sweetcompany.sweetie.R;
 
@@ -19,8 +21,10 @@ package com.sweetcompany.sweetie.gallery;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHolder> {
 
-    private List<ImageVM> images;
-    private Context mContext;
+    private static final String TAG = "GalleryAdapter";
+
+    private List<PhotoVM> photos = new ArrayList<>();
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail;
@@ -32,11 +36,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
     }
 
 
-    public GalleryAdapter(Context context, List<ImageVM> images) {
-        mContext = context;
-        this.images = images;
-    }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -47,18 +46,20 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        ImageVM image = images.get(position);
+        PhotoVM photo = photos.get(position);
 
-        Glide.with(mContext).load(image.getMedium())
+        /*Glide.with(mContext).load(image.getMedium())
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.thumbnail);
+                .into(holder.thumbnail);*/
+
+        holder.thumbnail.setImageBitmap(photo.getBitmap());
     }
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return photos.size();
     }
 
     public interface ClickListener {

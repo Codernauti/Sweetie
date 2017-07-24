@@ -1,12 +1,18 @@
 package com.sweetcompany.sweetie.gallery;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.PhotoFB;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
+
+import static android.R.attr.bitmap;
 
 /**
  * Created by ghiro on 22/07/2017.
@@ -25,17 +31,42 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         mView.setPresenter(this);
         mController = controller;
         mController.addListener(this);
-
         mUserMail = userMail;
     }
 
     @Override
-    public void uploadPhotos(List<Bitmap> photos) {
+    public void sendPhoto(PhotoVM photo) {
         // TODO: remove down cast -> use Factory method
         /*TextMessageVM messageVM = (TextMessageVM)message;
         PhotoFB newMessage = new PhotoFB(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());
+        */
+        String encode;
+        encode = encodeBitmap(photo.getBitmap());
+        PhotoFB newPhoto = new PhotoFB(mUserMail, "", "datetime ***", false, encode);
 
-        mController.sendMessage(newMessage);*/
+        mController.uploadPhoto(newPhoto);
+    }
+
+    public String encodeBitmap(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        return imageEncoded;
+    }
+
+    public static Bitmap decodeFromFirebaseBase64(String image) throws IOException {
+        byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+    }
+
+    public Bitmap decodeFirebaseEncode(String encode){
+        Bitmap imageBitmap = null;
+        try {
+            imageBitmap = decodeFromFirebaseBase64(encode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return imageBitmap;
     }
 
     @Override
@@ -54,8 +85,9 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
-    public void onPhotoAdded(PhotoFB message) {
-
+    public void onPhotoAdded(PhotoFB photo) {
+        PhotoVM photoVM = createPhotoVM(photo);
+        mView.updatePhoto(photoVM);
     }
 
     @Override
@@ -70,20 +102,22 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
 
 
     /**
-     * Convert MessageFB to TextMessageVM
-     * @param message
+     * Convert PhotoFB to PhotoVM
+     * @param photo
      * @return
      */
-    /*private MessageVM createMessageVM(MessageFB message) {
-        // Understand if the message is of Main User
-        boolean who = MessageVM.THE_PARTNER;
-        if (message.getEmail() != null) {   // TODO remove check in future
-            if (message.getEmail().equals(mUserMail)) {
+    private PhotoVM createPhotoVM(PhotoFB photo) {
+        // Understand if the photo is of Main User
+        //boolean who = MessageVM.THE_PARTNER;
+        /*if (photo.getEmail() != null) {   // TODO remove check in future
+            if (photo.getEmail().equals(mUserMail)) {
                 who = MessageVM.THE_MAIN_USER;
             }
-        }
+        }*/
         // Create respective ViewModel
-        return new TextMessageVM(message.getText(), who, message.getDateTime(),
-                message.isBookmarked(), message.getKey());
-    }*/
+
+        Bitmap bitmap = decodeFirebaseEncode(photo.getEncode());
+
+        return new PhotoVM(photo.getText(), photo.getDateTime(), photo.isBookmarked(), bitmap);
+    }
 }

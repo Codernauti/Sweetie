@@ -67,6 +67,8 @@ dependencies {
     // volley
     compile 'com.android.volley:volley:1.0.0'
 
+    compile 'io.github.rockerhieu:emojicon:1.4.1'
+
 }
 
 // Add to the bottom of the file

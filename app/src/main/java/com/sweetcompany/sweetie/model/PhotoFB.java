@@ -13,16 +13,18 @@ public class PhotoFB {
     private String email;   //TODO: add a user identifier
     private String text;
     private String dateTime;
+    private String encode;
     private boolean bookmarked;
 
     // For firebase serialization
     public PhotoFB() {}
 
-    public PhotoFB(String email, String text, String date, boolean bookmarked) {
+    public PhotoFB(String email, String text, String date, boolean bookmarked, String encode) {
         this.email = email;
         this.text = text;
         this.dateTime = date;
         this.bookmarked = bookmarked;
+        this.encode = encode;
     }
 
 
@@ -61,6 +63,13 @@ public class PhotoFB {
     }
     public void setBookmarked(boolean bookmarked) {
         this.bookmarked = bookmarked;
+    }
+
+    public String getEncode() {
+        return encode;
+    }
+    public void setEncode(String encode){
+        this.encode = encode;
     }
 
     @Exclude

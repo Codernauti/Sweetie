@@ -41,6 +41,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import com.esafirm.imagepicker.model.Image;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -58,7 +59,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     Uri filePath;
 
     private ArrayList<Image> imagesPicked = new ArrayList<>();
-    private List<Bitmap> bitmapImages = new ArrayList<>();
+    private Bitmap bitmapImage;
 
     private Toolbar mToolBar;
     private RecyclerView mGalleryListView;
@@ -68,7 +69,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     private GalleryContract.Presenter mPresenter;
 
     private static final String endpoint = "https://api.androidhive.info/json/glide.json";
-    private ArrayList<ImageVM> images;
+    private ArrayList<PhotoVM> images;
     private ProgressDialog pDialog;
     private ProgressDialog pDialogPhoto;
 
@@ -100,8 +101,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         pDialog = new ProgressDialog(mContext);
         images = new ArrayList<>();
 
-        mGalleryAdapter = new GalleryAdapter(mContext, images);
-        //mGalleryAdapter.setGalleryAdapterListener(this);
+        mGalleryAdapter = new GalleryAdapter();
     }
 
     @Override
@@ -175,12 +175,12 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
             }
         }));
 
-        fetchImages();
+        //fetchImages();
 
         return root;
     }
 
-    private void fetchImages() {
+    /*private void fetchImages() {
 
         pDialog.setMessage("Downloading json...");
         pDialog.show();
@@ -225,7 +225,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
         // Adding request to request queue
         mVolleyController.getInstance().addToRequestQueue(req);
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
@@ -280,7 +280,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
-            printImages(imagesPicked);
+            sendImages(imagesPicked);
             return;
         }
 
@@ -288,19 +288,25 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     }
 
 
-    private void printImages(List<Image> images) {
+    private void sendImages(List<Image> images) {
         if (images == null) return;
 
         for (int i = 0, l = images.size(); i < l; i++) {
             try {
+                PhotoVM newPhoto = null;
+                try {
+                    newPhoto = new PhotoVM("", DataMaker.get_UTC_DateTime(), false, null);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 //options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
-                bitmapImages.add(BitmapFactory.decodeFile(images.get(i).getPath(), options));
+                bitmapImage = (BitmapFactory.decodeFile(images.get(i).getPath(), options));
+                mPresenter.sendPhoto(newPhoto);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        mPresenter.uploadPhotos(bitmapImages);
     }
 }

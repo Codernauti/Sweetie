@@ -1,14 +1,13 @@
 package com.sweetcompany.sweetie.gallery;
 
 import android.graphics.Bitmap;
-
 import java.util.List;
 
 /**
  * Created by ghiro on 22/07/2017.
  */
 
-public class GalleryContract {
+interface GalleryContract {
 
     interface View {
         void setPresenter(GalleryContract.Presenter presenter);
@@ -22,7 +21,7 @@ public class GalleryContract {
     }
     
     interface Presenter {
-        void uploadPhotos(List<Bitmap> photos);
+        void sendPhoto(PhotoVM photo);
         void bookmarkPhoto(PhotoVM photo);
     }
 }

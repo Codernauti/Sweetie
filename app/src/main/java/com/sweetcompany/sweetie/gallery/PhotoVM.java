@@ -1,6 +1,8 @@
 package com.sweetcompany.sweetie.gallery;
 
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 /**
@@ -9,18 +11,19 @@ import java.io.Serializable;
 
 public class PhotoVM implements Serializable{
     private String name;
-    private String small, medium, large;
     private String timestamp;
+    private Bitmap bitmap;
+    private String text;
+    private boolean bookmarked;
 
     public PhotoVM() {
     }
 
-    public PhotoVM(String name, String small, String medium, String large, String timestamp) {
+    public PhotoVM(String name, String timestamp, boolean bookmarked, Bitmap bitmap) {
         this.name = name;
-        this.small = small;
-        this.medium = medium;
-        this.large = large;
         this.timestamp = timestamp;
+        this.bookmarked = bookmarked;
+        this.bitmap =  bitmap;
     }
 
     public String getName() {
@@ -31,30 +34,9 @@ public class PhotoVM implements Serializable{
         this.name = name;
     }
 
-    public String getSmall() {
-        return small;
+    public Bitmap getBitmap(){
+        return this.bitmap;
     }
-
-    public void setSmall(String small) {
-        this.small = small;
-    }
-
-    public String getMedium() {
-        return medium;
-    }
-
-    public void setMedium(String medium) {
-        this.medium = medium;
-    }
-
-    public String getLarge() {
-        return large;
-    }
-
-    public void setLarge(String large) {
-        this.large = large;
-    }
-
     public String getTimestamp() {
         return timestamp;
     }

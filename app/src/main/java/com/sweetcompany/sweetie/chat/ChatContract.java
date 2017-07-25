@@ -16,6 +16,8 @@ interface ChatContract {
         void updateMessage(MessageVM msgVM);
         void removeMessage(MessageVM msgVM);
         void changeMessage(MessageVM msgVM);
+
+        boolean hideKeyboardPlaceholder();
     }
 
     interface Presenter {

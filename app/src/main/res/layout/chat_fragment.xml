@@ -32,31 +32,46 @@
         android:id="@+id/chat_user_input_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:layout_above="@+id/chat_emojicons_container"
         android:layout_alignWithParentIfMissing="true"
         android:orientation="horizontal"
         android:background="@color/white">
 
         <ImageButton
             android:id="@+id/chat_emoticons_button"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/chat_open_emoticon_image_button24x24" />
+            android:background="#00000000"
+            android:src="@drawable/chat_open_emoticon_image_button24x24"
+            android:alpha="0.4"
+            android:layout_weight="1"
+            />
 
         <EditText
             android:id="@+id/chat_text_message_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="10"
+            android:focusableInTouchMode="true">
+            <requestFocus/>
+        </EditText>
 
         <Button
             android:id="@+id/chat_send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:layout_weight="0"
             android:text="Send"/>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/chat_emojicons_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/keyboard_height_default"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

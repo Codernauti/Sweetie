@@ -33,8 +33,11 @@
         <activity android:name=".registration.RegisterActivity" android:theme="@style/AppTheme" />
         <activity android:name=".pairing.PairingActivity" android:theme="@style/AppTheme" />
 
+        <!--android:windowSoftInputMode="adjustNothing"-->
         <activity android:name=".chat.ChatActivity"
-                  android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan"
+            />
 
         <activity android:name=".gallery.GalleryActivity"
             android:theme="@style/AppTheme"/>

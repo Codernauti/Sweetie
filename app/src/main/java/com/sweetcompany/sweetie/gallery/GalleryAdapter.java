@@ -12,6 +12,7 @@ package com.sweetcompany.sweetie.gallery;
         import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
         import java.util.ArrayList;
+        import java.util.Collections;
         import java.util.List;
         import com.sweetcompany.sweetie.R;
 
@@ -23,7 +24,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     private static final String TAG = "GalleryAdapter";
 
-    private List<PhotoVM> photos = new ArrayList<>();
+    private List<MediaVM> mMediasList = new ArrayList<>();
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -46,7 +47,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        PhotoVM photo = photos.get(position);
+        //MediaVM mediaVM = mMediasList.get(position);
+        PhotoVM photoVM = (PhotoVM) mMediasList.get(position);
 
         /*Glide.with(mContext).load(image.getMedium())
                 .thumbnail(0.5f)
@@ -54,12 +56,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(holder.thumbnail);*/
 
-        holder.thumbnail.setImageBitmap(photo.getBitmap());
+        holder.thumbnail.setImageBitmap(photoVM.getBitmap());
     }
 
     @Override
     public int getItemCount() {
-        return photos.size();
+        return mMediasList.size();
     }
 
     public interface ClickListener {
@@ -109,5 +111,44 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
+    }
+
+    void addMedia(MediaVM mediaVM) {
+        mMediasList.add(mediaVM);
+        notifyItemInserted(mMediasList.size() - 1);
+    }
+
+    void removeMedia(MediaVM mediaVM) {
+        int indexOldPhoto = searchIndexMediaOf(mediaVM);
+        if (indexOldPhoto != -1) {
+            mMediasList.remove(indexOldPhoto);
+            notifyItemRemoved(indexOldPhoto);
+        }
+    }
+
+    void changeMedia(MediaVM mediaVM) {
+        int indexOldPhoto = searchIndexMediaOf(mediaVM);
+        if (indexOldPhoto != -1) {
+            mMediasList.set(indexOldPhoto, mediaVM);
+            notifyItemChanged(indexOldPhoto);
+        }
+    }
+
+    private int searchIndexMediaOf(MediaVM mediaVM) {
+        String modifyMsgKey = mediaVM.getKey();
+        for (int i = 0; i < mMediasList.size(); i++) {
+            String msgKey = mMediasList.get(i).getKey();
+            if (msgKey.equals(modifyMsgKey)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    void updateMediaList(List<MediaVM> messagesVM) {
+        mMediasList.clear();
+        mMediasList.addAll(messagesVM);
+        Collections.reverse(mMediasList);
+        this.notifyDataSetChanged();
     }
 }

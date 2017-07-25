@@ -6,22 +6,22 @@ import com.google.firebase.database.Exclude;
  * Created by ghiro on 22/07/2017.
  */
 
-public class PhotoFB {
+public class MediaFB {
     @Exclude
     private String key;
 
     private String email;   //TODO: add a user identifier
-    private String text;
+    private String description;
     private String dateTime;
     private String encode;
     private boolean bookmarked;
 
     // For firebase serialization
-    public PhotoFB() {}
+    public MediaFB() {}
 
-    public PhotoFB(String email, String text, String date, boolean bookmarked, String encode) {
+    public MediaFB(String email, String desc, String date, boolean bookmarked, String encode) {
         this.email = email;
-        this.text = text;
+        this.description = desc;
         this.dateTime = date;
         this.bookmarked = bookmarked;
         this.encode = encode;
@@ -41,10 +41,10 @@ public class PhotoFB {
     public void setEmail(String email) { this.email = email; }
 
     public String getText() {
-        return text;
+        return description;
     }
-    public void setText(String text) {
-        this.text = text;
+    public void setText(String desc) {
+        this.description = desc;
     }
 
     public String getDateTime() {
@@ -78,7 +78,7 @@ public class PhotoFB {
         return "{" +
                 " key: " + key +
                 " email: " + email +
-                " text: " + text +
+                " text: " + description +
                 " dateTime: " + dateTime +
                 " bookmarked: " + bookmarked +
                 "}";

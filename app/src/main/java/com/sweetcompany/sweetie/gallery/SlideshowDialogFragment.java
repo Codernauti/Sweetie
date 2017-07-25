@@ -85,8 +85,8 @@ public class SlideshowDialogFragment extends DialogFragment {
         lblCount.setText((position + 1) + " of " + images.size());
 
         PhotoVM image = images.get(position);
-        lblTitle.setText(image.getName());
-        lblDate.setText(image.getTimestamp());
+        lblTitle.setText(image.getDescription());
+        lblDate.setText(image.getTime());
     }
 
     @Override

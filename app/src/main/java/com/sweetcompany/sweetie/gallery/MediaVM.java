@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.gallery;
 
+import android.view.View;
+
 /**
  * Created by ghiro on 25/07/2017.
  */
@@ -38,5 +40,12 @@ abstract class MediaVM {
     void setBookmarked(boolean bookmarked) {mBookMarked = bookmarked; }
 
     String getKey() { return mKey; }
+
+    abstract void configViewHolder(MediaViewHolder viewHolder);
+
+    abstract int getIdView();
+
+    @Deprecated
+    abstract MediaViewHolder newViewHolder(View inflatedView);
 
 }

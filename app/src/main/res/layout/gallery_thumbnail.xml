@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
+     <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:padding="5dp"
+        android:padding="10dp"
         android:scaleType="centerCrop" />
+
 
 </com.sweetcompany.sweetie.gallery.SquareLayout>

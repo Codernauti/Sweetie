@@ -49,7 +49,8 @@ import static android.app.Activity.RESULT_OK;
  * Created by ghiro on 22/07/2017.
  */
 
-public class GalleryFragment extends Fragment implements GalleryContract.View, View.OnClickListener{
+public class GalleryFragment extends Fragment implements GalleryContract.View, View.OnClickListener,
+        GalleryAdapter.GalleryAdapterListener{
 
     private static final String TAG = "ChatFragment";
     int PICK_IMAGE_REQUEST = 111;
@@ -77,31 +78,19 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
     private VolleyController mVolleyController;
 
-    private Context mContext;
-
-    public static com.sweetcompany.sweetie.gallery.GalleryFragment newInstance(Bundle bundle) {
-        com.sweetcompany.sweetie.gallery.GalleryFragment newGalleryFragment = new com.sweetcompany.sweetie.gallery.GalleryFragment();
+    public static GalleryFragment newInstance(Bundle bundle) {
+        GalleryFragment newGalleryFragment = new GalleryFragment();
         newGalleryFragment.setArguments(bundle);
 
         return newGalleryFragment;
     }
 
     @Override
-    public void setPresenter(GalleryContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = getContext();
-
-        pDialog = new ProgressDialog(mContext);
-        images = new ArrayList<>();
-
         mGalleryAdapter = new GalleryAdapter();
+        mGalleryAdapter.setGalleryAdapterListener(this);
     }
 
     @Override
@@ -115,7 +104,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         Log.d(TAG, "from Intent GALLERY_DATABASE_KEY: " +
                 getArguments().getString(GalleryActivity.GALLERY_DATABASE_KEY));
 
-        mGalleryListView = (RecyclerView) root.findViewById(R.id.photo_list);
+        mGalleryListView = (RecyclerView) root.findViewById(R.id.gallery_list);
 
         mToolBar = (Toolbar) root.findViewById(R.id.gallery_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
@@ -123,24 +112,20 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         parentActivity.getSupportActionBar().setTitle(titleGallery);
 
-        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        //mLinearLayoutManager = new LinearLayoutManager(getActivity());
         //mLinearLayoutManager.setReverseLayout(true);
-        mLinearLayoutManager.setStackFromEnd(true);
+        //mLinearLayoutManager.setStackFromEnd(true);
 
-        mGalleryListView.setLayoutManager(mLinearLayoutManager);
-        mGalleryListView.setAdapter(mGalleryAdapter);
+        //mGalleryListView.setLayoutManager(mLinearLayoutManager);
+        //mGalleryListView.setAdapter(mGalleryAdapter);
 
-        mVolleyController = new VolleyController(mContext);
+        //mVolleyController = new VolleyController(mContext);
 
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(mContext, 3);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), 3);
         mGalleryListView.setLayoutManager(mLayoutManager);
         mGalleryListView.setItemAnimator(new DefaultItemAnimator());
         mGalleryListView.setAdapter(mGalleryAdapter);
-
-
-        pDialogPhoto = new ProgressDialog(mContext);
-        pDialogPhoto.setMessage("Uploading....");
 
         mFabAddPhoto = (FloatingActionButton) root.findViewById(R.id.fab_add_photo);
         mFabAddPhoto.setClickable(false);
@@ -156,7 +141,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
             }
         });
 
-        mGalleryListView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(mContext, mGalleryListView, new GalleryAdapter.ClickListener() {
+        /*mGalleryListView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(mContext, mGalleryListView, new GalleryAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Bundle bundle = new Bundle();
@@ -173,12 +158,18 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
             public void onLongClick(View view, int position) {
 
             }
-        }));
+        }));*/
 
         //fetchImages();
 
         return root;
     }
+
+    @Override
+    public void setPresenter(GalleryContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
 
     /*private void fetchImages() {
 
@@ -296,7 +287,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 MediaVM newMedia = null;
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                //options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
+                options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
                 bitmapImage = (BitmapFactory.decodeFile(images.get(i).getPath(), options));
                 newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "desc",  false, null, bitmapImage);
                 mPresenter.sendMedia(newMedia);
@@ -304,6 +295,11 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 e.printStackTrace();
             }
         }
+
+    }
+
+    @Override
+    public void onBookmarkClicked(MediaVM mediaVM) {
 
     }
 }

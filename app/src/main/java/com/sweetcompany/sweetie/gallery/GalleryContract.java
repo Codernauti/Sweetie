@@ -11,17 +11,17 @@ interface GalleryContract {
 
     interface View {
         void setPresenter(GalleryContract.Presenter presenter);
-        void updatePhotos(List<PhotoVM> photos);
+        void updateMediaList(List<MediaVM> medias);
         void updateGalleryInfo(GalleryVM gallery);
 
-        void updatePhoto(PhotoVM photoVM);
-        void removePhoto(PhotoVM photoVM);
-        void changePhoto(PhotoVM photoVM);
+        void updateMedia(MediaVM mediaVM);
+        void removeMedia(MediaVM mediaVM);
+        void changeMedia(MediaVM mediaVM);
 
     }
     
     interface Presenter {
-        void sendPhoto(PhotoVM photo);
-        void bookmarkPhoto(PhotoVM photo);
+        void sendMedia(MediaVM media);
+        void bookmarkMedia(MediaVM media);
     }
 }

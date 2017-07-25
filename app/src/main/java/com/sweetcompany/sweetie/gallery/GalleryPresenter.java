@@ -6,13 +6,10 @@ import android.util.Base64;
 
 import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
 import com.sweetcompany.sweetie.model.GalleryFB;
-import com.sweetcompany.sweetie.model.PhotoFB;
+import com.sweetcompany.sweetie.model.MediaFB;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
-
-import static android.R.attr.bitmap;
 
 /**
  * Created by ghiro on 22/07/2017.
@@ -36,13 +33,14 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
-    public void sendPhoto(PhotoVM photo) {
+    public void sendMedia(MediaVM mediaVM) {
         // TODO: remove down cast -> use Factory method
+        PhotoVM photoVM = (PhotoVM) mediaVM;
         String encode;
-        encode = encodeBitmap(photo.getBitmap());
-        PhotoFB newPhoto = new PhotoFB(mUserMail, photo.getName(), photo.getTimestamp(), false, encode);
+        encode = encodeBitmap(photoVM.getBitmap());
+        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, encode);
 
-        mController.sendPhoto(newPhoto);
+        mController.sendMedia(newMedia);
     }
 
     public String encodeBitmap(Bitmap bitmap){
@@ -68,7 +66,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
-    public void bookmarkPhoto(PhotoVM messageVM) {
+    public void bookmarkMedia(MediaVM mediaVM) {
         // TODO: remove down cast -> use Factory method
         /*TextMessageVM msgVM = (TextMessageVM) messageVM;
         MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked());
@@ -84,41 +82,39 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
-    public void onPhotoAdded(PhotoFB photo) {
-        PhotoVM photoVM = createPhotoVM(photo);
-        mView.updatePhoto(photoVM);
+    public void onMediaAdded(MediaFB media) {
+        MediaVM mediaVM = createPhotoVM(media);
+        mView.updateMedia(mediaVM);
     }
 
     @Override
-    public void onPhotoRemoved(PhotoFB photo) {
-        PhotoVM photoVM = createPhotoVM(photo);
-        mView.removePhoto(photoVM);
+    public void onMediaRemoved(MediaFB media) {
+        MediaVM mediaVM = createPhotoVM(media);
+        mView.removeMedia(mediaVM);
     }
 
     @Override
-    public void onPhotoChanged(PhotoFB photo) {
-        PhotoVM photoVM = createPhotoVM(photo);
-        mView.changePhoto(photoVM);
+    public void onMediaChanged(MediaFB media) {
+        MediaVM mediaVM = createPhotoVM(media);
+        mView.changeMedia(mediaVM);
     }
 
 
     /**
-     * Convert PhotoFB to PhotoVM
-     * @param photo
+     * Convert MediaFB to PhotoVM
+     * @param media
      * @return
      */
-    private PhotoVM createPhotoVM(PhotoFB photo) {
-        // Understand if the photo is of Main User
-        //boolean who = MessageVM.THE_PARTNER;
-        /*if (photo.getEmail() != null) {   // TODO remove check in future
-            if (photo.getEmail().equals(mUserMail)) {
-                who = MessageVM.THE_MAIN_USER;
+    private MediaVM createPhotoVM(MediaFB media) {
+        // Understand if the message is of Main User
+        boolean who = MediaVM.THE_PARTNER;
+        if (media.getEmail() != null) {   // TODO remove check in future
+            if (media.getEmail().equals(mUserMail)) {
+                who = MediaVM.THE_MAIN_USER;
             }
-        }*/
+        }
         // Create respective ViewModel
-
-        Bitmap bitmap = decodeFirebaseEncode(photo.getEncode());
-
-        return new PhotoVM(photo.getText(), photo.getDateTime(), photo.isBookmarked(), bitmap);
+        Bitmap bitmap = decodeFirebaseEncode(media.getEncode());
+        return new PhotoVM(who, media.getDateTime(), media.getText(), media.isBookmarked(), media.getKey(), bitmap);
     }
 }

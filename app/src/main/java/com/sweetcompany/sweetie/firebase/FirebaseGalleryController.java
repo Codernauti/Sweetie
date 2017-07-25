@@ -9,7 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.GalleryFB;
-import com.sweetcompany.sweetie.model.PhotoFB;
+import com.sweetcompany.sweetie.model.MediaFB;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,9 +37,9 @@ public class FirebaseGalleryController {
     public interface GalleryControllerListener {
         void onGalleryChanged(GalleryFB gallery);
 
-        void onPhotoAdded(PhotoFB message);
-        void onPhotoRemoved(PhotoFB message);
-        void onPhotoChanged(PhotoFB message);
+        void onMediaAdded(MediaFB message);
+        void onMediaRemoved(MediaFB message);
+        void onMediaChanged(MediaFB message);
     }
 
 
@@ -66,33 +66,33 @@ public class FirebaseGalleryController {
             mGalleryPhotosListener = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    PhotoFB newPhoto = dataSnapshot.getValue(PhotoFB.class);
-                    newPhoto.setKey(dataSnapshot.getKey());
+                    MediaFB newMedia = dataSnapshot.getValue(MediaFB.class);
+                    newMedia.setKey(dataSnapshot.getKey());
                     //Log.d(TAG, "onPhotoAdded to gallery: " + newPhoto.getText() ???);
 
                     for (GalleryControllerListener listener : mListeners) {
-                        listener.onPhotoAdded(newPhoto);
+                        listener.onMediaAdded(newMedia);
                     }
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    PhotoFB newPhoto = dataSnapshot.getValue(PhotoFB.class);
-                    newPhoto.setKey(dataSnapshot.getKey());
-                    Log.d(TAG, "onChildChanged of gallery: " + newPhoto.getText());
+                    MediaFB newMedia = dataSnapshot.getValue(MediaFB.class);
+                    newMedia.setKey(dataSnapshot.getKey());
+                    Log.d(TAG, "onChildChanged of gallery: " + newMedia.getText());
 
                     for (GalleryControllerListener listener : mListeners) {
-                        listener.onPhotoChanged(newPhoto);
+                        listener.onMediaChanged(newMedia);
                     }
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    PhotoFB removedPhoto = dataSnapshot.getValue(PhotoFB.class);
+                    MediaFB removedMedia = dataSnapshot.getValue(MediaFB.class);
                     //Log.d(TAG, "onPhotoRemoved from gallery: " + removedPhoto.getText());
 
                     for (GalleryControllerListener listener : mListeners) {
-                        listener.onPhotoRemoved(removedPhoto);
+                        listener.onMediaRemoved(removedMedia);
                     }
                 }
 
@@ -141,24 +141,24 @@ public class FirebaseGalleryController {
     }
 
 
-    public void updatePhoto(PhotoFB photo) {
-        Log.d(TAG, "Update PhotoFB: " + photo);
+    public void updateMedia(MediaFB photo) {
+        Log.d(TAG, "Update MediaFB: " + photo);
 
         DatabaseReference ref = mGalleryPhotos.child(photo.getKey()).child("bookmarked");
         ref.setValue(photo.isBookmarked());
     }
 
     // push message to db and update action of this gallery
-    public void sendPhoto(PhotoFB photo) {
-        Log.d(TAG, "Send PhotoFB: " + photo);
+    public void sendMedia(MediaFB media) {
+        Log.d(TAG, "Send MediaFB: " + media);
 
         // push a message into mGalleryPhotos reference
-        mGalleryPhotos.push().setValue(photo);
+        mGalleryPhotos.push().setValue(media);
 
         // update description and dataTime of action of this associated Gallery
         Map<String, Object> actionUpdates = new HashMap<>();
         //actionUpdates.put("description", photo.getText());
-        actionUpdates.put("dataTime", photo.getDateTime());
+        actionUpdates.put("dataTime", media.getDateTime());
         mAction.updateChildren(actionUpdates);
     }
 

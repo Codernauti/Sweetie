@@ -233,28 +233,28 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     }
 
     @Override
-    public void updatePhotos(List<PhotoVM> photos) {
-
+    public void updateMediaList(List<MediaVM> mediaVM) {
+        mGalleryAdapter.updateMediaList(mediaVM);
     }
 
     @Override
     public void updateGalleryInfo(GalleryVM gallery) {
-
+        mToolBar.setTitle(gallery.getTitle());
     }
 
     @Override
-    public void updatePhoto(PhotoVM photoVM) {
-
+    public void updateMedia(MediaVM mediaVM) {
+        mGalleryAdapter.addMedia(mediaVM);
     }
 
     @Override
-    public void removePhoto(PhotoVM photoVM) {
-
+    public void removeMedia(MediaVM mediaVM) {
+        mGalleryAdapter.removeMedia(mediaVM);
     }
 
     @Override
-    public void changePhoto(PhotoVM photoVM) {
-
+    public void changeMedia(MediaVM mediaVM) {
+        mGalleryAdapter.changeMedia(mediaVM);
     }
 
     public void start() {
@@ -293,16 +293,13 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
         for (int i = 0, l = images.size(); i < l; i++) {
             try {
-                PhotoVM newPhoto = null;
-                try {
-                    newPhoto = new PhotoVM("", DataMaker.get_UTC_DateTime(), false, null);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                MediaVM newMedia = null;
+
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 //options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
                 bitmapImage = (BitmapFactory.decodeFile(images.get(i).getPath(), options));
-                mPresenter.sendPhoto(newPhoto);
+                newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "desc",  false, null, bitmapImage);
+                mPresenter.sendMedia(newMedia);
             } catch (Exception e) {
                 e.printStackTrace();
             }

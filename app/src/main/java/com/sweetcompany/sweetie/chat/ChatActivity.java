@@ -23,8 +23,9 @@ public class ChatActivity extends AppCompatActivity {
     public static final String CHAT_TITLE = "ChatTitle";    // For offline user
     public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
-    private ChatPresenter mPresenter;
+    private ChatContract.Presenter mPresenter;
     private FirebaseChatController mController;
+    private ChatContract.View mView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,14 +54,14 @@ public class ChatActivity extends AppCompatActivity {
             // TODO: restore data from savedInstanceState
         }
 
-        ChatFragment view = (ChatFragment) getSupportFragmentManager()
+        mView = (ChatFragment) getSupportFragmentManager()
                                         .findFragmentById(R.id.chat_fragment_container);
 
-        if (view == null) {
-            view = ChatFragment.newInstance(getIntent().getExtras());
+        if (mView == null) {
+            mView = ChatFragment.newInstance(getIntent().getExtras());
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            transaction.add(R.id.chat_fragment_container, view);
+            transaction.add(R.id.chat_fragment_container, (ChatFragment)mView);
             transaction.commit();
         }
 
@@ -69,7 +70,7 @@ public class ChatActivity extends AppCompatActivity {
 
         if (chatKey != null) {
             mController = new FirebaseChatController(coupleUid, chatKey, actionKey);
-            mPresenter = new ChatPresenter(view, mController, userMail);
+            mPresenter = new ChatPresenter(mView, mController, userMail);
         }
         else {
             Log.w(TAG, "Impossible to create ChatController and ChatPresenter because chatKey is NULL");
@@ -90,7 +91,16 @@ public class ChatActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        super.onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        boolean isEmojiKeyboardOpen = mView.hideKeyboardPlaceholder();
+        if (!isEmojiKeyboardOpen) {
+            // go back
+            super.onBackPressed();
+        }
     }
 }

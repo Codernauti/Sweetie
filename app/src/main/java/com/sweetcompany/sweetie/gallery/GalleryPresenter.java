@@ -27,7 +27,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         mView = view;
         mView.setPresenter(this);
         mController = controller;
-        //
+        mController.addListener(this);
 
         mUserMail = userMail;
     }

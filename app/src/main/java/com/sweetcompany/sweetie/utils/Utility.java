@@ -74,9 +74,10 @@ public class Utility {
         SharedPreferences setting = context.getSharedPreferences(key, Context.MODE_PRIVATE);
 
         if (key.equals(KB_HEIGHT)) {
-            int data = setting.getInt(key, R.dimen.keyboard_height_default);
-            Log.d("Get int preference", key + ": " + data);
-            return data;
+            //int data = setting.getInt(key, R.dimen.keyboard_height_default);
+            //Log.d("Get int preference", key + ": " + data);
+            //return data;
+            return 0;
         }
         else {
             int data = setting.getInt(key, DEFAULT_INT_VALUE);

@@ -1,62 +1,79 @@
 package com.sweetcompany.sweetie.gallery;
 
-        import android.content.Context;
-        import android.support.v7.widget.RecyclerView;
-        import android.view.GestureDetector;
-        import android.view.LayoutInflater;
-        import android.view.MotionEvent;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ImageView;
-        import com.bumptech.glide.Glide;
-        import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-        import java.util.ArrayList;
-        import java.util.Collections;
-        import java.util.List;
-        import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Created by Lincoln on 31/03/16.
+ * Created by ghiro on 16/05/2017.
  */
 
-public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHolder> {
+class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
+        implements MediaViewHolder.OnViewHolderClickListener{
 
     private static final String TAG = "GalleryAdapter";
 
     private List<MediaVM> mMediasList = new ArrayList<>();
 
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public ImageView thumbnail;
-
-        public MyViewHolder(View view) {
-            super(view);
-            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
-        }
+    interface GalleryAdapterListener {
+        void onBookmarkClicked(MediaVM mediaVM);
     }
 
+    private GalleryAdapterListener mListener;
 
+    /**
+     * Call when create GalleryAdapter
+     * @param listener
+     */
+    void setGalleryAdapterListener(GalleryAdapterListener listener) {
+        mListener = listener;
+    }
+
+    /**
+     *  Call when destroy GalleryAdapterListener
+     */
+    void removeChatAdapterListener() {
+        mListener = null;
+    }
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.gallery_thumbnail, parent, false);
-
-        return new MyViewHolder(itemView);
+    public int getItemViewType(int position) {
+        //TODO: this break the recycler of the viewHolder, the RecyclerView doesn't know the type
+        //return position;
+        return mMediasList.get(position).getIdView();
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        //MediaVM mediaVM = mMediasList.get(position);
-        PhotoVM photoVM = (PhotoVM) mMediasList.get(position);
+    public MediaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        /*Glide.with(mContext).load(image.getMedium())
-                .thumbnail(0.5f)
-                .crossFade()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(holder.thumbnail);*/
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        holder.thumbnail.setImageBitmap(photoVM.getBitmap());
+
+        View viewToInflate = inflater.inflate(viewType, parent, false);
+        MediaViewHolder viewHolder;
+
+        viewHolder = new PhotoViewHolder(viewToInflate);
+
+        viewHolder.setViewHolderClickListener(this);
+
+        Log.d(TAG, "onCreateViewHolder(): " + viewHolder.toString());
+
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(MediaViewHolder holder, int position) {
+        MediaVM mediaVM = mMediasList.get(position);
+        mediaVM.configViewHolder(holder);
+
+        Log.d(TAG, "onBindViewHolder(): " + mediaVM.getKey());
     }
 
     @Override
@@ -64,78 +81,30 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
         return mMediasList.size();
     }
 
-    public interface ClickListener {
-        void onClick(View view, int position);
 
-        void onLongClick(View view, int position);
-    }
-
-    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-
-        private GestureDetector gestureDetector;
-        private GalleryAdapter.ClickListener clickListener;
-
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final GalleryAdapter.ClickListener clickListener) {
-            this.clickListener = clickListener;
-            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapUp(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                    if (child != null && clickListener != null) {
-                        clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-                    }
-                }
-            });
-        }
-
-        @Override
-        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
-
-            View child = rv.findChildViewUnder(e.getX(), e.getY());
-            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
-                clickListener.onClick(child, rv.getChildPosition(child));
-            }
-            return false;
-        }
-
-        @Override
-        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-        }
-
-        @Override
-        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
-        }
-    }
-
-    void addMedia(MediaVM mediaVM) {
-        mMediasList.add(mediaVM);
+    void addMedia(MediaVM media) {
+        mMediasList.add(media);
         notifyItemInserted(mMediasList.size() - 1);
     }
 
     void removeMedia(MediaVM mediaVM) {
-        int indexOldPhoto = searchIndexMediaOf(mediaVM);
-        if (indexOldPhoto != -1) {
-            mMediasList.remove(indexOldPhoto);
-            notifyItemRemoved(indexOldPhoto);
+        int indexOldMedia = searchIndexMediaOf(mediaVM);
+        if (indexOldMedia != -1) {
+            mMediasList.remove(indexOldMedia);
+            notifyItemRemoved(indexOldMedia);
         }
     }
 
     void changeMedia(MediaVM mediaVM) {
-        int indexOldPhoto = searchIndexMediaOf(mediaVM);
-        if (indexOldPhoto != -1) {
-            mMediasList.set(indexOldPhoto, mediaVM);
-            notifyItemChanged(indexOldPhoto);
+        int indexOldMessage = searchIndexMediaOf(mediaVM);
+        if (indexOldMessage != -1) {
+            mMediasList.set(indexOldMessage, mediaVM);
+            notifyItemChanged(indexOldMessage);
         }
     }
 
-    private int searchIndexMediaOf(MediaVM mediaVM) {
-        String modifyMsgKey = mediaVM.getKey();
+    private int searchIndexMediaOf(MediaVM media) {
+        String modifyMsgKey = media.getKey();
         for (int i = 0; i < mMediasList.size(); i++) {
             String msgKey = mMediasList.get(i).getKey();
             if (msgKey.equals(modifyMsgKey)) {
@@ -145,10 +114,23 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
         return -1;
     }
 
-    void updateMediaList(List<MediaVM> messagesVM) {
+    void updateMediaList(List<MediaVM> mediasVM) {
         mMediasList.clear();
-        mMediasList.addAll(messagesVM);
+        mMediasList.addAll(mediasVM);
         Collections.reverse(mMediasList);
         this.notifyDataSetChanged();
+    }
+
+
+    /* Listener from ViewHolder */
+    @Override
+    public void onBookmarkClicked(int adapterPosition) {
+        MediaVM msgToUpdate = mMediasList.get(adapterPosition);
+
+        // Update MessageVM associate with ViewHolder
+        //msgToUpdate.setBookmarked(isBookmarked);
+
+        // Notify fragment for the updating
+        mListener.onBookmarkClicked(msgToUpdate);
     }
 }

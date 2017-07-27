@@ -160,17 +160,18 @@ public class FirebaseGalleryController {
     public void updateMedia(MediaFB photo) {
         Log.d(TAG, "Update MediaFB: " + photo);
 
-        DatabaseReference ref = mGalleryPhotos.child(photo.getKey()).child("bookmarked");
-        ref.setValue(photo.isBookmarked());
+        //DatabaseReference ref = mGalleryPhotos.child(photo.getKey()).child("bookmarked");
+        //ref.setValue(photo.isBookmarked());
     }
 
     // push message to db and update action of this gallery
     public void sendMedia(final MediaFB media) {
         Log.d(TAG, "Send MediaFB: " + media);
 
-        final Uri file = Uri.fromFile(new File(media.getUri()));
-        StorageReference imagesRef = mStorageRef.child("images/"+file.getLastPathSegment());
-        UploadTask uploadTask = imagesRef.putFile(file);
+        Uri uriP;
+        uriP = Uri.parse(media.getUri());
+        //final Uri file = Uri.fromFile(new File(media.getUri()));
+        UploadTask uploadTask = imagesRef.putFile(uriP);
 
 
         // Register observers to listen for when the download is done or if it fails
@@ -199,6 +200,18 @@ public class FirebaseGalleryController {
             }
         });
 
+        /*final String stringUri;
+        stringUri = file.toString();
+        media.setUri(stringUri);
+
+        // push a message into mGalleryPhotos reference
+        mGalleryPhotos.push().setValue(media);
+
+        // update description and dataTime of action of this associated Gallery
+        Map<String, Object> actionUpdates = new HashMap<>();
+        //actionUpdates.put("description", photo.getText());
+        actionUpdates.put("dataTime", media.getDateTime());
+        mAction.updateChildren(actionUpdates);*/
 
     }
 

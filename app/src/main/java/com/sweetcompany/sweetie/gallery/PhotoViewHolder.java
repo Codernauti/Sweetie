@@ -38,8 +38,8 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener {
 
     public void setImage(String uri){
         Uri uriP;
-        String stringUri = "";
-        uriP = Uri.parse(stringUri);
+        uriP = Uri.parse(uri);
+        //file:///file%3A/storage/emulated/0/Pictures/Telegram/IMG_20170721_173428.jpg
         Glide.with(itemView.getContext()).load(uriP)
                 .thumbnail(0.5f)
                 .crossFade()

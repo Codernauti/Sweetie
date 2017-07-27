@@ -1,10 +1,13 @@
 package com.sweetcompany.sweetie.gallery;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
 
 /**
@@ -31,6 +34,17 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener {
 
     public void setBitmap(Bitmap bitmap){
         thumbnail.setImageBitmap(bitmap);
+    }
+
+    public void setImage(String uri){
+        Uri uriP;
+        String stringUri = "";
+        uriP = Uri.parse(stringUri);
+        Glide.with(itemView.getContext()).load(uriP)
+                .thumbnail(0.5f)
+                .crossFade()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(thumbnail);
     }
 
     @Override

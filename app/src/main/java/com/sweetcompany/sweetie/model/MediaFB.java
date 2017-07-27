@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.model;
 
+import android.net.Uri;
+
 import com.google.firebase.database.Exclude;
 
 /**
@@ -13,18 +15,20 @@ public class MediaFB {
     private String email;   //TODO: add a user identifier
     private String description;
     private String dateTime;
-    private String encode;
+    //private String encode;
+    private String uri;
     private boolean bookmarked;
 
     // For firebase serialization
     public MediaFB() {}
 
-    public MediaFB(String email, String desc, String date, boolean bookmarked, String encode) {
+    public MediaFB(String email, String desc, String date, boolean bookmarked, String uri) {
         this.email = email;
         this.description = desc;
         this.dateTime = date;
         this.bookmarked = bookmarked;
-        this.encode = encode;
+        //this.encode = encode;
+        this.uri = uri;
     }
 
 
@@ -65,11 +69,11 @@ public class MediaFB {
         this.bookmarked = bookmarked;
     }
 
-    public String getEncode() {
-        return encode;
+    public String getUri() {
+        return uri;
     }
-    public void setEncode(String encode){
-        this.encode = encode;
+    public void setUri(String uri){
+        this.uri = uri;
     }
 
     @Exclude

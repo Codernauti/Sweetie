@@ -37,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -257,8 +258,8 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 .folderTitle("Folder") // folder selection title
                 .imageTitle("Tap to select"); // image selection title
 
-        imagePicker.multi(); // multi mode (default mode)
-        //imagePicker.single();
+        //imagePicker.multi(); // multi mode (default mode)
+        imagePicker.single();
 
         imagePicker.limit(10) // max images can be selected (99 by default)
                 .showCamera(true) // show camera or not (true by default)
@@ -286,11 +287,17 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
             try {
                 MediaVM newMedia = null;
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
-                bitmapImage = (BitmapFactory.decodeFile(images.get(i).getPath(), options));
-                newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "desc",  false, null, bitmapImage);
+                //BitmapFactory.Options options = new BitmapFactory.Options();
+                //options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
+                //bitmapImage = (BitmapFactory.decodeFile(images.get(i).getPath(), options));
+
+                Uri file = Uri.fromFile(new File(images.get(i).getPath()));
+                String stringUri;
+                stringUri = file.toString();
+
+                newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "desc",  false, null, stringUri);
                 mPresenter.sendMedia(newMedia);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

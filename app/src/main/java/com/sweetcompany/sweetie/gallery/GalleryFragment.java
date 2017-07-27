@@ -142,27 +142,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
             }
         });
 
-        /*mGalleryListView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(mContext, mGalleryListView, new GalleryAdapter.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("images", images);
-                bundle.putInt("position", position);
-
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
-                newFragment.setArguments(bundle);
-                newFragment.show(ft, "slideshow");
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));*/
-
-        //fetchImages();
-
         return root;
     }
 
@@ -170,54 +149,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public void setPresenter(GalleryContract.Presenter presenter) {
         mPresenter = presenter;
     }
-
-
-    /*private void fetchImages() {
-
-        pDialog.setMessage("Downloading json...");
-        pDialog.show();
-
-        JsonArrayRequest req = new JsonArrayRequest(endpoint,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d(TAG, response.toString());
-                        pDialog.hide();
-
-                        images.clear();
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
-                                JSONObject object = response.getJSONObject(i);
-                                ImageVM image = new ImageVM();
-                                image.setName(object.getString("name"));
-
-                                JSONObject url = object.getJSONObject("url");
-                                image.setSmall(url.getString("small"));
-                                image.setMedium(url.getString("medium"));
-                                image.setLarge(url.getString("large"));
-                                image.setTimestamp(object.getString("timestamp"));
-
-                                images.add(image);
-                                images.add(image);
-
-                            } catch (JSONException e) {
-                                Log.e(TAG, "Json parsing error: " + e.getMessage());
-                            }
-                        }
-
-                        mGalleryAdapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Error: " + error.getMessage());
-                pDialog.hide();
-            }
-        });
-
-        // Adding request to request queue
-        mVolleyController.getInstance().addToRequestQueue(req);
-    }*/
 
     @Override
     public void onClick(View v) {
@@ -302,7 +233,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 e.printStackTrace();
             }
         }
-
     }
 
     @Override

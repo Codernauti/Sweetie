@@ -36,9 +36,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     public void sendMedia(MediaVM mediaVM) {
         // TODO: remove down cast -> use Factory method
         PhotoVM photoVM = (PhotoVM) mediaVM;
-        String encode;
-        encode = encodeBitmap(photoVM.getBitmap());
-        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, encode);
+        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, "");
 
         mController.sendMedia(newMedia);
     }
@@ -114,7 +112,6 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
             }
         }
         // Create respective ViewModel
-        Bitmap bitmap = decodeFirebaseEncode(media.getEncode());
-        return new PhotoVM(who, media.getDateTime(), media.getText(), media.isBookmarked(), media.getKey(), bitmap);
+        return new PhotoVM(who, media.getDateTime(), media.getText(), media.isBookmarked(), media.getKey(), media.getUri());
     }
 }

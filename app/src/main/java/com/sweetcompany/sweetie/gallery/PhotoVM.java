@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.gallery;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.View;
 import com.sweetcompany.sweetie.R;
 
@@ -11,16 +12,21 @@ import com.sweetcompany.sweetie.R;
 public class PhotoVM extends MediaVM{
 
     private String mText;
-    private Bitmap bitmap;
+    //private Bitmap bitmap;
+    private String uri;
 
-    public PhotoVM(boolean who, String date, String desc, boolean bookMarked, String key, Bitmap bit) {
+    public PhotoVM(boolean who, String date, String desc, boolean bookMarked, String key, String uri) {
         super(who, date, desc, bookMarked, key);
-        this.bitmap =  bit;
+        this.uri =  uri;
         this.mText = desc;
     }
 
-    public Bitmap getBitmap() {
+    /*public Bitmap getBitmap() {
         return bitmap;
+    }*/
+
+    public String getUri(){
+        return uri;
     }
 
     @Override
@@ -29,7 +35,8 @@ public class PhotoVM extends MediaVM{
         PhotoViewHolder view = (PhotoViewHolder) viewHolder;
 
         //view.setText(mText);
-        view.setBitmap(bitmap);
+        //view.setBitmap(bitmap);
+        view.setImage(uri);
     }
 
     @Override

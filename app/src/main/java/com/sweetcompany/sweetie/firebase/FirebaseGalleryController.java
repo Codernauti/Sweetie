@@ -1,16 +1,24 @@
 package com.sweetcompany.sweetie.firebase;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +35,10 @@ public class FirebaseGalleryController {
     private final DatabaseReference mGallery;
     private final DatabaseReference mGalleryPhotos;
     private final DatabaseReference mAction;
+    private final StorageReference mStorageRef;
+    private final FirebaseStorage mStorage;
+    private final StorageReference imagesRef;
+
 
     private ValueEventListener mGalleryListener;
     private ChildEventListener mGalleryPhotosListener;
@@ -50,6 +62,10 @@ public class FirebaseGalleryController {
                 .getReference(Constraints.GALLERY_PHOTOS + "/" + coupleUid + "/" + galleryKey);
         mAction = FirebaseDatabase.getInstance()
                 .getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
+        mStorage = FirebaseStorage.getInstance();
+        mStorageRef = mStorage.getReference();
+        imagesRef = mStorageRef.child("images");
+
     }
 
     public void addListener(GalleryControllerListener listener) {
@@ -149,17 +165,41 @@ public class FirebaseGalleryController {
     }
 
     // push message to db and update action of this gallery
-    public void sendMedia(MediaFB media) {
+    public void sendMedia(final MediaFB media) {
         Log.d(TAG, "Send MediaFB: " + media);
 
-        // push a message into mGalleryPhotos reference
-        mGalleryPhotos.push().setValue(media);
+        final Uri file = Uri.fromFile(new File(media.getUri()));
+        StorageReference imagesRef = mStorageRef.child("images/"+file.getLastPathSegment());
+        UploadTask uploadTask = imagesRef.putFile(file);
 
-        // update description and dataTime of action of this associated Gallery
-        Map<String, Object> actionUpdates = new HashMap<>();
-        //actionUpdates.put("description", photo.getText());
-        actionUpdates.put("dataTime", media.getDateTime());
-        mAction.updateChildren(actionUpdates);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                final String stringUri;
+                stringUri = downloadUrl.toString();
+                media.setUri(stringUri);
+
+                // push a message into mGalleryPhotos reference
+                mGalleryPhotos.push().setValue(media);
+
+                // update description and dataTime of action of this associated Gallery
+                Map<String, Object> actionUpdates = new HashMap<>();
+                //actionUpdates.put("description", photo.getText());
+                actionUpdates.put("dataTime", media.getDateTime());
+                mAction.updateChildren(actionUpdates);
+            }
+        });
+
+
     }
 
     /*private void updateActionLastMessage(String actionKey, MessageFB msg){

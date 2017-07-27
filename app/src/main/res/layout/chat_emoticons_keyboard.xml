@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/chat_emoticons_kb_pager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/chat_emoticons_grid">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/chat_emoticons_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@color/chat_emoticons_tabs">
+
+        <!--<android.support.design.widget.TabItem
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:icon="@drawable/ic_emoji_people_light"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:icon="@drawable/ic_emoji_nature_light"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:icon="@drawable/ic_emoji_places_light"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:icon="@drawable/ic_emoji_objects_light"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:icon="@drawable/ic_emoji_symbols_light"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="CANC"/>-->
+
+    </android.support.design.widget.TabLayout>
+
+</android.support.v4.view.ViewPager>

@@ -1,17 +1,21 @@
 package com.sweetcompany.sweetie.chat;
 
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
@@ -32,13 +37,15 @@ import com.sweetcompany.sweetie.utils.Utility;
 import java.text.ParseException;
 import java.util.List;
 
+import io.github.rockerhieu.emojicon.emoji.Emojicon;
+
 /**
  * Created by ghiro on 11/05/2017.
  */
 
 public class ChatFragment extends Fragment implements ChatContract.View, View.OnClickListener,
         View.OnTouchListener,
-        ChatAdapter.ChatAdapterListener {
+        ChatAdapter.ChatAdapterListener, EmoticonsPagerAdapter.EmoticonsPagerAdapterListener {
 
     private static final String TAG = "ChatFragment";
 
@@ -55,12 +62,14 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private ImageButton mEmojiButton;
     private FrameLayout mKeyboardPlaceholder;
 
-    //private EmojiconsView mEmojiView;
+    private ViewPager mEmojiView;
+    private EmoticonsPagerAdapter mEmoticonsAdapter;
     private PopupWindow mEmojiPopup;
 
     private ChatAdapter mChatAdapter;
     private ChatContract.Presenter mPresenter;
 
+    private static final int CONST_KB_HEIGHT = 100;
     private static final int SOFT_KB_CLOSED = 0;
     private static final int SOFT_KB_OPENED = 1;
 
@@ -88,7 +97,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View root = inflater.inflate(R.layout.chat_fragment, container, false);
+        // root is a RelativeLayout
+        final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.chat_fragment, container, false);
 
         String titleChat = getArguments().getString(ChatActivity.CHAT_TITLE);
         Log.d(TAG, "from Intent CHAT_TITLE: " +
@@ -96,18 +106,20 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
                 getArguments().getString(ChatActivity.CHAT_DATABASE_KEY));
 
-        mChatListView = (RecyclerView) root.findViewById(R.id.chat_list);
-
+        // initialize toolbar
         mToolBar = (Toolbar) root.findViewById(R.id.chat_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(mToolBar);
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         parentActivity.getSupportActionBar().setTitle(titleChat);
 
+
+        // initialize message's list
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         //mLinearLayoutManager.setReverseLayout(true);
         mLinearLayoutManager.setStackFromEnd(true);
 
+        mChatListView = (RecyclerView) root.findViewById(R.id.chat_list);
         mChatListView.setLayoutManager(mLinearLayoutManager);
         mChatListView.setAdapter(mChatAdapter);
 
@@ -116,21 +128,15 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mSendButton = (Button) root.findViewById(R.id.chat_send_button);
 
         mKeyboardPlaceholder = (FrameLayout) root.findViewById(R.id.chat_emojicons_container);
-        /*mEmojiView = new EmojiconsView(getActivity());
-        mEmojiView.setLayoutParams(new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));*/
+
+        // TODO: EmojiView
+        initializaEmoticons(root);
 
         // get saved height of past keyboard used
         mKeyboardHeight = Utility.getIntPreference(getContext(), Utility.KB_HEIGHT);
         updateHeightPlaceholder();
 
-        View fakeView = new View(getActivity());
-        fakeView.setBackgroundColor(Color.BLACK);
-        mEmojiPopup = new PopupWindow(fakeView, ViewGroup.LayoutParams.MATCH_PARENT, mKeyboardHeight, false);
-/*        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 250, getResources().getDisplayMetrics());
-        mEmojiPopup.setHeight(View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));*/
-
+        mEmojiPopup = new PopupWindow(mEmojiView, ViewGroup.LayoutParams.MATCH_PARENT, mKeyboardHeight, false);
 
         root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -143,8 +149,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 Log.d(TAG, "Height keyboard: " + heightDifference);
 
                 // if more than 100 px it is probably a keyboard
-                if (heightDifference > 100 ) {
-                    Log.d(TAG, "Keyboard pop-up!");
+                if (heightDifference > CONST_KB_HEIGHT ) {
+                    Log.d(TAG, "Keyboard pop-up! Height saved: " + mKeyboardHeight);
                     mKeyboardState = SOFT_KB_OPENED;
 
                     if (heightDifference != mKeyboardHeight) {
@@ -159,7 +165,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                     }
                 }
                 else if (mKeyboardState == SOFT_KB_OPENED) {
-                    Log.d(TAG, "Soft keyboard opened is closing, hide placeholder");
+                    Log.d(TAG, "Soft keyboard opened is closing, hide placeholder (emoji keyboard is closed)");
                     // keyboard closed
                     hideKeyboardPlaceholder();
                     mKeyboardState = SOFT_KB_CLOSED;
@@ -175,7 +181,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
         }
 
-
         mTextMessageInput.setOnTouchListener(this);
         mEmojiButton.setOnClickListener(this);
         mSendButton.setOnClickListener(this);
@@ -183,8 +188,40 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         return root;
     }
 
+    private void initializaEmoticons(ViewGroup root) {
+        mEmojiView = (ViewPager) getLayoutInflater(null).inflate(R.layout.chat_emoticons_keyboard, root, false);
+        mEmoticonsAdapter = new EmoticonsPagerAdapter(getContext());
+
+        mEmojiView.setAdapter(mEmoticonsAdapter);
+
+        // get the specific View from LinearLayout from TabLayout
+        TabLayout mEmoticonsTabs = (TabLayout) mEmojiView.findViewById(R.id.chat_emoticons_tabs);
+        mEmoticonsTabs.setupWithViewPager(mEmojiView);
+
+        mEmoticonsTabs.getTabAt(0).setIcon(R.drawable.ic_emoji_people_light);
+        mEmoticonsTabs.getTabAt(1).setIcon(R.drawable.ic_emoji_nature_light);
+        mEmoticonsTabs.getTabAt(2).setIcon(R.drawable.ic_emoji_places_light);
+        mEmoticonsTabs.getTabAt(3).setIcon(R.drawable.ic_emoji_objects_light);
+        mEmoticonsTabs.getTabAt(4).setIcon(R.drawable.ic_emoji_symbols_light);
+        mEmoticonsTabs.getTabAt(5).setIcon(R.drawable.chat_backspace_24x24);
+
+        LinearLayout tabStrip = ((LinearLayout) mEmoticonsTabs.getChildAt(0));
+        tabStrip.getChildAt(5).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO: delete only one element, can keep delete
+                // use a runnable to delay the deletion
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    KeyEvent fakeDelEvent = new KeyEvent(0, 0, 0, KeyEvent.KEYCODE_DEL, 0, 0, 0, 0, KeyEvent.KEYCODE_ENDCALL);
+                    mTextMessageInput.dispatchKeyEvent(fakeDelEvent);
+                }
+                return true;
+            }
+        });
+    }
+
     private void updateHeightPlaceholder() {
-        if (mKeyboardHeight > 100) {
+        if (mKeyboardHeight > CONST_KB_HEIGHT) {
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mKeyboardPlaceholder.getLayoutParams();
             params.height = mKeyboardHeight;
             mKeyboardPlaceholder.setLayoutParams(params);
@@ -192,13 +229,19 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mEmoticonsAdapter.setListener(this);
+    }
 
-    /*private void initEmoticonsView(View root) {
+    @Override
+    public void onPause() {
+        super.onPause();
+        mInputMethodManager.hideSoftInputFromWindow(mTextMessageInput.getWindowToken(), 0);
+        mEmoticonsAdapter.removeListener();
+    }
 
-        // create layout params (compatible with RelativeLayout)
-        // transform pixel of 240dp
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, getResources().getDisplayMetrics());
-    }*/
 
     @Override
     public void setPresenter(ChatContract.Presenter presenter) {
@@ -279,6 +322,21 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                     mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 }
                 else {
+                    /**//*
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentTransaction transaction = fm.beginTransaction();
+
+                    Fragment prev = fm.findFragmentByTag("emojiFragment");
+                    if (prev != null) {
+                        transaction.remove(prev);
+                    }
+                    transaction.addToBackStack(null);
+
+                    EmojiKeyboardFragment frag = EmojiKeyboardFragment.newInstance(mKeyboardHeight);
+                    frag.show(fm, "emojiFragment");
+
+                    *//**/
+
                     mKeyboardState = SOFT_KB_CLOSED; // jump hidePlaceHolder from OnGlobalLayoutListener
                     // close keyboard and open emoticons
                     View view = getActivity().getCurrentFocus();
@@ -322,5 +380,24 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     public void onBookmarkClicked(MessageVM messageVM) {
         // TODO: is this responsibility of fragment?
         mPresenter.bookmarkMessage(messageVM);
+    }
+
+    // EmoticonsAdapter callback
+    @Override
+    public void onEmoticonsClicked(Emojicon emojicon) {
+        int start = mTextMessageInput.getSelectionStart();
+        int end = mTextMessageInput.getSelectionEnd();
+
+        if (start < 0) {
+            mTextMessageInput.append(emojicon.getEmoji());
+        }
+        else {
+            mTextMessageInput.getText().replace(
+                    Math.min(start, end),
+                    Math.max(start, end),
+                    emojicon.getEmoji(),
+                    0,
+                    emojicon.getEmoji().length());
+        }
     }
 }

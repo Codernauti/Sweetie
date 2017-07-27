@@ -24,10 +24,12 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
 
     private static final String TAG = "GalleryAdapter";
 
-    private List<MediaVM> mMediasList = new ArrayList<>();
+    public List<MediaVM> mMediasList = new ArrayList<>();
 
     interface GalleryAdapterListener {
         void onBookmarkClicked(MediaVM mediaVM);
+        void onPhotoClicked(int position, List<MediaVM> mediasVM);
+        void onPhotoLongClicked(int position, List<MediaVM> mediasVM);
     }
 
     private GalleryAdapterListener mListener;
@@ -139,20 +141,14 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     }
 
     @Override
-    public void onPhotoClick(int adapterPosition) {
-
+    public void onPhotoClicked(int adapterPosition) {
+        mListener.onPhotoClicked(adapterPosition, mMediasList);
     }
 
     @Override
-    public void onPhotoLongClick(int adapterPosition) {
+    public void onPhotoLongClicked(int adapterPosition) {
 
     }
-
-    public interface ClickListener {
-        void onPhotoClick(View view, int position);
-        void onLongClick(View view, int position);
-    }
-
 
 
 }

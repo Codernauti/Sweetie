@@ -38,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
     private ArrayList<Image> imagesPicked = new ArrayList<>();
     private Bitmap bitmapImage;
+    private List<MediaVM> medias;
 
     private Toolbar mToolBar;
     private RecyclerView mGalleryListView;
@@ -90,6 +92,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        medias = new ArrayList<>();
         mGalleryAdapter = new GalleryAdapter();
         mGalleryAdapter.setGalleryAdapterListener(this);
     }
@@ -237,6 +240,23 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
     @Override
     public void onBookmarkClicked(MediaVM mediaVM) {
+
+    }
+
+    @Override
+    public void onPhotoClicked(int position, List<MediaVM> mediasVM) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("images", (Serializable) mediasVM);
+        bundle.putInt("position", position);
+
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
+        newFragment.setArguments(bundle);
+        newFragment.show(ft, "slideshow");
+    }
+
+    @Override
+    public void onPhotoLongClicked(int position, List<MediaVM> mediasVM) {
 
     }
 }

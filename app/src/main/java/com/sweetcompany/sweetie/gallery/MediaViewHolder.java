@@ -12,6 +12,8 @@ abstract class MediaViewHolder extends RecyclerView.ViewHolder {
 
     interface OnViewHolderClickListener {
         void onBookmarkClicked(int adapterPosition);
+        void onPhotoClick(int adapterPosition);
+        void onPhotoLongClick(int adapterPosition);
     }
 
     protected OnViewHolderClickListener mListener;

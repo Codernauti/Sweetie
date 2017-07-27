@@ -5,11 +5,13 @@ import android.net.Uri;
 import android.view.View;
 import com.sweetcompany.sweetie.R;
 
+import java.io.Serializable;
+
 /**
  * Created by ghiro on 22/07/2017.
  */
 
-public class PhotoVM extends MediaVM{
+public class PhotoVM extends MediaVM implements Serializable {
 
     private String mText;
     //private Bitmap bitmap;

@@ -113,13 +113,13 @@ public class SlideshowDialogFragment extends DialogFragment {
 
             PhotoVM image = images.get(position);
 
-            /*Glide.with(getActivity()).load(image.getLarge())
+            Glide.with(getActivity()).load(image.getUri())
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imageViewPreview);*/
+                    .into(imageViewPreview);
 
-            imageViewPreview.setImageBitmap(image.getBitmap());
+            //imageViewPreview.setImageBitmap(image.getBitmap());
 
             container.addView(view);
 

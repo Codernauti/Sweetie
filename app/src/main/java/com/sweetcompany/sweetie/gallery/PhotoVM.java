@@ -13,11 +13,11 @@ public class PhotoVM extends MediaVM{
 
     private String mText;
     //private Bitmap bitmap;
-    private String uri;
+    private String mUri;
 
     public PhotoVM(boolean who, String date, String desc, boolean bookMarked, String key, String uri) {
         super(who, date, desc, bookMarked, key);
-        this.uri =  uri;
+        this.mUri =  uri;
         this.mText = desc;
     }
 
@@ -26,7 +26,7 @@ public class PhotoVM extends MediaVM{
     }*/
 
     public String getUri(){
-        return uri;
+        return mUri;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PhotoVM extends MediaVM{
 
         //view.setText(mText);
         //view.setBitmap(bitmap);
-        view.setImage(uri);
+        view.setImage(mUri);
     }
 
     @Override

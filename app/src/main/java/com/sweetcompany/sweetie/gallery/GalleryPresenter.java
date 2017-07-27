@@ -36,7 +36,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     public void sendMedia(MediaVM mediaVM) {
         // TODO: remove down cast -> use Factory method
         PhotoVM photoVM = (PhotoVM) mediaVM;
-        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, "");
+        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, photoVM.getUri());
 
         mController.sendMedia(newMedia);
     }

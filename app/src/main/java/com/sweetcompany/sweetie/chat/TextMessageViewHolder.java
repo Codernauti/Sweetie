@@ -6,12 +6,14 @@ import android.widget.TextView;
 
 import com.sweetcompany.sweetie.R;
 
+import io.github.rockerhieu.emojicon.EmojiconTextView;
+
 /**
  * Created by Eduard on 21-May-17.
  */
 
 class TextMessageViewHolder extends MessageViewHolder implements View.OnClickListener {
-    private TextView mTextMessage;
+    private EmojiconTextView mTextMessage;
     private TextView mTextTime;
     private ImageButton mBookmarkButton;
 
@@ -19,12 +21,12 @@ class TextMessageViewHolder extends MessageViewHolder implements View.OnClickLis
         super(itemView);
 
         if (isMainUser) {
-            mTextMessage = (TextView) itemView.findViewById(R.id.chat_item_text_view);
+            mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
             mTextTime = (TextView) itemView.findViewById(R.id.chat_item_time_text_view);
             mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_bookmark_button);
         }
         else {  // THE_PARTNER
-            mTextMessage = (TextView) itemView.findViewById(R.id.chat_partner_item_text_view);
+            mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_partner_item_text_view);
             mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_time_text_view);
             mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_partner_item_bookmark_button);
         }

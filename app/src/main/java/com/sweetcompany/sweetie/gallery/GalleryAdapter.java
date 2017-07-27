@@ -1,8 +1,11 @@
 package com.sweetcompany.sweetie.gallery;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -43,6 +46,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     void removeChatAdapterListener() {
         mListener = null;
     }
+
     @Override
     public int getItemViewType(int position) {
         //TODO: this break the recycler of the viewHolder, the RecyclerView doesn't know the type
@@ -133,4 +137,22 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         // Notify fragment for the updating
         mListener.onBookmarkClicked(msgToUpdate);
     }
+
+    @Override
+    public void onPhotoClick(int adapterPosition) {
+
+    }
+
+    @Override
+    public void onPhotoLongClick(int adapterPosition) {
+
+    }
+
+    public interface ClickListener {
+        void onPhotoClick(View view, int position);
+        void onLongClick(View view, int position);
+    }
+
+
+
 }

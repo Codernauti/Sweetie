@@ -50,5 +50,7 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         mListener.onBookmarkClicked(getAdapterPosition());
+        mListener.onPhotoClicked(getAdapterPosition());
+        mListener.onPhotoLongClicked(getAdapterPosition());
     }
 }

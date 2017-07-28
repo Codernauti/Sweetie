@@ -59,11 +59,8 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     private static final int RC_CODE_PICKER = 2000;
     private static final int RC_CAMERA = 3000;
 
-    Uri filePath;
-
     private ArrayList<Image> imagesPicked = new ArrayList<>();
-    private Bitmap bitmapImage;
-    private List<MediaVM> medias;
+    private List<MediaVM> medias = new ArrayList<>();
 
     private Toolbar mToolBar;
     private RecyclerView mGalleryListView;
@@ -72,14 +69,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     private GalleryAdapter mGalleryAdapter;
     private GalleryContract.Presenter mPresenter;
 
-    private static final String endpoint = "https://api.androidhive.info/json/glide.json";
-    private ArrayList<PhotoVM> images;
-    private ProgressDialog pDialog;
-    private ProgressDialog pDialogPhoto;
-
     private FloatingActionButton mFabAddPhoto;
-
-    private VolleyController mVolleyController;
 
     public static GalleryFragment newInstance(Bundle bundle) {
         GalleryFragment newGalleryFragment = new GalleryFragment();
@@ -92,7 +82,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        medias = new ArrayList<>();
         mGalleryAdapter = new GalleryAdapter();
         mGalleryAdapter.setGalleryAdapterListener(this);
     }
@@ -116,16 +105,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         parentActivity.getSupportActionBar().setTitle(titleGallery);
 
-        //mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        //mLinearLayoutManager.setReverseLayout(true);
-        //mLinearLayoutManager.setStackFromEnd(true);
-
-        //mGalleryListView.setLayoutManager(mLinearLayoutManager);
-        //mGalleryListView.setAdapter(mGalleryAdapter);
-
-        //mVolleyController = new VolleyController(mContext);
-
-
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this.getContext(), 3);
         mGalleryListView.setLayoutManager(mLayoutManager);
         mGalleryListView.setItemAnimator(new DefaultItemAnimator());
@@ -137,11 +116,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         mFabAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST);*/
-                start();
+                takePictures();
             }
         });
 
@@ -183,7 +158,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         mGalleryAdapter.changeMedia(mediaVM);
     }
 
-    public void start() {
+    public void takePictures() {
 
         ImagePicker imagePicker = ImagePicker.create(this)
                 .theme(R.style.ImagePickerTheme)
@@ -221,10 +196,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
             try {
                 MediaVM newMedia = null;
 
-                //BitmapFactory.Options options = new BitmapFactory.Options();
-                //options.inSampleSize = 8; // shrink it down otherwise we will use stupid amounts of memory
-                //bitmapImage = (BitmapFactory.decodeFile(images.get(i).getPath(), options));
-
                 Uri file = Uri.fromFile(new File(images.get(i).getPath()));
                 String stringUri;
                 stringUri = file.toString();
@@ -238,15 +209,13 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         }
     }
 
-    @Override
-    public void onBookmarkClicked(MediaVM mediaVM) {
-
-    }
+    //TODO implement gesture single and long click
 
     @Override
     public void onPhotoClicked(int position, List<MediaVM> mediasVM) {
+        medias = mediasVM;
         Bundle bundle = new Bundle();
-        bundle.putSerializable("images", (Serializable) mediasVM);
+        bundle.putSerializable("images", (Serializable) medias);
         bundle.putInt("position", position);
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();

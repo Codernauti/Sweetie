@@ -199,20 +199,6 @@ public class FirebaseGalleryController {
                 mAction.updateChildren(actionUpdates);
             }
         });
-
-        /*final String stringUri;
-        stringUri = file.toString();
-        media.setUri(stringUri);
-
-        // push a message into mGalleryPhotos reference
-        mGalleryPhotos.push().setValue(media);
-
-        // update description and dataTime of action of this associated Gallery
-        Map<String, Object> actionUpdates = new HashMap<>();
-        //actionUpdates.put("description", photo.getText());
-        actionUpdates.put("dataTime", media.getDateTime());
-        mAction.updateChildren(actionUpdates);*/
-
     }
 
     /*private void updateActionLastMessage(String actionKey, MessageFB msg){

@@ -21,25 +21,14 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener {
     PhotoViewHolder(View itemView) {
         super(itemView);
 
-        //mTextMessage = (TextView) itemView.findViewById(R.id.imageText);
-        //mTextMessage.setOnClickListener(this);
         thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
         thumbnail.setOnClickListener(this);
-    }
-
-    public void setText(String text) {
-        //mTextMessage.setText(text);
-        //mTextMessage.setText("ciaociaoooo");
-    }
-
-    public void setBitmap(Bitmap bitmap){
-        thumbnail.setImageBitmap(bitmap);
     }
 
     public void setImage(String uri){
         Uri uriP;
         uriP = Uri.parse(uri);
-        //file:///file%3A/storage/emulated/0/Pictures/Telegram/IMG_20170721_173428.jpg
+
         Glide.with(itemView.getContext()).load(uriP)
                 .thumbnail(0.5f)
                 .crossFade()
@@ -49,7 +38,6 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        mListener.onBookmarkClicked(getAdapterPosition());
         mListener.onPhotoClicked(getAdapterPosition());
         mListener.onPhotoLongClicked(getAdapterPosition());
     }

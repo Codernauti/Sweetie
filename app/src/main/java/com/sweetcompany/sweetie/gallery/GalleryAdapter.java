@@ -109,10 +109,10 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     }
 
     private int searchIndexMediaOf(MediaVM media) {
-        String modifyMsgKey = media.getKey();
+        String modifyMediaKey = media.getKey();
         for (int i = 0; i < mMediasList.size(); i++) {
-            String msgKey = mMediasList.get(i).getKey();
-            if (msgKey.equals(modifyMsgKey)) {
+            String mediaKey = mMediasList.get(i).getKey();
+            if (mediaKey.equals(modifyMediaKey)) {
                 return i;
             }
         }

@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.GalleryFB;
@@ -179,6 +180,7 @@ public class FirebaseGalleryController {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
+                Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -198,7 +200,17 @@ public class FirebaseGalleryController {
                 actionUpdates.put("dataTime", media.getDateTime());
                 mAction.updateChildren(actionUpdates);
             }
-        });
+        }).addOnProgressListener(
+                new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        //calculating progress percentage
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                        //displaying percentage in progress dialog
+                        //progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                    }
+                });
     }
 
     /*private void updateActionLastMessage(String actionKey, MessageFB msg){

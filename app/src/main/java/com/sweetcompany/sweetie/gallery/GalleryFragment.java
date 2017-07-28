@@ -200,7 +200,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 String stringUri;
                 stringUri = file.toString();
 
-                newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "desc",  false, null, stringUri);
+                newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "",  false, null, stringUri);
                 mPresenter.sendMedia(newMedia);
 
             } catch (Exception e) {

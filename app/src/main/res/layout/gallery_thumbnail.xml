@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+     <ProgressBar
+         android:id="@+id/progressBarUpload"
+         style="?android:attr/progressBarStyleLarge"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerHorizontal="true"
+         android:layout_centerVertical="true" />
+
      <ImageView
         android:id="@+id/thumbnail"
         android:layout_width="match_parent"

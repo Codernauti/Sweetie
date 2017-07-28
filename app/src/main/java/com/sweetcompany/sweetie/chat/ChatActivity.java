@@ -23,6 +23,9 @@ public class ChatActivity extends AppCompatActivity {
     public static final String CHAT_TITLE = "ChatTitle";    // For offline user
     public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
+    private String mChatKey;
+    private String mActionKey;
+
     private ChatContract.Presenter mPresenter;
     private FirebaseChatController mController;
     private ChatContract.View mView;
@@ -32,26 +35,23 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_activity);
 
-        String chatKey = null;
-        String actionKey = null;
-        if (savedInstanceState == null) { // first Activity open
-            Bundle chatBundle = getIntent().getExtras();
-            if (chatBundle != null) {
-                chatKey = chatBundle.getString(CHAT_DATABASE_KEY);
-                actionKey = chatBundle.getString(ACTION_DATABASE_KEY);
+        if (savedInstanceState == null) {   // first opened
+            savedInstanceState = getIntent().getExtras();
+        }
 
-                Log.d(TAG, "from Intent CHAT_TITLE: " +
-                        chatBundle.getString(CHAT_TITLE));
-                Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
-                        chatBundle.getString(CHAT_DATABASE_KEY));
-                Log.d(TAG, "from Intent CHAT_ACTION_KEY: " +
-                        chatBundle.getString(ACTION_DATABASE_KEY));
-            }
-            else {
-                Log.w(TAG, "getIntent FAILED!");
-            }
-        } else {
-            // TODO: restore data from savedInstanceState
+        if (savedInstanceState != null) {
+            mChatKey = savedInstanceState.getString(CHAT_DATABASE_KEY);
+            mActionKey = savedInstanceState.getString(ACTION_DATABASE_KEY);
+
+            Log.d(TAG, "from Intent CHAT_TITLE: " +
+                    savedInstanceState.getString(CHAT_TITLE));
+            Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
+                    savedInstanceState.getString(CHAT_DATABASE_KEY));
+            Log.d(TAG, "from Intent CHAT_ACTION_KEY: " +
+                    savedInstanceState.getString(ACTION_DATABASE_KEY));
+        }
+        else {
+            Log.w(TAG, "No savedInstanceState or intentArgs!");
         }
 
         mView = (ChatFragment) getSupportFragmentManager()
@@ -68,8 +68,8 @@ public class ChatActivity extends AppCompatActivity {
         String userMail = Utility.getStringPreference(this, Utility.MAIL);
         String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
 
-        if (chatKey != null) {
-            mController = new FirebaseChatController(coupleUid, chatKey, actionKey);
+        if (mChatKey != null) {
+            mController = new FirebaseChatController(coupleUid, mChatKey, mActionKey);
             mPresenter = new ChatPresenter(mView, mController, userMail);
         }
         else {
@@ -93,6 +93,13 @@ public class ChatActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         super.onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(CHAT_DATABASE_KEY, mChatKey);
+        outState.putString(ACTION_DATABASE_KEY, mActionKey);
     }
 
     @Override

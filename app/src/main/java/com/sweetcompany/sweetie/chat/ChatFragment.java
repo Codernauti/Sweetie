@@ -1,10 +1,8 @@
 package com.sweetcompany.sweetie.chat;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
@@ -50,6 +49,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private static final String TAG = "ChatFragment";
 
     private int mKeyboardHeight;
+    private boolean mIsSoftActionButtonsMeasured;
+    private int mSoftKeyHeight = 0;
     private InputMethodManager mInputMethodManager;
 
     private Toolbar mToolBar;
@@ -138,6 +139,10 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         mEmojiPopup = new PopupWindow(mEmojiView, ViewGroup.LayoutParams.MATCH_PARENT, mKeyboardHeight, false);
 
+        // Device has hard Action Buttons? true -> no other measures needed
+        mIsSoftActionButtonsMeasured = ViewConfiguration.get(getContext()).hasPermanentMenuKey();
+
+
         root.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -145,7 +150,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 root.getWindowVisibleDisplayFrame(r);
 
                 int screenHeight = root.getRootView().getHeight();
-                int heightDifference = screenHeight - (r.bottom);
+                int heightDifference = screenHeight - (r.bottom) - mSoftKeyHeight;
                 Log.d(TAG, "Height keyboard: " + heightDifference);
 
                 // if more than 100 px it is probably a keyboard
@@ -164,11 +169,18 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                         // root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 }
-                else if (mKeyboardState == SOFT_KB_OPENED) {
-                    Log.d(TAG, "Soft keyboard opened is closing, hide placeholder (emoji keyboard is closed)");
-                    // keyboard closed
-                    hideKeyboardPlaceholder();
-                    mKeyboardState = SOFT_KB_CLOSED;
+                else {
+                    if (mKeyboardState == SOFT_KB_OPENED) {
+                        Log.d(TAG, "Soft keyboard opened is closing, hide placeholder (emoji keyboard is closed)");
+                        // keyboard closed
+                        hideKeyboardPlaceholder();
+                        mKeyboardState = SOFT_KB_CLOSED;
+                    }
+                    if (!mIsSoftActionButtonsMeasured) {
+                        Log.d(TAG, "Soft action buttons measured: " + heightDifference);
+                        mIsSoftActionButtonsMeasured = true;
+                        mSoftKeyHeight = heightDifference;
+                    }
                 }
             }
         });

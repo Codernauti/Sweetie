@@ -14,7 +14,6 @@ import java.io.Serializable;
 public class PhotoVM extends MediaVM implements Serializable {
 
     private String mText;
-    //private Bitmap bitmap;
     private String mUri;
 
     public PhotoVM(boolean who, String date, String desc, boolean bookMarked, String key, String uri) {
@@ -22,10 +21,6 @@ public class PhotoVM extends MediaVM implements Serializable {
         this.mUri =  uri;
         this.mText = desc;
     }
-
-    /*public Bitmap getBitmap() {
-        return bitmap;
-    }*/
 
     public String getUri(){
         return mUri;
@@ -36,8 +31,6 @@ public class PhotoVM extends MediaVM implements Serializable {
         // TODO: This downcast is secure?
         PhotoViewHolder view = (PhotoViewHolder) viewHolder;
 
-        //view.setText(mText);
-        //view.setBitmap(bitmap);
         view.setImage(mUri);
     }
 

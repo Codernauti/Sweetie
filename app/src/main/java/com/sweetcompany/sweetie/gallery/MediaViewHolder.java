@@ -11,7 +11,6 @@ import android.view.View;
 abstract class MediaViewHolder extends RecyclerView.ViewHolder {
 
     interface OnViewHolderClickListener {
-        void onBookmarkClicked(int adapterPosition);
         void onPhotoClicked(int adapterPosition);
         void onPhotoLongClicked(int adapterPosition);
     }

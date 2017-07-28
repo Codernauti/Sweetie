@@ -22,6 +22,5 @@ interface GalleryContract {
     
     interface Presenter {
         void sendMedia(MediaVM media);
-        void bookmarkMedia(MediaVM media);
     }
 }

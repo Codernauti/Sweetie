@@ -27,7 +27,6 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     public List<MediaVM> mMediasList = new ArrayList<>();
 
     interface GalleryAdapterListener {
-        void onBookmarkClicked(MediaVM mediaVM);
         void onPhotoClicked(int position, List<MediaVM> mediasVM);
         void onPhotoLongClicked(int position, List<MediaVM> mediasVM);
     }
@@ -129,17 +128,6 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
 
 
     /* Listener from ViewHolder */
-    @Override
-    public void onBookmarkClicked(int adapterPosition) {
-        MediaVM msgToUpdate = mMediasList.get(adapterPosition);
-
-        // Update MessageVM associate with ViewHolder
-        //msgToUpdate.setBookmarked(isBookmarked);
-
-        // Notify fragment for the updating
-        mListener.onBookmarkClicked(msgToUpdate);
-    }
-
     @Override
     public void onPhotoClicked(int adapterPosition) {
         mListener.onPhotoClicked(adapterPosition, mMediasList);

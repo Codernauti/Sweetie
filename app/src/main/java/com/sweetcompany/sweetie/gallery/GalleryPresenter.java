@@ -41,38 +41,6 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         mController.sendMedia(newMedia);
     }
 
-    public String encodeBitmap(Bitmap bitmap){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
-        return imageEncoded;
-    }
-
-    public static Bitmap decodeFromFirebaseBase64(String image) throws IOException {
-        byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
-    }
-
-    public Bitmap decodeFirebaseEncode(String encode){
-        Bitmap imageBitmap = null;
-        try {
-            imageBitmap = decodeFromFirebaseBase64(encode);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return imageBitmap;
-    }
-
-    @Override
-    public void bookmarkMedia(MediaVM mediaVM) {
-        // TODO: remove down cast -> use Factory method
-        /*TextMessageVM msgVM = (TextMessageVM) messageVM;
-        MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked());
-        updateMessage.setKey(msgVM.getKey());
-
-        mController.updateMessage(updateMessage);*/
-    }
-
     @Override
     public void onGalleryChanged(GalleryFB gallery) {
         GalleryVM galleryVM = new GalleryVM(gallery.getKey(), gallery.getTitle());

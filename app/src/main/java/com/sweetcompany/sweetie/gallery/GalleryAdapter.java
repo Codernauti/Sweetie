@@ -101,10 +101,10 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     }
 
     void changeMedia(MediaVM mediaVM) {
-        int indexOldMessage = searchIndexMediaOf(mediaVM);
-        if (indexOldMessage != -1) {
-            mMediasList.set(indexOldMessage, mediaVM);
-            notifyItemChanged(indexOldMessage);
+        int indexOldMedia = searchIndexMediaOf(mediaVM);
+        if (indexOldMedia != -1) {
+            mMediasList.set(indexOldMedia, mediaVM);
+            notifyItemChanged(indexOldMedia);
         }
     }
 

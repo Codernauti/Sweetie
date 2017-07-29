@@ -40,10 +40,8 @@ public class FirebaseGalleryController {
     private final FirebaseStorage mStorage;
     private final StorageReference imagesRef;
 
-
     private ValueEventListener mGalleryListener;
     private ChildEventListener mGalleryPhotosListener;
-
 
     private List<GalleryControllerListener> mListeners = new ArrayList<>();
 
@@ -85,7 +83,7 @@ public class FirebaseGalleryController {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     MediaFB newMedia = dataSnapshot.getValue(MediaFB.class);
                     newMedia.setKey(dataSnapshot.getKey());
-                    //Log.d(TAG, "onPhotoAdded to gallery: " + newPhoto.getText() ???);
+                    Log.d(TAG, "onChildAdded of gallery: " + newMedia.getUri());
 
                     for (GalleryControllerListener listener : mListeners) {
                         listener.onMediaAdded(newMedia);
@@ -96,7 +94,7 @@ public class FirebaseGalleryController {
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     MediaFB newMedia = dataSnapshot.getValue(MediaFB.class);
                     newMedia.setKey(dataSnapshot.getKey());
-                    Log.d(TAG, "onChildChanged of gallery: " + newMedia.getText());
+                    Log.d(TAG, "onChildChanged of gallery: " + newMedia.getUri());
 
                     for (GalleryControllerListener listener : mListeners) {
                         listener.onMediaChanged(newMedia);
@@ -106,7 +104,8 @@ public class FirebaseGalleryController {
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     MediaFB removedMedia = dataSnapshot.getValue(MediaFB.class);
-                    //Log.d(TAG, "onPhotoRemoved from gallery: " + removedPhoto.getText());
+                    removedMedia.setKey(dataSnapshot.getKey());
+                    Log.d(TAG, "onChildRemoved of gallery: " + removedMedia.getUri());
 
                     for (GalleryControllerListener listener : mListeners) {
                         listener.onMediaRemoved(removedMedia);

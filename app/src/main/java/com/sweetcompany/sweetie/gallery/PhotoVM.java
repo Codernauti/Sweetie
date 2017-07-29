@@ -13,13 +13,11 @@ import java.io.Serializable;
 
 public class PhotoVM extends MediaVM implements Serializable {
 
-    private String mText;
     private String mUri;
 
-    public PhotoVM(boolean who, String date, String desc, boolean bookMarked, String key, String uri) {
-        super(who, date, desc, bookMarked, key);
+    public PhotoVM(boolean who, String date, String desc, String key, String uri) {
+        super(who, date, desc, key);
         this.mUri =  uri;
-        this.mText = desc;
     }
 
     public String getUri(){

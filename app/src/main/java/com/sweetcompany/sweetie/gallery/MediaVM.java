@@ -15,13 +15,11 @@ abstract class MediaVM {
     private final boolean mWho;
     private final String mTime;
     private String description;// Format HH:mm
-    private boolean mBookMarked;
 
-    MediaVM(boolean who, String date, String desc, boolean bookMarked, String key) {
+    MediaVM(boolean who, String date, String desc, String key) {
         mWho = who;
         mTime = date;
         description = desc;
-        mBookMarked = bookMarked;
         mKey = key;
     }
 
@@ -35,9 +33,6 @@ abstract class MediaVM {
 
     String getDescription(){ return description;}
     void setDescription(String desc){ description = desc;}
-
-    boolean isBookmarked() {return mBookMarked; }
-    void setBookmarked(boolean bookmarked) {mBookMarked = bookmarked; }
 
     String getKey() { return mKey; }
 

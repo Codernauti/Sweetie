@@ -80,6 +80,6 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
             }
         }
         // Create respective ViewModel
-        return new PhotoVM(who, media.getDateTime(), media.getText(), media.isBookmarked(), media.getKey(), media.getUri());
+        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getKey(), media.getUri());
     }
 }

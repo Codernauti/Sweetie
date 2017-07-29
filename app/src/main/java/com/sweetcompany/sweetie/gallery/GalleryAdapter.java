@@ -60,12 +60,10 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-
         View viewToInflate = inflater.inflate(viewType, parent, false);
         MediaViewHolder viewHolder;
 
         viewHolder = new PhotoViewHolder(viewToInflate);
-
         viewHolder.setViewHolderClickListener(this);
 
         Log.d(TAG, "onCreateViewHolder(): " + viewHolder.toString());

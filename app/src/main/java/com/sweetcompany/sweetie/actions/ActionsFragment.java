@@ -57,18 +57,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
     }
 
-    /*@Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.start();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mPresenter.pause();
-    }*/
-
     @Override
     public void setPresenter(ActionsContract.Presenter presenter) {
         mPresenter = presenter;

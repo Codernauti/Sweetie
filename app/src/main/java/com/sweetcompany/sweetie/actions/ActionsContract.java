@@ -14,9 +14,6 @@ public interface ActionsContract {
     }
 
     interface Presenter {
-        void start();
-        void pause();
-
         List<String> pushChatAction(String userInputChatTitle, String username);
         List<String> pushGalleryAction(String userInputGalleryTitle, String username);
         //void pushAction(String userInputGalleryTitle, String username);

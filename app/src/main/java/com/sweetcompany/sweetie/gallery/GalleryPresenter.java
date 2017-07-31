@@ -39,7 +39,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, photoVM.getUriLocal(), photoVM.getUriStorage());
 
         mController.sendMedia(newMedia);
-        //mView.updateMedia(mediaVM);
+        mView.updateMedia(mediaVM);
     }
 
     @Override
@@ -66,6 +66,12 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         mView.changeMedia(mediaVM);
     }
 
+    @Override
+    public void onUploadPercent(MediaFB media, int perc){
+        MediaVM mediaVM = createPhotoVM(media);
+        mView.updatePercentUpload(mediaVM, perc);
+    }
+
     /**
      * Convert MediaFB to PhotoVM
      * @param media
@@ -80,6 +86,6 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
             }
         }
         // Create respective ViewModel
-        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getKey(), media.getUriLocal(), media.getUriStorage());
+        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getKey(), media.getUriLocal(), media.getUriStorage(), 0);
     }
 }

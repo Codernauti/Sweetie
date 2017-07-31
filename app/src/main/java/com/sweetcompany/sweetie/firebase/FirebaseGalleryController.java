@@ -51,6 +51,7 @@ public class FirebaseGalleryController {
         void onMediaAdded(MediaFB media);
         void onMediaRemoved(MediaFB media);
         void onMediaChanged(MediaFB media);
+        void onUploadPercent(MediaFB media, int perc);
     }
 
 
@@ -208,6 +209,10 @@ public class FirebaseGalleryController {
 
                         //displaying percentage in progress dialog
                         //progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+
+                        for (GalleryControllerListener listener : mListeners) {
+                            listener.onUploadPercent(media, ((int) progress));
+                        }
                     }
                 });
     }

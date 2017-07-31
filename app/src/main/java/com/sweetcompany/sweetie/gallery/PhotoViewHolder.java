@@ -41,19 +41,24 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener {
 
     public void setPercentUploading(int progress){
         mPercentUploading.setText(progress + "%");
+        if (progress >= 100){
+            mPercentUploading.setVisibility(View.GONE);
+            pbar.setVisibility(View.GONE);
+        }
     }
 
     public void setImage(String uri){
-        Uri uriP;
-        uriP = Uri.parse(uri);
+        if(!uri.equals("")) {
+            Uri uriP;
+            uriP = Uri.parse(uri);
 
-        Glide.with(itemView.getContext()).load(uriP)
-                .thumbnail(0.5f)
-                .crossFade()
-                .placeholder(R.drawable.image_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(thumbnail);
-
+            Glide.with(itemView.getContext()).load(uriP)
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .placeholder(R.drawable.image_placeholder)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(thumbnail);
+        }
     }
 
     @Override

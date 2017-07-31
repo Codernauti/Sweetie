@@ -17,6 +17,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.Utility;
 
 
 public class SlideshowDialogFragment extends DialogFragment {
@@ -113,7 +114,20 @@ public class SlideshowDialogFragment extends DialogFragment {
 
             PhotoVM image = images.get(position);
 
-            Glide.with(getActivity()).load(image.getUri())
+            String uriToLoad;
+            //TODO
+            //verify if is in Local memory and has valid path
+            /*if(image.getUriLocal().equals(""))
+            {
+               uriToLoad = image.getUriStorage();
+            }else
+            {
+                uriToLoad = image.getUriLocal();
+            }*/
+
+            uriToLoad = image.getUriStorage();
+
+            Glide.with(getActivity()).load(uriToLoad)
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)

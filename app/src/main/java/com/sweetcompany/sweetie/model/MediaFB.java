@@ -16,19 +16,21 @@ public class MediaFB {
     private String description;
     private String dateTime;
     //private String encode;
-    private String uri;
+    private String uriLocal;
+    private String uriStorage;
     private boolean bookmarked;
 
     // For firebase serialization
     public MediaFB() {}
 
-    public MediaFB(String email, String desc, String date, boolean bookmarked, String uri) {
+    public MediaFB(String email, String desc, String date, boolean bookmarked, String uriL, String uriS) {
         this.email = email;
         this.description = desc;
         this.dateTime = date;
         this.bookmarked = bookmarked;
         //this.encode = encode;
-        this.uri = uri;
+        this.uriLocal = uriL;
+        this.uriStorage = uriS;
     }
 
 
@@ -69,11 +71,18 @@ public class MediaFB {
         this.bookmarked = bookmarked;
     }
 
-    public String getUri() {
-        return uri;
+    public String getUriLocal() {
+        return uriLocal;
     }
-    public void setUri(String uri){
-        this.uri = uri;
+    public void setUriLocal(String uriL){
+        this.uriLocal = uriL;
+    }
+
+    public String getUriStorage() {
+        return uriStorage;
+    }
+    public void setUriStorage(String uriS){
+        this.uriStorage = uriS;
     }
 
     @Exclude
@@ -84,7 +93,6 @@ public class MediaFB {
                 " email: " + email +
                 " text: " + description +
                 " dateTime: " + dateTime +
-                " bookmarked: " + bookmarked +
                 "}";
     }
 }

@@ -36,9 +36,10 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     public void sendMedia(MediaVM mediaVM) {
         // TODO: remove down cast -> use Factory method
         PhotoVM photoVM = (PhotoVM) mediaVM;
-        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, photoVM.getUri());
+        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, photoVM.getUriLocal(), photoVM.getUriStorage());
 
         mController.sendMedia(newMedia);
+        //mView.updateMedia(mediaVM);
     }
 
     @Override
@@ -65,7 +66,6 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         mView.changeMedia(mediaVM);
     }
 
-
     /**
      * Convert MediaFB to PhotoVM
      * @param media
@@ -80,6 +80,6 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
             }
         }
         // Create respective ViewModel
-        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getKey(), media.getUri());
+        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getKey(), media.getUriLocal(), media.getUriStorage());
     }
 }

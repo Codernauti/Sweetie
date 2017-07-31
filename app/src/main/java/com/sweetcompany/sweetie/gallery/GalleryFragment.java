@@ -197,10 +197,10 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 MediaVM newMedia = null;
 
                 Uri file = Uri.fromFile(new File(images.get(i).getPath()));
-                String stringUri;
-                stringUri = file.toString();
+                String stringUriLocal;
+                stringUriLocal = file.toString();
 
-                newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", null, stringUri);
+                newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", null, stringUriLocal, "");
                 mPresenter.sendMedia(newMedia);
 
             } catch (Exception e) {

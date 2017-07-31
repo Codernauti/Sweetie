@@ -17,7 +17,6 @@ interface GalleryContract {
         void updateMedia(MediaVM mediaVM);
         void removeMedia(MediaVM mediaVM);
         void changeMedia(MediaVM mediaVM);
-
     }
     
     interface Presenter {

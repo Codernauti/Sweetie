@@ -13,8 +13,8 @@ import java.io.Serializable;
 
 public class PhotoVM extends MediaVM implements Serializable {
 
-    public PhotoVM(boolean who, String date, String desc, String key, String uriL, String uriS) {
-        super(who, date, desc, key, uriL, uriS);
+    public PhotoVM(boolean who, String date, String desc, String key, String uriL, String uriS, int perc) {
+        super(who, date, desc, key, uriL, uriS, perc);
     }
 
     @Override
@@ -31,7 +31,9 @@ public class PhotoVM extends MediaVM implements Serializable {
         }*/
 
         view.setImage(super.getUriStorage());
+        view.setPercentUploading(super.getPercent());
     }
+
 
     @Override
     int getIdView() {

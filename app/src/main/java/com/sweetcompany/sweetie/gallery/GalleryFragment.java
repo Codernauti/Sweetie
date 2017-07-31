@@ -158,6 +158,11 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         mGalleryAdapter.changeMedia(mediaVM);
     }
 
+    @Override
+    public void updatePercentUpload(MediaVM mediaVM, int perc){
+        mGalleryAdapter.updatePercentUpload(mediaVM, perc);
+    }
+
     public void takePictures() {
 
         ImagePicker imagePicker = ImagePicker.create(this)
@@ -200,7 +205,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 String stringUriLocal;
                 stringUriLocal = file.toString();
 
-                newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", null, stringUriLocal, "");
+                newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", null, stringUriLocal, "", 0);
                 mPresenter.sendMedia(newMedia);
 
             } catch (Exception e) {

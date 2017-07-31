@@ -17,6 +17,8 @@ interface GalleryContract {
         void updateMedia(MediaVM mediaVM);
         void removeMedia(MediaVM mediaVM);
         void changeMedia(MediaVM mediaVM);
+        void updatePercentUpload(MediaVM mediaVM, int perc);
+
     }
     
     interface Presenter {

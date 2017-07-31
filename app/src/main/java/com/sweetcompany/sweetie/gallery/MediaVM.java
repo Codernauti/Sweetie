@@ -17,14 +17,16 @@ abstract class MediaVM {
     private String description;// Format HH:mm
     private String uriLocal;
     private String uriStorage;
+    private int percent;
 
-    MediaVM(boolean who, String date, String desc, String key, String uriL, String uriS) {
+    MediaVM(boolean who, String date, String desc, String key, String uriL, String uriS, int perc) {
         mWho = who;
         mTime = date;
         description = desc;
         mKey = key;
         uriLocal = uriL;
         uriStorage = uriS;
+        percent = perc;
     }
 
     boolean isTheMainUser() {
@@ -55,6 +57,13 @@ abstract class MediaVM {
     }
     void setUriStorage(String uriS){
         uriStorage = uriS;
+    }
+
+    int getPercent(){
+        return percent;
+    }
+    void setPercent(int perc){
+        percent = perc;
     }
 
     abstract void configViewHolder(MediaViewHolder viewHolder);

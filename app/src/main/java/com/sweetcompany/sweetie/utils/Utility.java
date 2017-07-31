@@ -2,9 +2,13 @@ package com.sweetcompany.sweetie.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.R;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by lucas on 22/05/2017.
@@ -85,5 +89,9 @@ public class Utility {
             return data;
         }
     }
+
+    /*public static Boolean isImageAvaible(String uriLocal){
+
+    }*/
 
 }

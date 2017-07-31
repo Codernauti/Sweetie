@@ -15,6 +15,8 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.sweetcompany.sweetie.R;
 
+import org.w3c.dom.Text;
+
 import java.net.UnknownHostException;
 
 /**
@@ -22,18 +24,23 @@ import java.net.UnknownHostException;
  */
 
 class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener {
-    private TextView mTextMessage;
+    private TextView mPercentUploading;
     private ImageView thumbnail;
     ProgressBar pbar;
 
     PhotoViewHolder(View itemView) {
         super(itemView);
 
+        mPercentUploading = (TextView) itemView.findViewById(R.id.progress_percent);
 
         thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
         thumbnail.setOnClickListener(this);
 
         pbar = (ProgressBar) itemView.findViewById(R.id.progressBarUpload);
+    }
+
+    public void setPercentUploading(int progress){
+        mPercentUploading.setText(progress + "%");
     }
 
     public void setImage(String uri){

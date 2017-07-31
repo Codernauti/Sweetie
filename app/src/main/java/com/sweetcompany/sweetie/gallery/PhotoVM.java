@@ -13,15 +13,8 @@ import java.io.Serializable;
 
 public class PhotoVM extends MediaVM implements Serializable {
 
-    private String mUri;
-
-    public PhotoVM(boolean who, String date, String desc, String key, String uri) {
-        super(who, date, desc, key);
-        this.mUri =  uri;
-    }
-
-    public String getUri(){
-        return mUri;
+    public PhotoVM(boolean who, String date, String desc, String key, String uriL, String uriS) {
+        super(who, date, desc, key, uriL, uriS);
     }
 
     @Override
@@ -29,7 +22,15 @@ public class PhotoVM extends MediaVM implements Serializable {
         // TODO: This downcast is secure?
         PhotoViewHolder view = (PhotoViewHolder) viewHolder;
 
-        view.setImage(mUri);
+        /*if(super.getUriLocal().equals(""))
+        {
+            view.setImage(super.getUriStorage());
+        }else
+        {
+            view.setImage(super.getUriLocal());
+        }*/
+
+        view.setImage(super.getUriStorage());
     }
 
     @Override

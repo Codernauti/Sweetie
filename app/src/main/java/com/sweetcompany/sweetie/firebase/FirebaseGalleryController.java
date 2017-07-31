@@ -48,9 +48,9 @@ public class FirebaseGalleryController {
     public interface GalleryControllerListener {
         void onGalleryChanged(GalleryFB gallery);
 
-        void onMediaAdded(MediaFB message);
-        void onMediaRemoved(MediaFB message);
-        void onMediaChanged(MediaFB message);
+        void onMediaAdded(MediaFB media);
+        void onMediaRemoved(MediaFB media);
+        void onMediaChanged(MediaFB media);
     }
 
 
@@ -63,7 +63,7 @@ public class FirebaseGalleryController {
                 .getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
-        imagesRef = mStorageRef.child("images");
+        imagesRef = mStorageRef.child("gallery_photos/");
 
     }
 
@@ -83,7 +83,7 @@ public class FirebaseGalleryController {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     MediaFB newMedia = dataSnapshot.getValue(MediaFB.class);
                     newMedia.setKey(dataSnapshot.getKey());
-                    Log.d(TAG, "onChildAdded of gallery: " + newMedia.getUri());
+                    Log.d(TAG, "onChildAdded of gallery: " + newMedia.getUriStorage());
 
                     for (GalleryControllerListener listener : mListeners) {
                         listener.onMediaAdded(newMedia);
@@ -94,7 +94,7 @@ public class FirebaseGalleryController {
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     MediaFB newMedia = dataSnapshot.getValue(MediaFB.class);
                     newMedia.setKey(dataSnapshot.getKey());
-                    Log.d(TAG, "onChildChanged of gallery: " + newMedia.getUri());
+                    Log.d(TAG, "onChildChanged of gallery: " + newMedia.getUriStorage());
 
                     for (GalleryControllerListener listener : mListeners) {
                         listener.onMediaChanged(newMedia);
@@ -105,7 +105,7 @@ public class FirebaseGalleryController {
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     MediaFB removedMedia = dataSnapshot.getValue(MediaFB.class);
                     removedMedia.setKey(dataSnapshot.getKey());
-                    Log.d(TAG, "onChildRemoved of gallery: " + removedMedia.getUri());
+                    Log.d(TAG, "onChildRemoved of gallery: " + removedMedia.getUriStorage());
 
                     for (GalleryControllerListener listener : mListeners) {
                         listener.onMediaRemoved(removedMedia);
@@ -168,11 +168,11 @@ public class FirebaseGalleryController {
     public void sendMedia(final MediaFB media) {
         Log.d(TAG, "Send MediaFB: " + media);
 
-        Uri uriP;
-        uriP = Uri.parse(media.getUri());
+        Uri uriLocal;
+        uriLocal = Uri.parse(media.getUriLocal());
         //final Uri file = Uri.fromFile(new File(media.getUri()));
-        UploadTask uploadTask = imagesRef.putFile(uriP);
-
+        StorageReference photoRef = mStorageRef.child("gallery_photos/"+uriLocal.getLastPathSegment());
+        UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -186,9 +186,9 @@ public class FirebaseGalleryController {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                final String stringUri;
-                stringUri = downloadUrl.toString();
-                media.setUri(stringUri);
+                final String stringUriStorage;
+                stringUriStorage = downloadUrl.toString();
+                media.setUriStorage(stringUriStorage);
 
                 // push a message into mGalleryPhotos reference
                 mGalleryPhotos.push().setValue(media);

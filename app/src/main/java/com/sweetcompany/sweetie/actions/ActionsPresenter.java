@@ -34,16 +34,6 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     }
 
     @Override
-    public void start() {
-        mController.attachNetworkDatabase();
-    }
-
-    @Override
-    public void pause() {
-        mController.detachNetworkDatabase();
-    }
-
-    @Override
     public List<String> pushChatAction(String userInputChatTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
@@ -95,6 +85,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     // Controller callbacks
 
     // Clear actions, retrieve all actions on server
+    @Override
     public void updateActionsList(List<ActionFB> actionsFB) {
         ActionVM newActionVM;
         mActionsList.clear();

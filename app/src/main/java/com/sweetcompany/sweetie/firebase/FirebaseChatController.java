@@ -24,6 +24,13 @@ public class FirebaseChatController {
 
     private static final String TAG = "FbChatController";
 
+    private final String mActionUid;
+
+    private final String mChatUrl;              // chat-message/<couple_uid>/<chat_uid>
+    private final String mCoupleCalendarUrl;    // calendar/<couple_uid>
+
+
+    private final DatabaseReference mDatabase;
     private final DatabaseReference mChat;
     private final DatabaseReference mChatMessages;
     private final DatabaseReference mAction;
@@ -44,12 +51,17 @@ public class FirebaseChatController {
 
 
     public FirebaseChatController(String coupleUid, String chatKey, String actionKey) {
-        mChat = FirebaseDatabase.getInstance()
-                .getReference(Constraints.CHATS + "/" + coupleUid + "/" + chatKey);
-        mChatMessages = FirebaseDatabase.getInstance()
-                .getReference(Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey);
-        mAction = FirebaseDatabase.getInstance()
-                .getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
+        mActionUid = actionKey;
+
+        mChatUrl = Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey;
+        mCoupleCalendarUrl = Constraints.CALENDAR + "/" + coupleUid;
+
+        FirebaseDatabase firebaseDb = FirebaseDatabase.getInstance();
+        mDatabase = firebaseDb.getReference();
+
+        mChat = firebaseDb.getReference(Constraints.CHATS + "/" + coupleUid + "/" + chatKey);
+        mChatMessages = firebaseDb.getReference(Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey);
+        mAction = firebaseDb.getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
     }
 
     public void addListener(ChatControllerListener listener) {
@@ -143,13 +155,22 @@ public class FirebaseChatController {
     public void updateMessage(MessageFB msg) {
         Log.d(TAG, "Update MessageFB: " + msg);
 
-        DatabaseReference ref = mChatMessages.child(msg.getKey()).child("bookmarked");
-        ref.setValue(msg.isBookmarked());
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put(mChatUrl + "/" + msg.getKey() + "/" + Constraints.BOOKMARK, msg.isBookmarked());
+
+        if (msg.isBookmarked()) {
+            updates.put(mCoupleCalendarUrl + "/" + msg.getDateForActionDiary() + "/" + mActionUid + "/" + msg.getKey(), msg);
+        } else {
+            updates.put(mCoupleCalendarUrl + "/" + msg.getDateForActionDiary() + "/" + mActionUid + "/" + msg.getKey(), null);
+        }
+
+        mDatabase.updateChildren(updates);
     }
 
     // push message to db and update action of this chat
     public void sendMessage(MessageFB msg) {
         Log.d(TAG, "Send MessageFB: " + msg);
+        // TODO: use atomic operation with hashmap
 
         // push a message into mChatMessages reference
         mChatMessages.push().setValue(msg);
@@ -160,15 +181,5 @@ public class FirebaseChatController {
         actionUpdates.put("dataTime", msg.getDateTime());
         mAction.updateChildren(actionUpdates);
     }
-
-    private void updateActionLastMessage(String actionKey, MessageFB msg){
-        DatabaseReference mActionReference = FirebaseDatabase.getInstance()
-                .getReference().child("actions").child(actionKey).child("description");
-        mActionReference.setValue(msg.getText());
-        mActionReference = FirebaseDatabase.getInstance()
-                .getReference().child("actions").child(actionKey).child("dataTime");
-        mActionReference.setValue(msg.getDateTime());
-    }
-
 
 }

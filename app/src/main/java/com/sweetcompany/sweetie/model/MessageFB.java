@@ -52,15 +52,16 @@ public class MessageFB {
         this.dateTime = dateTime;
     }
 
-    // TODO: for firebase, remove in future
-    public String getDate() { return dateTime; }
-    public void setDate(String date) { this.dateTime = date; }
-
     public boolean isBookmarked() {
         return bookmarked;
     }
     public void setBookmarked(boolean bookmarked) {
         this.bookmarked = bookmarked;
+    }
+
+    @Exclude
+    public String getDateForActionDiary() {
+        return dateTime.substring(0, 10);   // YYYY-mm-dd
     }
 
     @Exclude

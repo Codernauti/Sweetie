@@ -23,8 +23,11 @@ interface Constraints {
     String CHATS = "chats";
 
     String CHAT_MESSAGES = "chat-messages";
+        String BOOKMARK = "bookmarked";
 
     String GALLERIES = "galleries";
 
     String GALLERY_PHOTOS = "gallery-photos";
+
+    String CALENDAR = "calendar";
 }

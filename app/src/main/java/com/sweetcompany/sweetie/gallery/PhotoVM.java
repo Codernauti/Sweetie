@@ -24,9 +24,16 @@ public class PhotoVM extends MediaVM implements Serializable {
         PhotoViewHolder view = (PhotoViewHolder) viewHolder;
 
         String uriToLoad;
+        // is image uploaded by me?
         //verify if is in Local memory and has valid path
-        if(Utility.isImageAvaibleInLocal(super.getUriLocal())) uriToLoad = super.getUriLocal();
-        else uriToLoad = super.getUriStorage();
+        if(super.isTheMainUser()) {
+            if(Utility.isImageAvaibleInLocal(super.getUriLocal())) uriToLoad = super.getUriLocal();
+            else uriToLoad = super.getUriStorage();
+        }
+        else // uploaded by partner, take uri storage
+        {
+            uriToLoad = super.getUriStorage();
+        }
 
         view.setImage(uriToLoad);
         view.setPercentUploading(super.getPercent());

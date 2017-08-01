@@ -48,33 +48,32 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     private static final String TAG = "ChatFragment";
 
-    private int mKeyboardHeight;
-    private boolean mIsSoftActionButtonsMeasured;
-    private int mSoftKeyHeight = 0;
-    private InputMethodManager mInputMethodManager;
-
-    private Toolbar mToolBar;
-    private RecyclerView mChatListView;
-
-    private LinearLayoutManager mLinearLayoutManager;
-    private EditText mTextMessageInput;
-    private Button mSendButton;
-
-    private ImageButton mEmojiButton;
-    private FrameLayout mKeyboardPlaceholder;
-
-    private ViewPager mEmojiView;
-    private EmoticonsPagerAdapter mEmoticonsAdapter;
-    private PopupWindow mEmojiPopup;
-
-    private ChatAdapter mChatAdapter;
-    private ChatContract.Presenter mPresenter;
-
-    private static final int CONST_KB_HEIGHT = 100;
+    private static final int MIN_KB_HEIGHT = 100;
     private static final int SOFT_KB_CLOSED = 0;
     private static final int SOFT_KB_OPENED = 1;
 
     private int mKeyboardState = SOFT_KB_CLOSED;
+    private int mKeyboardHeight;
+    private boolean mIsSoftActionButtonsMeasured;
+    private int mSoftKeyHeight = 0;
+
+    private InputMethodManager mInputMethodManager;
+    private Toolbar mToolBar;
+    private RecyclerView mChatListView;
+    private LinearLayoutManager mLinearLayoutManager;
+    private EditText mTextMessageInput;
+
+    private Button mSendButton;
+    private ImageButton mEmojiButton;
+
+    private FrameLayout mKeyboardPlaceholder;
+    private ViewPager mEmojiView;
+    private EmoticonsPagerAdapter mEmoticonsAdapter;
+
+    private PopupWindow mEmojiPopup;
+    private ChatAdapter mChatAdapter;
+
+    private ChatContract.Presenter mPresenter;
 
 
     public static ChatFragment newInstance(Bundle bundle) {
@@ -154,7 +153,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 Log.d(TAG, "Height keyboard: " + heightDifference);
 
                 // if more than 100 px it is probably a keyboard
-                if (heightDifference > CONST_KB_HEIGHT ) {
+                if (heightDifference > MIN_KB_HEIGHT) {
                     Log.d(TAG, "Keyboard pop-up! Height saved: " + mKeyboardHeight);
                     mKeyboardState = SOFT_KB_OPENED;
 
@@ -233,7 +232,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     }
 
     private void updateHeightPlaceholder() {
-        if (mKeyboardHeight > CONST_KB_HEIGHT) {
+        if (mKeyboardHeight > MIN_KB_HEIGHT) {
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mKeyboardPlaceholder.getLayoutParams();
             params.height = mKeyboardHeight;
             mKeyboardPlaceholder.setLayoutParams(params);

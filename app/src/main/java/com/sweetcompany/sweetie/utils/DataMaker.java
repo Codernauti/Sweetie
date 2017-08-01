@@ -62,6 +62,15 @@ public class DataMaker {
         //return utc;
     }
 
+    public static String get_dd_MM_yy_Local (String utc){
+        Date local = UTC_to_Local(utc);
+
+        DateFormat localFormat = new SimpleDateFormat("dd/MM/yyyy");
+        localFormat.setTimeZone(TimeZone.getDefault());
+        return localFormat.format(local);
+        //return utc;
+    }
+
     // Give dateTime
     // return data formatted for Actions
     // es: Give (yyyy-MM-dd'T'HH:mm:ss)

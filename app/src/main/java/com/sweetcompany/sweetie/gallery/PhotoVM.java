@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.Serializable;
 
@@ -22,15 +23,12 @@ public class PhotoVM extends MediaVM implements Serializable {
         // TODO: This downcast is secure?
         PhotoViewHolder view = (PhotoViewHolder) viewHolder;
 
-        /*if(super.getUriLocal().equals(""))
-        {
-            view.setImage(super.getUriStorage());
-        }else
-        {
-            view.setImage(super.getUriLocal());
-        }*/
+        String uriToLoad;
+        //verify if is in Local memory and has valid path
+        if(Utility.isImageAvaibleInLocal(super.getUriLocal())) uriToLoad = super.getUriLocal();
+        else uriToLoad = super.getUriStorage();
 
-        view.setImage(super.getUriStorage());
+        view.setImage(uriToLoad);
         view.setPercentUploading(super.getPercent());
     }
 

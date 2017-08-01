@@ -49,10 +49,10 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener {
 
     public void setImage(String uri){
         if(!uri.equals("")) {
-            Uri uriP;
-            uriP = Uri.parse(uri);
+            //Uri uriP;
+            //uriP = Uri.parse(uri);
 
-            Glide.with(itemView.getContext()).load(uriP)
+            Glide.with(itemView.getContext()).load(uri)
                     .thumbnail(0.5f)
                     .crossFade()
                     .placeholder(R.drawable.image_placeholder)

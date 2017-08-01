@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 
 import com.sweetcompany.sweetie.actions.ActionsContract;
 import com.sweetcompany.sweetie.actions.ActionsPresenter;
+import com.sweetcompany.sweetie.calendar.CalendarContract;
 import com.sweetcompany.sweetie.calendar.CalendarFragment;
+import com.sweetcompany.sweetie.calendar.CalendarPresenter;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
+import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.folders.FoldersFragment;
 import com.sweetcompany.sweetie.actions.ActionsFragment;
 import com.sweetcompany.sweetie.map.MapFragment;
@@ -32,10 +35,17 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
     private final FirebaseActionsController mActionsController;
     private ActionsContract.Presenter mActionsPresenter;
 
-    DashboardPagerAdapter(FragmentManager fm, Context context, FirebaseActionsController actionsController) {
+    private final FirebaseCalendarController mCalendarController;
+    private CalendarContract.Presenter mCalendarPresenter;
+
+    DashboardPagerAdapter(FragmentManager fm, Context context,
+                          FirebaseActionsController actionsController,
+                          FirebaseCalendarController calendarController) {
         super(fm);
         mContext = context;
+
         mActionsController = actionsController;
+        mCalendarController = calendarController;
     }
 
     @Override
@@ -55,10 +65,12 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+        Object createdFragment = super.instantiateItem(container, position);
         // instantiate presenters here
         switch (position) {
             case CALENDAR_TAB:
+                CalendarContract.View calendarView = (CalendarContract.View) createdFragment;
+                mCalendarPresenter = new CalendarPresenter(calendarView, mCalendarController);
                 break;
             case HOME_TAB:
                 ActionsContract.View view = (ActionsContract.View) createdFragment;

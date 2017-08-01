@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
 
 
@@ -46,9 +47,6 @@ public class SlideshowDialogFragment extends DialogFragment {
 
         images = (ArrayList<PhotoVM>) getArguments().getSerializable("images");
         selectedPosition = getArguments().getInt("position");
-
-        Log.e(TAG, "position: " + selectedPosition);
-        Log.e(TAG, "images size: " + images.size());
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
@@ -88,7 +86,7 @@ public class SlideshowDialogFragment extends DialogFragment {
 
         PhotoVM image = images.get(position);
         lblTitle.setText(image.getDescription());
-        lblDate.setText(image.getTime());
+        lblDate.setText(DataMaker.get_dd_MM_yy_Local(image.getTime()));
     }
 
     @Override

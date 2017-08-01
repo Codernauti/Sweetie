@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.gallery;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
@@ -115,25 +116,16 @@ public class SlideshowDialogFragment extends DialogFragment {
             PhotoVM image = images.get(position);
 
             String uriToLoad;
-            //TODO
             //verify if is in Local memory and has valid path
-            /*if(image.getUriLocal().equals(""))
-            {
-               uriToLoad = image.getUriStorage();
-            }else
-            {
-                uriToLoad = image.getUriLocal();
-            }*/
+            if(Utility.isImageAvaibleInLocal(image.getUriLocal())) uriToLoad = image.getUriLocal();
+            else uriToLoad = image.getUriStorage();
 
-            uriToLoad = image.getUriStorage();
-
-            Glide.with(getActivity()).load(uriToLoad)
+            Glide.with(getActivity())
+                    .load(uriToLoad)
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(imageViewPreview);
-
-            //imageViewPreview.setImageBitmap(image.getBitmap());
 
             container.addView(view);
 

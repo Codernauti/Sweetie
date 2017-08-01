@@ -90,8 +90,10 @@ public class Utility {
         }
     }
 
-    /*public static Boolean isImageAvaible(String uriLocal){
-
-    }*/
+    public static boolean isImageAvaibleInLocal(String uriLocal){
+        boolean isAvaible = false;
+        if(new File(uriLocal).isFile()) isAvaible = true;
+        return isAvaible;
+    }
 
 }

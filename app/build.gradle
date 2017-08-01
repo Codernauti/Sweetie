@@ -74,6 +74,8 @@ dependencies {
 
     compile 'com.github.esafirm.android-image-picker:imagepicker:1.7.4@aar'
 
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
+
 }
 
 // Add to the bottom of the file

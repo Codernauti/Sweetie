@@ -19,6 +19,7 @@ import com.sweetcompany.sweetie.actions.ActionsPresenter;
 import com.sweetcompany.sweetie.couple.CoupleActivity;
 import com.sweetcompany.sweetie.couple.CoupleDetailsActivity;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
+import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.pairing.PairingActivity;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -31,6 +32,7 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
     private TabLayout tabLayout;
 
     private FirebaseActionsController mActionsController;
+    private FirebaseCalendarController mCalendarController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +45,11 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
         String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
 
         mActionsController = new FirebaseActionsController(coupleUid);
-        // mCalendarController = ...
+        mCalendarController = new FirebaseCalendarController(coupleUid);
         // mMapsController = ...
 
-        mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext, mActionsController);
+        mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext,
+                mActionsController, mCalendarController);
 
         mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
         mViewPager.setAdapter(mAdapter);

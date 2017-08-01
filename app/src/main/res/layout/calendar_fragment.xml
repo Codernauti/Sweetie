@@ -4,54 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendar"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:weightSum="1">
+        android:layout_height="wrap_content">
+    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_weight="0.5">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/calendar_icon"
-                android:layout_marginEnd="5dp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CALENDAR"
-                />
-        </LinearLayout>
+    <ListView
+        android:id="@+id/calendar_day_actions_diary_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_weight="0.5">
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/agenda_icon"
-                android:layout_marginEnd="5dp"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="AGENDA"
-                />
-        </LinearLayout>
-    </LinearLayout>
-
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/fake_calendar"/>
+    </ListView>
 
 </LinearLayout>

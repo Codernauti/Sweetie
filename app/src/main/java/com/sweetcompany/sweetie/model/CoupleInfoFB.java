@@ -10,6 +10,7 @@ public class CoupleInfoFB {
 
     private String activeCouple;
     private Map<String, Boolean> archivedCouples;
+    private String creationTime;
 
     public CoupleInfoFB() {}
 
@@ -27,5 +28,13 @@ public class CoupleInfoFB {
 
     public void setArchivedCouples(Map<String, Boolean> archivedCouples) {
         this.archivedCouples = archivedCouples;
+    }
+
+    public String getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(String creationTime) {
+        this.creationTime = creationTime;
     }
 }

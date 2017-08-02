@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.chat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -29,14 +30,19 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.github.rockerhieu.emojicon.emoji.Emojicon;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by ghiro on 11/05/2017.
@@ -51,11 +57,15 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private static final int MIN_KB_HEIGHT = 100;
     private static final int SOFT_KB_CLOSED = 0;
     private static final int SOFT_KB_OPENED = 1;
+    private static final int RC_CODE_PICKER = 2000;
+    private static final int RC_CAMERA = 3000;
 
     private int mKeyboardState = SOFT_KB_CLOSED;
     private int mKeyboardHeight;
     private boolean mIsSoftActionButtonsMeasured;
     private int mSoftKeyHeight = 0;
+
+    private ArrayList<Image> imagesPicked = new ArrayList<>();
 
     private InputMethodManager mInputMethodManager;
     private Toolbar mToolBar;
@@ -388,6 +398,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 break;
 
             default:
+                takePictures();
                 break;
         }
         return false;
@@ -417,5 +428,35 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                     0,
                     emojicon.getEmoji().length());
         }
+    }
+
+    public void takePictures() {
+
+        ImagePicker imagePicker = ImagePicker.create(this)
+                .theme(R.style.ImagePickerTheme)
+                .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
+                .folderMode(true) // set folder mode (false by default)
+                .folderTitle("Folder") // folder selection title
+                .imageTitle(String.valueOf(R.string.image_picker_select)); // image selection title
+
+        //imagePicker.multi(); // multi mode (default mode)
+        imagePicker.single();
+
+        imagePicker.limit(10) // max images can be selected (99 by default)
+                .showCamera(true) // show camera or not (true by default)
+                .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
+                .origin(imagesPicked) // original selected images, used in multi mode
+                .start(RC_CODE_PICKER); // start image picker activity with request code
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
+            imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
+            //sendImages(imagesPicked);
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

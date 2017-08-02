@@ -75,19 +75,28 @@ public class ChatActivity extends AppCompatActivity {
         else {
             Log.w(TAG, "Impossible to create ChatController and ChatPresenter because chatKey is NULL");
         }
+
+        mController.attachListeners();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mController.attachListeners();
+        //mController.attachListeners();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        //mController.detachListeners();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         mController.detachListeners();
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {

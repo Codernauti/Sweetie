@@ -456,6 +456,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             return;
         }
 
-        //super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

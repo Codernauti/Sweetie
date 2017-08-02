@@ -83,17 +83,25 @@ public class GalleryActivity extends AppCompatActivity {
         else {
             Log.w(TAG, "Impossible to create GalleryController and GalleryPresenter because galleryKey is NULL");
         }
+
+        mController.attachListeners();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mController.attachListeners();
+        //mController.attachListeners();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        //mController.detachListeners();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         mController.detachListeners();
     }
 

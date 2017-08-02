@@ -65,6 +65,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     private Button mSendButton;
     private ImageButton mEmojiButton;
+    private ImageButton mMediaPickerButton;
 
     private FrameLayout mKeyboardPlaceholder;
     private ViewPager mEmojiView;
@@ -125,6 +126,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         mTextMessageInput = (EditText) root.findViewById(R.id.chat_text_message_input);
         mEmojiButton = (ImageButton) root.findViewById(R.id.chat_emoticons_button);
+        mMediaPickerButton = (ImageButton) root.findViewById(R.id.chat_media_picker_button);
         mSendButton = (Button) root.findViewById(R.id.chat_send_button);
 
         mKeyboardPlaceholder = (FrameLayout) root.findViewById(R.id.chat_emojicons_container);
@@ -194,6 +196,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         mTextMessageInput.setOnTouchListener(this);
         mEmojiButton.setOnClickListener(this);
+        mMediaPickerButton.setOnClickListener(this);
         mSendButton.setOnClickListener(this);
 
         return root;
@@ -359,6 +362,10 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
                     mEmojiPopup.showAtLocation(getView(), Gravity.BOTTOM, 0, 0);
                 }
+                break;
+
+            case R.id.chat_media_picker_button:
+
                 break;
 
             default:

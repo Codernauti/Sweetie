@@ -22,4 +22,7 @@
 
     <string name="google_maps_key">AIzaSyC19ht1PX9A7Frbkyy4CoPxT2699PILt3E</string>
 
+    <!-- Image Picker -->
+    <string name="image_picker_select">Tap to select</string>
+
 </resources>

@@ -375,7 +375,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 break;
 
             case R.id.chat_media_picker_button:
-
+                takePictures();
                 break;
 
             default:
@@ -398,7 +398,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 break;
 
             default:
-                takePictures();
                 break;
         }
         return false;
@@ -457,6 +456,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             return;
         }
 
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
     }
 }

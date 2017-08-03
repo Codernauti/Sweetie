@@ -15,7 +15,6 @@ public class MediaFB {
     private String email;   //TODO: add a user identifier
     private String description;
     private String dateTime;
-    //private String encode;
     private String uriLocal;
     private String uriStorage;
     private boolean bookmarked;
@@ -28,7 +27,6 @@ public class MediaFB {
         this.description = desc;
         this.dateTime = date;
         this.bookmarked = bookmarked;
-        //this.encode = encode;
         this.uriLocal = uriL;
         this.uriStorage = uriS;
     }

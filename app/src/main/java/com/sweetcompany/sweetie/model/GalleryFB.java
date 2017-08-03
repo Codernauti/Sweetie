@@ -22,17 +22,14 @@ public class GalleryFB {
     public String getKey() {
         return key;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-
     @Exclude
     public void setKey(String key) {
         this.key = key;
     }
 
+    public String getTitle() {
+        return title;
+    }
     public void setTitle(String title) {
         this.title = title;
     }

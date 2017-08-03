@@ -26,7 +26,7 @@ import java.net.UnknownHostException;
 class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener {
     private TextView mPercentUploading;
     private ImageView thumbnail;
-    ProgressBar pbar;
+    private ProgressBar pbar;
 
     PhotoViewHolder(View itemView) {
         super(itemView);

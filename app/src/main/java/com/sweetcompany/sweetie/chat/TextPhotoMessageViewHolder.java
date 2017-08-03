@@ -21,28 +21,28 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
     private TextView mTextTime;
     private ImageButton mBookmarkButton;
     private TextView mPercentUploading;
-    private ImageView thumbnail;
-    private ProgressBar pbar;
+    private ImageView mThumbnail;
+    private ProgressBar mPbar;
 
     TextPhotoMessageViewHolder(View itemView, boolean isMainUser) {
         super(itemView);
 
-        mPercentUploading = (TextView) itemView.findViewById(R.id.progress_percent);
-
-        thumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
-        thumbnail.setOnClickListener(this);
-
-        pbar = (ProgressBar) itemView.findViewById(R.id.progressBarUpload);
 
         if (isMainUser) {
-            mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
-            mTextTime = (TextView) itemView.findViewById(R.id.chat_item_time_text_view);
-            mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_bookmark_button);
+            //mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
+            //mTextTime = (TextView) itemView.findViewById(R.id.chat_item_time_text_view);
+            mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_photo_bookmark_button);
+            mThumbnail = (ImageView) itemView.findViewById(R.id.chat_thumbnail_main);
+            mPbar = (ProgressBar) itemView.findViewById(R.id.chat_progressBarUpload_main);
+            mPercentUploading = (TextView) itemView.findViewById(R.id.chat_progress_percent_main);
         }
         else {  // THE_PARTNER
-            mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_partner_item_text_view);
-            mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_time_text_view);
-            mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_partner_item_bookmark_button);
+            //mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_partner_item_text_view);
+            //mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_time_text_view);
+            mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_partner_item_photo_bookmark_button);
+            mThumbnail = (ImageView) itemView.findViewById(R.id.chat_thumbnail_partner);
+            mPbar = (ProgressBar) itemView.findViewById(R.id.chat_progressBarUpload_partner);
+            mPercentUploading = (TextView) itemView.findViewById(R.id.chat_progress_percent_partner);
         }
 
         mBookmarkButton.setOnClickListener(this);
@@ -69,7 +69,7 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
         mPercentUploading.setText(progress + "%");
         if (progress >= 100){
             mPercentUploading.setVisibility(View.GONE);
-            pbar.setVisibility(View.GONE);
+            mPbar.setVisibility(View.GONE);
         }
     }
 
@@ -83,7 +83,7 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
                     .crossFade()
                     .placeholder(R.drawable.image_placeholder)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(thumbnail);
+                    .into(mThumbnail);
         }
     }
 

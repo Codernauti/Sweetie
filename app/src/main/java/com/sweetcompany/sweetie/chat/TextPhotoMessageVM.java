@@ -76,10 +76,10 @@ public class TextPhotoMessageVM extends MessageVM {
     @Override
     int getIdView() {
         if (isTheMainUser()) {
-            return R.layout.chat_user_list_item_text;
+            return R.layout.chat_user_list_item_photo;
         }
         else {  // isThePartner()
-            return R.layout.chat_partner_list_item_text;
+            return R.layout.chat_partner_list_item_photo;
         }
     }
 

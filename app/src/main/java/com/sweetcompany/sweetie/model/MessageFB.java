@@ -14,6 +14,7 @@ public class MessageFB {
     private String text;
     private String dateTime;
     private boolean bookmarked;
+    private int type;
 
     // For firebase serialization
     public MessageFB() {}

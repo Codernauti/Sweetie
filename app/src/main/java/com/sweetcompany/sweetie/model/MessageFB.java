@@ -60,8 +60,18 @@ public class MessageFB {
     }
 
     @Exclude
-    public String getDateForActionDiary() {
-        return dateTime.substring(0, 10);   // YYYY-mm-dd
+    public String getDate() {
+        return dateTime.substring(0, 10);   // yyyy-mm-dd
+    }
+
+    @Exclude
+    public String getYearAndMonth() {
+        return dateTime.substring(0, 7);    // yyyy-mm
+    }
+
+    @Exclude
+    public String getDay() {
+        return dateTime.substring(8, 10);    // dd
     }
 
     @Exclude

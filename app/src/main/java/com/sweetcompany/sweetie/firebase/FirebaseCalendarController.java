@@ -5,13 +5,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-import com.sweetcompany.sweetie.calendar.CalendarContract;
-import com.sweetcompany.sweetie.calendar.CalendarPresenter;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
-import com.sweetcompany.sweetie.model.MessageFB;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,19 +17,20 @@ import java.util.Map;
 
 public class FirebaseCalendarController {
 
-    private final DatabaseReference mCalendar;
-    private ChildEventListener mDayListener;
+    private final DatabaseReference mCoupleCalendar;
+    private ValueEventListener mDayListener;
 
     private CalendarControllerListener mListener;
 
 
     public interface CalendarControllerListener {
+        void onMonthActionsDiaryDownloaded(Map<String, Map<String, ActionDiaryFB>> monthActionsDiary);
         void onActionDiaryAdded(ActionDiaryFB actionDiary);
     }
 
 
     public FirebaseCalendarController(String coupleUid) {
-        mCalendar = FirebaseDatabase.getInstance()
+        mCoupleCalendar = FirebaseDatabase.getInstance()
                 .getReference(Constraints.CALENDAR + "/" + coupleUid);
     }
 
@@ -41,54 +39,32 @@ public class FirebaseCalendarController {
         mListener = listener;
     }
 
-    public void attachListener(String day) {
+    public void attachMonthListener(String yearMonth) {
         if (mDayListener == null) {
-            mDayListener = new ChildEventListener() {
+            mDayListener = new ValueEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Map<String, MessageFB> messages = new HashMap<>();
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    GenericTypeIndicator<Map<String, Map<String, ActionDiaryFB>>> typeIndicator =
+                            new GenericTypeIndicator<Map<String, Map<String, ActionDiaryFB>>>() {};
+                    Map<String, Map<String, ActionDiaryFB>> monthActionsDiary = dataSnapshot.getValue(typeIndicator);
 
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        messages.put(data.getKey(), data.getValue(MessageFB.class));
-                    }
-
-                    ActionDiaryFB actionDiary = new ActionDiaryFB();
-                    actionDiary.setKey(dataSnapshot.getKey());
-                    actionDiary.setMessages(messages);
-
-                    if (mListener != null) {
-                        mListener.onActionDiaryAdded(actionDiary);
+                    if (mListener != null && monthActionsDiary != null) {
+                        mListener.onMonthActionsDiaryDownloaded(monthActionsDiary);
                     }
                 }
 
                 @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
+                public void onCancelled(DatabaseError databaseError) { }
             };
-            mCalendar.child(day).addChildEventListener(mDayListener);
+
+            mCoupleCalendar.child(yearMonth).addValueEventListener(mDayListener);
         }
 
     }
 
     public void detachListener() {
         if (mDayListener != null) {
-            mCalendar.removeEventListener(mDayListener);
+            mCoupleCalendar.removeEventListener(mDayListener);
         }
         mDayListener = null;
     }

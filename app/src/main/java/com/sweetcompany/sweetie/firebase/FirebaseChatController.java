@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sweetcompany.sweetie.model.ActionDiaryFB;
+import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.MessageFB;
 
@@ -28,7 +30,7 @@ public class FirebaseChatController {
 
     private final String mChatUrl;              // chat-message/<couple_uid>/<chat_uid>
     private final String mCoupleCalendarUrl;    // calendar/<couple_uid>
-
+    private final String mCoupleActionsDiaryUrl;      // actionsDiary/<couple_uid>/<action_uid>
 
     private final DatabaseReference mDatabase;
     private final DatabaseReference mChat;
@@ -55,6 +57,7 @@ public class FirebaseChatController {
 
         mChatUrl = Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey;
         mCoupleCalendarUrl = Constraints.CALENDAR + "/" + coupleUid;
+        mCoupleActionsDiaryUrl = "actionsDiary" + "/" + coupleUid;
 
         FirebaseDatabase firebaseDb = FirebaseDatabase.getInstance();
         mDatabase = firebaseDb.getReference();
@@ -158,12 +161,30 @@ public class FirebaseChatController {
         HashMap<String, Object> updates = new HashMap<>();
         updates.put(mChatUrl + "/" + msg.getKey() + "/" + Constraints.BOOKMARK, msg.isBookmarked());
 
-        if (msg.isBookmarked()) {
-            updates.put(mCoupleCalendarUrl + "/" + msg.getDateForActionDiary() + "/" + mActionUid + "/" + msg.getKey(), msg);
-        } else {
-            updates.put(mCoupleCalendarUrl + "/" + msg.getDateForActionDiary() + "/" + mActionUid + "/" + msg.getKey(), null);
-        }
+        String actionDiaryDataUrl = mCoupleActionsDiaryUrl + "/" + msg.getDate() + "/" + mActionUid;
+        final String actionDiaryUrl = mCoupleCalendarUrl + "/" + msg.getYearAndMonth() + "/"
+                                + msg.getDay() + "/" + mActionUid;
 
+        if (msg.isBookmarked()) {
+            ActionDiaryFB action = new ActionDiaryFB(ActionFB.CHAT, msg.getDate());
+
+            updates.put(actionDiaryUrl, action);
+            updates.put(actionDiaryDataUrl + "/" + msg.getKey(), msg);
+        }
+        else {
+            updates.put(actionDiaryDataUrl + "/" + msg.getKey(), null);
+
+            mDatabase.child(actionDiaryDataUrl)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getChildrenCount() <= 0) {
+                                // user remove all messages associated with this ActionDiary
+                                mDatabase.child(actionDiaryUrl).removeValue();
+                            }
+                        }
+                        public void onCancelled(DatabaseError databaseError) { }
+            });
+        }
         mDatabase.updateChildren(updates);
     }
 

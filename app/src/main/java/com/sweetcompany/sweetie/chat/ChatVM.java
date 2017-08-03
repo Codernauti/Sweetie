@@ -7,6 +7,7 @@ package com.sweetcompany.sweetie.chat;
 class ChatVM {
     private String mKey;
     private String mTitle;
+    private String mGalleryKey;
 
     ChatVM(String key, String title) {
         mKey = key;

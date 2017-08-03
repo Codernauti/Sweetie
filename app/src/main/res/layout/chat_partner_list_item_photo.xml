@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageButton
-        android:id="@+id/chat_partner_item_bookmark_button"
+        android:id="@+id/chat_partner_item_photo_bookmark_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
 
@@ -34,7 +34,7 @@
         android:background="@drawable/shape_rounded_rectangle">
 
         <TextView
-            android:id="@+id/chat_progress_percent"
+            android:id="@+id/chat_progress_percent_partner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -42,7 +42,7 @@
             android:layout_centerVertical="true"/>
 
         <ProgressBar
-            android:id="@+id/chat_progressBarUpload"
+            android:id="@+id/chat_progressBarUpload_partner"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_centerVertical="true" />
 
         <ImageView
-            android:id="@+id/chat_thumbnail"
+            android:id="@+id/chat_thumbnail_partner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"

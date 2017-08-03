@@ -29,7 +29,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
     public void sendMessage(MessageVM message) {
         // TODO: remove down cast -> use Factory method
         TextMessageVM messageVM = (TextMessageVM)message;
-        MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked());
+        MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(), messageVM.isBookmarked(), MessageFB.TEXT_MSG, "", "");
 
         mController.sendMessage(newMessage);
     }
@@ -38,7 +38,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
     public void bookmarkMessage(MessageVM messageVM) {
         // TODO: remove down cast -> use Factory method
         TextMessageVM msgVM = (TextMessageVM) messageVM;
-        MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked());
+        MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked(), MessageFB.PHOTO_MSG, "", "");
         updateMessage.setKey(msgVM.getKey());
 
         mController.updateMessage(updateMessage);

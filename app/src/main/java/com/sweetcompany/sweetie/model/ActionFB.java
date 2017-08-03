@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.model;
 
+import com.google.firebase.database.Exclude;
+
 /**
  * Created by ghiro on 18/05/2017.
  */
@@ -30,7 +32,7 @@ public class ActionFB {
 
 
     /*** SETTER ***/
-
+    @Exclude
     public void setKey(String key){
         this.key = key;
     }
@@ -60,7 +62,7 @@ public class ActionFB {
     }
 
     /*** GETTER ***/ //TODO crate assert null function
-
+    @Exclude
     public String getKey(){
         return key;
     }

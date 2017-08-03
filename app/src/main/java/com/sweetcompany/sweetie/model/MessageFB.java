@@ -7,6 +7,10 @@ import com.google.firebase.database.Exclude;
  */
 
 public class MessageFB {
+
+    public final static int TEXT_MSG = 0;
+    public final static int PHOTO_MSG = 1;
+
     @Exclude
     private String key;
 
@@ -14,15 +18,21 @@ public class MessageFB {
     private String text;
     private String dateTime;
     private boolean bookmarked;
+    private int type;
+    private String uriLocal;
+    private String uriStorage;
 
     // For firebase serialization
     public MessageFB() {}
 
-    public MessageFB(String email, String text, String date, boolean bookmarked) {
+    public MessageFB(String email, String text, String date, boolean bookmarked, int type, String uriL, String uriS) {
         this.email = email;
         this.text = text;
         this.dateTime = date;
         this.bookmarked = bookmarked;
+        this.type = type;
+        this.uriLocal = uriL;
+        this.uriStorage = uriS;
     }
 
 
@@ -59,11 +69,31 @@ public class MessageFB {
         this.bookmarked = bookmarked;
     }
 
+    public int getType(){
+        return  this.type;
+    }
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getUriLocal() {
+        return uriLocal;
+    }
+    public void setUriLocal(String uriL){
+        this.uriLocal = uriL;
+    }
+
+    public String getUriStorage() {
+        return uriStorage;
+    }
+    public void setUriStorage(String uriS){
+        this.uriStorage = uriS;
+    }
+
     @Exclude
     public String getDate() {
         return dateTime.substring(0, 10);   // yyyy-mm-dd
     }
-
     @Exclude
     public String getYearAndMonth() {
         return dateTime.substring(0, 7);    // yyyy-mm
@@ -85,4 +115,4 @@ public class MessageFB {
                 " bookmarked: " + bookmarked +
                 "}";
     }
-}
+    }

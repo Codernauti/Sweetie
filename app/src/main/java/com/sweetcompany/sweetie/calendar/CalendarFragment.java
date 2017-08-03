@@ -61,10 +61,62 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Calendar calendar = Calendar.getInstance();
-        String currentYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
+        if (savedInstanceState == null) {
+            Calendar calendar = Calendar.getInstance();
+            String currentYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
 
-        mPresenter.downloadActionsDiaryForMonth(currentYearAndMonth);
+            mPresenter.downloadActionsDiaryForMonth(currentYearAndMonth);
+            Log.d(TAG, "onViewCreated() first time");
+        } else {
+            Log.d(TAG, "onViewCreated() not first time");
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart()");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume()");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause()");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop()");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView()");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy()");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "onDetach()");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -80,20 +132,26 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     @Override
     public void setMonthActionsDiary(final Map<String, List<ActionDiaryVM>> monthActionDiary) {
         mMonthActionsDiary = monthActionDiary;
-        // TODO: for every CalendarDay show icons
         mCalendar.removeDecorators();
-        mCalendar.addDecorators(new DayViewDecorator() {
-            @Override
-            public boolean shouldDecorate(CalendarDay day) {
-                String dayStr = new SimpleDateFormat("dd").format(day.getDate());
-                return monthActionDiary.containsKey(dayStr);
-            }
+        // TODO: for every CalendarDay show icons
+        if (mMonthActionsDiary != null) {
+            mCalendar.addDecorators(new DayViewDecorator() {
+                @Override
+                public boolean shouldDecorate(CalendarDay day) {
+                    String dayStr = new SimpleDateFormat("dd").format(day.getDate());
+                    return monthActionDiary.containsKey(dayStr);
+                }
 
-            @Override
-            public void decorate(DayViewFacade view) {
-                view.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_chat_icon));
-            }
-        });
+                @Override
+                public void decorate(DayViewFacade view) {
+                    view.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_chat_icon));
+                }
+            });
+            Log.d(TAG, "New mMonthActionsDiary comes: " + mMonthActionsDiary.size());
+        } else {
+            Log.d(TAG, "Null mMonthActionsDiary comes");
+        }
+
     }
 
 
@@ -101,9 +159,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-        Log.d(TAG, "Month changed! Attach a new listener");
+        mCalendar.removeDecorators();
         // TODO: download also 6 past month
         String yearAndMonth = new SimpleDateFormat("yyyy-MM").format(date.getDate());
+
+        Log.d(TAG, "Month changed! download monthActionsDiary of: " + yearAndMonth);
         mPresenter.downloadActionsDiaryForMonth(yearAndMonth);
     }
 

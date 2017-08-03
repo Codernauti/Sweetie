@@ -59,10 +59,10 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         View viewToInflate = inflater.inflate(viewType, parent, false);
         MessageViewHolder viewHolder;
         switch (viewType) {
-            case R.layout.chat_user_list_item:
+            case R.layout.chat_user_list_item_text:
                 viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_MAIN_USER);
                 break;
-            case R.layout.chat_partner_list_item:
+            case R.layout.chat_partner_list_item_text:
                 viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
                 break;
             default:

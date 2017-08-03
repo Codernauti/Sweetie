@@ -48,7 +48,7 @@ public class FirebaseCalendarController {
                             new GenericTypeIndicator<Map<String, Map<String, ActionDiaryFB>>>() {};
                     Map<String, Map<String, ActionDiaryFB>> monthActionsDiary = dataSnapshot.getValue(typeIndicator);
 
-                    if (mListener != null && monthActionsDiary != null) {
+                    if (mListener != null) {
                         mListener.onMonthActionsDiaryDownloaded(monthActionsDiary);
                     }
                 }

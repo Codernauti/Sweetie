@@ -48,6 +48,11 @@ public class CalendarPresenter implements CalendarContract.Presenter,
     @Override
     public void onMonthActionsDiaryDownloaded(Map<String, Map<String, ActionDiaryFB>> monthActionsDiary) {
 
+        if (monthActionsDiary == null) {
+            mView.setMonthActionsDiary(null);
+            return;
+        }
+
         // pass data to view
         HashMap<String, List<ActionDiaryVM>> newMonthActionsDiary = new HashMap<>();
 

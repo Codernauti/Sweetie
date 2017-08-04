@@ -1,14 +1,17 @@
 package com.sweetcompany.sweetie.utils;
 
 
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.TimeZone;
+//import android.icu.text.DateFormat;
+//import android.icu.text.SimpleDateFormat;
+//import android.icu.util.TimeZone;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 /**

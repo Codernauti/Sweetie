@@ -45,13 +45,24 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
     }
 
     @Override
-    public void bookmarkMessage(MessageVM messageVM) {
+    public void bookmarkMessage(MessageVM messageVM, int type) {
         // TODO: remove down cast -> use Factory method
-        TextMessageVM msgVM = (TextMessageVM) messageVM;
-        MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked(), MessageFB.PHOTO_MSG, "", "");
-        updateMessage.setKey(msgVM.getKey());
+        if(type == 0){
+            TextMessageVM msgVM = (TextMessageVM) messageVM;
+            MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked(), MessageFB.PHOTO_MSG, "", "");
+            updateMessage.setKey(msgVM.getKey());
 
-        mController.updateMessage(updateMessage);
+            mController.updateMessage(updateMessage);
+        }
+        else if(type == 1)
+        {
+            TextPhotoMessageVM msgVM = (TextPhotoMessageVM) messageVM;
+            MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(), msgVM.isBookmarked(), MessageFB.PHOTO_MSG, msgVM.getUriLocal(), msgVM.getUriStorage());
+            updateMessage.setKey(msgVM.getKey());
+
+            mController.updateMessage(updateMessage);
+        }
+
     }
 
 

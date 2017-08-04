@@ -48,6 +48,6 @@ class TextMessageViewHolder extends MessageViewHolder implements View.OnClickLis
     public void onClick(View v) {
         boolean wasBookmarked = mBookmarkButton.isSelected();
         mBookmarkButton.setSelected(!wasBookmarked);
-        mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked);
+        mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, MessageVM.TEXT_MSG);
     }
 }

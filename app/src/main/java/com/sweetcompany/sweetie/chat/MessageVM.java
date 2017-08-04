@@ -10,6 +10,9 @@ abstract class MessageVM {
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
 
+    public final static int TEXT_MSG = 0;
+    public final static int PHOTO_MSG = 1;
+
     private final String mKey;
 
     private final boolean mWho;

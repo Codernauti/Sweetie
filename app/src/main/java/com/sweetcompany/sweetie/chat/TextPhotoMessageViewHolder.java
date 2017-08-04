@@ -30,7 +30,7 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
 
         if (isMainUser) {
             //mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
-            //mTextTime = (TextView) itemView.findViewById(R.id.chat_item_time_text_view);
+            mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_time_photo_view);
             mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_photo_bookmark_button);
             mThumbnail = (ImageView) itemView.findViewById(R.id.chat_thumbnail_main);
             mPbar = (ProgressBar) itemView.findViewById(R.id.chat_progressBarUpload_main);
@@ -38,7 +38,7 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
         }
         else {  // THE_PARTNER
             //mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_partner_item_text_view);
-            //mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_time_text_view);
+            mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_time_photo_view);
             mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_partner_item_photo_bookmark_button);
             mThumbnail = (ImageView) itemView.findViewById(R.id.chat_thumbnail_partner);
             mPbar = (ProgressBar) itemView.findViewById(R.id.chat_progressBarUpload_partner);
@@ -62,7 +62,7 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
     public void onClick(View v) {
         boolean wasBookmarked = mBookmarkButton.isSelected();
         mBookmarkButton.setSelected(!wasBookmarked);
-        mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked);
+        mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, MessageVM.PHOTO_MSG);
     }
 
     public void setPercentUploading(int progress){

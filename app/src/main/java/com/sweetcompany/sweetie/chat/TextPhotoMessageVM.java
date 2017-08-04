@@ -54,7 +54,7 @@ public class TextPhotoMessageVM extends MessageVM {
         TextPhotoMessageViewHolder view = (TextPhotoMessageViewHolder) viewHolder;
 
         //view.setText(mText);
-        //view.setTextTime(DataMaker.getHH_ss_Local(super.getTime()));
+        view.setTextTime(DataMaker.getHH_ss_Local(super.getTime()));
         view.setBookmark(super.isBookmarked());
 
         String uriToLoad;

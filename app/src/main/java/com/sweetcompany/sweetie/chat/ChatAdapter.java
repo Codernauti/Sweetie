@@ -22,7 +22,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     private static final String TAG = "ChatAdapter";
 
     interface ChatAdapterListener {
-        void onBookmarkClicked(MessageVM messageVM);
+        void onBookmarkClicked(MessageVM messageVM, int type);
     }
 
     private List<MessageVM> mMessageList = new ArrayList<>();
@@ -154,13 +154,13 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
     /* Listener from ViewHolder */
     @Override
-    public void onBookmarkClicked(int adapterPosition, boolean isBookmarked) {
+    public void onBookmarkClicked(int adapterPosition, boolean isBookmarked, int type) {
         MessageVM msgToUpdate = mMessageList.get(adapterPosition);
 
         // Update MessageVM associate with ViewHolder
         msgToUpdate.setBookmarked(isBookmarked);
 
         // Notify fragment for the updating
-        mListener.onBookmarkClicked(msgToUpdate);
+        mListener.onBookmarkClicked(msgToUpdate, type);
     }
 }

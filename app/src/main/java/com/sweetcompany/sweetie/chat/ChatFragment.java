@@ -412,9 +412,9 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     // ChatAdapter callback
     @Override
-    public void onBookmarkClicked(MessageVM messageVM) {
+    public void onBookmarkClicked(MessageVM messageVM, int type) {
         // TODO: is this responsibility of fragment?
-        mPresenter.bookmarkMessage(messageVM);
+        mPresenter.bookmarkMessage(messageVM, type);
     }
 
     // EmoticonsAdapter callback

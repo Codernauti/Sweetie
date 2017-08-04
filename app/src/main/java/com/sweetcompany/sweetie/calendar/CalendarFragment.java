@@ -53,7 +53,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
         @Override
         public void decorate(DayViewFacade view) {
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_chat_icon));
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_chat_icon_36x36));
         }
     };;
 

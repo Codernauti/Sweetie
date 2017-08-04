@@ -330,11 +330,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 if (!inputText.isEmpty()) {
                     // TODO: is this responsibility of fragment?
                     MessageVM newMessage = null;
-                    try {
-                        newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null, 0);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+                    newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null, 0);
 
                     // TODO: update view to feedback user if he is offline
                     //mChatAdapter.addMessage(newMessage);
@@ -478,11 +474,9 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 stringUriLocal = file.toString();
 
                 String inputText = "";
-                try {
-                    newMessage = new TextPhotoMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "", 0);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+
+                newMessage = new TextPhotoMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "", 0);
+
                 mPresenter.sendMedia(newMessage);
 
             } catch (Exception e) {

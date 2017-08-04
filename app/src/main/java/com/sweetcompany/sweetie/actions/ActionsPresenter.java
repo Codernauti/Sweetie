@@ -37,11 +37,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     public List<String> pushChatAction(String userInputChatTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
-        try {
-            action = new ActionFB(userInputChatTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        action = new ActionFB(userInputChatTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
 
         if (action != null) {
             return mController.pushChatAction(action, userInputChatTitle);
@@ -56,11 +52,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     public List<String> pushGalleryAction(String userInputGalleryTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
-        try {
-            action = new ActionFB(userInputGalleryTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GALLERY);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        action = new ActionFB(userInputGalleryTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GALLERY);
 
         if (action != null) {
             return mController.pushGalleryAction(action, userInputGalleryTitle);

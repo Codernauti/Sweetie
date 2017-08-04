@@ -53,12 +53,7 @@ public class FirebaseCoupleDetailsController {
     public void archiveCouple() {
         // TODO: remove try catch
         String now = "no-data";
-        try {
-            now = DataMaker.get_UTC_DateTime();
-        }
-        catch(ParseException ex) {
-            Log.d(TAG, ex.getMessage());
-        }
+        now = DataMaker.get_UTC_DateTime();
 
         Map<String, Object> updates = new HashMap<>();
 

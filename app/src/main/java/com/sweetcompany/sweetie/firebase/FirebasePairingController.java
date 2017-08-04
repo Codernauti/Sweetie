@@ -113,33 +113,28 @@ public class FirebasePairingController {
     }
 
     public void createNewCouple(String partnerUid) {
-        try {
-            String now = DataMaker.get_UTC_DateTime();
-            CoupleFB newCouple = new CoupleFB(mUserId, partnerUid, now);
+        String now = DataMaker.get_UTC_DateTime();
+        CoupleFB newCouple = new CoupleFB(mUserId, partnerUid, now);
 
-            DatabaseReference newCoupleRef = mDatabase.child(Constraints.COUPLES).push();
-            String newCoupleKey = newCoupleRef.getKey();
+        DatabaseReference newCoupleRef = mDatabase.child(Constraints.COUPLES).push();
+        String newCoupleKey = newCoupleRef.getKey();
 
-            Map<String, Object> updates = new HashMap<>();
+        Map<String, Object> updates = new HashMap<>();
 
-            removeAcceptedPairingRequest(updates, partnerUid);
+        removeAcceptedPairingRequest(updates, partnerUid);
 
-            addNewCouple(updates, newCouple, newCoupleKey);
+        addNewCouple(updates, newCouple, newCoupleKey);
 
-            updateUsersCoupleInfo(updates, newCoupleKey, partnerUid);
+        updateUsersCoupleInfo(updates, newCoupleKey, partnerUid);
 
-            mDatabase.updateChildren(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    for (PairingControllerListener listener : mListeners) {
-                        listener.onCreateNewCoupleComplete();
-                    }
+        mDatabase.updateChildren(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                for (PairingControllerListener listener : mListeners) {
+                    listener.onCreateNewCoupleComplete();
                 }
-            });
-        }
-        catch (ParseException ex) {
-            Log.d(TAG, ex.getMessage());
-        }
+            }
+        });
     }
 
     private void removeAcceptedPairingRequest(Map<String, Object> updates, String partnerUid) {

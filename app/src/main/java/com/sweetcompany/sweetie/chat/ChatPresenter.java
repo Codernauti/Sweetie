@@ -41,7 +41,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
         MessageFB newMessage = new MessageFB(mUserMail, photoMessageVM.getText(), photoMessageVM.getTime(), photoMessageVM.isBookmarked(), MessageFB.PHOTO_MSG, photoMessageVM.getUriLocal(), "");
 
         mController.sendMedia(newMessage);
-        //mView.updateMessage(photoMessageVM);
+        mView.updateMessage(photoMessageVM);
     }
 
     @Override

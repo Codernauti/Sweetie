@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.calendar;
 
+import com.sweetcompany.sweetie.model.ActionDiaryFB;
+
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +14,7 @@ public interface CalendarContract {
     interface View {
         void setPresenter(Presenter presenter);
 
-        void addActionDiary(ActionDiaryVM actionDiary);
-        void setMonthActionsDiary(Map<String, List<ActionDiaryVM>> monthActionDiary);
+        void setMonthActionsDiary(Map<String, Map<String, ActionDiaryFB>> monthActionDiary);
     }
 
     interface Presenter {

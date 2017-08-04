@@ -6,7 +6,6 @@ import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,31 +46,7 @@ public class CalendarPresenter implements CalendarContract.Presenter,
 
     @Override
     public void onMonthActionsDiaryDownloaded(Map<String, Map<String, ActionDiaryFB>> monthActionsDiary) {
-
-        if (monthActionsDiary == null) {
-            mView.setMonthActionsDiary(null);
-            return;
-        }
-
-        // pass data to view
-        HashMap<String, List<ActionDiaryVM>> newMonthActionsDiary = new HashMap<>();
-
-        // parse all actionsDiary map for every day of the month
-        for (Map.Entry<String, Map<String, ActionDiaryFB>> pair : monthActionsDiary.entrySet()) {
-            Map<String, ActionDiaryFB> dayActionsDiary = pair.getValue();
-            ArrayList<ActionDiaryVM> actionsDiaryVM = new ArrayList<>();
-
-            // build the ArrayList from actionsDiary map and store key
-            for (Map.Entry<String, ActionDiaryFB> actionDiaryPair : dayActionsDiary.entrySet()) {
-                ActionDiaryFB actionDiary = actionDiaryPair.getValue();
-                actionDiary.setKey(actionDiaryPair.getKey());
-                actionsDiaryVM.add(actionDiary);
-            }
-
-            newMonthActionsDiary.put(pair.getKey(), actionsDiaryVM);
-        }
-
-        mView.setMonthActionsDiary(newMonthActionsDiary);
+        mView.setMonthActionsDiary(monthActionsDiary);
     }
 
     @Override

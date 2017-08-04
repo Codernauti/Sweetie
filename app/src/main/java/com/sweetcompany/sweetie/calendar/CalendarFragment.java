@@ -18,10 +18,11 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
-import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -31,13 +32,31 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
     private static final String TAG = "CalendarFragment";
 
+    private boolean mFirstInitialization = true;
+    private SimpleDateFormat mDayFormat = new SimpleDateFormat("dd");
+
     private CalendarContract.Presenter mPresenter;
 
     private MaterialCalendarView mCalendar;
     private ListView mDayActionsDiaryList;
 
     private ActionsDiaryAdapter mAdapter;
-    private Map<String, List<ActionDiaryVM>> mMonthActionsDiary;
+
+    private Map<String, Map<String, ActionDiaryFB>> mMonthActionsDiary2;
+
+    private final DayViewDecorator mDayDecorator = new DayViewDecorator() {
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            String dayStr = mDayFormat.format(day.getDate());
+            return mMonthActionsDiary2.containsKey(dayStr);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_chat_icon));
+        }
+    };;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,9 +69,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         mAdapter = new ActionsDiaryAdapter(getContext(), R.layout.action_list_item);
         mDayActionsDiaryList.setAdapter(mAdapter);
 
-        mCalendar.setOnMonthChangedListener(this);
-        mCalendar.setOnDateChangedListener(this);
-
+        /*mCalendar.setOnMonthChangedListener(this);
+        mCalendar.setOnDateChangedListener(this);*/
 
         return root;
     }
@@ -61,63 +79,26 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (savedInstanceState == null) {
+        if (mFirstInitialization) {
             Calendar calendar = Calendar.getInstance();
             String currentYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
 
             mPresenter.downloadActionsDiaryForMonth(currentYearAndMonth);
-            Log.d(TAG, "onViewCreated() first time");
-        } else {
-            Log.d(TAG, "onViewCreated() not first time");
+            Log.d(TAG, "onViewCreated() first init");
+            mFirstInitialization = false;
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart()");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, "onResume()");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause()");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop()");
+        mCalendar.setOnMonthChangedListener(this);
+        mCalendar.setOnDateChangedListener(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         Log.d(TAG, "onDestroyView()");
+        mCalendar.setOnMonthChangedListener(null);
+        mCalendar.setOnDateChangedListener(null);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy()");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d(TAG, "onDetach()");
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
     @Override
     public void setPresenter(CalendarContract.Presenter presenter) {
@@ -125,33 +106,15 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     }
 
     @Override
-    public void addActionDiary(ActionDiaryVM actionDiary) {
-        mAdapter.add(actionDiary);
-    }
-
-    @Override
-    public void setMonthActionsDiary(final Map<String, List<ActionDiaryVM>> monthActionDiary) {
-        mMonthActionsDiary = monthActionDiary;
+    public void setMonthActionsDiary(Map<String, Map<String, ActionDiaryFB>> monthActionDiary) {
+        mMonthActionsDiary2 = monthActionDiary;
         mCalendar.removeDecorators();
-        // TODO: for every CalendarDay show icons
-        if (mMonthActionsDiary != null) {
-            mCalendar.addDecorators(new DayViewDecorator() {
-                @Override
-                public boolean shouldDecorate(CalendarDay day) {
-                    String dayStr = new SimpleDateFormat("dd").format(day.getDate());
-                    return monthActionDiary.containsKey(dayStr);
-                }
-
-                @Override
-                public void decorate(DayViewFacade view) {
-                    view.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_chat_icon));
-                }
-            });
-            Log.d(TAG, "New mMonthActionsDiary comes: " + mMonthActionsDiary.size());
+        if (mMonthActionsDiary2 != null) {
+            mCalendar.addDecorators(mDayDecorator);
+            Log.d(TAG, "New mMonthActionsDiary comes: " + mMonthActionsDiary2.size());
         } else {
             Log.d(TAG, "Null mMonthActionsDiary comes");
         }
-
     }
 
 
@@ -159,8 +122,6 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-        mCalendar.removeDecorators();
-        // TODO: download also 6 past month
         String yearAndMonth = new SimpleDateFormat("yyyy-MM").format(date.getDate());
 
         Log.d(TAG, "Month changed! download monthActionsDiary of: " + yearAndMonth);
@@ -172,11 +133,12 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         Log.d(TAG, "Date selected change! Update the ListView");
         mAdapter.clear();
 
-        if (mMonthActionsDiary != null) {
-            String day = new SimpleDateFormat("dd").format(date.getDate());
-            List<ActionDiaryVM> actionsDiary = mMonthActionsDiary.get(day);
+        if (mMonthActionsDiary2 != null) {
+            String day = mDayFormat.format(date.getDate());
+            // TODO: slow operation
+            List<ActionDiaryFB> actionsDiary = new ArrayList<>(mMonthActionsDiary2.get(day).values());
 
-            if (actionsDiary != null) {
+            if (!actionsDiary.isEmpty()) {
                 mAdapter.addAll(actionsDiary);
             }
         }

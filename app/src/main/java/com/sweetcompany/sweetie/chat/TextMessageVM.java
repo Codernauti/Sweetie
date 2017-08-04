@@ -12,8 +12,8 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 class TextMessageVM extends MessageVM {
     private String mText;
 
-    TextMessageVM(String text, boolean mainUser, String date, boolean bookMarked, String key) {
-        super(mainUser, date, bookMarked, key);
+    TextMessageVM(String text, boolean mainUser, String date, boolean bookMarked, String key, int perc) {
+        super(mainUser, date, bookMarked, key, perc);
         mText = text;
     }
 

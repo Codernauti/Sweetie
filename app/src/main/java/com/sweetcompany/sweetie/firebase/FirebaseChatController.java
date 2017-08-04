@@ -1,16 +1,25 @@
 package com.sweetcompany.sweetie.firebase;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
+import com.sweetcompany.sweetie.model.MediaFB;
 import com.sweetcompany.sweetie.model.MessageFB;
 
 import java.util.ArrayList;
@@ -37,6 +46,9 @@ public class FirebaseChatController {
     private final DatabaseReference mChatMessages;
     private final DatabaseReference mAction;
 
+    private final StorageReference mStorageRef;
+    private final FirebaseStorage mStorage;
+
     private ValueEventListener mChatListener;
     private ChildEventListener mChatMessagesListener;
 
@@ -49,6 +61,7 @@ public class FirebaseChatController {
         void onMessageAdded(MessageFB message);
         void onMessageRemoved(MessageFB message);
         void onMessageChanged(MessageFB message);
+        void onUploadPercent(MessageFB media, int perc);
     }
 
 
@@ -65,6 +78,10 @@ public class FirebaseChatController {
         mChat = firebaseDb.getReference(Constraints.CHATS + "/" + coupleUid + "/" + chatKey);
         mChatMessages = firebaseDb.getReference(Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey);
         mAction = firebaseDb.getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
+
+        mStorage = FirebaseStorage.getInstance();
+        mStorageRef = mStorage.getReference();
+        //imagesRef = mStorageRef.child("gallery_photos/");
     }
 
     public void addListener(ChatControllerListener listener) {
@@ -190,7 +207,7 @@ public class FirebaseChatController {
 
     // push message to db and update action of this chat
     public void sendMessage(MessageFB msg) {
-        Log.d(TAG, "Send MessageFB: " + msg);
+        Log.d(TAG, "Send text MessageFB: " + msg);
         // TODO: use atomic operation with hashmap
 
         // push a message into mChatMessages reference
@@ -201,6 +218,56 @@ public class FirebaseChatController {
         actionUpdates.put("description", msg.getText());
         actionUpdates.put("dataTime", msg.getDateTime());
         mAction.updateChildren(actionUpdates);
+    }
+
+    public void sendMedia(final MessageFB media) {
+        Log.d(TAG, "Send photoText MessageFB: " + media);
+
+        Uri uriLocal;
+        uriLocal = Uri.parse(media.getUriLocal());
+        StorageReference photoRef = mStorageRef.child("gallery_photos/"+uriLocal.getLastPathSegment());
+        UploadTask uploadTask = photoRef.putFile(uriLocal);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                final String stringUriStorage;
+                stringUriStorage = downloadUrl.toString();
+                media.setUriStorage(stringUriStorage);
+
+                // push a message into mGalleryPhotos reference
+                mChatMessages.push().setValue(media);
+
+                // update description and dataTime of action of this associated Gallery
+                Map<String, Object> actionUpdates = new HashMap<>();
+                //actionUpdates.put("description", photo.getText());
+                actionUpdates.put("dataTime", media.getDateTime());
+                mAction.updateChildren(actionUpdates);
+            }
+        }).addOnProgressListener(
+                new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        //calculating progress percentage
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                        //displaying percentage in progress dialog
+                        //progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+
+                        for (FirebaseChatController.ChatControllerListener listener : mListeners) {
+                            listener.onUploadPercent(media, ((int) progress));
+                        }
+                    }
+                });
     }
 
 }

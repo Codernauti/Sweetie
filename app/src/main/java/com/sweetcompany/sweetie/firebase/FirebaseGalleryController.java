@@ -38,7 +38,7 @@ public class FirebaseGalleryController {
     private final DatabaseReference mAction;
     private final StorageReference mStorageRef;
     private final FirebaseStorage mStorage;
-    private final StorageReference imagesRef;
+    //private final StorageReference imagesRef;
 
     private ValueEventListener mGalleryListener;
     private ChildEventListener mGalleryPhotosListener;
@@ -64,7 +64,7 @@ public class FirebaseGalleryController {
                 .getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
-        imagesRef = mStorageRef.child("gallery_photos/");
+        //imagesRef = mStorageRef.child("gallery_photos/");
 
     }
 

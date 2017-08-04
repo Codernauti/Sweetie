@@ -16,8 +16,8 @@ public class TextPhotoMessageVM extends MessageVM {
     private String mUriStorage;
     private int mPercent;
 
-    TextPhotoMessageVM(String text, boolean mainUser, String date, boolean bookMarked, String key, String uriL, String uriS) {
-        super(mainUser, date, bookMarked, key);
+    TextPhotoMessageVM(String text, boolean mainUser, String date, boolean bookMarked, String key, String uriL, String uriS, int perc) {
+        super(mainUser, date, bookMarked, key, perc);
         mText = text;
         mUriLocal = uriL;
         mUriStorage = uriS;
@@ -53,8 +53,8 @@ public class TextPhotoMessageVM extends MessageVM {
         // TODO: This downcast is secure?
         TextPhotoMessageViewHolder view = (TextPhotoMessageViewHolder) viewHolder;
 
-        view.setText(mText);
-        view.setTextTime(DataMaker.getHH_ss_Local(super.getTime()));
+        //view.setText(mText);
+        //view.setTextTime(DataMaker.getHH_ss_Local(super.getTime()));
         view.setBookmark(super.isBookmarked());
 
         String uriToLoad;

@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie.chat;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -299,6 +301,11 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     }
 
     @Override
+    public void updatePercentUpload(MessageVM mediaVM, int perc) {
+        mChatAdapter.updatePercentUpload(mediaVM, perc);
+    }
+
+    @Override
     public boolean hideKeyboardPlaceholder() {
         if (mKeyboardPlaceholder.getVisibility() != View.GONE) {
             mEmojiPopup.dismiss();
@@ -324,7 +331,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                     // TODO: is this responsibility of fragment?
                     MessageVM newMessage = null;
                     try {
-                        newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null);
+                        newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null, 0);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -452,10 +459,35 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
-            //sendImages(imagesPicked);
+            sendImages(imagesPicked);
             return;
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void sendImages(List<Image> images) {
+        if (images == null) return;
+
+        for (int i = 0, l = images.size(); i < l; i++) {
+            try {
+                MessageVM newMessage = null;
+
+                Uri file = Uri.fromFile(new File(images.get(i).getPath()));
+                String stringUriLocal;
+                stringUriLocal = file.toString();
+
+                String inputText = "";
+                try {
+                    newMessage = new TextPhotoMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "", 0);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                mPresenter.sendMedia(newMessage);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

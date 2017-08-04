@@ -16,12 +16,14 @@ interface ChatContract {
         void updateMessage(MessageVM msgVM);
         void removeMessage(MessageVM msgVM);
         void changeMessage(MessageVM msgVM);
+        void updatePercentUpload(MessageVM mediaVM, int perc);
 
         boolean hideKeyboardPlaceholder();
     }
 
     interface Presenter {
         void sendMessage(MessageVM message);
+        void sendMedia(MessageVM message);
         void bookmarkMessage(MessageVM message);
     }
 }

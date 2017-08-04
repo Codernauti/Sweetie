@@ -15,12 +15,14 @@ abstract class MessageVM {
     private final boolean mWho;
     private final String mTime;   // Format HH:mm
     private boolean mBookMarked;
+    private int percent;
 
-    MessageVM(boolean who, String date, boolean bookMarked, String key) {
+    MessageVM(boolean who, String date, boolean bookMarked, String key, int perc) {
         mWho = who;
         mTime = date;
         mBookMarked = bookMarked;
         mKey = key;
+        percent = perc;
     }
 
     boolean isTheMainUser() {
@@ -35,6 +37,13 @@ abstract class MessageVM {
     void setBookmarked(boolean bookmarked) {mBookMarked = bookmarked; }
 
     String getKey() { return mKey; }
+
+    int getPercent(){
+        return percent;
+    }
+    void setPercent(int perc){
+        percent = perc;
+    }
 
     abstract void configViewHolder(MessageViewHolder viewHolder);
 

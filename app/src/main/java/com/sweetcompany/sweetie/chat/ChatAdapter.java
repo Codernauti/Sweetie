@@ -65,6 +65,12 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
             case R.layout.chat_partner_list_item_text:
                 viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
                 break;
+            case R.layout.chat_user_list_item_photo:
+                viewHolder = new TextPhotoMessageViewHolder(viewToInflate, MessageVM.THE_MAIN_USER);
+                break;
+            case R.layout.chat_partner_list_item_photo:
+                viewHolder = new TextPhotoMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
+                break;
             default:
                 Log.w(TAG, "Error: no MessageViewHolder type match");
                 // TODO: create a ErrorMessageViewHolder
@@ -134,6 +140,15 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         mMessageList.addAll(messagesVM);
         Collections.reverse(mMessageList);
         this.notifyDataSetChanged();
+    }
+
+    void updatePercentUpload(MessageVM mediaVM, int perc){
+        int indexOldMedia = searchIndexMessageOf(mediaVM);
+        if (indexOldMedia != -1) {
+            mediaVM.setPercent(perc);
+            mMessageList.set(indexOldMedia, mediaVM);
+            notifyItemChanged(indexOldMedia);
+        }
     }
 
 

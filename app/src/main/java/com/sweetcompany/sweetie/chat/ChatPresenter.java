@@ -35,6 +35,16 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
     }
 
     @Override
+    public void sendMedia(MessageVM messageVM) {
+        // TODO: remove down cast -> use Factory method
+        TextPhotoMessageVM photoMessageVM = (TextPhotoMessageVM) messageVM;
+        MessageFB newMessage = new MessageFB(mUserMail, photoMessageVM.getText(), photoMessageVM.getTime(), photoMessageVM.isBookmarked(), MessageFB.PHOTO_MSG, photoMessageVM.getUriLocal(), "");
+
+        mController.sendMedia(newMessage);
+        //mView.updateMessage(photoMessageVM);
+    }
+
+    @Override
     public void bookmarkMessage(MessageVM messageVM) {
         // TODO: remove down cast -> use Factory method
         TextMessageVM msgVM = (TextMessageVM) messageVM;
@@ -55,28 +65,56 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
 
     @Override
     public void onMessageAdded(MessageFB message) {
-        MessageVM msgVM = createMessageVM(message);
+        MessageVM msgVM = null;
+        if(message.getType()==MessageFB.TEXT_MSG){
+            msgVM = createTextMessageVM(message);
+        }
+        else if(message.getType()==MessageFB.PHOTO_MSG)
+        {
+            msgVM = createTextPhotoMessageVM(message);
+        }
         mView.updateMessage(msgVM);
     }
 
     @Override
     public void onMessageRemoved(MessageFB message) {
-        MessageVM msgVM = createMessageVM(message);
+        MessageVM msgVM = null;
+        if(message.getType()==MessageFB.TEXT_MSG){
+            msgVM = createTextMessageVM(message);
+        }
+        else if(message.getType()==MessageFB.PHOTO_MSG)
+        {
+            msgVM = createTextPhotoMessageVM(message);
+        }
         mView.removeMessage(msgVM);
     }
 
     @Override
     public void onMessageChanged(MessageFB message) {
-        MessageVM msgVM = createMessageVM(message);
+        MessageVM msgVM = null;
+        if(message.getType()==MessageFB.TEXT_MSG){
+            msgVM = createTextMessageVM(message);
+        }
+        else if(message.getType()==MessageFB.PHOTO_MSG)
+        {
+            msgVM = createTextPhotoMessageVM(message);
+        }
         mView.changeMessage(msgVM);
     }
+
+    @Override
+    public void onUploadPercent(MessageFB media, int perc){
+        MessageVM messageVM = createTextPhotoMessageVM(media);
+        mView.updatePercentUpload(messageVM, perc);
+    }
+
 
     /**
      * Convert MessageFB to TextMessageVM
      * @param message
      * @return
      */
-    private MessageVM createMessageVM(MessageFB message) {
+    private MessageVM createTextMessageVM(MessageFB message) {
         // Understand if the message is of Main User
         boolean who = MessageVM.THE_PARTNER;
         if (message.getEmail() != null) {   // TODO remove check in future
@@ -86,7 +124,25 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
         }
         // Create respective ViewModel
         return new TextMessageVM(message.getText(), who, message.getDateTime(),
-                message.isBookmarked(), message.getKey());
+                message.isBookmarked(), message.getKey(), 0);
+    }
+
+    /**
+     * Convert MessageFB to TextPhotoMessageVM
+     * @param message
+     * @return
+     */
+    private MessageVM createTextPhotoMessageVM(MessageFB message) {
+        // Understand if the message is of Main User
+        boolean who = MessageVM.THE_PARTNER;
+        if (message.getEmail() != null) {   // TODO remove check in future
+            if (message.getEmail().equals(mUserMail)) {
+                who = MessageVM.THE_MAIN_USER;
+            }
+        }
+        // Create respective ViewModel
+        return new TextPhotoMessageVM(message.getText(), who, message.getDateTime(),
+                message.isBookmarked(), message.getKey(), message.getUriLocal(), message.getUriStorage(), 0);
     }
 
 }

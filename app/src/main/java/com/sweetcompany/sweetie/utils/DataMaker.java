@@ -110,7 +110,6 @@ public class DataMaker {
             }
             out = localFormatDate.format(local);
         }
-
         return out;
     }
 

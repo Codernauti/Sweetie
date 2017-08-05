@@ -25,26 +25,16 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
     private ImageView mThumbnail;
     private ProgressBar mPbar;
 
-    TextPhotoMessageViewHolder(View itemView, boolean isMainUser) {
+    TextPhotoMessageViewHolder(View itemView) {
         super(itemView);
 
-
-        if (isMainUser) {
-            //mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
-            mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_photo_time_view);
-            mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_photo_bookmark_button);
-            mThumbnail = (ImageView) itemView.findViewById(R.id.chat_thumbnail_main);
-            mPbar = (ProgressBar) itemView.findViewById(R.id.chat_progressBarUpload_main);
-            mPercentUploading = (TextView) itemView.findViewById(R.id.chat_progress_percent_main);
-        }
-        else {  // THE_PARTNER
-            //mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_partner_item_text_view);
-            mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_photo_time_view);
-            mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_partner_item_photo_bookmark_button);
-            mThumbnail = (ImageView) itemView.findViewById(R.id.chat_thumbnail_partner);
-            mPbar = (ProgressBar) itemView.findViewById(R.id.chat_progressBarUpload_partner);
-            mPercentUploading = (TextView) itemView.findViewById(R.id.chat_progress_percent_partner);
-        }
+        // viewIds are the same between the user and the partner
+        //mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
+        mTextTime = (TextView) itemView.findViewById(R.id.chat_item_photo_time_view);
+        mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_photo_bookmark_button);
+        mThumbnail = (ImageView) itemView.findViewById(R.id.chat_thumbnail);
+        mPbar = (ProgressBar) itemView.findViewById(R.id.chat_progressBarUpload);
+        mPercentUploading = (TextView) itemView.findViewById(R.id.chat_progress_percent);
 
         mBookmarkButton.setOnClickListener(this);
         mThumbnail.setOnClickListener(this);
@@ -66,13 +56,11 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
     public void onClick(View v) {
 
         switch (v.getId()) {
-            case R.id.chat_thumbnail_main:
-            case R.id.chat_thumbnail_partner:
+            case R.id.chat_thumbnail:
                 mListener.onPhotoClicked(getAdapterPosition());
                 break;
 
             case R.id.chat_item_photo_bookmark_button:
-            case R.id.chat_partner_item_photo_bookmark_button:
                 boolean wasBookmarked = mBookmarkButton.isSelected();
                 mBookmarkButton.setSelected(!wasBookmarked);
                 mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, MessageVM.TEXT_PHOTO_MSG);

@@ -77,7 +77,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
         if (mFirstInitialization) {
             Calendar calendar = Calendar.getInstance();
             String currentYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
@@ -91,11 +95,16 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mCalendar.setOnMonthChangedListener(null);
+        mCalendar.setOnDateChangedListener(null);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         Log.d(TAG, "onDestroyView()");
-        mCalendar.setOnMonthChangedListener(null);
-        mCalendar.setOnDateChangedListener(null);
     }
 
 

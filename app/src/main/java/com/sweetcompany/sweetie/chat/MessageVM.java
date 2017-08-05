@@ -54,7 +54,4 @@ abstract class MessageVM {
     abstract void configViewHolder(MessageViewHolder viewHolder);
 
     abstract int getIdView();
-
-    @Deprecated
-    abstract MessageViewHolder newViewHolder(View inflatedView);
 }

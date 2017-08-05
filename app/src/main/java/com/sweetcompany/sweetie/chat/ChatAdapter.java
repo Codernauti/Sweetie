@@ -53,10 +53,8 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         MessageViewHolder viewHolder;
         switch (viewType) {
             case R.layout.chat_user_list_item_text:
-                viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_MAIN_USER);
-                break;
             case R.layout.chat_partner_list_item_text:
-                viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
+                viewHolder = new TextMessageViewHolder(viewToInflate);
                 break;
             case R.layout.chat_user_list_item_photo:
                 viewHolder = new TextPhotoMessageViewHolder(viewToInflate, MessageVM.THE_MAIN_USER);
@@ -67,7 +65,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
             default:
                 Log.w(TAG, "Error: no MessageViewHolder type match");
                 // TODO: create a ErrorMessageViewHolder
-                viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
+                viewHolder = new TextMessageViewHolder(viewToInflate);
                 break;
         }
 

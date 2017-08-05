@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.calendar;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,8 +55,16 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         public void decorate(DayViewFacade view) {
             view.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_chat_icon_36x36));
         }
-    };;
+    };
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG, "onAttach()");
+        if (mPresenter == null) {
+            Log.d(TAG, "mPresenter is null");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,23 +77,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         mAdapter = new ActionsDiaryAdapter(getContext(), R.layout.action_list_item);
         mDayActionsDiaryList.setAdapter(mAdapter);
 
-        /*mCalendar.setOnMonthChangedListener(this);
-        mCalendar.setOnDateChangedListener(this);*/
-
         return root;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        /*if (mFirstInitialization) {
-            Calendar calendar = Calendar.getInstance();
-            String currentYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
-
-            mPresenter.downloadActionsDiaryForMonth(currentYearAndMonth);
-            Log.d(TAG, "onViewCreated() first init");
-            mFirstInitialization = false;
-        }*/
     }
 
     @Override
@@ -104,21 +97,52 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(TAG, "onDestroyView()");
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "onDetach()");
     }
-
 
     @Override
     public void setPresenter(CalendarContract.Presenter presenter) {
         mPresenter = presenter;
+        initializeActualMonth();
     }
+
+    private void initializeActualMonth() {
+        // we need to manage two situation
+
+        // first opening app
+        // mPresenter is instantiated before fragment is attached
+        // download currentMonth
+
+        // after other activities opened
+        // fragment is attached before mPresenter is instantiated
+        // download mCalendarSelectedMonth
+
+        // mPresenter cannot be null, this call come from setPresenter()
+
+        Calendar calendar = Calendar.getInstance();
+        String currentSelectedYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
+
+        if (mCalendar != null) {
+            currentSelectedYearAndMonth = new SimpleDateFormat("yyyy-MM").format(mCalendar.getCurrentDate().getDate());
+        }
+
+        Log.d(TAG, "Manual month initialization");
+        removeDecoratorAndDownloadActionsDiaryForMonth(currentSelectedYearAndMonth);
+    }
+
+    private void removeDecoratorAndDownloadActionsDiaryForMonth(String yearAndMonth) {
+        if (mCalendar != null) {
+            mCalendar.removeDecorators();
+        }
+        mPresenter.downloadActionsDiaryForMonth(yearAndMonth);
+    }
+
 
     @Override
     public void setMonthActionsDiary(Map<String, Map<String, ActionDiaryFB>> monthActionDiary) {
         mMonthActionsDiary = monthActionDiary;
-        mCalendar.removeDecorators();
         if (mMonthActionsDiary != null) {
             mCalendar.addDecorators(mDayDecorator);
             Log.d(TAG, "New mMonthActionsDiary comes: " + mMonthActionsDiary.size());
@@ -127,7 +151,6 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         }
     }
 
-
     // Calendar callbacks
 
     @Override
@@ -135,12 +158,12 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         String yearAndMonth = new SimpleDateFormat("yyyy-MM").format(date.getDate());
 
         Log.d(TAG, "Month changed! download monthActionsDiary of: " + yearAndMonth);
-        mPresenter.downloadActionsDiaryForMonth(yearAndMonth);
+        removeDecoratorAndDownloadActionsDiaryForMonth(yearAndMonth);
     }
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        Log.d(TAG, "Date selected change! Update the ListView");
+        Log.d(TAG, "Date selected change!");
         mAdapter.clear();
 
         String day = mDayFormat.format(date.getDate());
@@ -150,21 +173,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
             if (!actionsDiary.isEmpty()) {
                 mAdapter.addAll(actionsDiary);
+                Log.d(TAG, "update ListView ActionsDiary");
             }
-        }
-    }
-
-    public void initializeActualMonth() {
-        Calendar calendar = Calendar.getInstance();
-        String currentYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
-        /*int currentMonth = calendar.get(Calendar.MONTH);
-        int calendarActualMonth = calendar.get(Calendar.MONTH);
-*/
-        if (mFirstInitialization) {
-            // update the month
-            mPresenter.downloadActionsDiaryForMonth(currentYearAndMonth);
-            Log.d(TAG, "first init");
-            mFirstInitialization = false;
         }
     }
 }

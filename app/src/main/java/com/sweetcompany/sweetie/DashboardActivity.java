@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +23,7 @@ import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.utils.Utility;
 
-public class DashboardActivity extends AppCompatActivity implements IPageChanger, ViewPager.OnPageChangeListener {
+public class DashboardActivity extends AppCompatActivity implements IPageChanger {
 
     private ViewPager mViewPager;
     private DashboardPagerAdapter mAdapter;
@@ -51,7 +52,6 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
 
         mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.addOnPageChangeListener(this);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.dashboard_toolbar);
         setSupportActionBar(myToolbar);
@@ -87,6 +87,7 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
         super.onPause();
         // TODO: clean up adapter?
         mActionsController.detachNetworkDatabase();
+        mCalendarController.detachListener();
     }
 
     @Override
@@ -128,25 +129,5 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
     public void onBackPressed() {
         //  super.onBackPressed();
         moveTaskToBack(true);
-    }
-
-    // Callbacks from ViewPager
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        if (position == DashboardPagerAdapter.CALENDAR_TAB) {
-            CalendarFragment calendar = (CalendarFragment) mAdapter.instantiateItem(mViewPager, position);
-            calendar.initializeActualMonth();
-        }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
     }
 }

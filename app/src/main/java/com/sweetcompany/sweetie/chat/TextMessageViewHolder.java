@@ -17,19 +17,12 @@ class TextMessageViewHolder extends MessageViewHolder implements View.OnClickLis
     private TextView mTextTime;
     private ImageButton mBookmarkButton;
 
-    TextMessageViewHolder(View itemView, boolean isMainUser) {
+    TextMessageViewHolder(View itemView) {
         super(itemView);
 
-        if (isMainUser) {
-            mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
-            mTextTime = (TextView) itemView.findViewById(R.id.chat_item_time_text_view);
-            mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_bookmark_button);
-        }
-        else {  // THE_PARTNER
-            mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_partner_item_text_view);
-            mTextTime = (TextView) itemView.findViewById(R.id.chat_partner_item_time_text_view);
-            mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_partner_item_bookmark_button);
-        }
+        mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
+        mTextTime = (TextView) itemView.findViewById(R.id.chat_item_time_text_view);
+        mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_bookmark_button);
 
         mBookmarkButton.setOnClickListener(this);
     }

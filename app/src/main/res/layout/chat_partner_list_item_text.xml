@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageButton
-            android:id="@+id/chat_partner_item_bookmark_button"
+            android:id="@+id/chat_item_bookmark_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
 
@@ -23,8 +23,7 @@
     />
 
     <io.github.rockerhieu.emojicon.EmojiconTextView
-        app:emojiconSize="@dimen/emoticons"
-        android:id="@+id/chat_partner_item_text_view"
+        android:id="@+id/chat_item_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -39,14 +38,16 @@
         android:textSize="16sp"
         android:background="@drawable/shape_rounded_rectangle"
         android:padding="10dp"
-        android:text="@string/lorem_ipsum"/>
+        android:text="@string/lorem_ipsum"
+        app:emojiconSize="@dimen/emoticons"
+        />
 
     <TextView
-        android:id="@+id/chat_partner_item_time_text_view"
+        android:id="@+id/chat_item_time_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/chat_partner_item_text_view"
-        android:layout_toEndOf="@+id/chat_partner_item_text_view"
+        android:layout_alignBottom="@+id/chat_item_text_view"
+        android:layout_toEndOf="@+id/chat_item_text_view"
         android:textSize="12sp"
         />
 

@@ -18,7 +18,6 @@ public interface CalendarContract {
     }
 
     interface Presenter {
-        void downloadActionsDiary(String day);
         void downloadActionsDiaryForMonth(String yearAndMonth);
     }
 

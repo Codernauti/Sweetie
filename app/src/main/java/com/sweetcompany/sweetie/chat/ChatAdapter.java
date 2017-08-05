@@ -103,8 +103,10 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
 
     void addMessage(MessageVM message) {
-        /*mMessageList.add(0, message);
-        notifyItemInserted(0);*/
+        //TODO optimize change object field insted of remove
+        if(searchIndexMessageOf(message)!=-1){
+            removeMessage(message);
+        }
         mMessageList.add(message);
         notifyItemInserted(mMessageList.size() - 1);
     }

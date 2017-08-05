@@ -336,8 +336,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                     MessageVM newMessage = null;
                     newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null, 0);
 
-                    // TODO: update view to feedback user if he is offline
-                    //mChatAdapter.addMessage(newMessage);
                     mPresenter.sendMessage(newMessage);
                 }
                 break;

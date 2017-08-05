@@ -77,21 +77,22 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (mFirstInitialization) {
+        /*if (mFirstInitialization) {
             Calendar calendar = Calendar.getInstance();
             String currentYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
 
             mPresenter.downloadActionsDiaryForMonth(currentYearAndMonth);
             Log.d(TAG, "onViewCreated() first init");
             mFirstInitialization = false;
-        }
+        }*/
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         mCalendar.setOnMonthChangedListener(this);
         mCalendar.setOnDateChangedListener(this);
+        Log.d(TAG, "onStart()");
     }
 
     @Override
@@ -99,6 +100,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         super.onStop();
         mCalendar.setOnMonthChangedListener(null);
         mCalendar.setOnDateChangedListener(null);
+        Log.d(TAG, "onStop()");
     }
 
     @Override
@@ -149,6 +151,20 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
             if (!actionsDiary.isEmpty()) {
                 mAdapter.addAll(actionsDiary);
             }
+        }
+    }
+
+    public void initializeActualMonth() {
+        Calendar calendar = Calendar.getInstance();
+        String currentYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
+        /*int currentMonth = calendar.get(Calendar.MONTH);
+        int calendarActualMonth = calendar.get(Calendar.MONTH);
+*/
+        if (mFirstInitialization) {
+            // update the month
+            mPresenter.downloadActionsDiaryForMonth(currentYearAndMonth);
+            Log.d(TAG, "first init");
+            mFirstInitialization = false;
         }
     }
 }

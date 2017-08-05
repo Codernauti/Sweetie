@@ -23,6 +23,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
     interface ChatAdapterListener {
         void onBookmarkClicked(MessageVM messageVM, int type);
+        void onPhotoClicked(TextPhotoMessageVM photoMessage);
     }
 
     private List<MessageVM> mMessageList = new ArrayList<>();
@@ -162,5 +163,10 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
         // Notify fragment for the updating
         mListener.onBookmarkClicked(msgToUpdate, type);
+    }
+
+    @Override
+    public void onPhotoClicked(int adapterPosition) {
+        mListener.onPhotoClicked((TextPhotoMessageVM) mMessageList.get(adapterPosition));
     }
 }

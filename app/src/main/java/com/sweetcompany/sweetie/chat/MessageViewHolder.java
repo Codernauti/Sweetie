@@ -11,6 +11,7 @@ abstract class MessageViewHolder extends RecyclerView.ViewHolder {
 
     interface OnViewHolderClickListener {
         void onBookmarkClicked(int adapterPosition, boolean isBookmarked, int type);
+        void onPhotoClicked(int adapterPosition);
     }
 
     protected OnViewHolderClickListener mListener;

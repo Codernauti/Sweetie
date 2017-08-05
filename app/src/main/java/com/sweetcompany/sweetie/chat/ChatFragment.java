@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -34,10 +35,12 @@ import android.widget.RelativeLayout;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.gallery.SlideshowDialogFragment;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +71,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private int mSoftKeyHeight = 0;
 
     private ArrayList<Image> imagesPicked = new ArrayList<>();
+    private List<TextPhotoMessageVM> medias = new ArrayList<>();
 
     private InputMethodManager mInputMethodManager;
     private Toolbar mToolBar;
@@ -430,6 +434,17 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                     0,
                     emojicon.getEmoji().length());
         }
+    }
+
+    @Override
+    public void onPhotoClicked(TextPhotoMessageVM photoMessage) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("image", (Serializable) photoMessage);
+
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ShowImageFragment newFragment = ShowImageFragment.newInstance();
+        newFragment.setArguments(bundle);
+        newFragment.show(ft, "slideshow");
     }
 
     public void takePictures() {

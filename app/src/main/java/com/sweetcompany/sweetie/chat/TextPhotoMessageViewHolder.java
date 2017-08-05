@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
 
+import java.io.Serializable;
+
 import io.github.rockerhieu.emojicon.EmojiconTextView;
 
 /**
@@ -46,6 +48,7 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
         }
 
         mBookmarkButton.setOnClickListener(this);
+        mThumbnail.setOnClickListener(this);
     }
 
     public void setText(String text) { mTextMessage.setText(text);}
@@ -60,9 +63,15 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
 
     @Override
     public void onClick(View v) {
-        boolean wasBookmarked = mBookmarkButton.isSelected();
-        mBookmarkButton.setSelected(!wasBookmarked);
-        mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, MessageVM.PHOTO_MSG);
+        if (v == v.findViewById(R.id.chat_thumbnail_main) || v == v.findViewById(R.id.chat_thumbnail_main) ){
+            mListener.onPhotoClicked(getAdapterPosition());
+        }
+        else if(v == v.findViewById(R.id.chat_item_photo_bookmark_button) || v == v.findViewById(R.id.chat_partner_item_photo_bookmark_button)) {
+            boolean wasBookmarked = mBookmarkButton.isSelected();
+            mBookmarkButton.setSelected(!wasBookmarked);
+            mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, MessageVM.PHOTO_MSG);
+        }
+
     }
 
     public void setPercentUploading(int progress){
@@ -86,10 +95,4 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
                     .into(mThumbnail);
         }
     }
-
-    /*@Override
-    public void onClick(View v) {
-        mListener.onPhotoClicked(getAdapterPosition());
-        mListener.onPhotoLongClicked(getAdapterPosition());
-    }*/
 }

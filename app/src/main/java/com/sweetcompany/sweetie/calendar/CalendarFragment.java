@@ -105,10 +105,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     @Override
     public void setPresenter(CalendarContract.Presenter presenter) {
         mPresenter = presenter;
-        initializeActualMonth();
     }
 
-    private void initializeActualMonth() {
+    // call after setPresenter()
+    @Override
+    public void initializeActualMonth() {
         // we need to manage two situation
 
         // first opening app
@@ -118,8 +119,6 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         // after other activities opened
         // fragment is attached before mPresenter is instantiated
         // download mCalendarSelectedMonth
-
-        // mPresenter cannot be null, this call come from setPresenter()
 
         // default value is current month
         String currentSelectedYearAndMonth = mYearMonthFormat.format(Calendar.getInstance().getTime());

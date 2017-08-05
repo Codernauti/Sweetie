@@ -22,15 +22,6 @@
             android:background="@drawable/shape_circle"
     />
 
-    <TextView
-        android:id="@+id/chat_partner_item_time_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/chat_partner_item_text_view"
-        android:layout_toEndOf="@+id/chat_partner_item_text_view"
-        android:textSize="12sp"
-        />
-
     <io.github.rockerhieu.emojicon.EmojiconTextView
         app:emojiconSize="@dimen/emoticons"
         android:id="@+id/chat_partner_item_text_view"
@@ -49,5 +40,14 @@
         android:background="@drawable/shape_rounded_rectangle"
         android:padding="10dp"
         android:text="@string/lorem_ipsum"/>
+
+    <TextView
+        android:id="@+id/chat_partner_item_time_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/chat_partner_item_text_view"
+        android:layout_toEndOf="@+id/chat_partner_item_text_view"
+        android:textSize="12sp"
+        />
 
 </RelativeLayout>

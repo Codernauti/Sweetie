@@ -23,7 +23,7 @@
         />
 
     <com.sweetcompany.sweetie.gallery.SquareLayout
-        android:id="@+id/square_partner_photo"
+        android:id="@+id/chat_partner_item_photo_container"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
@@ -58,14 +58,14 @@
             android:scaleType="centerCrop" />
     </com.sweetcompany.sweetie.gallery.SquareLayout>
 
-
     <TextView
-        android:id="@+id/chat_partner_item_time_photo_view"
+        android:id="@+id/chat_partner_item_photo_time_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/square_partner_photo"
-        android:layout_toEndOf="@+id/square_partner_photo"
+        android:layout_alignBottom="@+id/chat_partner_item_photo_container"
+        android:layout_toEndOf="@+id/chat_partner_item_photo_container"
         android:textSize="12sp"
         />
+
 
 </RelativeLayout>

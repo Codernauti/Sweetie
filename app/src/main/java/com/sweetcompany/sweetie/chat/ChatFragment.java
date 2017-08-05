@@ -118,10 +118,9 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.chat_fragment, container, false);
 
         String titleChat = getArguments().getString(ChatActivity.CHAT_TITLE);
-        Log.d(TAG, "from Intent CHAT_TITLE: " +
-                getArguments().getString(ChatActivity.CHAT_TITLE));
-        Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " +
-                getArguments().getString(ChatActivity.CHAT_DATABASE_KEY));
+        String chatUid = getArguments().getString(ChatActivity.CHAT_DATABASE_KEY);
+        Log.d(TAG, "from Intent CHAT_TITLE: " + titleChat);
+        Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " + chatUid);
 
         // initialize toolbar
         mToolBar = (Toolbar) root.findViewById(R.id.chat_toolbar);
@@ -147,7 +146,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         mKeyboardPlaceholder = (FrameLayout) root.findViewById(R.id.chat_emojicons_container);
 
-        // TODO: EmojiView
         initializaEmoticons(root);
 
         // get saved height of past keyboard used
@@ -182,8 +180,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                         mEmojiPopup.setHeight(mKeyboardHeight);
 
                         Utility.saveIntPreference(getContext(), Utility.KB_HEIGHT, heightDifference);
-                        // we get the info, remove the listener
-                        // root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                 }
                 else {
@@ -334,39 +330,30 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 if (!inputText.isEmpty()) {
                     // TODO: is this responsibility of fragment?
                     MessageVM newMessage = null;
-                    newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null, 0);
+                    newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER,
+                            DataMaker.get_UTC_DateTime(), false, null, 0);
 
                     mPresenter.sendMessage(newMessage);
                 }
+                break;
+
+            case R.id.chat_media_picker_button:
+                takePictures();
                 break;
 
             case R.id.chat_emoticons_button:
                 insertKeyboardSpaceHolder();
 
                 if (mEmojiPopup.isShowing()) {
-                    // close emoticons and show keyboard
-                    mEmojiPopup.dismiss();
-                    mEmojiButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                                    R.drawable.chat_open_emoticon_image_button24x24));
-                    mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                        // close emoticons and show keyboard
+                        mEmojiPopup.dismiss();
+                        mEmojiButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                                        R.drawable.chat_open_emoticon_image_button24x24));
+                        mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 }
                 else {
-                    /**//*
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    FragmentTransaction transaction = fm.beginTransaction();
-
-                    Fragment prev = fm.findFragmentByTag("emojiFragment");
-                    if (prev != null) {
-                        transaction.remove(prev);
-                    }
-                    transaction.addToBackStack(null);
-
-                    EmojiKeyboardFragment frag = EmojiKeyboardFragment.newInstance(mKeyboardHeight);
-                    frag.show(fm, "emojiFragment");
-
-                    *//**/
-
                     mKeyboardState = SOFT_KB_CLOSED; // jump hidePlaceHolder from OnGlobalLayoutListener
+
                     // close keyboard and open emoticons
                     View view = getActivity().getCurrentFocus();
                     if (view != null) {
@@ -377,11 +364,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
                     mEmojiPopup.showAtLocation(getView(), Gravity.BOTTOM, 0, 0);
                 }
-                break;
+            break;
 
-            case R.id.chat_media_picker_button:
-                takePictures();
-                break;
 
             default:
                 break;
@@ -411,7 +395,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     // ChatAdapter callback
     @Override
     public void onBookmarkClicked(MessageVM messageVM, int type) {
-        // TODO: is this responsibility of fragment?
         mPresenter.bookmarkMessage(messageVM, type);
     }
 
@@ -476,7 +459,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     }
 
     private void sendImages(List<Image> images) {
-        if (images == null) return;
+        if (images == null)
+            return;
 
         for (int i = 0, l = images.size(); i < l; i++) {
             try {
@@ -488,7 +472,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
                 String inputText = "";
 
-                newMessage = new TextPhotoMessageVM(inputText, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "", 0);
+                newMessage = new TextPhotoMessageVM(inputText, MessageVM.THE_MAIN_USER,
+                        DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "", 0);
 
                 mPresenter.sendMedia(newMessage);
 

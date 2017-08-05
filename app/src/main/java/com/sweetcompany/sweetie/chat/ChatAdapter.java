@@ -30,24 +30,17 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     private ChatAdapterListener mListener;
 
     /**
-     * Call when create ChatAdapter
+     * Call when create ChatAdapter or when destroy ChatAdapter, in this case pass null
      * @param listener
      */
     void setChatAdapterListener(ChatAdapterListener listener) {
         mListener = listener;
     }
 
-    /**
-     *  Call when destroy ChatAdapterListener
-     */
-    void removeChatAdapterListener() {
-        mListener = null;
-    }
 
     @Override
     public int getItemViewType(int position) {
-        //TODO: this break the recycler of the viewHolder, the RecyclerView doesn't know the type
-        //return position;
+        // use the unique id of the view for the type
         return mMessageList.get(position).getIdView();
     }
 
@@ -55,7 +48,6 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //MessageVM message = mMessageList.get(viewType);
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
 
         View viewToInflate = inflater.inflate(viewType, parent, false);
         MessageViewHolder viewHolder;
@@ -103,7 +95,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
 
     void addMessage(MessageVM message) {
-        //TODO optimize change object field insted of remove
+        //TODO optimize change object field instead of remove
         if(searchIndexMessageOf(message)!=-1){
             removeMessage(message);
         }

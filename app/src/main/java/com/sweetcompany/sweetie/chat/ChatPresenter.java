@@ -26,7 +26,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
     }
 
     @Override
-    public void sendMessage(MessageVM message) {
+    public void sendTextMessage(MessageVM message) {
         // TODO: remove down cast -> use Factory method
         TextMessageVM messageVM = (TextMessageVM) message;
         MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(),
@@ -40,7 +40,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
     }
 
     @Override
-    public void sendMedia(MessageVM messageVM) {
+    public void sendPhotoMessage(MessageVM messageVM) {
         // TODO: remove down cast -> use Factory method
         TextPhotoMessageVM photoMessageVM = (TextPhotoMessageVM) messageVM;
         MessageFB newMessage = new MessageFB(mUserMail, photoMessageVM.getText(),

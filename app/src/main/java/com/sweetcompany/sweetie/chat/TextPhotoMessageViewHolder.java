@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.chat;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -63,15 +64,24 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
 
     @Override
     public void onClick(View v) {
-        if (v == v.findViewById(R.id.chat_thumbnail_main) || v == v.findViewById(R.id.chat_thumbnail_main) ){
-            mListener.onPhotoClicked(getAdapterPosition());
-        }
-        else if(v == v.findViewById(R.id.chat_item_photo_bookmark_button) || v == v.findViewById(R.id.chat_partner_item_photo_bookmark_button)) {
-            boolean wasBookmarked = mBookmarkButton.isSelected();
-            mBookmarkButton.setSelected(!wasBookmarked);
-            mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, MessageVM.PHOTO_MSG);
-        }
 
+        switch (v.getId()) {
+            case R.id.chat_thumbnail_main:
+            case R.id.chat_thumbnail_partner:
+                mListener.onPhotoClicked(getAdapterPosition());
+                break;
+
+            case R.id.chat_item_bookmark_button:
+            case R.id.chat_partner_item_photo_bookmark_button:
+                boolean wasBookmarked = mBookmarkButton.isSelected();
+                mBookmarkButton.setSelected(!wasBookmarked);
+                mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, MessageVM.PHOTO_MSG);
+                break;
+
+            default:
+                Log.d("TextPhotoMessageVH", "onClick() lost");
+                break;
+        }
     }
 
     public void setPercentUploading(int progress){

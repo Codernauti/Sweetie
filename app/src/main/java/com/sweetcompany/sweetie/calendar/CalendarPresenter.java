@@ -25,6 +25,7 @@ public class CalendarPresenter implements CalendarContract.Presenter,
 
         mView = view;
         mView.setPresenter(this);
+        mView.initializeActualMonth();
     }
 
     @Override

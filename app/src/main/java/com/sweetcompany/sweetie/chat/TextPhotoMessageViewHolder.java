@@ -52,7 +52,9 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
         mThumbnail.setOnClickListener(this);
     }
 
-    public void setText(String text) { mTextMessage.setText(text);}
+    public void setText(String text) {
+        mTextMessage.setText(text);
+    }
 
     public void setTextTime(String time) {
         mTextTime.setText(time);
@@ -71,7 +73,7 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
                 mListener.onPhotoClicked(getAdapterPosition());
                 break;
 
-            case R.id.chat_item_bookmark_button:
+            case R.id.chat_item_photo_bookmark_button:
             case R.id.chat_partner_item_photo_bookmark_button:
                 boolean wasBookmarked = mBookmarkButton.isSelected();
                 mBookmarkButton.setSelected(!wasBookmarked);

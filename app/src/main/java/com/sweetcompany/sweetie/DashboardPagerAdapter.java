@@ -24,8 +24,8 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
     private final static int NUM_TAB = 4;
 
-    private final static int CALENDAR_TAB = 0;
-    public final static int HOME_TAB = 1;
+    final static int CALENDAR_TAB = 0;
+    final static int HOME_TAB = 1;
     private final static int FOLDERS_TAB = 2;
     private final static int MAP_TAB = 3;
 
@@ -71,10 +71,12 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
             case CALENDAR_TAB:
                 CalendarContract.View calendarView = (CalendarContract.View) createdFragment;
                 mCalendarPresenter = new CalendarPresenter(calendarView, mCalendarController);
+                Log.d("CalendarFragment", "instantiate Presenter");
                 break;
             case HOME_TAB:
                 ActionsContract.View view = (ActionsContract.View) createdFragment;
                 mActionsPresenter = new ActionsPresenter(view, mActionsController);
+                Log.d("ActionFragment", "instantiate Presenter");
                 break;
             case FOLDERS_TAB:
                 break;

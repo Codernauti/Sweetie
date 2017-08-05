@@ -11,7 +11,7 @@ abstract class MessageVM {
     static final boolean THE_PARTNER = false;
 
     public final static int TEXT_MSG = 0;
-    public final static int PHOTO_MSG = 1;
+    public final static int TEXT_PHOTO_MSG = 1;
 
     private String mKey;
 

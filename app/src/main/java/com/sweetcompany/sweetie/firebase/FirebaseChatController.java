@@ -220,8 +220,10 @@ public class FirebaseChatController {
         mAction.updateChildren(actionUpdates);
     }
 
-    public void sendMedia(final MessageFB media) {
+    public String sendMedia(final MessageFB media) {
         Log.d(TAG, "Send photoText MessageFB: " + media);
+
+        final String newMessageUID = mChatMessages.push().getKey();
 
         Uri uriLocal;
         uriLocal = Uri.parse(media.getUriLocal());
@@ -245,7 +247,7 @@ public class FirebaseChatController {
                 media.setUriStorage(stringUriStorage);
 
                 // push a message into mGalleryPhotos reference
-                mChatMessages.push().setValue(media);
+                mChatMessages.child(newMessageUID).setValue(media);
 
                 // update description and dataTime of action of this associated Gallery
                 Map<String, Object> actionUpdates = new HashMap<>();
@@ -268,6 +270,8 @@ public class FirebaseChatController {
                         }
                     }
                 });
+
+        return newMessageUID;
     }
 
 }

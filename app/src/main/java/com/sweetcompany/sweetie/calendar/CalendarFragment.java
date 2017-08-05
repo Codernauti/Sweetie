@@ -32,8 +32,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
     private static final String TAG = "CalendarFragment";
 
-    private boolean mFirstInitialization = true;
-    private SimpleDateFormat mDayFormat = new SimpleDateFormat("dd");
+    private final SimpleDateFormat mDayFormat = new SimpleDateFormat("dd");
+    private final SimpleDateFormat mYearMonthFormat = new SimpleDateFormat("yyyy-MM");
 
     private CalendarContract.Presenter mPresenter;
 
@@ -121,11 +121,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
         // mPresenter cannot be null, this call come from setPresenter()
 
-        Calendar calendar = Calendar.getInstance();
-        String currentSelectedYearAndMonth = new SimpleDateFormat("yyyy-MM").format(calendar.getTime());
+        // default value is current month
+        String currentSelectedYearAndMonth = mYearMonthFormat.format(Calendar.getInstance().getTime());
 
         if (mCalendar != null) {
-            currentSelectedYearAndMonth = new SimpleDateFormat("yyyy-MM").format(mCalendar.getCurrentDate().getDate());
+            currentSelectedYearAndMonth = mYearMonthFormat.format(mCalendar.getCurrentDate().getDate());
         }
 
         Log.d(TAG, "Manual month initialization");
@@ -155,7 +155,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-        String yearAndMonth = new SimpleDateFormat("yyyy-MM").format(date.getDate());
+        String yearAndMonth = mYearMonthFormat.format(date.getDate());
 
         Log.d(TAG, "Month changed! download monthActionsDiary of: " + yearAndMonth);
         removeDecoratorAndDownloadActionsDiaryForMonth(yearAndMonth);

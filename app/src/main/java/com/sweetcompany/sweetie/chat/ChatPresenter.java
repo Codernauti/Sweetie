@@ -12,9 +12,9 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
 
     private static final String TAG = "ChatPresenter";
 
-    private ChatContract.View mView;
-    private FirebaseChatController mController;
-    private String mUserMail;   // id of messages of main user
+    private final ChatContract.View mView;
+    private final FirebaseChatController mController;
+    private final String mUserMail;   // id of messages of main user
 
     ChatPresenter(ChatContract.View view, FirebaseChatController controller, String userMail){
         mView = view;
@@ -32,11 +32,11 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
         MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(),
                 messageVM.isBookmarked(), MessageFB.TEXT_MSG, "", "");
 
-        String newMessageUID = mController.sendMessage(newMessage);
-        newMessage.setKey(newMessageUID);
-        messageVM.setKey(newMessageUID);
-        mView.updateMessage(messageVM);
-        // TODO: doesn't work, firebase update data also offline
+        // TODO: doesn't work, firebase trigger data also offline
+        /*String newMessageUID = */mController.sendMessage(newMessage);
+        //newMessage.setKey(newMessageUID);
+        //messageVM.setKey(newMessageUID);
+        //mView.updateMessage(messageVM);
     }
 
     @Override

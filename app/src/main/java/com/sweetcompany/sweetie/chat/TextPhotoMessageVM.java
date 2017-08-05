@@ -84,9 +84,4 @@ public class TextPhotoMessageVM extends MessageVM implements Serializable {
             return R.layout.chat_partner_list_item_photo;
         }
     }
-
-    @Override
-    TextPhotoMessageViewHolder newViewHolder(View inflatedView) {
-        return new TextPhotoMessageViewHolder(inflatedView, isTheMainUser());
-    }
 }

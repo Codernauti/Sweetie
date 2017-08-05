@@ -21,7 +21,7 @@
         />
 
     <TextView
-        android:id="@+id/chat_partner_item_photo_time_view"
+        android:id="@+id/chat_item_photo_time_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/chat_item_msg_state"
@@ -51,7 +51,7 @@
         android:background="@drawable/shape_rounded_rectangle">
 
         <TextView
-            android:id="@+id/chat_progress_percent_main"
+            android:id="@+id/chat_progress_percent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -59,7 +59,7 @@
             android:layout_centerVertical="true"/>
 
         <ProgressBar
-            android:id="@+id/chat_progressBarUpload_main"
+            android:id="@+id/chat_progressBarUpload"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:layout_centerVertical="true" />
 
         <ImageView
-            android:id="@+id/chat_thumbnail_main"
+            android:id="@+id/chat_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"

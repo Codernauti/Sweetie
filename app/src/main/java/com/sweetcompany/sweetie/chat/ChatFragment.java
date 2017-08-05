@@ -35,13 +35,11 @@ import android.widget.RelativeLayout;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.gallery.SlideshowDialogFragment;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.File;
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,7 +104,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         super.onCreate(savedInstanceState);
 
         mChatAdapter = new ChatAdapter();
-        mChatAdapter.setChatAdapterListener(this);
+        mChatAdapter.setListener(this);
 
         mInputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
     }

@@ -33,7 +33,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
      * Call when create ChatAdapter or when destroy ChatAdapter, in this case pass null
      * @param listener
      */
-    void setChatAdapterListener(ChatAdapterListener listener) {
+    void setListener(ChatAdapterListener listener) {
         mListener = listener;
     }
 
@@ -52,16 +52,17 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         View viewToInflate = inflater.inflate(viewType, parent, false);
         MessageViewHolder viewHolder;
         switch (viewType) {
+
             case R.layout.chat_user_list_item_text:
             case R.layout.chat_partner_list_item_text:
                 viewHolder = new TextMessageViewHolder(viewToInflate);
                 break;
+
             case R.layout.chat_user_list_item_photo:
-                viewHolder = new TextPhotoMessageViewHolder(viewToInflate, MessageVM.THE_MAIN_USER);
-                break;
             case R.layout.chat_partner_list_item_photo:
-                viewHolder = new TextPhotoMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
+                viewHolder = new TextPhotoMessageViewHolder(viewToInflate);
                 break;
+
             default:
                 Log.w(TAG, "Error: no MessageViewHolder type match");
                 // TODO: create a ErrorMessageViewHolder
@@ -69,8 +70,6 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
                 break;
         }
 
-        /*View viewToInflate = inflater.inflate(message.getIdView(), parent, false);
-        MessageViewHolder viewHolder = message.newViewHolder(viewToInflate);*/
         viewHolder.setViewHolderClickListener(this);
 
         Log.d(TAG, "onCreateViewHolder(): " + viewHolder.toString());
@@ -145,7 +144,8 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     }
 
 
-    /* Listener from ViewHolder */
+    // Callbacks from ViewHolders
+
     @Override
     public void onBookmarkClicked(int adapterPosition, boolean isBookmarked, int type) {
         MessageVM msgToUpdate = mMessageList.get(adapterPosition);
@@ -153,7 +153,6 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         // Update MessageVM associate with ViewHolder
         msgToUpdate.setBookmarked(isBookmarked);
 
-        // Notify fragment for the updating
         mListener.onBookmarkClicked(msgToUpdate, type);
     }
 

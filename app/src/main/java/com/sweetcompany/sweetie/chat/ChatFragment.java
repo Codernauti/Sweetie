@@ -327,11 +327,10 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
                 if (!inputText.isEmpty()) {
                     // TODO: is this responsibility of fragment?
-                    MessageVM newMessage = null;
-                    newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER,
+                    MessageVM newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER,
                             DataMaker.get_UTC_DateTime(), false, null, 0);
 
-                    mPresenter.sendMessage(newMessage);
+                    mPresenter.sendTextMessage(newMessage);
                 }
                 break;
 
@@ -473,7 +472,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 newMessage = new TextPhotoMessageVM(inputText, MessageVM.THE_MAIN_USER,
                         DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "", 0);
 
-                mPresenter.sendMedia(newMessage);
+                mPresenter.sendPhotoMessage(newMessage);
 
             } catch (Exception e) {
                 e.printStackTrace();

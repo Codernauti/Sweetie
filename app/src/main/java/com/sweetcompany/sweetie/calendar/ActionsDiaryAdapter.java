@@ -48,7 +48,7 @@ public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
 
         ActionDiaryVM actionDiary = getItem(position);
         viewHolder.title.setText(actionDiary.getKey());
-        viewHolder.description.setText("What does the app put into description?");
+        viewHolder.description.setText("What put into description?");
         if (actionDiary.getType() == ActionFB.CHAT) {
             viewHolder.type.setImageResource(R.drawable.action_chat_icon);
         }

@@ -22,9 +22,7 @@ import com.sweetcompany.sweetie.model.ActionDiaryFB;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -43,13 +41,13 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
     private ActionsDiaryAdapter mAdapter;
 
-    private Map<String, Map<String, ActionDiaryFB>> mMonthActionsDiary2;
+    private Map<String, Map<String, ActionDiaryFB>> mMonthActionsDiary;
 
     private final DayViewDecorator mDayDecorator = new DayViewDecorator() {
         @Override
         public boolean shouldDecorate(CalendarDay day) {
             String dayStr = mDayFormat.format(day.getDate());
-            return mMonthActionsDiary2.containsKey(dayStr);
+            return mMonthActionsDiary.containsKey(dayStr);
         }
 
         @Override
@@ -108,11 +106,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
     @Override
     public void setMonthActionsDiary(Map<String, Map<String, ActionDiaryFB>> monthActionDiary) {
-        mMonthActionsDiary2 = monthActionDiary;
+        mMonthActionsDiary = monthActionDiary;
         mCalendar.removeDecorators();
-        if (mMonthActionsDiary2 != null) {
+        if (mMonthActionsDiary != null) {
             mCalendar.addDecorators(mDayDecorator);
-            Log.d(TAG, "New mMonthActionsDiary comes: " + mMonthActionsDiary2.size());
+            Log.d(TAG, "New mMonthActionsDiary comes: " + mMonthActionsDiary.size());
         } else {
             Log.d(TAG, "Null mMonthActionsDiary comes");
         }
@@ -134,10 +132,10 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         Log.d(TAG, "Date selected change! Update the ListView");
         mAdapter.clear();
 
-        if (mMonthActionsDiary2 != null) {
-            String day = mDayFormat.format(date.getDate());
+        String day = mDayFormat.format(date.getDate());
+        if (mMonthActionsDiary != null && mMonthActionsDiary.get(day) != null) {
             // TODO: slow operation
-            List<ActionDiaryFB> actionsDiary = new ArrayList<>(mMonthActionsDiary2.get(day).values());
+            List<ActionDiaryFB> actionsDiary = new ArrayList<>(mMonthActionsDiary.get(day).values());
 
             if (!actionsDiary.isEmpty()) {
                 mAdapter.addAll(actionsDiary);

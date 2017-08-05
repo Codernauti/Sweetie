@@ -39,9 +39,4 @@ public class CalendarPresenter implements CalendarContract.Presenter,
         mView.setMonthActionsDiary(monthActionsDiary);
     }
 
-    @Override
-    public void onActionDiaryAdded(ActionDiaryFB actionDiary) {
-        Log.d(TAG, "ActionDiary arrived! " + actionDiary.getKey() + " - size: " + actionDiary.getMessages().size());
-        //mView.addActionDiary(actionDiary);
-    }
 }

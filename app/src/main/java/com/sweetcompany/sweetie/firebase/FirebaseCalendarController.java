@@ -28,7 +28,6 @@ public class FirebaseCalendarController {
 
     public interface CalendarControllerListener {
         void onMonthActionsDiaryDownloaded(Map<String, Map<String, ActionDiaryFB>> monthActionsDiary);
-        void onActionDiaryAdded(ActionDiaryFB actionDiary);
     }
 
 

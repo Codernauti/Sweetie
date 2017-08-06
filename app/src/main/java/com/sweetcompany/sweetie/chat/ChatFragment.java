@@ -70,7 +70,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private int mSoftKeyHeight = 0;
 
     private ArrayList<Image> imagesPicked = new ArrayList<>();
-    private List<TextPhotoMessageVM> medias = new ArrayList<>();
 
     private InputMethodManager mInputMethodManager;
     private Toolbar mToolBar;
@@ -79,12 +78,12 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     private EditText mTextMessageInput;
     private Button mSendButton;
-    private ImageButton mEmojiButton;
+    private ImageButton mEmoticonsButton;
     private ImageButton mMediaPickerButton;
 
     private FrameLayout mKeyboardPlaceholder;
-    private PopupWindow mEmojiPopup;
-    private ViewPager mEmojiView;
+    private PopupWindow mEmoticonsPopup;
+    private ViewPager mEmoticonsView;
 
     private EmoticonsPagerAdapter mEmoticonsAdapter;
     private ChatAdapter mChatAdapter;
@@ -140,7 +139,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mChatListView.setAdapter(mChatAdapter);
 
         mTextMessageInput = (EditText) root.findViewById(R.id.chat_text_message_input);
-        mEmojiButton = (ImageButton) root.findViewById(R.id.chat_emoticons_button);
+        mEmoticonsButton = (ImageButton) root.findViewById(R.id.chat_emoticons_button);
         mMediaPickerButton = (ImageButton) root.findViewById(R.id.chat_media_picker_button);
         mSendButton = (Button) root.findViewById(R.id.chat_send_button);
 
@@ -152,7 +151,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mKeyboardHeight = Utility.getIntPreference(getContext(), Utility.KB_HEIGHT);
         updateHeightPlaceholder();
 
-        mEmojiPopup = new PopupWindow(mEmojiView, ViewGroup.LayoutParams.MATCH_PARENT, mKeyboardHeight, false);
+        mEmoticonsPopup = new PopupWindow(mEmoticonsView, ViewGroup.LayoutParams.MATCH_PARENT, mKeyboardHeight, false);
 
         // Device has hard Action Buttons? true -> no other measures needed
         mIsSoftActionButtonsMeasured = ViewConfiguration.get(getContext()).hasPermanentMenuKey();
@@ -177,7 +176,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                         Log.d(TAG, "New height of keyboard!");
                         mKeyboardHeight = heightDifference;
                         updateHeightPlaceholder();
-                        mEmojiPopup.setHeight(mKeyboardHeight);
+                        mEmoticonsPopup.setHeight(mKeyboardHeight);
 
                         Utility.saveIntPreference(getContext(), Utility.KB_HEIGHT, heightDifference);
                     }
@@ -207,7 +206,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         }
 
         mTextMessageInput.setOnTouchListener(this);
-        mEmojiButton.setOnClickListener(this);
+        mEmoticonsButton.setOnClickListener(this);
         mMediaPickerButton.setOnClickListener(this);
         mSendButton.setOnClickListener(this);
 
@@ -215,14 +214,14 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     }
 
     private void initializaEmoticons(ViewGroup root) {
-        mEmojiView = (ViewPager) getLayoutInflater(null).inflate(R.layout.chat_emoticons_keyboard, root, false);
+        mEmoticonsView = (ViewPager) getLayoutInflater(null).inflate(R.layout.chat_emoticons_keyboard, root, false);
         mEmoticonsAdapter = new EmoticonsPagerAdapter(getContext());
 
-        mEmojiView.setAdapter(mEmoticonsAdapter);
+        mEmoticonsView.setAdapter(mEmoticonsAdapter);
 
         // get the specific View from LinearLayout from TabLayout
-        TabLayout mEmoticonsTabs = (TabLayout) mEmojiView.findViewById(R.id.chat_emoticons_tabs);
-        mEmoticonsTabs.setupWithViewPager(mEmojiView);
+        TabLayout mEmoticonsTabs = (TabLayout) mEmoticonsView.findViewById(R.id.chat_emoticons_tabs);
+        mEmoticonsTabs.setupWithViewPager(mEmoticonsView);
 
         mEmoticonsTabs.getTabAt(0).setIcon(R.drawable.ic_emoji_people_light);
         mEmoticonsTabs.getTabAt(1).setIcon(R.drawable.ic_emoji_nature_light);
@@ -335,9 +334,9 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     @Override
     public boolean hideKeyboardPlaceholder() {
         if (mKeyboardPlaceholder.getVisibility() != View.GONE) {
-            mEmojiPopup.dismiss();
+            mEmoticonsPopup.dismiss();
             mKeyboardPlaceholder.setVisibility(View.GONE);
-            mEmojiButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+            mEmoticonsButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                     R.drawable.chat_open_emoticon_image_button24x24));
             return true;
         } else {
@@ -369,7 +368,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             case R.id.chat_emoticons_button:
                 insertKeyboardSpaceHolder();
 
-                if (mEmojiPopup.isShowing()) {
+                if (mEmoticonsPopup.isShowing()) {
                     closeEmoticonsAndShowSoftKeyboard();
                 } else {
                     closeSoftKeyboardAndShowEmoticons();
@@ -389,15 +388,15 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         if (view != null) {
             mInputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-        mEmojiButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+        mEmoticonsButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                 R.drawable.chat_keyboard_image_button24x24));
 
-        mEmojiPopup.showAtLocation(getView(), Gravity.BOTTOM, 0, 0);
+        mEmoticonsPopup.showAtLocation(getView(), Gravity.BOTTOM, 0, 0);
     }
 
     private void closeEmoticonsAndShowSoftKeyboard() {
-        mEmojiPopup.dismiss();
-        mEmojiButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+        mEmoticonsPopup.dismiss();
+        mEmoticonsButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
                 R.drawable.chat_open_emoticon_image_button24x24));
         mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
@@ -430,7 +429,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         switch (v.getId()) {
             case R.id.chat_text_message_input:
                 insertKeyboardSpaceHolder();
-                mEmojiPopup.dismiss();
+                mEmoticonsPopup.dismiss();
                 break;
 
             default:

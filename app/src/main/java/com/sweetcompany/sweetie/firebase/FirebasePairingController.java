@@ -237,36 +237,6 @@ public class FirebasePairingController {
                 }
             }
         });
-
-
-        /* NOT ATOMIC OPERATION!!!s
-
-        if (!oldPairingRequestedUserUid.equals(Utility.DEFAULT_VALUE)) {
-            // remove previous pairing request send by mUserId
-            // "pairing-request/<oldPairingRequestUserUid>/<mUserId>/"
-            mPairingRequests.child(oldPairingRequestedUserUid).child(mUserId).removeValue();
-        }
-
-        // save pairing request into shared preferences
-        mActivityListener.onCreateNewPairingRequestComplete(futurePartner.getKey());
-
-
-        // mUserId push a pairing-request to user.getKey
-        // "pairing-request/<futurePartner.getKey()>/<mUserId>/<newRequest>"
-        mPairingRequests.child(futurePartner.getKey())
-                        .child(mUserId)
-                        .setValue(newRequest)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                for (PairingControllerListener listener : mListeners) {
-                                    listener.onCreateNewPairingRequestComplete();
-                                }
-                            }
-                        });
-
-        // save new pairing request sent by mUserId
-        mUsers.child(mUserId + "/futurePartner").setValue(futurePartner.getKey());*/
     }
 
 }

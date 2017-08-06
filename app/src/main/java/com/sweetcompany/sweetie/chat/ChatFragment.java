@@ -60,6 +60,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private static final int MIN_KB_HEIGHT = 100;
     private static final int SOFT_KB_CLOSED = 0;
     private static final int SOFT_KB_OPENED = 1;
+
     private static final int RC_CODE_PICKER = 2000;
     private static final int RC_CAMERA = 3000;
 
@@ -75,17 +76,17 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private Toolbar mToolBar;
     private RecyclerView mChatListView;
     private LinearLayoutManager mLinearLayoutManager;
-    private EditText mTextMessageInput;
 
+    private EditText mTextMessageInput;
     private Button mSendButton;
     private ImageButton mEmojiButton;
     private ImageButton mMediaPickerButton;
 
     private FrameLayout mKeyboardPlaceholder;
-    private ViewPager mEmojiView;
-    private EmoticonsPagerAdapter mEmoticonsAdapter;
-
     private PopupWindow mEmojiPopup;
+    private ViewPager mEmojiView;
+
+    private EmoticonsPagerAdapter mEmoticonsAdapter;
     private ChatAdapter mChatAdapter;
 
     private ChatContract.Presenter mPresenter;
@@ -115,6 +116,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         // root is a RelativeLayout
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.chat_fragment, container, false);
 
+        // TODO: is useless to set titleChat, Firebase update it also if it is offline
         String titleChat = getArguments().getString(ChatActivity.CHAT_TITLE);
         String chatUid = getArguments().getString(ChatActivity.CHAT_DATABASE_KEY);
         Log.d(TAG, "from Intent CHAT_TITLE: " + titleChat);
@@ -266,6 +268,32 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mEmoticonsAdapter.removeListener();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
+            imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
+            createMessageFromImageAndSend(imagesPicked);
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void createMessageFromImageAndSend(List<Image> images) {
+        if (images == null)
+            return;
+
+        for (int i = 0, l = images.size(); i < l; i++) {
+            Uri file = Uri.fromFile(new File(images.get(i).getPath()));
+            String stringUriLocal = file.toString();
+            String inputText = "";
+
+            MessageVM newMessage = new TextPhotoMessageVM(inputText, MessageVM.THE_MAIN_USER,
+                    DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "", 0);
+
+            mPresenter.sendPhotoMessage(newMessage);
+        }
+    }
+
 
     @Override
     public void setPresenter(ChatContract.Presenter presenter) {
@@ -298,6 +326,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mChatAdapter.changeMessage(msgVM);
     }
 
+
     @Override
     public void updatePercentUpload(MessageVM mediaVM, int perc) {
         mChatAdapter.updatePercentUpload(mediaVM, perc);
@@ -315,7 +344,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             return false;
         }
     }
-
 
     // Callback bottom input bar
     @Override
@@ -335,31 +363,16 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 break;
 
             case R.id.chat_media_picker_button:
-                takePictures();
+                initAndStartImagePicker();
                 break;
 
             case R.id.chat_emoticons_button:
                 insertKeyboardSpaceHolder();
 
                 if (mEmojiPopup.isShowing()) {
-                        // close emoticons and show keyboard
-                        mEmojiPopup.dismiss();
-                        mEmojiButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                                        R.drawable.chat_open_emoticon_image_button24x24));
-                        mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                }
-                else {
-                    mKeyboardState = SOFT_KB_CLOSED; // jump hidePlaceHolder from OnGlobalLayoutListener
-
-                    // close keyboard and open emoticons
-                    View view = getActivity().getCurrentFocus();
-                    if (view != null) {
-                        mInputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    }
-                    mEmojiButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
-                            R.drawable.chat_keyboard_image_button24x24));
-
-                    mEmojiPopup.showAtLocation(getView(), Gravity.BOTTOM, 0, 0);
+                    closeEmoticonsAndShowSoftKeyboard();
+                } else {
+                    closeSoftKeyboardAndShowEmoticons();
                 }
             break;
 
@@ -367,6 +380,43 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             default:
                 break;
         }
+    }
+
+    private void closeSoftKeyboardAndShowEmoticons() {
+        mKeyboardState = SOFT_KB_CLOSED; // jump hidePlaceHolder from OnGlobalLayoutListener
+
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            mInputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+        mEmojiButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                R.drawable.chat_keyboard_image_button24x24));
+
+        mEmojiPopup.showAtLocation(getView(), Gravity.BOTTOM, 0, 0);
+    }
+
+    private void closeEmoticonsAndShowSoftKeyboard() {
+        mEmojiPopup.dismiss();
+        mEmojiButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                R.drawable.chat_open_emoticon_image_button24x24));
+        mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    private void initAndStartImagePicker() {
+        ImagePicker imagePicker = ImagePicker.create(this)
+                .theme(R.style.ImagePickerTheme)
+                .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
+                .folderMode(true) // set folder mode (false by default)
+                .folderTitle("Folder") // folder selection title
+                .imageTitle(String.valueOf(R.string.image_picker_select)) // image selection title
+                .single()
+                .limit(10) // max images can be selected (99 by default)
+                .showCamera(true) // show camera or not (true by default)
+                .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
+                .origin(imagesPicked); // original selected images, used in multi mode
+
+        imagePicker.start(RC_CODE_PICKER); // start image picker activity with request code
+        // go to onActivityResult
     }
 
     private void insertKeyboardSpaceHolder() {
@@ -395,6 +445,17 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mPresenter.bookmarkMessage(messageVM, type);
     }
 
+    @Override
+    public void onPhotoClicked(TextPhotoMessageVM photoMessage) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("image", (Serializable) photoMessage);
+
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ShowImageFragment newFragment = ShowImageFragment.newInstance();
+        newFragment.setArguments(bundle);
+        newFragment.show(ft, "slideshow");
+    }
+
     // EmoticonsAdapter callback
     @Override
     public void onEmoticonsClicked(Emojicon emojicon) {
@@ -411,72 +472,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                     emojicon.getEmoji(),
                     0,
                     emojicon.getEmoji().length());
-        }
-    }
-
-    @Override
-    public void onPhotoClicked(TextPhotoMessageVM photoMessage) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("image", (Serializable) photoMessage);
-
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ShowImageFragment newFragment = ShowImageFragment.newInstance();
-        newFragment.setArguments(bundle);
-        newFragment.show(ft, "slideshow");
-    }
-
-    public void takePictures() {
-
-        ImagePicker imagePicker = ImagePicker.create(this)
-                .theme(R.style.ImagePickerTheme)
-                .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
-                .folderMode(true) // set folder mode (false by default)
-                .folderTitle("Folder") // folder selection title
-                .imageTitle(String.valueOf(R.string.image_picker_select)); // image selection title
-
-        //imagePicker.multi(); // multi mode (default mode)
-        imagePicker.single();
-
-        imagePicker.limit(10) // max images can be selected (99 by default)
-                .showCamera(true) // show camera or not (true by default)
-                .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
-                .origin(imagesPicked) // original selected images, used in multi mode
-                .start(RC_CODE_PICKER); // start image picker activity with request code
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, final int resultCode, Intent data) {
-        if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
-            imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
-            sendImages(imagesPicked);
-            return;
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void sendImages(List<Image> images) {
-        if (images == null)
-            return;
-
-        for (int i = 0, l = images.size(); i < l; i++) {
-            try {
-                MessageVM newMessage = null;
-
-                Uri file = Uri.fromFile(new File(images.get(i).getPath()));
-                String stringUriLocal;
-                stringUriLocal = file.toString();
-
-                String inputText = "";
-
-                newMessage = new TextPhotoMessageVM(inputText, MessageVM.THE_MAIN_USER,
-                        DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "", 0);
-
-                mPresenter.sendPhotoMessage(newMessage);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 }

@@ -23,30 +23,24 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
     interface ChatAdapterListener {
         void onBookmarkClicked(MessageVM messageVM, int type);
+        void onPhotoClicked(TextPhotoMessageVM photoMessage);
     }
 
     private List<MessageVM> mMessageList = new ArrayList<>();
     private ChatAdapterListener mListener;
 
     /**
-     * Call when create ChatAdapter
+     * Call when create ChatAdapter or when destroy ChatAdapter, in this case pass null
      * @param listener
      */
-    void setChatAdapterListener(ChatAdapterListener listener) {
+    void setListener(ChatAdapterListener listener) {
         mListener = listener;
     }
 
-    /**
-     *  Call when destroy ChatAdapterListener
-     */
-    void removeChatAdapterListener() {
-        mListener = null;
-    }
 
     @Override
     public int getItemViewType(int position) {
-        //TODO: this break the recycler of the viewHolder, the RecyclerView doesn't know the type
-        //return position;
+        // use the unique id of the view for the type
         return mMessageList.get(position).getIdView();
     }
 
@@ -55,31 +49,27 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         //MessageVM message = mMessageList.get(viewType);
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-
         View viewToInflate = inflater.inflate(viewType, parent, false);
         MessageViewHolder viewHolder;
         switch (viewType) {
+
             case R.layout.chat_user_list_item_text:
-                viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_MAIN_USER);
-                break;
             case R.layout.chat_partner_list_item_text:
-                viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
+                viewHolder = new TextMessageViewHolder(viewToInflate);
                 break;
+
             case R.layout.chat_user_list_item_photo:
-                viewHolder = new TextPhotoMessageViewHolder(viewToInflate, MessageVM.THE_MAIN_USER);
-                break;
             case R.layout.chat_partner_list_item_photo:
-                viewHolder = new TextPhotoMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
+                viewHolder = new TextPhotoMessageViewHolder(viewToInflate);
                 break;
+
             default:
                 Log.w(TAG, "Error: no MessageViewHolder type match");
                 // TODO: create a ErrorMessageViewHolder
-                viewHolder = new TextMessageViewHolder(viewToInflate, MessageVM.THE_PARTNER);
+                viewHolder = new TextMessageViewHolder(viewToInflate);
                 break;
         }
 
-        /*View viewToInflate = inflater.inflate(message.getIdView(), parent, false);
-        MessageViewHolder viewHolder = message.newViewHolder(viewToInflate);*/
         viewHolder.setViewHolderClickListener(this);
 
         Log.d(TAG, "onCreateViewHolder(): " + viewHolder.toString());
@@ -102,8 +92,10 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
 
     void addMessage(MessageVM message) {
-        /*mMessageList.add(0, message);
-        notifyItemInserted(0);*/
+        //TODO optimize change object field instead of remove
+        if(searchIndexMessageOf(message)!=-1){
+            removeMessage(message);
+        }
         mMessageList.add(message);
         notifyItemInserted(mMessageList.size() - 1);
     }
@@ -152,7 +144,8 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     }
 
 
-    /* Listener from ViewHolder */
+    // Callbacks from ViewHolders
+
     @Override
     public void onBookmarkClicked(int adapterPosition, boolean isBookmarked, int type) {
         MessageVM msgToUpdate = mMessageList.get(adapterPosition);
@@ -160,7 +153,11 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         // Update MessageVM associate with ViewHolder
         msgToUpdate.setBookmarked(isBookmarked);
 
-        // Notify fragment for the updating
         mListener.onBookmarkClicked(msgToUpdate, type);
+    }
+
+    @Override
+    public void onPhotoClicked(int adapterPosition) {
+        mListener.onPhotoClicked((TextPhotoMessageVM) mMessageList.get(adapterPosition));
     }
 }

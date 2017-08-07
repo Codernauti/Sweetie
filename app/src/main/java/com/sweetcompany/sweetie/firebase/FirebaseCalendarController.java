@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.firebase;
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +20,7 @@ import java.util.Map;
 public class FirebaseCalendarController {
 
     private final DatabaseReference mCoupleCalendar;
+    private DatabaseReference mLastMonthReference;
     private ValueEventListener mDayListener;
 
     private CalendarControllerListener mListener;
@@ -25,7 +28,6 @@ public class FirebaseCalendarController {
 
     public interface CalendarControllerListener {
         void onMonthActionsDiaryDownloaded(Map<String, Map<String, ActionDiaryFB>> monthActionsDiary);
-        void onActionDiaryAdded(ActionDiaryFB actionDiary);
     }
 
 
@@ -39,7 +41,9 @@ public class FirebaseCalendarController {
         mListener = listener;
     }
 
-    public void attachMonthListener(String yearMonth) {
+    public void attachNewMonthListener(String yearMonth) {
+        // Only one MonthListener can be set
+        this.detachListener();
         if (mDayListener == null) {
             mDayListener = new ValueEventListener() {
                 @Override
@@ -56,15 +60,16 @@ public class FirebaseCalendarController {
                 @Override
                 public void onCancelled(DatabaseError databaseError) { }
             };
-
-            mCoupleCalendar.child(yearMonth).addValueEventListener(mDayListener);
+            mLastMonthReference = mCoupleCalendar.child(yearMonth);
+            mLastMonthReference.addValueEventListener(mDayListener);
+            Log.d("CalendarController", "attachListener");
         }
-
     }
 
     public void detachListener() {
         if (mDayListener != null) {
-            mCoupleCalendar.removeEventListener(mDayListener);
+            mLastMonthReference.removeEventListener(mDayListener);
+            Log.d("CalendarController", "detachListener");
         }
         mDayListener = null;
     }

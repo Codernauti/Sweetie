@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -21,8 +20,27 @@
         android:background="@drawable/shape_circle"
         />
 
+    <TextView
+        android:id="@+id/chat_item_photo_time_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/chat_item_msg_state"
+        android:layout_toStartOf="@+id/chat_item_msg_state"
+        android:layout_marginEnd="4dp"
+        android:textSize="12sp"
+        />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/chat_item_msg_state"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_alignBottom="@+id/chat_item_photo_container"
+        android:layout_toStartOf="@+id/chat_item_photo_container"
+        android:src="@drawable/ic_access_time_black_24dp"/>
+
     <com.sweetcompany.sweetie.gallery.SquareLayout
-        android:id="@+id/square_main_photo"
+        android:id="@+id/chat_item_photo_container"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_alignParentEnd="true"
@@ -33,7 +51,7 @@
         android:background="@drawable/shape_rounded_rectangle">
 
         <TextView
-            android:id="@+id/chat_progress_percent_main"
+            android:id="@+id/chat_progress_percent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -41,7 +59,7 @@
             android:layout_centerVertical="true"/>
 
         <ProgressBar
-            android:id="@+id/chat_progressBarUpload_main"
+            android:id="@+id/chat_progressBarUpload"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,22 +67,13 @@
             android:layout_centerVertical="true" />
 
         <ImageView
-            android:id="@+id/chat_thumbnail_main"
+            android:id="@+id/chat_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:padding="6dp"
             android:scaleType="centerCrop" />
     </com.sweetcompany.sweetie.gallery.SquareLayout>
-
-    <TextView
-        android:id="@+id/chat_partner_item_time_photo_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/square_main_photo"
-        android:layout_toStartOf="@+id/square_main_photo"
-        android:textSize="12sp"
-        />
 
 
 </RelativeLayout>

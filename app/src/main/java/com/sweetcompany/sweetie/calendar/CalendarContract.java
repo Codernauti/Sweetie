@@ -13,12 +13,13 @@ public interface CalendarContract {
 
     interface View {
         void setPresenter(Presenter presenter);
+        // call after setPresenter()
+        void initializeActualMonth();
 
         void setMonthActionsDiary(Map<String, Map<String, ActionDiaryFB>> monthActionDiary);
     }
 
     interface Presenter {
-        void downloadActionsDiary(String day);
         void downloadActionsDiaryForMonth(String yearAndMonth);
     }
 

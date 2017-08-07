@@ -18,6 +18,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
+import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,10 +41,13 @@ public class FirebaseGalleryController {
     private final FirebaseStorage mStorage;
     //private final StorageReference imagesRef;
 
+    private final String coupleID;
+
     private ValueEventListener mGalleryListener;
     private ChildEventListener mGalleryPhotosListener;
 
     private List<GalleryControllerListener> mListeners = new ArrayList<>();
+
 
     public interface GalleryControllerListener {
         void onGalleryChanged(GalleryFB gallery);
@@ -65,7 +69,7 @@ public class FirebaseGalleryController {
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
         //imagesRef = mStorageRef.child("gallery_photos/");
-
+        coupleID = coupleUid;
     }
 
     public void addListener(GalleryControllerListener listener) {
@@ -171,8 +175,8 @@ public class FirebaseGalleryController {
 
         Uri uriLocal;
         uriLocal = Uri.parse(media.getUriLocal());
-        //final Uri file = Uri.fromFile(new File(media.getUri()));
-        StorageReference photoRef = mStorageRef.child("gallery_photos/"+uriLocal.getLastPathSegment());
+
+        StorageReference photoRef = mStorageRef.child("gallery_photos/"+coupleID+"/"+uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

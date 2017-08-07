@@ -10,6 +10,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
+import com.sweetcompany.sweetie.model.ToDoListFB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class FirebaseActionsController {
     private final DatabaseReference mActionsDbReference;
     private final DatabaseReference mChatsDbReference;
     private final DatabaseReference mGalleriesDbReference;
+    private final DatabaseReference mToDoListsDbReference;
 
     private List<OnFirebaseActionsDataChange> mListeners = new ArrayList<>();
     private ValueEventListener mActionsEventListener;
@@ -38,6 +40,7 @@ public class FirebaseActionsController {
         mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS + "/" + coupleUid);
         mChatsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.CHATS + "/" + coupleUid);
         mGalleriesDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GALLERIES + "/" + coupleUid);
+        mToDoListsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.TODOLIST + "/" + coupleUid);
     }
 
     public void addListener(OnFirebaseActionsDataChange listener) {
@@ -135,6 +138,29 @@ public class FirebaseActionsController {
 
         // put into queue for network
         newGalleryPush.setValue(gallery);
+        newActionPush.setValue(actionFB);
+
+        return newKeys;
+    }
+    public List<String> pushToDoListAction(ActionFB actionFB, String todolistTitle) {
+        List<String> newKeys =  new ArrayList<String>();
+
+        DatabaseReference newToDoListPush = mToDoListsDbReference.push();
+        String newToDoListKey = newToDoListPush.getKey();
+        newKeys.add(newToDoListKey);
+        DatabaseReference newActionPush = mActionsDbReference.push();
+        String newActionKey = newActionPush.getKey();
+        newKeys.add(newActionKey);
+
+        // Set Action
+        actionFB.setChildKey(newToDoListKey);
+
+        // Create ToDoList and set ToDoList
+        ToDoListFB toDoList = new ToDoListFB();
+        toDoList.setTitle(todolistTitle);
+
+        // put into queue for network
+        newToDoListPush.setValue(toDoList);
         newActionPush.setValue(actionFB);
 
         return newKeys;

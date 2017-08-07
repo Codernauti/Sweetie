@@ -30,4 +30,9 @@ interface Constraints {
     String GALLERY_PHOTOS = "gallery-photos";
 
     String CALENDAR = "calendar";
+
+    String TODOLIST = "todolists";
+
+    String TODOLIST_CHECKENTRY = "todolist-checkentry";
+        String CHECKED = "checked";
 }

@@ -30,6 +30,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     private FloatingActionButton mFabNewAction;
     private FloatingActionButton mFabNewChatAction;
     private FloatingActionButton mFabNewGalleryAction;
+    private FloatingActionButton mFabNewToDoListAction;
     private Animation fab_small_open,fab_small_close, fab_open, fab_close, rotate_forward,rotate_backward;
     private boolean mIsFabOpen = false;
 
@@ -98,6 +99,9 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         mFabNewGalleryAction = (FloatingActionButton) root.findViewById(R.id.fab_new_photo);
         mFabNewGalleryAction.setClickable(false);
 
+        mFabNewToDoListAction = (FloatingActionButton) root.findViewById(R.id.fab_new_todolist);
+        mFabNewToDoListAction.setClickable(false);
+
 
         // Add listener
         mFabNewAction.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +133,18 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
                 dialogFragment.show(getActivity().getFragmentManager(), ActionNewGalleryFragment.TAG);
             }
         });
+
+        mFabNewToDoListAction.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                animateFAB();
+                ActionNewToDoListFragment dialogFragment = ActionNewToDoListFragment.newInstance();
+                dialogFragment.setPresenter(mPresenter);
+                dialogFragment.show(getActivity().getFragmentManager(),ActionNewToDoListFragment.TAG);
+            }
+        });
+
 
         /*mActionsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -178,9 +194,11 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
             mFabNewChatAction.startAnimation(fab_small_close);
             mFabNewGalleryAction.startAnimation(fab_small_close);
+            mFabNewToDoListAction.startAnimation(fab_small_close);
 
             mFabNewChatAction.setClickable(false);
             mFabNewGalleryAction.setClickable(false);
+            mFabNewToDoListAction.setClickable(false);
 
             mIsFabOpen = false;
             mFrameBackground.setVisibility(View.INVISIBLE);
@@ -191,9 +209,11 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
 
             mFabNewChatAction.startAnimation(fab_small_open);
             mFabNewGalleryAction.startAnimation(fab_small_open);
+            mFabNewToDoListAction.startAnimation(fab_small_open);
 
             mFabNewChatAction.setClickable(true);
             mFabNewGalleryAction.setClickable(true);
+            mFabNewToDoListAction.setClickable(true);
 
             mIsFabOpen = true;
             mFrameBackground.setVisibility(View.VISIBLE);

@@ -71,6 +71,25 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         }
     }
 
+    @Override
+    public List<String> pushToDoListAction(String userInputToDoListTitle, String username) {
+        ActionFB action = null;
+        // TODO: add description and fix username variable, what username???
+        try {
+            action = new ActionFB(userInputToDoListTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.TODOLIST);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (action != null) {
+            return mController.pushToDoListAction(action, userInputToDoListTitle);
+        }
+        else {
+            Log.d(TAG, "An error in the creation of a new ToDoListAction occurs!");
+            return null;
+        }
+    }
+
     /*@Override
     public void pushAction(String userInputGalleryTitle, String username) {
         ActionFB action = null;
@@ -101,6 +120,11 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     break;
                 case 1:
                     newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(),
+                            action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
+                    mActionsList.add(newActionVM);
+                    break;
+                case 2:
+                    newActionVM = new ActionToDoListVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;

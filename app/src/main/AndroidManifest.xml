@@ -49,6 +49,8 @@
             android:theme="@style/AppTheme"/>
         <activity android:name=".todolist.ToDoListActivity"
             android:theme="@style/AppTheme"/>
+        <activity android:name=".geogift.GeogiftActivity"
+            android:theme="@style/AppTheme"/>
 
         <service
             android:name=".UserMonitorService"

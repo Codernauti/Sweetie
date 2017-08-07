@@ -10,6 +10,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
+import com.sweetcompany.sweetie.model.GeogiftFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class FirebaseActionsController {
     private final DatabaseReference mChatsDbReference;
     private final DatabaseReference mGalleriesDbReference;
     private final DatabaseReference mToDoListsDbReference;
+    private final DatabaseReference mGeogiftDbReference;
 
     private List<OnFirebaseActionsDataChange> mListeners = new ArrayList<>();
     private ValueEventListener mActionsEventListener;
@@ -41,6 +43,7 @@ public class FirebaseActionsController {
         mChatsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.CHATS + "/" + coupleUid);
         mGalleriesDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GALLERIES + "/" + coupleUid);
         mToDoListsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.TODOLIST + "/" + coupleUid);
+        mGeogiftDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GEOGIFT + "/" + coupleUid);
     }
 
     public void addListener(OnFirebaseActionsDataChange listener) {
@@ -142,6 +145,7 @@ public class FirebaseActionsController {
 
         return newKeys;
     }
+
     public List<String> pushToDoListAction(ActionFB actionFB, String todolistTitle) {
         List<String> newKeys =  new ArrayList<String>();
 
@@ -161,6 +165,30 @@ public class FirebaseActionsController {
 
         // put into queue for network
         newToDoListPush.setValue(toDoList);
+        newActionPush.setValue(actionFB);
+
+        return newKeys;
+    }
+
+    public List<String> pushGeogiftAction(ActionFB actionFB, String geogiftTitle) {
+        List<String> newKeys =  new ArrayList<String>();
+
+        DatabaseReference newGeogiftPush = mGeogiftDbReference.push();
+        String newGeogiftKey = newGeogiftPush.getKey();
+        newKeys.add(newGeogiftKey);
+        DatabaseReference newActionPush = mActionsDbReference.push();
+        String newActionKey = newActionPush.getKey();
+        newKeys.add(newActionKey);
+
+        // Set Action
+        actionFB.setChildKey(newGeogiftKey);
+
+        // Create Gallery and set Gallery
+        GeogiftFB geogift = new GeogiftFB();
+        geogift.setTitle(geogiftTitle);
+
+        // put into queue for network
+        newGeogiftPush.setValue(geogift);
         newActionPush.setValue(actionFB);
 
         return newKeys;

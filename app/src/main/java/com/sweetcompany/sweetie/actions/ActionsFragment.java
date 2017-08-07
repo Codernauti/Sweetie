@@ -129,7 +129,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         mFabNewGalleryAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // hide others action fab
                 animateFAB();
                 ActionNewGalleryFragment dialogFragment = ActionNewGalleryFragment.newInstance();
                 dialogFragment.setPresenter(mPresenter);
@@ -138,7 +137,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         });
 
         mFabNewToDoListAction.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View v) {
                 animateFAB();
@@ -148,6 +146,15 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
             }
         });
 
+        mFabNewGeogiftAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                animateFAB();
+                ActionNewGeogiftFragment dialogFragment = ActionNewGeogiftFragment.newInstance();
+                dialogFragment.setPresenter(mPresenter);
+                dialogFragment.show(getActivity().getFragmentManager(), ActionNewGeogiftFragment.TAG);
+            }
+        });
 
         /*mActionsListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -172,7 +179,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });*/
-
 
         return root;
     }

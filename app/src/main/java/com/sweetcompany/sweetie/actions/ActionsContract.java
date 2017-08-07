@@ -17,6 +17,7 @@ public interface ActionsContract {
         List<String> pushChatAction(String userInputChatTitle, String username);
         List<String> pushGalleryAction(String userInputGalleryTitle, String username);
         List<String> pushToDoListAction(String userInputToDoListTitle, String username);
+        List<String> pushGeogiftAction(String userInputGeogiftTitle, String username);
 
         //void pushAction(String userInputGalleryTitle, String username);
     }

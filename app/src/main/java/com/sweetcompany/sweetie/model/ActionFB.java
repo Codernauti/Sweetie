@@ -11,6 +11,7 @@ public class ActionFB {
     public final static int CHAT = 0;
     public final static int GALLERY = 1;
     public final static int TODOLIST = 2;
+    public final static int GEOGIFT = 3;
 
     private String key;
     private String title;

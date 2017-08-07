@@ -43,7 +43,7 @@ public class ActionNewToDoListFragment extends DialogFragment implements DialogV
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String dialogTitle = "Insert new todo list title";
+        String dialogTitle = getString(R.string.action_new_todolist_title_dialog);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View dialogLayout = inflater.inflate(R.layout.action_new_todolist_dialog, null);

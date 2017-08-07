@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="rosino">#FF4081</color>
     <color name="rosa_sweetie">#E25B5B</color>
     <color name="yellow_sweetie">#FFFF8D</color>
     <color name="orange_sweetie">#FFCE48</color>
@@ -11,6 +12,7 @@
     <color name="white">#FFFFFF</color>
     <color name="grey">#E0E0E0</color>
     <color name="pink_light">#FFCCCC</color>
+    <color name="azzurro_pastello">#66B2FF</color>
 
     <color name="chat_background">#e6e6e6</color>
     <color name="textHighlight">#FFFFFF</color>

@@ -28,9 +28,12 @@ public class GalleryActivity extends AppCompatActivity {
     private String TAG = GalleryActivity.class.getSimpleName();
 
     // key for Intent extras
-    public static final String GALLERY_DATABASE_KEY = "GALLERYDatabaseKey";
-    public static final String GALLERY_TITLE = "GALLERYTitle";    // For offline user
+    public static final String GALLERY_DATABASE_KEY = "GalleryDatabaseKey";
+    public static final String GALLERY_TITLE = "GalleryTitle";    // For offline user
     public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
+
+    private String mGalleryKey;
+    private String mActionKey;
 
     private GalleryPresenter mPresenter;
     private FirebaseGalleryController mController;
@@ -40,26 +43,23 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery_activity);
 
-        String galleryKey = null;
-        String actionKey = null;
-        if (savedInstanceState == null) { // first Activity open
-            Bundle galleryBundle = getIntent().getExtras();
-            if (galleryBundle != null) {
-                galleryKey = galleryBundle.getString(GALLERY_DATABASE_KEY);
-                actionKey = galleryBundle.getString(ACTION_DATABASE_KEY);
+        if (savedInstanceState == null) {   // first opened
+            savedInstanceState = getIntent().getExtras();
+        }
 
-                Log.d(TAG, "from Intent GALLERY_TITLE: " +
-                        galleryBundle.getString(GALLERY_TITLE));
-                Log.d(TAG, "from Intent GALLERY_DATABASE_KEY: " +
-                        galleryBundle.getString(GALLERY_DATABASE_KEY));
-                Log.d(TAG, "from Intent GALLERY_ACTION_KEY: " +
-                        galleryBundle.getString(ACTION_DATABASE_KEY));
-            }
-            else {
-                Log.w(TAG, "getIntent FAILED!");
-            }
-        } else {
-            // TODO: restore data from savedInstanceState
+        if (savedInstanceState != null) {
+            mGalleryKey = savedInstanceState.getString(GALLERY_DATABASE_KEY);
+            mActionKey = savedInstanceState.getString(ACTION_DATABASE_KEY);
+
+            Log.d(TAG, "from Intent GALLERY_TITLE: " +
+                    savedInstanceState.getString(GALLERY_TITLE));
+            Log.d(TAG, "from Intent GALLERY_TITLE_DATABASE_KEY: " +
+                    savedInstanceState.getString(GALLERY_DATABASE_KEY));
+            Log.d(TAG, "from Intent GALLERY_TITLE_ACTION_KEY: " +
+                    savedInstanceState.getString(ACTION_DATABASE_KEY));
+        }
+        else {
+            Log.w(TAG, "No savedInstanceState or intentArgs!");
         }
 
         GalleryFragment view = (GalleryFragment) getSupportFragmentManager()
@@ -76,8 +76,8 @@ public class GalleryActivity extends AppCompatActivity {
         String userMail = Utility.getStringPreference(this, Utility.MAIL);
         String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
 
-        if (galleryKey != null) {
-            mController = new FirebaseGalleryController(coupleUid, galleryKey, actionKey);
+        if (mGalleryKey != null) {
+            mController = new FirebaseGalleryController(coupleUid, mGalleryKey, mActionKey);
             mPresenter = new GalleryPresenter(view, mController, userMail);
         }
         else {
@@ -109,6 +109,13 @@ public class GalleryActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(GALLERY_DATABASE_KEY, mGalleryKey);
+        outState.putString(ACTION_DATABASE_KEY, mActionKey);
     }
 }
 

@@ -23,18 +23,19 @@ interface Constraints {
         String DATE_TIME = "dataTime";
 
     String CHATS = "chats";
+        String CHAT_MESSAGES = "chat-messages";
 
-    String CHAT_MESSAGES = "chat-messages";
-        String BOOKMARK = "bookmarked";
+    String BOOKMARK = "bookmarked";
 
     String GALLERIES = "galleries";
-
-    String GALLERY_PHOTOS = "gallery-photos";
+        String GALLERY_PHOTOS = "gallery-photos";
 
     String CALENDAR = "calendar";
 
     String TODOLIST = "todolists";
-
-    String TODOLIST_CHECKENTRY = "todolist-checkentry";
+        String TODOLIST_CHECKENTRY = "todolist-checkentry";
         String CHECKED = "checked";
+
+    String GEOGIFT = "geogifts";
+        String GEOGIFT_ITEMS = "geogift-items";
 }

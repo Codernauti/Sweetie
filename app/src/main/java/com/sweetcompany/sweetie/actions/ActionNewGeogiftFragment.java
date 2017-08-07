@@ -10,30 +10,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.geogift.GeogiftActivity;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.List;
 
 /**
- * Created by Federico Allegro on 24-May-17.
+ * Created by ghiro on 07/08/2017.
  */
 
-// TODO: decide if use DialogFragment of this class or go to GalleryActivity
-public class ActionNewGalleryFragment extends DialogFragment implements ActionsContract.DialogView {
+public class ActionNewGeogiftFragment extends DialogFragment implements ActionsContract.DialogView {
 
-    public static final String TAG = "ActionNewGalleryFragment";
+    public static final String TAG = "ActionNewGeogiftFragment";
 
     private static final String USER_POSITIVE_RESPONSE = "Ok";
     private static final String USER_NEGATIVE_RESPONSE = "Cancel";
 
-    private EditText mTitleGalleryEditText;
+    private EditText mTitleGeogiftEditText;
 
     private ActionsContract.Presenter mPresenter;
 
-    static ActionNewGalleryFragment newInstance() {
-        ActionNewGalleryFragment fragment = new ActionNewGalleryFragment();
+    static ActionNewGeogiftFragment newInstance() {
+        ActionNewGeogiftFragment fragment = new ActionNewGeogiftFragment();
         return fragment;
     }
 
@@ -44,11 +43,11 @@ public class ActionNewGalleryFragment extends DialogFragment implements ActionsC
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String dialogTitle = getString(R.string.action_new_gallery_title_dialog);
+        String dialogTitle = getString(R.string.action_new_geogift_title_dialog);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View dialogLayout = inflater.inflate(R.layout.action_new_gallery_dialog, null);
-        mTitleGalleryEditText = (EditText) dialogLayout.findViewById(R.id.action_new_gallery_title);
+        View dialogLayout = inflater.inflate(R.layout.action_new_geogift_dialog, null);
+        mTitleGeogiftEditText = (EditText) dialogLayout.findViewById(R.id.action_new_geogift_title);
 
         return new AlertDialog.Builder(getActivity())
                 //.setIcon(R.drawable.alert_dialog_icon)
@@ -57,17 +56,18 @@ public class ActionNewGalleryFragment extends DialogFragment implements ActionsC
                 .setPositiveButton(USER_POSITIVE_RESPONSE,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                String userInputGalleryTitle = mTitleGalleryEditText.getText().toString();
+                                String userInputGeogiftTitle = mTitleGeogiftEditText.getText().toString();
 
-                                if (!userInputGalleryTitle.isEmpty()) {
+                                if (!userInputGeogiftTitle.isEmpty()) {
+                                    // [0] : geogiftKey, [1] : actionKey
                                     String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
-                                    List<String> keys = mPresenter.pushGalleryAction(userInputGalleryTitle, userName);
+                                    List<String> keys = mPresenter.pushGeogiftAction(userInputGeogiftTitle, userName);
 
                                     if (keys != null) {
-                                        Intent intent = new Intent(getActivity(), GalleryActivity.class);
-                                        intent.putExtra(GalleryActivity.GALLERY_TITLE, userInputGalleryTitle);
-                                        intent.putExtra(GalleryActivity.GALLERY_DATABASE_KEY, keys.get(0));
-                                        intent.putExtra(GalleryActivity.ACTION_DATABASE_KEY, keys.get(1));
+                                        Intent intent = new Intent(getActivity(), GeogiftActivity.class);
+                                        intent.putExtra(GeogiftActivity.GEOGIFT_TITLE, userInputGeogiftTitle);
+                                        intent.putExtra(GeogiftActivity.GEOGIFT_DATABASE_KEY, keys.get(0));
+                                        intent.putExtra(GeogiftActivity.ACTION_DATABASE_KEY, keys.get(1));
                                         startActivity(intent);
                                     }
                                 }

@@ -14,6 +14,10 @@
     <string name="action_new_chat_title_dialog">Insert new chat title</string>
     <!-- ActionNewGalleryFragment dialog -->
     <string name="action_new_gallery_title_dialog">Insert new gallery title</string>
+    <!-- ActionNewToDoListFragment dialog -->
+    <string name="action_new_todolist_title_dialog">Insert new To-Do list title</string>
+    <!-- ActionNewGeogiftFragment dialog -->
+    <string name="action_new_geogift_title_dialog">Insert new geogift title</string>
 
 
     <!-- Test String for debug version -->

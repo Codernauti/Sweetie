@@ -80,6 +80,21 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         }
     }
 
+    @Override
+    public List<String> pushGeogiftAction(String userInputGeogiftTitle, String username) {
+        ActionFB action = null;
+        // TODO: add description and fix username variable, what username???
+        action = new ActionFB(userInputGeogiftTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GEOGIFT);
+
+        if (action != null) {
+            return mController.pushGeogiftAction(action, userInputGeogiftTitle);
+        }
+        else {
+            Log.d(TAG, "An error in the creation of a new GeogiftAction occurs!");
+            return null;
+        }
+    }
+
     /*@Override
     public void pushAction(String userInputGalleryTitle, String username) {
         ActionFB action = null;
@@ -115,6 +130,11 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     break;
                 case 2:
                     newActionVM = new ActionToDoListVM(action.getTitle(), action.getDescription(),
+                            action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
+                    mActionsList.add(newActionVM);
+                    break;
+                case 3:
+                    newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;

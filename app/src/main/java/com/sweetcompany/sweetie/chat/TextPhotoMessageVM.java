@@ -6,11 +6,13 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
 
+import java.io.Serializable;
+
 /**
  * Created by ghiro on 03/08/2017.
  */
 
-public class TextPhotoMessageVM extends MessageVM {
+public class TextPhotoMessageVM extends MessageVM implements Serializable {
     private String mText;
     private String mUriLocal;
     private String mUriStorage;
@@ -81,10 +83,5 @@ public class TextPhotoMessageVM extends MessageVM {
         else {  // isThePartner()
             return R.layout.chat_partner_list_item_photo;
         }
-    }
-
-    @Override
-    TextPhotoMessageViewHolder newViewHolder(View inflatedView) {
-        return new TextPhotoMessageViewHolder(inflatedView, isTheMainUser());
     }
 }

@@ -1,39 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="end">
-
-    <ImageButton
-        android:id="@+id/chat_item_bookmark_button"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/selector_image_bookmark"
-        android:background="@drawable/shape_circle"
-        />
-
-    <TextView
-        android:id="@+id/chat_item_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
-        android:maxWidth="250dp"
-        android:textSize="16sp"
-        android:background="@drawable/shape_circle"
-        android:padding="10dp"
-        android:text="@string/lorem_ipsum"/>
-
-</LinearLayout>-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
@@ -60,9 +25,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/chat_item_text_view"
-        android:layout_toStartOf="@+id/chat_item_text_view"
+        android:layout_toStartOf="@+id/chat_item_msg_state"
+        android:layout_marginEnd="4dp"
         android:textSize="12sp"
         />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/chat_item_msg_state"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_alignBottom="@+id/chat_item_text_view"
+        android:layout_toStartOf="@+id/chat_item_text_view"
+        android:src="@drawable/ic_access_time_black_24dp"/>
 
     <io.github.rockerhieu.emojicon.EmojiconTextView
         app:emojiconSize="@dimen/emoticons"

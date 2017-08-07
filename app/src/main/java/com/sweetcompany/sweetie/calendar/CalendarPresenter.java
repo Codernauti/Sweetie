@@ -5,9 +5,6 @@ import android.util.Log;
 import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,23 +20,17 @@ public class CalendarPresenter implements CalendarContract.Presenter,
     private final FirebaseCalendarController mController;
 
     public CalendarPresenter(CalendarContract.View view, FirebaseCalendarController controller) {
-        mView = view;
-        mView.setPresenter(this);
-
         mController = controller;
         mController.addListener(this);
-    }
 
-    @Override
-    public void downloadActionsDiary(String yearMonth) {
-        /*mController.detachListener();
-        mController.attachMonthListener(yearMonth);*/
+        mView = view;
+        mView.setPresenter(this);
+        mView.initializeActualMonth();
     }
 
     @Override
     public void downloadActionsDiaryForMonth(String yearAndMonth) {
-        mController.detachListener();
-        mController.attachMonthListener(yearAndMonth);
+        mController.attachNewMonthListener(yearAndMonth);
     }
 
     // Callback from the Controller
@@ -49,9 +40,4 @@ public class CalendarPresenter implements CalendarContract.Presenter,
         mView.setMonthActionsDiary(monthActionsDiary);
     }
 
-    @Override
-    public void onActionDiaryAdded(ActionDiaryFB actionDiary) {
-        Log.d(TAG, "ActionDiary arrived! " + actionDiary.getKey() + " - size: " + actionDiary.getMessages().size());
-        //mView.addActionDiary(actionDiary);
-    }
 }

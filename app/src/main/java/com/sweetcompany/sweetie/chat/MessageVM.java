@@ -11,9 +11,9 @@ abstract class MessageVM {
     static final boolean THE_PARTNER = false;
 
     public final static int TEXT_MSG = 0;
-    public final static int PHOTO_MSG = 1;
+    public final static int TEXT_PHOTO_MSG = 1;
 
-    private final String mKey;
+    private String mKey;
 
     private final boolean mWho;
     private final String mTime;   // Format HH:mm
@@ -40,6 +40,9 @@ abstract class MessageVM {
     void setBookmarked(boolean bookmarked) {mBookMarked = bookmarked; }
 
     String getKey() { return mKey; }
+    void setKey(String key){
+        this.mKey = key;
+    }
 
     int getPercent(){
         return percent;
@@ -51,7 +54,4 @@ abstract class MessageVM {
     abstract void configViewHolder(MessageViewHolder viewHolder);
 
     abstract int getIdView();
-
-    @Deprecated
-    abstract MessageViewHolder newViewHolder(View inflatedView);
 }

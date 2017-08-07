@@ -41,9 +41,5 @@ class TextMessageVM extends MessageVM {
         }
     }
 
-    @Override
-    TextMessageViewHolder newViewHolder(View inflatedView) {
-        return new TextMessageViewHolder(inflatedView, isTheMainUser());
-    }
 }
 

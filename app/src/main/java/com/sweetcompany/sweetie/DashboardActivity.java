@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,13 +16,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.sweetcompany.sweetie.actions.ActionsPresenter;
-import com.sweetcompany.sweetie.couple.CoupleActivity;
+import com.sweetcompany.sweetie.calendar.CalendarFragment;
 import com.sweetcompany.sweetie.couple.CoupleDetailsActivity;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
-import com.sweetcompany.sweetie.pairing.PairingActivity;
 import com.sweetcompany.sweetie.utils.Utility;
 
 public class DashboardActivity extends AppCompatActivity implements IPageChanger {
@@ -88,6 +87,7 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
         super.onPause();
         // TODO: clean up adapter?
         mActionsController.detachNetworkDatabase();
+        mCalendarController.detachListener();
     }
 
     @Override

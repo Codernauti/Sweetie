@@ -4,8 +4,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,7 +21,6 @@ import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
-import com.sweetcompany.sweetie.model.MediaFB;
 import com.sweetcompany.sweetie.model.MessageFB;
 
 import java.util.ArrayList;
@@ -37,9 +38,10 @@ public class FirebaseChatController {
 
     private final String mActionUid;
 
-    private final String mChatUrl;              // chat-message/<couple_uid>/<chat_uid>
-    private final String mCoupleCalendarUrl;    // calendar/<couple_uid>
-    private final String mCoupleActionsDiaryUrl;      // actionsDiary/<couple_uid>/<action_uid>
+    private final String mChatMessagesUrl;          // chat-message/<couple_uid>/<chat_uid>
+    private final String mCoupleCalendarUrl;        // calendar/<couple_uid>
+    private final String mCoupleActionsDiaryUrl;    // actionsDiary/<couple_uid>/<action_uid>
+    private final String mActionUrl;                // actions/<couple_uid>/<action_uid>
 
     private final DatabaseReference mDatabase;
     private final DatabaseReference mChat;
@@ -68,9 +70,10 @@ public class FirebaseChatController {
     public FirebaseChatController(String coupleUid, String chatKey, String actionKey) {
         mActionUid = actionKey;
 
-        mChatUrl = Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey;
+        mChatMessagesUrl = Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey;
         mCoupleCalendarUrl = Constraints.CALENDAR + "/" + coupleUid;
         mCoupleActionsDiaryUrl = "actionsDiary" + "/" + coupleUid;
+        mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey;
 
         FirebaseDatabase firebaseDb = FirebaseDatabase.getInstance();
         mDatabase = firebaseDb.getReference();
@@ -176,7 +179,7 @@ public class FirebaseChatController {
         Log.d(TAG, "Update MessageFB: " + msg);
 
         HashMap<String, Object> updates = new HashMap<>();
-        updates.put(mChatUrl + "/" + msg.getKey() + "/" + Constraints.BOOKMARK, msg.isBookmarked());
+        updates.put(mChatMessagesUrl + "/" + msg.getKey() + "/" + Constraints.BOOKMARK, msg.isBookmarked());
 
         String actionDiaryDataUrl = mCoupleActionsDiaryUrl + "/" + msg.getDate() + "/" + mActionUid;
         final String actionDiaryUrl = mCoupleCalendarUrl + "/" + msg.getYearAndMonth() + "/"
@@ -206,22 +209,36 @@ public class FirebaseChatController {
     }
 
     // push message to db and update action of this chat
-    public void sendMessage(MessageFB msg) {
+    public String sendMessage(MessageFB msg) {
         Log.d(TAG, "Send text MessageFB: " + msg);
-        // TODO: use atomic operation with hashmap
+
+        Map<String, Object> updates = new HashMap<>();
+        final String newMessageUid = mChatMessages.push().getKey();
 
         // push a message into mChatMessages reference
-        mChatMessages.push().setValue(msg);
+        updates.put(mChatMessagesUrl + "/" + newMessageUid, msg);
 
         // update description and dataTime of action of this associated Chat
-        Map<String, Object> actionUpdates = new HashMap<>();
-        actionUpdates.put("description", msg.getText());
-        actionUpdates.put("dataTime", msg.getDateTime());
-        mAction.updateChildren(actionUpdates);
+        updates.put(mActionUrl + "/" + Constraints.DESCRIPTION, msg.getText());
+        updates.put(mActionUrl + "/" + Constraints.DATE_TIME, msg.getDateTime());
+
+        mDatabase.updateChildren(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                // TODO: update status icon of message
+                /*for (ChatControllerListener listener : mListeners) {
+                    listener.onMessageSent(newMessageUid);
+                }*/
+            }
+        });
+
+        return newMessageUid;
     }
 
-    public void sendMedia(final MessageFB media) {
+    public String sendMedia(final MessageFB media) {
         Log.d(TAG, "Send photoText MessageFB: " + media);
+
+        final String newMessageUID = mChatMessages.push().getKey();
 
         Uri uriLocal;
         uriLocal = Uri.parse(media.getUriLocal());
@@ -245,7 +262,7 @@ public class FirebaseChatController {
                 media.setUriStorage(stringUriStorage);
 
                 // push a message into mGalleryPhotos reference
-                mChatMessages.push().setValue(media);
+                mChatMessages.child(newMessageUID).setValue(media);
 
                 // update description and dataTime of action of this associated Gallery
                 Map<String, Object> actionUpdates = new HashMap<>();
@@ -268,6 +285,8 @@ public class FirebaseChatController {
                         }
                     }
                 });
+
+        return newMessageUID;
     }
 
 }

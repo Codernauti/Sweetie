@@ -19,6 +19,8 @@ interface Constraints {
     String PAIRING_REQUESTS = "pairing-requests";
 
     String ACTIONS = "actions";
+        String DESCRIPTION = "description";
+        String DATE_TIME = "dataTime";
 
     String CHATS = "chats";
 

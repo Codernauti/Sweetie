@@ -1,10 +1,5 @@
 package com.sweetcompany.sweetie.utils;
 
-
-//import android.icu.text.DateFormat;
-//import android.icu.text.SimpleDateFormat;
-//import android.icu.util.TimeZone;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -22,14 +17,14 @@ public class DataMaker {
 
     public static SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-    public static String get_UTC_DateTime() throws ParseException {
+    public static String get_UTC_DateTime() {
         isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Calendar today = Calendar.getInstance();
 
         return isoFormat.format(today.getTime());
     }
 
-    public static String get_Local_DateTime() throws ParseException {
+    public static String get_Local_DateTime(){
         isoFormat.setTimeZone(TimeZone.getDefault());
         Calendar today = Calendar.getInstance();
 
@@ -74,6 +69,7 @@ public class DataMaker {
         //return utc;
     }
 
+
     // Give dateTime
     // return data formatted for Actions
     // es: Give (yyyy-MM-dd'T'HH:mm:ss)
@@ -110,6 +106,7 @@ public class DataMaker {
             }
             out = localFormatDate.format(local);
         }
+
         return out;
     }
 

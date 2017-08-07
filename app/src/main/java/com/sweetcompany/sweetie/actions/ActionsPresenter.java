@@ -67,11 +67,9 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     public List<String> pushToDoListAction(String userInputToDoListTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
-        try {
+
             action = new ActionFB(userInputToDoListTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.TODOLIST);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
 
         if (action != null) {
             return mController.pushToDoListAction(action, userInputToDoListTitle);

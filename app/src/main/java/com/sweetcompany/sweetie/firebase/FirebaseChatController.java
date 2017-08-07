@@ -51,6 +51,8 @@ public class FirebaseChatController {
     private final StorageReference mStorageRef;
     private final FirebaseStorage mStorage;
 
+    private final String coupleID;
+
     private ValueEventListener mChatListener;
     private ChildEventListener mChatMessagesListener;
 
@@ -84,7 +86,7 @@ public class FirebaseChatController {
 
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
-        //imagesRef = mStorageRef.child("gallery_photos/");
+        coupleID = coupleUid;
     }
 
     public void addListener(ChatControllerListener listener) {
@@ -242,7 +244,7 @@ public class FirebaseChatController {
 
         Uri uriLocal;
         uriLocal = Uri.parse(media.getUriLocal());
-        StorageReference photoRef = mStorageRef.child("gallery_photos/"+uriLocal.getLastPathSegment());
+        StorageReference photoRef = mStorageRef.child("gallery_photos/"+coupleID+"/"+uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

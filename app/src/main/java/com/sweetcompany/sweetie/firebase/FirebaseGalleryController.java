@@ -68,7 +68,6 @@ public class FirebaseGalleryController {
                 .getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
-        //imagesRef = mStorageRef.child("gallery_photos/");
         coupleID = coupleUid;
     }
 

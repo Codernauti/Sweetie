@@ -16,6 +16,20 @@
         android:layout_height="match_parent"
         android:background="@color/white">
     </FrameLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_new_todolist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="230dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:visibility="invisible"
+        android:src="@drawable/action_todolist_icon"
+        app2:backgroundTint="@color/rosa_sweetie"
+        app2:elevation="6dp"
+        app2:pressedTranslationZ="12dp" />
+
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_new_photo"
             android:layout_width="wrap_content"

@@ -233,7 +233,6 @@ public class FirebaseChatController {
                 }*/
             }
         });
-
         return newMessageUid;
     }
 

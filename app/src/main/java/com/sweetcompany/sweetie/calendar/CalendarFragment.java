@@ -1,10 +1,23 @@
 package com.sweetcompany.sweetie.calendar;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.BulletSpan;
+import android.text.style.ImageSpan;
+import android.text.style.StyleSpan;
+import android.text.style.TextAppearanceSpan;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +30,7 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
 
@@ -45,6 +59,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     private Map<String, Map<String, ActionDiaryFB>> mMonthActionsDiary;
 
     private final DayViewDecorator mDayDecorator = new DayViewDecorator() {
+
         @Override
         public boolean shouldDecorate(CalendarDay day) {
             String dayStr = mDayFormat.format(day.getDate());
@@ -53,7 +68,15 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
         @Override
         public void decorate(DayViewFacade view) {
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_chat_icon_36x36));
+            view.addSpan(new DotSpan(4, ContextCompat.getColor(getContext(), R.color.rosa_sweetie)));
+
+            /*Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.action_chat_icon_36x36);
+            icon.setBounds(25, 55, 50, 80);
+            ImageSpan span = new ImageSpan(icon, ImageSpan.ALIGN_BASELINE);*/
+
+            //view.addSpan(span);
+
+            //view.setBackgroundDrawable(getResources().getDrawable(R.drawable.action_chat_icon_36x36));
         }
     };
 
@@ -72,6 +95,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         View root = inflater.inflate(R.layout.calendar_fragment, container, false);
 
         mCalendar = (MaterialCalendarView) root.findViewById(R.id.calendar);
+        mCalendar.setPagingEnabled(false);
+
         mDayActionsDiaryList = (ListView) root.findViewById(R.id.calendar_day_actions_diary_list);
 
         mAdapter = new ActionsDiaryAdapter(getContext(), R.layout.action_list_item);
@@ -83,6 +108,10 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
     @Override
     public void onStart() {
         super.onStart();
+        if (mPresenter != null) {
+            initializeActualMonth();
+        }
+
         mCalendar.setOnMonthChangedListener(this);
         mCalendar.setOnDateChangedListener(this);
         Log.d(TAG, "onStart()");
@@ -93,6 +122,10 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         super.onStop();
         mCalendar.setOnMonthChangedListener(null);
         mCalendar.setOnDateChangedListener(null);
+
+        mCalendar.clearSelection();
+        mAdapter.clear();
+
         Log.d(TAG, "onStop()");
     }
 

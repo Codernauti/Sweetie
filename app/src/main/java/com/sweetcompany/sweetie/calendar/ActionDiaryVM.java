@@ -11,6 +11,7 @@ import com.sweetcompany.sweetie.R;
 @Deprecated
 public interface ActionDiaryVM {
     String getKey();
-
     int getType();
+    String getDescription();
+    String getTitle();
 }

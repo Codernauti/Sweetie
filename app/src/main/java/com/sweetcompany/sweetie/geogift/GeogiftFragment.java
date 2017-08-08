@@ -103,12 +103,16 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(getContext(), data);
+            String address;
             if (place == null) {
                 Log.i(TAG, "No place selected");
                 return;
+            }else
+            {
+                address = place.getAddress().toString();
             }
 
-            String placeID = place.getId();
+            String placeID = address;
 
             coordText.setText(placeID);
         }

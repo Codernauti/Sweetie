@@ -24,7 +24,9 @@ public class ChatActivity extends AppCompatActivity {
     public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
     private String mChatKey;
+    private String mChatTitle;
     private String mActionKey;
+
 
     private ChatContract.Presenter mPresenter;
     private FirebaseChatController mController;
@@ -40,6 +42,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState != null) {
+            mChatTitle = savedInstanceState.getString(CHAT_TITLE);
             mChatKey = savedInstanceState.getString(CHAT_DATABASE_KEY);
             mActionKey = savedInstanceState.getString(ACTION_DATABASE_KEY);
 
@@ -69,7 +72,7 @@ public class ChatActivity extends AppCompatActivity {
         String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
 
         if (mChatKey != null) {
-            mController = new FirebaseChatController(coupleUid, mChatKey, mActionKey);
+            mController = new FirebaseChatController(coupleUid, mChatKey, mChatTitle, mActionKey);
             mPresenter = new ChatPresenter(mView, mController, userMail);
         }
         else {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,14 +8,14 @@
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </com.prolificinteractive.materialcalendarview.MaterialCalendarView>
+        android:layout_height="wrap_content"
+        app:mcv_selectionColor="@color/rosa_sweetie"
+        />
 
     <ListView
         android:id="@+id/calendar_day_actions_diary_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </ListView>
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

@@ -4,10 +4,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,21 +35,22 @@ public class FirebaseChatController {
     private static final String TAG = "FbChatController";
 
     private final String mActionUid;
+    private final String mChatTitle;
+    private final String mCoupleUid;
 
     private final String mChatMessagesUrl;          // chat-message/<couple_uid>/<chat_uid>
     private final String mCoupleCalendarUrl;        // calendar/<couple_uid>
     private final String mCoupleActionsDiaryUrl;    // actionsDiary/<couple_uid>/<action_uid>
-    private final String mActionUrl;                // actions/<couple_uid>/<action_uid>
 
+    private final String mActionUrl;                // actions/<couple_uid>/<action_uid>
     private final DatabaseReference mDatabase;
     private final DatabaseReference mChat;
     private final DatabaseReference mChatMessages;
+
     private final DatabaseReference mAction;
-
     private final StorageReference mStorageRef;
-    private final FirebaseStorage mStorage;
 
-    private final String coupleID;
+    private final FirebaseStorage mStorage;
 
     private ValueEventListener mChatListener;
     private ChildEventListener mChatMessagesListener;
@@ -69,12 +68,13 @@ public class FirebaseChatController {
     }
 
 
-    public FirebaseChatController(String coupleUid, String chatKey, String actionKey) {
+    public FirebaseChatController(String coupleUid, String chatKey, String chatTitle, String actionKey) {
         mActionUid = actionKey;
+        mChatTitle = chatTitle;
 
         mChatMessagesUrl = Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey;
         mCoupleCalendarUrl = Constraints.CALENDAR + "/" + coupleUid;
-        mCoupleActionsDiaryUrl = "actionsDiary" + "/" + coupleUid;
+        mCoupleActionsDiaryUrl = Constraints.ACTIONS_DIARY + "/" + coupleUid;
         mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey;
 
         FirebaseDatabase firebaseDb = FirebaseDatabase.getInstance();
@@ -86,7 +86,7 @@ public class FirebaseChatController {
 
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
-        coupleID = coupleUid;
+        mCoupleUid = coupleUid;
     }
 
     public void addListener(ChatControllerListener listener) {
@@ -146,7 +146,6 @@ public class FirebaseChatController {
             mChatListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // TODO: test
                     ChatFB chat = dataSnapshot.getValue(ChatFB.class);
                     chat.setKey(dataSnapshot.getKey());
 
@@ -188,7 +187,7 @@ public class FirebaseChatController {
                                 + msg.getDay() + "/" + mActionUid;
 
         if (msg.isBookmarked()) {
-            ActionDiaryFB action = new ActionDiaryFB(ActionFB.CHAT, msg.getDate());
+            ActionDiaryFB action = new ActionDiaryFB(ActionFB.CHAT, msg.getDate(), mChatTitle, msg.getText());
 
             updates.put(actionDiaryUrl, action);
             updates.put(actionDiaryDataUrl + "/" + msg.getKey(), msg);
@@ -210,7 +209,7 @@ public class FirebaseChatController {
         mDatabase.updateChildren(updates);
     }
 
-    // push message to db and update action of this chat
+
     public String sendMessage(MessageFB msg) {
         Log.d(TAG, "Send text MessageFB: " + msg);
 
@@ -224,15 +223,7 @@ public class FirebaseChatController {
         updates.put(mActionUrl + "/" + Constraints.DESCRIPTION, msg.getText());
         updates.put(mActionUrl + "/" + Constraints.DATE_TIME, msg.getDateTime());
 
-        mDatabase.updateChildren(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                // TODO: update status icon of message
-                /*for (ChatControllerListener listener : mListeners) {
-                    listener.onMessageSent(newMessageUid);
-                }*/
-            }
-        });
+        mDatabase.updateChildren(updates);
         return newMessageUid;
     }
 
@@ -243,7 +234,7 @@ public class FirebaseChatController {
 
         Uri uriLocal;
         uriLocal = Uri.parse(media.getUriLocal());
-        StorageReference photoRef = mStorageRef.child("gallery_photos/"+coupleID+"/"+uriLocal.getLastPathSegment());
+        StorageReference photoRef = mStorageRef.child("gallery_photos/"+ mCoupleUid +"/"+uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

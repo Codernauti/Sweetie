@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.sweetcompany.sweetie.DashboardActivity;
-import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 
 

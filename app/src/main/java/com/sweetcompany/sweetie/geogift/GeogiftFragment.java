@@ -19,6 +19,7 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
 import static android.app.Activity.RESULT_OK;
 /**
@@ -104,17 +105,24 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(getContext(), data);
             String address;
+            LatLng latLng;
+            String name;
+
             if (place == null) {
                 Log.i(TAG, "No place selected");
                 return;
             }else
             {
+                name = place.getName().toString();
                 address = place.getAddress().toString();
+                latLng = place.getLatLng();
             }
 
-            String placeID = address;
-
-            coordText.setText(placeID);
+            coordText.setText(name+"\n"+
+                              address+"\n"+
+                              latLng.latitude+
+                              ","+
+                              latLng.longitude);
         }
     }
 

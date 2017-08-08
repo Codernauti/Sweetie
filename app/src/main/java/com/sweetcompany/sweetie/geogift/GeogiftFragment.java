@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
@@ -36,6 +38,8 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     private TextView coordText;
     private Button pickPositionButton;
 
+    private GeofencingClient mGeofencingClient;
+
     private GeogiftContract.Presenter mPresenter;
 
     public static GeogiftFragment newInstance(Bundle bundle) {
@@ -49,6 +53,8 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mGeofencingClient = LocationServices.getGeofencingClient(getActivity());
     }
 
     @Override

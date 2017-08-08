@@ -40,6 +40,9 @@ public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
             viewHolder.description = (TextView) convertView.findViewById(R.id.subtitle_action_list_item);
             viewHolder.type = (ImageView) convertView.findViewById(R.id.type_action_list_item);
 
+            convertView.findViewById(R.id.date_action_list_item).setVisibility(View.GONE);
+            convertView.findViewById(R.id.image_action_list_item).setVisibility(View.GONE);
+
             convertView.setTag(viewHolder);
         }
         else {
@@ -47,8 +50,8 @@ public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
         }
 
         ActionDiaryVM actionDiary = getItem(position);
-        viewHolder.title.setText(actionDiary.getKey());
-        viewHolder.description.setText("What put into description?");
+        viewHolder.title.setText(actionDiary.getTitle());
+        viewHolder.description.setText(actionDiary.getDescription());
         if (actionDiary.getType() == ActionFB.CHAT) {
             viewHolder.type.setImageResource(R.drawable.action_chat_icon);
         }
@@ -59,7 +62,7 @@ public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
     static private class ActionDiaryViewHolder {
         TextView title;
         TextView description;
-        /*TextView date;*/
+        TextView date;
         /*ImageView avatar;*/
         ImageView type;
 

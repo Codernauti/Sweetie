@@ -22,6 +22,8 @@ interface Constraints {
         String DESCRIPTION = "description";
         String DATE_TIME = "dataTime";
 
+    String ACTIONS_DIARY = "actionsDiary";
+
     String CHATS = "chats";
         String CHAT_MESSAGES = "chat-messages";
 

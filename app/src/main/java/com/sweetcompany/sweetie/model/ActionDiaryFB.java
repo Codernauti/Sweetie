@@ -16,12 +16,16 @@ public class ActionDiaryFB implements ActionDiaryVM {
     private Map<String, MessageFB> messages;
     private int type;
     private String date;
+    private String title;
+    private String description;
 
     public ActionDiaryFB() { }
 
-    public ActionDiaryFB(int type, String date) {
+    public ActionDiaryFB(int type, String date, String title, String description) {
         this.type = type;
         this.date = date;
+        this.title = title;
+        this.description = description;
     }
 
     @Exclude
@@ -57,5 +61,21 @@ public class ActionDiaryFB implements ActionDiaryVM {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

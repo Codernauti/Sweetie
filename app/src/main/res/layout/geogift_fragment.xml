@@ -17,4 +17,23 @@
         app2:theme="@style/ToolBarStyle"
         />
 
+    <TextView
+        android:id="@+id/coord_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginStart="120dp"
+        android:text="..."
+        android:textSize="21sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/pick_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:layout_marginStart="120dp"
+
+        android:text="Seleziona posizione" />
+
 </RelativeLayout>

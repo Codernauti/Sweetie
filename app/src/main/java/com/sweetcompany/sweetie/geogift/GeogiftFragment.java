@@ -17,11 +17,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.sweetcompany.sweetie.R;
-
 import static android.app.Activity.RESULT_OK;
-
-
 /**
  * Created by ghiro on 07/08/2017.
  */
@@ -37,7 +36,6 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     private Button pickPositionButton;
 
     private GeogiftContract.Presenter mPresenter;
-
 
     public static GeogiftFragment newInstance(Bundle bundle) {
         GeogiftFragment newGeogiftFragment = new GeogiftFragment();
@@ -71,6 +69,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         parentActivity.getSupportActionBar().setTitle(titleGeogift);
 
+        coordText = (TextView) root.findViewById(R.id.coord_text_view);
         pickPositionButton = (Button) root.findViewById(R.id.pick_location_button);
 
         pickPositionButton.setOnClickListener(new View.OnClickListener() {
@@ -84,11 +83,35 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     }
 
     public void pickPosition(){
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getContext(), getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
+            return;
+        }
+        try {
 
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            Intent i = builder.build(getActivity());
+            startActivityForResult(i, PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
+        } catch (Exception e) {
+            Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            Place place = PlacePicker.getPlace(getContext(), data);
+            if (place == null) {
+                Log.i(TAG, "No place selected");
+                return;
+            }
 
+            String placeID = place.getId();
+
+            coordText.setText(placeID);
+        }
     }
 
     @Override

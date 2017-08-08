@@ -24,9 +24,12 @@
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</string>
     <string name="action_title">No title</string>
 
-    <string name="google_maps_key">AIzaSyC19ht1PX9A7Frbkyy4CoPxT2699PILt3E</string>
+    <string name="google_maps_key">AIzaSyADkV-kIhGQjEmhGtKNNZHj6EZyoXhugbA</string>
 
     <!-- Image Picker -->
     <string name="image_picker_select">Tap to select</string>
+
+    <string name="need_location_permission_message">You need to enable location permissions first</string>
+    <string name="location_permissions_granted_message">Location Permissions Granted</string>
 
 </resources>

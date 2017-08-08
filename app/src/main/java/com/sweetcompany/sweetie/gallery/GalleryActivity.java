@@ -3,25 +3,10 @@ package com.sweetcompany.sweetie.gallery;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import com.sweetcompany.sweetie.R;
-import android.app.ProgressDialog;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.util.Log;
-import android.view.View;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
 import com.sweetcompany.sweetie.utils.Utility;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity {
 

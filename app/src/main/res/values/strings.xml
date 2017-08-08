@@ -30,4 +30,7 @@
     <string name="need_location_permission_message">You need to enable location permissions first</string>
     <string name="location_permissions_granted_message">Location Permissions Granted</string>
 
+    <!-- Firebase IDs -->
+    <string name="server_client_ID">237232205216-hup7d485gvs7cjmj91avi6cpupuimsvj.apps.googleusercontent.com</string>
+
 </resources>

@@ -43,27 +43,23 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    // Google
-    //compile 'com.google.android.gms:play-services-auth:11.0.4'
-    //compile 'com.google.android.gms:play-services-places:11.0.4'
-    //compile 'com.google.android.gms:play-services-location:11.0.4'
-    // Google
-
-    compile 'com.google.android.gms:play-services-auth:10.2.1'
-
     // Firebase
-    compile 'com.google.firebase:firebase-analytics:10.2.1'
-    compile 'com.google.firebase:firebase-database:10.2.1'
-    compile 'com.google.firebase:firebase-storage:10.2.1'
-    compile 'com.google.firebase:firebase-auth:10.2.1'
-    compile 'com.google.firebase:firebase-config:10.2.1'
-    compile 'com.google.firebase:firebase-messaging:10.2.1'
+    compile 'com.google.firebase:firebase-core:11.0.4' 	    //Analytics
+    compile 'com.google.firebase:firebase-database:11.0.4' 	//Realtime Database
+    compile 'com.google.firebase:firebase-storage:11.0.4' 	//Storage
+    compile 'com.google.firebase:firebase-auth:11.0.4' 	    //Authentication
+    compile 'com.google.firebase:firebase-messaging:11.0.4' //Cloud Messaging
+    compile 'com.google.firebase:firebase-config:11.0.4' 	//Remote Config
     // Firebase UI
-    compile 'com.firebaseui:firebase-ui-database:1.2.0'
+    //compile 'com.firebaseui:firebase-ui-database:2.2.0'
+
+    // Google
+    compile 'com.google.android.gms:play-services-auth:11.0.4'
 
     // UnitTest
     testCompile 'junit:junit:4.12'
@@ -74,10 +70,13 @@ dependencies {
     compile 'com.android.support:palette-v7:25.3.1'
     compile 'com.android.support:percent:25.3.1'
 
+    //emoticon
     compile 'io.github.rockerhieu:emojicon:1.4.2'
 
+    //imagePicker
     compile 'com.github.esafirm.android-image-picker:imagepicker:1.7.4@aar'
 
+    //calendar
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
 
 }

@@ -1,111 +1,35 @@
 {
   "project_info": {
-    "project_number": "317883878908",
-    "firebase_url": "https://sweety-moon.firebaseio.com",
-    "project_id": "sweety-moon",
-    "storage_bucket": "sweety-moon.appspot.com"
+    "project_number": "237232205216",
+    "firebase_url": "https://sweetie-fobos-c18db.firebaseio.com",
+    "project_id": "sweetie-fobos-c18db",
+    "storage_bucket": "sweetie-fobos-c18db.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:317883878908:android:64e58dacc0483faa",
-        "android_client_info": {
-          "package_name": "com.google.firebase.udacity.friendlychat"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "317883878908-n0fca4u7pqu3n02no7bf9i5elg8uia2v.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.google.firebase.udacity.friendlychat",
-            "certificate_hash": "c8273819bffe92f1a396355515353b278245766e"
-          }
-        },
-        {
-          "client_id": "317883878908-dksj2ds9lvm31uit6ouf4q2brh86hue2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.google.firebase.udacity.friendlychat",
-            "certificate_hash": "fd23e62a60faddd14e3fe09029b277452ca923ce"
-          }
-        },
-        {
-          "client_id": "317883878908-sipuqevpjoaoa0k9e7os842r7i3mj0k1.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.google.firebase.udacity.friendlychat",
-            "certificate_hash": "1b6b3f22a5955fe38c7ff0fe643fc1de2552763c"
-          }
-        },
-        {
-          "client_id": "317883878908-u8k3c373k36kv3as5ruabtks67kh48ib.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyADkV-kIhGQjEmhGtKNNZHj6EZyoXhugbA"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "317883878908-u8k3c373k36kv3as5ruabtks67kh48ib.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:317883878908:android:8eb51431d86bdaf5",
+        "mobilesdk_app_id": "1:237232205216:android:8eb51431d86bdaf5",
         "android_client_info": {
           "package_name": "com.sweetcompany.sweetie"
         }
       },
       "oauth_client": [
         {
-          "client_id": "317883878908-ot1ukdoij82ol0h1kifsl0laqh8043uc.apps.googleusercontent.com",
+          "client_id": "237232205216-3tc4fm2hgssdbifuilceghml1i88don8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.sweetcompany.sweetie",
-            "certificate_hash": "c8273819bffe92f1a396355515353b278245766e"
+            "certificate_hash": "291e923423dd70235812e522bcefdec9a70be98e"
           }
         },
         {
-          "client_id": "317883878908-3ur15b9t8hgkctqnlin3bqir7gmnrv0e.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.sweetcompany.sweetie",
-            "certificate_hash": "fd23e62a60faddd14e3fe09029b277452ca923ce"
-          }
-        },
-        {
-          "client_id": "317883878908-jn4uh3c7k5msh6jcsbgb36ilhd66hgmo.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.sweetcompany.sweetie",
-            "certificate_hash": "1b6b3f22a5955fe38c7ff0fe643fc1de2552763c"
-          }
-        },
-        {
-          "client_id": "317883878908-u8k3c373k36kv3as5ruabtks67kh48ib.apps.googleusercontent.com",
+          "client_id": "237232205216-hup7d485gvs7cjmj91avi6cpupuimsvj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyADkV-kIhGQjEmhGtKNNZHj6EZyoXhugbA"
+          "current_key": "AIzaSyAv_p2bLoLjWWWlDm_EKJifqGkL4GysjHA"
         }
       ],
       "services": {
@@ -116,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "317883878908-u8k3c373k36kv3as5ruabtks67kh48ib.apps.googleusercontent.com",
+              "client_id": "237232205216-hup7d485gvs7cjmj91avi6cpupuimsvj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

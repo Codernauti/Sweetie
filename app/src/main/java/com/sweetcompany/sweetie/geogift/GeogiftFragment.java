@@ -15,13 +15,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/*import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.maps.model.LatLng;*/
+import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
 import static android.app.Activity.RESULT_OK;
 /**
@@ -38,7 +38,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     private TextView coordText;
     private Button pickPositionButton;
 
-    //private GeofencingClient mGeofencingClient;
+    private GeofencingClient mGeofencingClient;
 
     private GeogiftContract.Presenter mPresenter;
 
@@ -54,7 +54,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //mGeofencingClient = LocationServices.getGeofencingClient(getActivity());
+        mGeofencingClient = LocationServices.getGeofencingClient(getActivity());
     }
 
     @Override
@@ -90,7 +90,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     }
 
     public void pickPosition(){
-        /*if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getContext(), getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
             return;
@@ -103,11 +103,11 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
             Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
         } catch (Exception e) {
             Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
-        }*/
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(getContext(), data);
             String address;
             LatLng latLng;
@@ -127,7 +127,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
                               address+"\n"+
                               latLng.latitude+"\n"+
                               latLng.longitude);
-        }*/
+        }
     }
 
     @Override

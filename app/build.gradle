@@ -60,6 +60,8 @@ dependencies {
 
     // Google
     compile 'com.google.android.gms:play-services-auth:11.0.4'
+    compile 'com.google.android.gms:play-services-places:11.0.4'
+    compile 'com.google.android.gms:play-services-location:11.0.4'
 
     // UnitTest
     testCompile 'junit:junit:4.12'

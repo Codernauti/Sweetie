@@ -120,8 +120,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
 
             coordText.setText(name+"\n"+
                               address+"\n"+
-                              latLng.latitude+
-                              ","+
+                              latLng.latitude+"\n"+
                               latLng.longitude);
         }
     }

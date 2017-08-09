@@ -21,19 +21,47 @@
         android:id="@+id/coord_text_view"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:layout_marginStart="50dp"
         android:text="..."
-        android:textSize="21sp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
     <Button
         android:id="@+id/pick_location_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="220dp"
         android:layout_marginStart="120dp"
 
         android:text="Seleziona posizione" />
+
+    <TextView
+        android:id="@+id/connection_api_text_view"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:layout_marginStart="50dp"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/location_api_text_view"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="320dp"
+        android:layout_marginStart="50dp"
+        android:textColor="@color/ef_black_alpha_50"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/current_api_text_view"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="340dp"
+        android:layout_marginStart="50dp"
+        android:textColor="@color/ef_black_alpha_50"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

@@ -39,7 +39,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     /**
      *  Call when destroy GalleryAdapterListener
      */
-    void removeChatAdapterListener() {
+    void removeGalleryAdapterListener() {
         mListener = null;
     }
 

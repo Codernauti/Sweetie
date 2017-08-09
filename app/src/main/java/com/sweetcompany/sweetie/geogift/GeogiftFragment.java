@@ -119,7 +119,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
         }
 
         if(mLocationPermissionGranted) {
-            //latLngBounds = getLastLocation();
+            //latLngBounds = new LatLng(mLatitude, mLongitude), new LatLng(mLatitude, mLongitude));
             try {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                 //builder.setLatLngBounds(latLngBounds);

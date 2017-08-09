@@ -2,9 +2,11 @@ package com.sweetcompany.sweetie.geogift;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,13 +19,21 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.sweetcompany.sweetie.R;
+
+import java.util.concurrent.Executor;
+
 import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by ghiro on 07/08/2017.
  */
@@ -33,10 +43,17 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     private static final String TAG = "GeogiftFragment";
 
     private static final int PLACE_PICKER_REQUEST = 1;
+    private static int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION =1;
 
     private Toolbar mToolBar;
     private TextView coordText;
     private Button pickPositionButton;
+
+    private LatLngBounds latLngBounds = null;
+    private LatLng latLng = null;
+    private boolean mLocationPermissionGranted = false;
+
+    private FusedLocationProviderClient mFusedLocationClient;
 
     private GeofencingClient mGeofencingClient;
 
@@ -55,6 +72,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
         super.onCreate(savedInstanceState);
 
         mGeofencingClient = LocationServices.getGeofencingClient(getActivity());
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
     }
 
     @Override
@@ -90,20 +108,44 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View {
     }
 
     public void pickPosition(){
-        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getContext(), getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
-            return;
+        if (ContextCompat.checkSelfPermission(getContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
-        try {
 
-            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-            Intent i = builder.build(getActivity());startActivityForResult(i, PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-            Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
-        } catch (Exception e) {
-            Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
+        if(mLocationPermissionGranted) {
+            //latLngBounds = getLastLocation();
+            try {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                //builder.setLatLngBounds(latLngBounds);
+                Intent i = builder.build(getActivity());
+                startActivityForResult(i, PLACE_PICKER_REQUEST);
+            } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
+            } catch (Exception e) {
+                Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
+            }
         }
+        else{
+            Toast.makeText(getContext(), getString(R.string.need_location_permission_message), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public LatLngBounds getLastLocation(){
+        /*LatLngBounds bounds = null;
+
+            double mLatitude = mLastLocation.getLatitude();
+            double mLongitude = mLastLocation.getLongitude();
+            bounds = new LatLngBounds(
+                    new LatLng(mLatitude, mLongitude), new LatLng(mLatitude, mLongitude));
+
+        return bounds;*/
+        return null;
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

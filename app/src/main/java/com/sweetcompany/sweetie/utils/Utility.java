@@ -2,13 +2,12 @@ package com.sweetcompany.sweetie.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by lucas on 22/05/2017.
@@ -30,6 +29,10 @@ public class Utility {
     public static final String KB_HEIGHT = "keyboard_height";
 
     private static final int DEFAULT_INT_VALUE = 0;
+
+    public static final String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
+    public static final String KEY_GEOFENCE_LON = "GEOFENCE LONGITUDE";
+
 
     //Method for saving a shared preference
     //How to use: pass the context, a key string and the data string; returns true if successfully saved
@@ -88,6 +91,12 @@ public class Utility {
             Log.d("Get int preference", key + ": " + data);
             return data;
         }
+    }
+
+    static public Double getDoublePreference(Context context, String key){
+        SharedPreferences setting = context.getSharedPreferences(key, Context.MODE_PRIVATE);
+        Double d = Double.parseDouble(setting.getString(key, DEFAULT_VALUE));
+        return d;
     }
 
     public static boolean isImageAvaibleInLocal(String uriLocal){

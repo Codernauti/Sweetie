@@ -73,13 +73,15 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View,
     private int REQ_PERMISSION_UPDATE = 202;
 
     //Get the desired interval of this request, in milliseconds.
-    private final int UPDATE_INTERVAL =  8 * 1000; // 30 secs
+    private final int UPDATE_INTERVAL =  4 * 1000; //
     //The system will never provide location updates faster than the minimum of getFastestInterval() and getInterval()
-    private final int FASTEST_INTERVAL = 5 * 1000;  // 5 secs
+    private final int FASTEST_INTERVAL = 5 * 1000;  //
 
-    private static final long GEO_DURATION = 60 * 60 * 1000;
+    private final int DWELL = 1000;
+
+    private static final long GEO_DURATION = 1 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 500.0f; // in meters
+    private static final float GEOFENCE_RADIUS = 100.0f; // in meters
 
     private final String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
     private final String KEY_GEOFENCE_LON = "GEOFENCE LONGITUDE";
@@ -97,6 +99,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View,
     private TextView googleApiConnectionText;
     private TextView locationConnectionText;
     private TextView currentText;
+    private Button startGeogiftButton;
 
     private LatLngBounds latLngBounds = null;
     private LatLng latLng = null;
@@ -161,6 +164,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View,
         googleApiConnectionText = (TextView) root.findViewById(R.id.connection_api_text_view);
         locationConnectionText = (TextView) root.findViewById(R.id.location_api_text_view);
         currentText = (TextView) root.findViewById(R.id.current_api_text_view);
+        startGeogiftButton = (Button) root.findViewById(R.id.start_geogift_button);
 
         pickPositionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +173,13 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View,
                     pickPosition();
                 }
                 else askPermission();
+            }
+        });
+
+        startGeogiftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGeofence();
             }
         });
 
@@ -254,8 +265,10 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View,
                               latLng.longitude);
 
             centerMap(latLng);
-            markerLocation(new LatLng(latLng.latitude, latLng.longitude));
-            startGeofence();
+            //markerLocation(new LatLng(latLng.latitude, latLng.longitude));
+            markerForGeofence(new LatLng(latLng.latitude, latLng.longitude));
+
+            //startGeofence();
         }
     }
 
@@ -459,8 +472,9 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View,
                 .setRequestId(GEOFENCE_REQ_ID)
                 .setCircularRegion( latLng.latitude, latLng.longitude, radius)
                 .setExpirationDuration( GEO_DURATION )
+                .setLoiteringDelay(DWELL)
                 .setTransitionTypes( Geofence.GEOFENCE_TRANSITION_ENTER
-                        | Geofence.GEOFENCE_TRANSITION_EXIT )
+                        | Geofence.GEOFENCE_TRANSITION_EXIT  | Geofence.GEOFENCE_TRANSITION_DWELL)
                 .build();
     }
 

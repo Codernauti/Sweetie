@@ -19,8 +19,8 @@
 
 
     <!--GoogleMap fragment-->
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:name="com.google.android.gms.maps.MapFragment"
+    <fragment
+        class="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/mapFragment"
         android:layout_width="200dp"
         android:layout_height="200dp"

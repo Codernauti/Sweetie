@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,14 @@ import com.sweetcompany.sweetie.registration.RegisterActivity;
 import com.sweetcompany.sweetie.utils.Utility;
 
 public class MainActivity extends AppCompatActivity{
+
+    private static final String NOTIFICATION_MSG = "NOTIFICATION MSG";
+    // Create a Intent send by the notification
+    public static Intent makeNotificationIntent(Context context, String msg) {
+        Intent intent = new Intent( context, MainActivity.class );
+        intent.putExtra( NOTIFICATION_MSG, msg );
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

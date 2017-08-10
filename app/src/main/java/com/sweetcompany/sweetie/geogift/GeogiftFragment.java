@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.geogift;
 
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -7,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -30,9 +29,11 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.sweetcompany.sweetie.R;
 
 import java.util.concurrent.Executor;
@@ -43,7 +44,11 @@ import static android.app.Activity.RESULT_OK;
  * Created by ghiro on 07/08/2017.
  */
 
-public class GeogiftFragment  extends Fragment implements GeogiftContract.View, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class GeogiftFragment  extends Fragment implements GeogiftContract.View,
+                                                          GoogleApiClient.ConnectionCallbacks,
+                                                          GoogleApiClient.OnConnectionFailedListener,
+                                                          OnMapReadyCallback,
+                                                          LocationListener {
 
     private static final String TAG = "GeogiftFragment";
 
@@ -56,6 +61,8 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View, 
     private final int FASTEST_INTERVAL = 5 * 1000;  // 5 secs
 
     private Toolbar mToolBar;
+    private SupportMapFragment mapFragment;
+    private GoogleMap map;
     private TextView coordText;
     private Button pickPositionButton;
     private TextView googleApiConnectionText;
@@ -87,6 +94,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View, 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         mGeofencingClient = LocationServices.getGeofencingClient(getActivity());
         //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -133,6 +141,36 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View, 
         });
 
         return root;
+    }
+
+    // Initialize GoogleMaps
+    private void initGMaps(){
+        //mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+
+        if(mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+            /*mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    Log.d("Map Ready", "Bam.");
+                    map = googleMap;
+                }
+            });*/
+    }
+
+    // Callback called when Map is ready
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady()");
+        map = googleMap;
+        //map.setOnMapClickListener(this);
+        //map.setOnMarkerClickListener(this);
+        map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        map.setMyLocationEnabled(true);
+        map.setIndoorEnabled(true);
+        map.setBuildingsEnabled(true);
+        map.getUiSettings().setZoomControlsEnabled(true);
     }
 
     // Create GoogleApiClient instance
@@ -209,6 +247,8 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View, 
         Log.i(TAG, "onConnected()");
         googleApiConnectionText.setText("Connected");
         getLastKnownLocation();
+        // initialize GoogleMaps
+        initGMaps();
     }
 
     @Override
@@ -276,9 +316,7 @@ public class GeogiftFragment  extends Fragment implements GeogiftContract.View, 
 
     // Write location coordinates on UI
     private void writeActualLocation(Location location) {
-        //textLat.setText( "Lat: " + location.getLatitude() );
-        //textLong.setText( "Long: " + location.getLongitude() );
-        currentText.setText("Lat: " + location.getLatitude());
+        currentText.setText("Lat: " + location.getLatitude() +"\nLon:" + location.getLongitude());
     }
 
     // Check for permission to access Location

@@ -130,7 +130,6 @@ public class GeogiftFragmentTest  extends Fragment implements GeogiftContract.Vi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         mGeofencingClient = LocationServices.getGeofencingClient(getActivity());
         //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/chat_fragment_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/chat_background">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/geogift_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:background="?attr/colorPrimary"
+        app2:theme="@style/ToolBarStyle"
+        />
+
+
+    <!--GoogleMap fragment-->
+    <fragment
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/mapFragment"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/coord_text_view"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@color/azzurro_pastello"
+        android:text="..."
+        android:textSize="12sp"
+        android:textStyle="bold"
+        />
+
+    <Button
+        android:id="@+id/pick_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Seleziona posizione"
+        />
+
+    <TextView
+        android:id="@+id/connection_api_text_view"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/location_api_text_view"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"
+        android:textColor="@color/ef_black_alpha_50"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/current_api_text_view"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"
+        android:textColor="@color/ef_black_alpha_50"
+        android:textStyle="bold"
+        />
+
+    <Button
+        android:id="@+id/start_geogift_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="START GEOGIFT"
+        />
+
+</LinearLayout>

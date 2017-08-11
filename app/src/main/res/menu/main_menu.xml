@@ -7,12 +7,12 @@
         android:title="@string/menu_sign_out"
         app:showAsAction="never" />
 
-    <item android:id="@+id/menu_fake_gallery"
-        android:title="Test Gallery"
-        app:showAsAction="never" />
-
     <item android:id="@+id/menu_couple_details"
         android:title="@string/menu_couple_details"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/menu_fake_geogift"
+        android:title="Test Geogift"
         app:showAsAction="never" />
 
 </menu>

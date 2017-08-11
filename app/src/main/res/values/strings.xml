@@ -27,6 +27,9 @@
     <!-- Image Picker -->
     <string name="image_picker_select">Tap to select</string>
 
+    <!-- Geogift Fragment -->
+    <string name="select_location">Select an address where to place a gift ...</string>
+
     <!-- Location Picker -->
     <string name="google_locate_picker_key">AIzaSyDtJP5SOBfQ4EJ67KcX7ughd4_DXxQEIv8</string>
     <string name="need_location_permission_message">You need to enable location permissions first</string>

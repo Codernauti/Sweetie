@@ -40,6 +40,6 @@
         <item name="colorPrimaryDark">#455A64</item>
         <item name="colorAccent">@color/ef_colorAccent</item>
     </style>
-    
+
 
 </resources>

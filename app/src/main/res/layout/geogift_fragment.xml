@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/chat_fragment_layout"
+<LinearLayout android:id="@+id/chat_fragment_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/chat_background">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/geogift_toolbar"
@@ -17,74 +16,101 @@
         app2:theme="@style/ToolBarStyle"
         />
 
+    <LinearLayout
+        android:id="@+id/location_picker_topbar"
+        android:layout_width="match_parent"
+        android:layout_marginTop="4dp"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
 
-    <!--GoogleMap fragment-->
-    <fragment
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/mapFragment"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="90dp"
+            android:src="@drawable/action_gift_icon"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="@string/select_location"
+            android:textSize="15sp"
 
-    <TextView
-        android:id="@+id/coord_text_view"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:background="@color/azzurro_pastello"
-        android:text="..."
-        android:textSize="12sp"
-        android:textStyle="bold"
-        />
+            />
 
-    <Button
-        android:id="@+id/pick_location_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="Seleziona posizione"
-        />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/fragmentSeparator"
+        tools:layout_editor_absoluteX="80dp" />
 
-    <TextView
-        android:id="@+id/connection_api_text_view"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        />
-    <TextView
-        android:id="@+id/location_api_text_view"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:textSize="12sp"
-        android:textColor="@color/ef_black_alpha_50"
-        android:textStyle="bold"
-        />
-    <TextView
-        android:id="@+id/current_api_text_view"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:textSize="12sp"
-        android:textColor="@color/ef_black_alpha_50"
-        android:textStyle="bold"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/start_geogift_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="START GEOGIFT"
-        />
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/action_chat_icon"
+            android:tint="@color/geogiftItem"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/fragmentSeparator"
+            tools:layout_editor_absoluteX="80dp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/action_photo_icon"
+            android:tint="@color/geogiftItem"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            />
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/fragmentSeparator"
+            tools:layout_editor_absoluteX="80dp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/heart_icon"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/fragmentSeparator"
+        tools:layout_editor_absoluteX="80dp" />
+
 
 </LinearLayout>

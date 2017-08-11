@@ -13,8 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
         android:background="?attr/colorPrimary"
-        app2:theme="@style/ToolBarStyle"
-        />
+        app2:theme="@style/ToolBarStyle"/>
 
     <LinearLayout
         android:id="@+id/location_picker_topbar"
@@ -28,8 +27,7 @@
             android:layout_height="90dp"
             android:src="@drawable/action_gift_icon"
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            />
+            android:layout_marginLeft="10dp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -37,69 +35,102 @@
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
             android:text="@string/select_location"
-            android:textSize="15sp"
-
-            />
+            android:textSize="15sp"/>
 
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@color/fragmentSeparator"
-        tools:layout_editor_absoluteX="80dp" />
+        android:background="@color/fragmentSeparator"/>
 
     <LinearLayout
+        android:id="@+id/item_select_bar"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="80dp"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/action_chat_icon"
-            android:tint="@color/geogiftItem"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            />
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/item_message"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/action_chat_icon"
+                android:tint="@color/geogiftItem"/>
+            <View
+                android:id="@+id/selector_item_message"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/yellow_sweetie"/>
+        </LinearLayout>
 
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/fragmentSeparator"
-            tools:layout_editor_absoluteX="80dp" />
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/fragmentSeparator"/>
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/action_photo_icon"
-            android:tint="@color/geogiftItem"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            />
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/item_photo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/action_photo_icon"
+                android:tint="@color/geogiftItem"/>
+            <View
+                android:id="@+id/selector_item_photo"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/yellow_sweetie"/>
+        </LinearLayout>
+
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/fragmentSeparator"
-            tools:layout_editor_absoluteX="80dp" />
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/fragmentSeparator"/>
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/heart_icon"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
-            />
+        <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/item_heart"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:src="@drawable/heart_icon"/>
+                <View
+                    android:id="@+id/selector_item_heart"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/yellow_sweetie"/>
+            </LinearLayout>
 
     </LinearLayout>
 
@@ -109,8 +140,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:background="@color/fragmentSeparator"
-        tools:layout_editor_absoluteX="80dp" />
+        android:background="@color/fragmentSeparator"/>
 
 
 </LinearLayout>

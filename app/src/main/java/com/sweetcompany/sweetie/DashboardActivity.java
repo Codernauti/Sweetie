@@ -21,6 +21,8 @@ import com.sweetcompany.sweetie.couple.CoupleDetailsActivity;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
+import com.sweetcompany.sweetie.geogift.GeogiftActivity;
+import com.sweetcompany.sweetie.geogift.GeogiftActivityTest;
 import com.sweetcompany.sweetie.utils.Utility;
 
 public class DashboardActivity extends AppCompatActivity implements IPageChanger {
@@ -108,11 +110,11 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
 
                 startActivity(new Intent(this, MainActivity.class));
                 return true;
-            case R.id.menu_fake_gallery:
-                startActivity(new Intent(this, GalleryActivity.class));
-                return true;
             case R.id.menu_couple_details:
                 startActivity(new Intent(this, CoupleDetailsActivity.class));
+                return true;
+            case R.id.menu_fake_geogift:
+                startActivity(new Intent(this, GeogiftActivityTest.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

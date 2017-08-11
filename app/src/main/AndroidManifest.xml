@@ -52,6 +52,9 @@
         <activity android:name=".geogift.GeogiftActivity"
             android:theme="@style/AppTheme"/>
 
+        <activity android:name=".geogift.GeogiftActivityTest"
+            android:theme="@style/AppTheme"/>
+
         <service
             android:name=".UserMonitorService"
             android:enabled="true"/>

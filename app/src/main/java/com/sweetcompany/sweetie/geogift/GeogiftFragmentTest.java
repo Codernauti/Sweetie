@@ -79,7 +79,7 @@ public class GeogiftFragmentTest  extends Fragment implements GeogiftContract.Vi
 
     private final int DWELL = 1000;
 
-    private static final long GEO_DURATION = 1 * 60 * 1000;
+    private static final long GEO_DURATION = 10 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
     private static final float GEOFENCE_RADIUS = 100.0f; // in meters
 

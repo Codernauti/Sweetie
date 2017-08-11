@@ -21,6 +21,8 @@
 
     <color name="titleAction">#000000</color>
     <color name="separatorAction">#E0E0E0</color>
+    <color name="fragmentSeparator">#E0E0E0</color>
+    <color name="geogiftItem">#708090</color>
 
 
 </resources>

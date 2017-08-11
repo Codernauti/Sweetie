@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/chat_fragment_layout"
+<RelativeLayout
+    android:id="@+id/geogift_fragment_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app2="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<LinearLayout android:id="@+id/chat_fragment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -12,29 +18,32 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
         android:background="?attr/colorPrimary"
-        app2:theme="@style/ToolBarStyle"/>
+        app2:theme="@style/ToolBarStyle"
+        />
+
 
     <LinearLayout
         android:id="@+id/location_picker_topbar"
         android:layout_width="match_parent"
-        android:layout_marginTop="4dp"
         android:layout_height="70dp"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="90dp"
-            android:src="@drawable/action_gift_icon"
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/action_gift_icon" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:text="@string/select_location"
-            android:textSize="15sp"/>
+            android:gravity="center_vertical"
+            android:text="@string/select_location_geogift"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -133,25 +142,48 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/image_thumb_geogift"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:src="@drawable/image_placeholder"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp">
+        <ImageView
+            android:id="@+id/image_thumb_geogift"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/image_geogift_placeholder"
+            />
+        <ImageView
+            android:id="@+id/clear_image"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/clear_icon"
+            android:tint="@color/colorAccent"
+            android:layout_marginTop="12dp"
+            />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/text_geogift"
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="inserisci messaggino ..."
-        android:maxLines="2"
-        android:background="@color/chat_background"/>
+        android:background="@color/chat_background">
+        <EditText
+            android:id="@+id/text_geogift"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="@string/text_hint_geogift"
+            android:textSize="15dp"
+            android:maxLines="2"
+            android:maxLength="30"/>
+    </FrameLayout>
+
 
     <View
         android:layout_width="match_parent"
@@ -162,3 +194,20 @@
         android:background="@color/fragmentSeparator"/>
 
 </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_add_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="right"
+        android:src="@drawable/check_icon"
+        android:tint="@color/white"
+        app2:backgroundTint="@color/purple_sweetie"
+        />
+
+</RelativeLayout>

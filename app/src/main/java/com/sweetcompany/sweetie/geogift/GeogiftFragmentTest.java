@@ -152,7 +152,7 @@ public class GeogiftFragmentTest  extends Fragment implements GeogiftContract.Vi
         Log.d(TAG, "from Intent GEOGIFT_DATABASE_KEY: " + geogiftUid);*/
 
         // initialize toolbar
-        mToolBar = (Toolbar) root.findViewById(R.id.geogift_toolbar);
+        mToolBar = (Toolbar) root.findViewById(R.id.geogift_toolbar_test);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(mToolBar);
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);

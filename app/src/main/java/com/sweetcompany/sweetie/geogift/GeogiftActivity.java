@@ -1,11 +1,14 @@
 package com.sweetcompany.sweetie.geogift;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftController;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -14,7 +17,9 @@ import com.sweetcompany.sweetie.utils.Utility;
  * Created by ghiro on 07/08/2017.
  */
 
-public class GeogiftActivity extends AppCompatActivity {
+public class GeogiftActivity extends AppCompatActivity implements
+                                                       GoogleApiClient.ConnectionCallbacks,
+                                                       GoogleApiClient.OnConnectionFailedListener{
 
     private static final String TAG = "GeogiftActivity";
 
@@ -25,6 +30,8 @@ public class GeogiftActivity extends AppCompatActivity {
 
     private String mGeogiftKey;
     private String mActionKey;
+
+    private GoogleApiClient googleApiClient;
 
     private GeogiftContract.Presenter mPresenter;
     private FirebaseGeogiftController mController;
@@ -109,5 +116,21 @@ public class GeogiftActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putString(GEOGIFT_DATABASE_KEY, mGeogiftKey);
         outState.putString(ACTION_DATABASE_KEY, mActionKey);
+    }
+
+    //Google ApiClient Connection Listeners
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "Google ApiClient onConnected()");
+        //getLastKnownLocation();
+        // initialize GoogleMaps
+    }
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.w(TAG, "Google ApiClient onConnectionSuspended()");
+    }
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.w(TAG, "Google ApiClient onConnectionFailed()");
     }
 }

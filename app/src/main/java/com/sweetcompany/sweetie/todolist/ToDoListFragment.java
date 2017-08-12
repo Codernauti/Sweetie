@@ -43,28 +43,29 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        toDoListAdapter = new ToDoListAdapter(getContext(),new ArrayList<CheckEntryVM>());
-        toDoListAdapter.setToDoListAdapterListener(this);
+        //toDoListAdapter = new ToDoListAdapter(getContext(),new ArrayList<CheckEntryVM>());
+        //toDoListAdapter.setToDoListAdapterListener(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.todolist_fragment, container, false);
 
-        String titleToDoList = getArguments().getString(ToDoListActivity.TODOLIST_TITLE);
+       /* String titleToDoList = getArguments().getString(ToDoListActivity.TODOLIST_TITLE);
         String toDoListUid = getArguments().getString(ToDoListActivity.TODOLIST_DATABASE_KEY);
         Log.d(TAG, "from Intent TODOLIST_TITLE: " + titleToDoList);
-        Log.d(TAG, "from Intent TODOLIST_DATABASE_KEY: " + toDoListUid);
+        Log.d(TAG, "from Intent TODOLIST_DATABASE_KEY: " + toDoListUid);*/
 
         // initialize toolbar
         mToolBar = (Toolbar) root.findViewById(R.id.todolist_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(mToolBar);
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        parentActivity.getSupportActionBar().setTitle(titleToDoList);
+        //parentActivity.getSupportActionBar().setTitle(titleToDoList);
 
-        mToDoListListView = (ListView) root.findViewById(R.id.todolist_listview);
-        mToDoListListView.setAdapter(toDoListAdapter);
+
+        //mToDoListListView = (ListView) root.findViewById(R.id.todolist_listview);
+        //mToDoListListView.setAdapter(toDoListAdapter);
 
         return root;
     }

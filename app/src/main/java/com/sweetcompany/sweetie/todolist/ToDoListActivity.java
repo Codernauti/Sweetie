@@ -1,7 +1,6 @@
 package com.sweetcompany.sweetie.todolist;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +31,7 @@ public class ToDoListActivity extends AppCompatActivity {
     private ToDoListContract.View mView;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist_activity);
 
@@ -102,7 +101,7 @@ public class ToDoListActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(TODOLIST_DATABASE_KEY, mToDoListKey);
         outState.putString(ACTION_DATABASE_KEY, mActionKey);

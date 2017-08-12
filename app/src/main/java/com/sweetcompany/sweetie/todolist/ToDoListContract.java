@@ -12,7 +12,7 @@ public interface ToDoListContract {
     interface View {
         void setPresenter(ToDoListContract.Presenter presenter);
         void updateCheckEntries(List<CheckEntryVM> checkEntries);
-        void updateChatInfo(ToDoListVM toDoList);
+        void updateToDoListInfo(ToDoListVM toDoList);
 
         void updateCheckEntry(CheckEntryVM checkEntry);
         void removeCheckEntry(CheckEntryVM checkEntry);

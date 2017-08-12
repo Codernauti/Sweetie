@@ -10,46 +10,46 @@ public class CheckEntryVM {
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
 
-    private final boolean mWho;
-    private final String mKey;
-    private String mText;
-    private final String mTime;   // Format HH:mm
-    private boolean mchecked;
+    private final boolean who;
+    private final String key;
+    private String text;
+    private final String time;   // Format HH:mm
+    private boolean checked;
 
-    public CheckEntryVM(boolean mWho, String mKey, String mText, String mTime, boolean mchecked) {
-        this.mWho = mWho;
-        this.mKey = mKey;
-        this.mText = mText;
-        this.mTime = mTime;
-        this.mchecked = mchecked;
+    public CheckEntryVM(boolean who, String key, String text, String time, boolean checked) {
+        this.who = who;
+        this.key = key;
+        this.text = text;
+        this.time = time;
+        this.checked = checked;
     }
 
-    public boolean ismWho() {
-        return mWho;
+
+    public boolean isWho() {
+        return who;
     }
 
-    public String getmKey() {
-        return mKey;
+    public String getKey() {
+        return key;
     }
 
-    public String getmText() {
-        return mText;
+    public String getText() {
+        return text;
     }
 
-    public void setmText(String mText) {
-        this.mText = mText;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getmTime() {
-        return mTime;
+    public String getTime() {
+        return time;
     }
 
-    public boolean isMchecked() {
-        return mchecked;
+    public boolean isChecked() {
+        return checked;
     }
 
-    public void setMchecked(boolean mchecked) {
-        this.mchecked = mchecked;
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
-
 }

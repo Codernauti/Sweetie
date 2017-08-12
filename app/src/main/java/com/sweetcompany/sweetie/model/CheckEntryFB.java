@@ -18,6 +18,13 @@ public class CheckEntryFB {
     public CheckEntryFB() {
     }
 
+    public CheckEntryFB(String email, String text, boolean checked, String dateTime) {
+        this.email = email;
+        this.text = text;
+        this.checked = checked;
+        this.dateTime = dateTime;
+    }
+
     @Exclude
     public String getKey() {
         return key;

@@ -19,6 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -29,6 +33,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.GeoUtils;
+
+import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -44,10 +50,14 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
 
     public static final int REQ_PERMISSION_UPDATE = 4001;
     private static final int PLACE_PICKER_REQUEST = 4002;
+    private static final int RC_CODE_PICKER = 2001;
 
     private static final int MESSAGE_SELECTION = 0;
     private static final int PHOTO_SELECTION = 1;
     private static final int HEART_SELECTION = 2;
+
+    private ArrayList<Image> imagesPicked = new ArrayList<>();
+    private boolean isImageTaken = false;
 
     private Toolbar mToolBar;
     //location picker topbar
@@ -172,7 +182,18 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
             case R.id.item_heart_geogift_button:
                 switchContainerGift(HEART_SELECTION);
                 break;
-
+            case R.id.image_thumb_geogift:
+                if (isImageTaken){
+                    // TODO
+                    //showPicture();
+                }
+                else {
+                    takePicture();
+                }
+                break;
+            case R.id.clear_image_geogift_button:
+                clearImage();
+                break;
             default:
                 break;
         }
@@ -194,7 +215,8 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
                 heartSelector.setVisibility(View.GONE);
 
                 imageThumb.setVisibility(View.VISIBLE);
-                clearImageButton.setVisibility(View.VISIBLE);
+                if(isImageTaken) clearImageButton.setVisibility(View.VISIBLE);
+                else clearImageButton.setVisibility(View.GONE);
                 break;
             case HEART_SELECTION:
                 messageSelector.setVisibility(View.GONE);
@@ -235,6 +257,28 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         }
     }
 
+    public void showPicture(){
+
+    }
+
+     public void takePicture() {
+         ImagePicker imagePicker = ImagePicker.create(this)
+                 .theme(R.style.ImagePickerTheme)
+                 .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
+                 .folderMode(true) // set folder mode (false by default)
+                 .folderTitle("Folder") // folder selection title
+                 .imageTitle(String.valueOf(R.string.image_picker_select)); // image selection title
+
+         //imagePicker.multi();
+         imagePicker.single();
+
+         imagePicker
+                   .showCamera(true) // show camera or not (true by default)
+                   .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
+                   .origin(imagesPicked) // original selected images, used in multi mode
+                   .start(RC_CODE_PICKER); // start image picker activity with request code
+     }
+
      public void onActivityResult(int requestCode, int resultCode, Intent data) {
          if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
              Place place = PlacePicker.getPlace(getContext(), data);
@@ -252,6 +296,38 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
                  latLng = place.getLatLng();
              }
              locationPickerText.setText(address);
+         }
+         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
+             imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
+             drawImage();
+             return;
+         }
+     }
+
+     public void drawImage(){
+         if(imagesPicked.size()>0) {
+             //TODO upload on cloud every time ?
+             Glide.with(this).load("http://www.gstatic.com/webp/gallery/1.jpg")
+                     .thumbnail(0.5f)
+                     .crossFade()
+                     .placeholder(R.drawable.image_placeholder)
+                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                     .into(imageThumb);
+             isImageTaken = true;
+             clearImageButton.setVisibility(View.VISIBLE);
+         }
+     }
+
+     public void clearImage(){
+         if(isImageTaken){
+             isImageTaken = false;
+             clearImageButton.setVisibility(View.GONE);
+             Glide.with(this).load(R.drawable.image_geogift_placeholder)
+                     .thumbnail(0.5f)
+                     .crossFade()
+                     .placeholder(R.drawable.image_placeholder)
+                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                     .into(imageThumb);
          }
      }
 

@@ -153,6 +153,7 @@
             android:id="@+id/clear_image_geogift_button"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
             android:src="@drawable/clear_icon"
             android:tint="@color/colorAccent"
             android:layout_marginTop="12dp"

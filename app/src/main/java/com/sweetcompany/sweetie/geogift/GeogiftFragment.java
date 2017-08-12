@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.geogift;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,11 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.GeoUtils;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by ghiro on 07/08/2017.
@@ -33,6 +43,7 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     private static final String TAG = "GeogiftFragment";
 
     public static final int REQ_PERMISSION_UPDATE = 4001;
+    private static final int PLACE_PICKER_REQUEST = 4002;
 
     private static final int MESSAGE_SELECTION = 0;
     private static final int PHOTO_SELECTION = 1;
@@ -57,15 +68,12 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
 
     private Context mContext;
 
-
-
     public static GeogiftFragment newInstance(Bundle bundle) {
         GeogiftFragment newGeogiftFragment = new GeogiftFragment();
         newGeogiftFragment.setArguments(bundle);
 
         return newGeogiftFragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -201,12 +209,51 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
 
     public void pickPosition(){
         if( GeoUtils.checkPermissionAccessFineLocation(mContext) ){
-
+            //latLngBounds = new LatLngBounds(new LatLng(44.882494, 11.601847), new LatLng(44.909004, 11.613520));
+            try {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                //builder.setLatLngBounds(latLngBounds);
+                Intent i = builder.build(getActivity());
+                startActivityForResult(i, PLACE_PICKER_REQUEST);
+            } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+                //TODO adjust catch
+                Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
+                Toast toast = new Toast(mContext);
+                toast.setText("GooglePlayServices Not Available");
+                toast.setDuration(Toast.LENGTH_SHORT);
+                toast.show();
+            } catch (Exception e) {
+                Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
+                Toast toast = new Toast(mContext);
+                toast.setText("Error");
+                toast.setDuration(Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
         else{
             askPermissionAccessFineLocation();
         }
     }
+
+     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+             Place place = PlacePicker.getPlace(getContext(), data);
+             String address;
+             LatLng latLng;
+             String name;
+
+             if (place == null) {
+                 Log.i(TAG, "No place selected");
+                 return;
+             }else
+             {
+                 name = place.getName().toString();
+                 address = place.getAddress().toString();
+                 latLng = place.getLatLng();
+             }
+             locationPickerText.setText(address);
+         }
+     }
 
     public void askPermissionAccessFineLocation() {
         Log.d(TAG, "askPermission()");

@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftController;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -83,6 +84,11 @@ public class GeogiftActivity extends AppCompatActivity implements
             Log.w(TAG, "Impossible to create GeogiftController and GeogiftPresenter because geogiftKey is NULL");
         }
 
+        //create GoogleApiClient
+        createGoogleApi();
+        // Call GoogleApiClient connection when starting the Activity
+        googleApiClient.connect();
+
         mController.attachListeners();
     }
 
@@ -90,18 +96,21 @@ public class GeogiftActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
         //mController.attachListeners();
+        googleApiClient.connect();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         //mController.detachListeners();
+        googleApiClient.disconnect();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mController.detachListeners();
+        googleApiClient.disconnect();
     }
 
 
@@ -116,6 +125,19 @@ public class GeogiftActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
         outState.putString(GEOGIFT_DATABASE_KEY, mGeogiftKey);
         outState.putString(ACTION_DATABASE_KEY, mActionKey);
+    }
+
+
+    // Create GoogleApiClient instance
+    private void createGoogleApi() {
+        Log.d(TAG, "createGoogleApi()");
+        if ( googleApiClient == null ) {
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     //Google ApiClient Connection Listeners

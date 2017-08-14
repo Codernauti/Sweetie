@@ -18,11 +18,42 @@
         app2:theme="@style/ToolBarStyle"
         />
 
-    <ListView
-        android:id="@+id/todolist_listview"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/todolist_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/chat_toolbar"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/todolist_toolbar" />
+
+    <LinearLayout
+        android:id="@+id/todolist_add_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/todolist_list"
+        >
+
+        <CheckBox
+            android:id="@+id/todolist_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/todolist_text_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:inputType="text" />
+
+        <Button
+            android:id="@+id/todolist_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:text="Add" />
+
+    </LinearLayout>
 
 
 </RelativeLayout>

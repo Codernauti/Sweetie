@@ -4,11 +4,11 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 
 import com.sweetcompany.sweetie.R;
 
@@ -20,61 +20,59 @@ import java.util.List;
  * Created by lucas on 09/08/2017.
  */
 
-public class ToDoListAdapter extends ArrayAdapter<CheckEntryVM>{
+public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> implements CheckEntryViewHolder.OnViewHolderClickListener{
 
     private static final String TAG = "ToDoListAdapter";
-
-    public List<CheckEntryVM> mCheckEntryList = new ArrayList<>();
-
-    private static class ViewHolder {
-        CheckBox checkBox;
-    }
-
-    ToDoListAdapter(Context context, ArrayList<CheckEntryVM> checkEntries){
-        super(context, R.layout.todolist_item, checkEntries);
-    }
-
-
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        CheckEntryVM checkEntry = getItem(position);
-        ViewHolder viewHolder;
-
-        if(convertView == null){
-            viewHolder = new ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.todolist_item, parent, false);
-            viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.checkEntry);
-            convertView.setTag(viewHolder);
-        }else{
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-        viewHolder.checkBox.setText(checkEntry.getText());
-        viewHolder.checkBox.setChecked(checkEntry.isChecked());
-        return convertView;
-    }
 
     interface ToDoListAdapterListener {
         void onCheckEntryClicked(CheckEntryVM checkEntry);
         void onCheckEntryLongClicked(int position, List<CheckEntryVM> checkEntriesVM);
     }
 
+    private List<CheckEntryVM> mCheckEntryList = new ArrayList<>();
     private ToDoListAdapterListener mListener;
 
-    /**
-     * Call when create ToDoListAdapter
-     * @param listener
-     */
-    void setToDoListAdapterListener(ToDoListAdapterListener listener) {
+    void setListener(ToDoListAdapterListener listener) {
         mListener = listener;
     }
 
-    /**
-     *  Call when destroy ToDoListAdapterListener
-     */
-    void removeToDoListAdapterListener() {
-        mListener = null;
+    @Override
+    public int getItemViewType(int position) {
+        return mCheckEntryList.get(position).getIdView();
+    }
+
+    @Override
+    public CheckEntryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+
+        View viewToInflate = inflater.inflate(viewType, parent, false);
+        CheckEntryViewHolder viewHolder;
+        switch (viewType) {
+
+            case R.layout.todolist_item:
+                viewHolder = new CheckEntryViewHolder(viewToInflate);
+                break;
+            default:
+                Log.w(TAG, "Error: no CheckEntry type match");
+                // TODO: create a ErrorMessageViewHolder
+                viewHolder = new CheckEntryViewHolder(viewToInflate);
+                break;
+        }
+        Log.d(TAG, "onCreateViewHolder(): " + viewHolder.toString());
+        viewHolder.setViewHolderClickListener(this);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(CheckEntryViewHolder holder, int position) {
+        CheckEntryVM checkEntryVM = mCheckEntryList.get(position);
+        checkEntryVM.configViewHolder(holder);
+        Log.d(TAG, "onBindViewHolder(): " + checkEntryVM.getKey());
+    }
+
+    @Override
+    public int getItemCount() {
+        return mCheckEntryList.size();
     }
 
     void addCheckEntry(CheckEntryVM checkEntryVM) {
@@ -90,8 +88,7 @@ public class ToDoListAdapter extends ArrayAdapter<CheckEntryVM>{
         int indexOldCheckEntry = searchIndexCheckEntryOf(checkEntryVM);
         if (indexOldCheckEntry != -1) {
             mCheckEntryList.remove(indexOldCheckEntry);
-            notifyDataSetChanged();
-        }
+            notifyDataSetChanged();    }
     }
 
     void changeCheckEntry(CheckEntryVM checkEntryVM) {
@@ -121,7 +118,9 @@ public class ToDoListAdapter extends ArrayAdapter<CheckEntryVM>{
     }
 
     @Override
-    public int getCount() {
-        return mCheckEntryList.size();
+    public void onCheckBoxClicked(int adapterPosition, boolean isChecked) {
+        CheckEntryVM checkEntryVM = mCheckEntryList.get(adapterPosition);
+        checkEntryVM.setChecked(isChecked);
+        mListener.onCheckEntryClicked(checkEntryVM);
     }
 }

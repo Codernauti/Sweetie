@@ -160,6 +160,9 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
             }
         });*/
 
+        //TODO
+        switchContainerGift(PHOTO_SELECTION);
+
         return root;
     }
 

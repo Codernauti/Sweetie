@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie.actions;
 import android.content.Intent;
 import android.util.Log;
 
+import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.todolist.ToDoListActivity;
 
 /**
@@ -29,5 +30,10 @@ public class ActionToDoListVM extends ActionVM{
         intent.putExtra(ToDoListActivity.ACTION_DATABASE_KEY, super.getActionKey());
 
         mContext.startActivity(intent);
+    }
+
+    @Override
+    public int getIconId() {
+        return R.drawable.action_todolist_icon;
     }
 }

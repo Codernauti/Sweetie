@@ -15,7 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +46,8 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class GeogiftFragment extends Fragment implements GeogiftContract.View,
-                                                         View.OnClickListener
+                                                         View.OnClickListener,
+                                                         AdapterView.OnItemSelectedListener
                                                          {
 
     private static final String TAG = "GeogiftFragment";
@@ -73,6 +77,8 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     //image selector container
     private ImageView imageThumb;
     private ImageView clearImageButton;
+   //spinner
+    private Spinner timeExpirationSpinner;
     //fabButton
     private FloatingActionButton mFabAddGeogift;
 
@@ -135,6 +141,13 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         clearImageButton = (ImageView) root.findViewById(R.id.clear_image_geogift_button);
         clearImageButton.setVisibility(View.GONE);
         clearImageButton.setOnClickListener(this);
+
+        timeExpirationSpinner = (Spinner) root.findViewById(R.id.expiration_geogift_spinner);
+        ArrayAdapter<CharSequence> adapterExpiration = ArrayAdapter.createFromResource(getContext(),
+                R.array.geogift_expiration_time, android.R.layout.simple_spinner_item);
+        adapterExpiration.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeExpirationSpinner.setAdapter(adapterExpiration);
+
 
         /*mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_new_geogift);
         mFabAddGeogift.setClickable(false);*/
@@ -364,4 +377,13 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         Log.w(TAG, "permissionsDenied()");
     }
 
+     @Override
+     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+     }
+
+     @Override
+     public void onNothingSelected(AdapterView<?> parent) {
+
+     }
  }

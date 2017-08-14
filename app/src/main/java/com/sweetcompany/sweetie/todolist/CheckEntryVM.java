@@ -1,5 +1,8 @@
 package com.sweetcompany.sweetie.todolist;
 
+import android.widget.CheckBox;
+
+import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.CheckEntryFB;
 
 /**
@@ -9,9 +12,9 @@ import com.sweetcompany.sweetie.model.CheckEntryFB;
 public class CheckEntryVM {
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
-
-    private final boolean who;
     private final String key;
+    private final boolean who;
+
     private String text;
     private final String time;   // Format HH:mm
     private boolean checked;
@@ -51,5 +54,14 @@ public class CheckEntryVM {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    int getIdView() {
+        return R.layout.todolist_item;
+    }
+
+    void configViewHolder(CheckEntryViewHolder viewHolder) {
+        viewHolder.setText(text);
+        viewHolder.setChecked(checked);
     }
 }

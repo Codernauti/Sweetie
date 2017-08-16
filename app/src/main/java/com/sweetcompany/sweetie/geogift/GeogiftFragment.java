@@ -473,4 +473,5 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
      public void onNothingSelected(AdapterView<?> parent) {
 
      }
+
  }

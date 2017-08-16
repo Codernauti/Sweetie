@@ -175,7 +175,7 @@ public class FirebaseGalleryController {
         Uri uriLocal;
         uriLocal = Uri.parse(media.getUriLocal());
 
-        StorageReference photoRef = mStorageRef.child("gallery_photos/"+coupleID+"/"+uriLocal.getLastPathSegment());
+        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_PHOTOS_DIREECTORY+coupleID+"/"+uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

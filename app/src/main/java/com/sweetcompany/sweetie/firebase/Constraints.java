@@ -40,4 +40,7 @@ interface Constraints {
 
     String GEOGIFT = "geogifts";
         String GEOGIFT_ITEMS = "geogift-items";
+
+    String GALLERY_PHOTOS_DIREECTORY = "gallery_photos/";
+    String GALLERY_GEOGIFTS = "gallery_geogifts/";
 }

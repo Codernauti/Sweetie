@@ -10,9 +10,12 @@ interface GeogiftMakerContract {
 
     interface View {
         void setPresenter(GeogiftMakerContract.Presenter presenter);
+        void updatePercentUpload(int perc);
+        void setUriStorage(String uriStorage);
     }
 
     interface Presenter {
         List<String> pushGeogiftAction(String userInputGeogiftTitle, String username);
+        void uploadMedia(String uriImage);
     }
 }

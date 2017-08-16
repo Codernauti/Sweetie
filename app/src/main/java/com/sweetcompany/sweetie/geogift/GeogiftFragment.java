@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie.geogift;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.GeoUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
@@ -323,7 +325,10 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
      public void drawImage(){
          if(imagesPicked.size()>0) {
              //TODO upload on cloud every time ?
-             Glide.with(this).load("http://www.gstatic.com/webp/gallery/1.jpg")
+             Uri file = Uri.fromFile(new File(imagesPicked.get(0).getPath()));
+             String stringUriLocal;
+             stringUriLocal = file.toString();
+             Glide.with(this).load(stringUriLocal)
                      .thumbnail(0.5f)
                      .crossFade()
                      .placeholder(R.drawable.image_placeholder)
@@ -338,6 +343,7 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
          if(isImageTaken){
              isImageTaken = false;
              clearImageButton.setVisibility(View.GONE);
+             imagesPicked.clear();
              Glide.with(this).load(R.drawable.image_geogift_placeholder)
                      .thumbnail(0.5f)
                      .crossFade()

@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.firebase.FirebaseGeogiftController;
-import com.sweetcompany.sweetie.todolist.ToDoListContract;
 
 /**
  * Created by ghiro on 07/08/2017.

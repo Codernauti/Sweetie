@@ -14,7 +14,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.firebase.FirebaseGeogiftController;
+import com.sweetcompany.sweetie.firebase.FirebaseGeogiftMakerController;
 import com.sweetcompany.sweetie.utils.Utility;
 
 /**
@@ -32,6 +32,9 @@ public class GeogiftMakerActivity extends AppCompatActivity implements
     private GoogleApiClient googleApiClient;
 
     private GeogiftMakerFragment mView;
+
+    private GeogiftMakerPresenter mPresenter;
+    private FirebaseGeogiftMakerController mController;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +63,12 @@ public class GeogiftMakerActivity extends AppCompatActivity implements
             transaction.add(R.id.geogift_maker_fragment_container, (GeogiftMakerFragment)mView);
             transaction.commit();
         }
+
+        String userMail = Utility.getStringPreference(this, Utility.MAIL);
+        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+
+        mController = new FirebaseGeogiftMakerController(coupleUid);
+        mPresenter = new GeogiftMakerPresenter(mView, mController, userMail);
 
         //create GoogleApiClient
         createGoogleApi();

@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.todolist;
 
+import android.app.AlertDialog;
+
 import com.sweetcompany.sweetie.firebase.FirebaseToDoListController;
 import com.sweetcompany.sweetie.model.CheckEntryFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
@@ -35,6 +37,14 @@ public class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseTo
     }
 
     @Override
+    public void removeCheckEntry(CheckEntryVM checkEntry) {
+        CheckEntryFB removeCheckEntry = new CheckEntryFB(mUserMail, checkEntry.getText(),
+                checkEntry.isChecked(),checkEntry.getTime());
+        removeCheckEntry.setKey(checkEntry.getKey());
+        mController.removeCheckEntry(removeCheckEntry);
+    }
+
+    @Override
     public void checkedCheckEntry(CheckEntryVM checkEntry) {
         CheckEntryFB updateCheckEntry = new CheckEntryFB(mUserMail, checkEntry.getText(),
                 checkEntry.isChecked(),checkEntry.getTime());
@@ -42,6 +52,7 @@ public class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseTo
 
         mController.updateCheckEntry(updateCheckEntry);
     }
+
 
     @Override
     public void onToDoListChanged(ToDoListFB todolist) {

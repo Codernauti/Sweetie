@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.geogift.GeogiftActivity;
+import com.sweetcompany.sweetie.geogift.GeogiftMakerActivity;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.List;
@@ -61,15 +61,15 @@ public class ActionNewGeogiftFragment extends DialogFragment implements ActionsC
                                 if (!userInputGeogiftTitle.isEmpty()) {
                                     // [0] : geogiftKey, [1] : actionKey
                                     String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
-                                    List<String> keys = mPresenter.pushGeogiftAction(userInputGeogiftTitle, userName);
+                                    //List<String> keys = mPresenter.pushGeogiftAction(userInputGeogiftTitle, userName);
 
-                                    if (keys != null) {
-                                        Intent intent = new Intent(getActivity(), GeogiftActivity.class);
-                                        intent.putExtra(GeogiftActivity.GEOGIFT_TITLE, userInputGeogiftTitle);
-                                        intent.putExtra(GeogiftActivity.GEOGIFT_DATABASE_KEY, keys.get(0));
-                                        intent.putExtra(GeogiftActivity.ACTION_DATABASE_KEY, keys.get(1));
+                                    //if (keys != null) {
+                                        Intent intent = new Intent(getActivity(), GeogiftMakerActivity.class);
+                                        intent.putExtra(GeogiftMakerActivity.GEOGIFT_TITLE, userInputGeogiftTitle);
+                                        //intent.putExtra(GeogiftMakerActivity.GEOGIFT_DATABASE_KEY, keys.get(0));
+                                        //intent.putExtra(GeogiftMakerActivity.ACTION_DATABASE_KEY, keys.get(1));
                                         startActivity(intent);
-                                    }
+                                    //}
                                 }
                             }
                         }

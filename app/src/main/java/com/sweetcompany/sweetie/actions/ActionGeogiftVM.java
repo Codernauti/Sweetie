@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.geogift.GeogiftActivity;
+import com.sweetcompany.sweetie.geogift.GeogiftMakerActivity;
 
 /**
  * Created by ghiro on 07/08/2017.
@@ -26,10 +26,10 @@ public class ActionGeogiftVM extends ActionVM {
     public void showAction() {
         Log.d("ActionGeogiftVM", getTitle() + " openAction");
 
-        Intent intent = new Intent(mContext, GeogiftActivity.class);
-        intent.putExtra(GeogiftActivity.GEOGIFT_TITLE, super.getTitle());
-        intent.putExtra(GeogiftActivity.GEOGIFT_DATABASE_KEY, super.getChildKey());
-        intent.putExtra(GeogiftActivity.ACTION_DATABASE_KEY, super.getActionKey());
+        Intent intent = new Intent(mContext, GeogiftMakerActivity.class);
+        intent.putExtra(GeogiftMakerActivity.GEOGIFT_TITLE, super.getTitle());
+        //intent.putExtra(GeogiftMakerActivity.GEOGIFT_DATABASE_KEY, super.getChildKey());
+        //intent.putExtra(GeogiftMakerActivity.ACTION_DATABASE_KEY, super.getActionKey());
 
         mContext.startActivity(intent);
     }

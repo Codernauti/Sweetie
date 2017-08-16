@@ -36,9 +36,11 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.GeoUtils;
+import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -48,6 +50,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class GeogiftMakerFragment extends Fragment implements
                                                          View.OnClickListener,
+                                                         GeogiftMakerContract.View,
                                                          AdapterView.OnItemSelectedListener
 {
 
@@ -97,6 +100,9 @@ public class GeogiftMakerFragment extends Fragment implements
     private boolean isGeogiftComplete = false;
 
     private Context mContext;
+    private GeogiftMakerContract.Presenter mPresenter;
+    String titleGeogift;
+
     public static GeogiftMakerFragment newInstance(Bundle bundle) {
         GeogiftMakerFragment newGeogiftMakerFragment = new GeogiftMakerFragment();
         newGeogiftMakerFragment.setArguments(bundle);
@@ -117,10 +123,8 @@ public class GeogiftMakerFragment extends Fragment implements
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.geogift_maker_fragment, container, false);
 
         // TODO: is useless to set titleGeogift, Firebase update it also if it is offline
-        String titleGeogift = getArguments().getString(GeogiftTestActivity.GEOGIFT_TITLE);
-        String geogiftUid = getArguments().getString(GeogiftTestActivity.GEOGIFT_DATABASE_KEY);
+        titleGeogift = getArguments().getString(GeogiftMakerActivity.GEOGIFT_TITLE);
         Log.d(TAG, "from Intent GEOGIFT_TITLE: " + titleGeogift);
-        Log.d(TAG, "from Intent GEOGIFT_DATABASE_KEY: " + geogiftUid);
 
         // initialize toolbar
         mToolBar = (Toolbar) root.findViewById(R.id.geogift_toolbar);
@@ -184,7 +188,9 @@ public class GeogiftMakerFragment extends Fragment implements
         mFabAddGeogift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(isGeogiftComplete){
+                    createNewGeogift();
+                }
             }
         });
 
@@ -469,4 +475,20 @@ public class GeogiftMakerFragment extends Fragment implements
 
      }
 
- }
+    @Override
+    public void setPresenter(GeogiftMakerContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+    public void createNewGeogift(){
+
+            // [0] : geogiftKey, [1] : actionKey
+            String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
+            List<String> keys = mPresenter.pushGeogiftAction(titleGeogift, userName);
+
+            if (keys != null) {
+                //backpress
+                getActivity().finish();
+            }
+
+    }
+}

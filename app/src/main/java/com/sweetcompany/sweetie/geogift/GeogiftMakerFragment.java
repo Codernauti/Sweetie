@@ -5,20 +5,21 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Layout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,14 +29,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.GeoUtils;
 
@@ -48,12 +46,12 @@ import static android.app.Activity.RESULT_OK;
  * Created by ghiro on 07/08/2017.
  */
 
-public class GeogiftFragment extends Fragment implements GeogiftContract.View,
+public class GeogiftMakerFragment extends Fragment implements
                                                          View.OnClickListener,
                                                          AdapterView.OnItemSelectedListener
-                                                         {
+{
 
-    private static final String TAG = "GeogiftFragment";
+    private static final String TAG = "GeogiftMakerFragment";
 
     public static final int REQ_PERMISSION_UPDATE = 4001;
     private static final int PLACE_PICKER_REQUEST = 4002;
@@ -62,6 +60,8 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     private static final int MESSAGE_SELECTION = 0;
     private static final int PHOTO_SELECTION = 1;
     private static final int HEART_SELECTION = 2;
+    private static final int MIN_MESSAGE_LENGHT = 0;
+    private int currentSelection;
 
     private ArrayList<Image> imagesPicked = new ArrayList<>();
     private boolean isImageTaken = false;
@@ -80,6 +80,8 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     //image selector container
     private ImageView imageThumb;
     private ImageView clearImageButton;
+    // editText
+    private EditText messageEditText;
    //spinner
     private Spinner timeExpirationSpinner;
     //fabButton
@@ -88,13 +90,18 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     private View sendingFragment;
     private TextView uploadingPercent;
 
+    private String messageGeogift = "";
+    private LatLng positionGeogift = null;
+    private String addressGeogift = "";
+
+    private boolean isGeogiftComplete = false;
+
     private Context mContext;
+    public static GeogiftMakerFragment newInstance(Bundle bundle) {
+        GeogiftMakerFragment newGeogiftMakerFragment = new GeogiftMakerFragment();
+        newGeogiftMakerFragment.setArguments(bundle);
 
-    public static GeogiftFragment newInstance(Bundle bundle) {
-        GeogiftFragment newGeogiftFragment = new GeogiftFragment();
-        newGeogiftFragment.setArguments(bundle);
-
-        return newGeogiftFragment;
+        return newGeogiftMakerFragment;
     }
 
     @Override
@@ -107,11 +114,11 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.geogift_fragment, container, false);
+        final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.geogift_maker_fragment, container, false);
 
         // TODO: is useless to set titleGeogift, Firebase update it also if it is offline
-        String titleGeogift = getArguments().getString(GeogiftActivityTest.GEOGIFT_TITLE);
-        String geogiftUid = getArguments().getString(GeogiftActivityTest.GEOGIFT_DATABASE_KEY);
+        String titleGeogift = getArguments().getString(GeogiftTestActivity.GEOGIFT_TITLE);
+        String geogiftUid = getArguments().getString(GeogiftTestActivity.GEOGIFT_DATABASE_KEY);
         Log.d(TAG, "from Intent GEOGIFT_TITLE: " + titleGeogift);
         Log.d(TAG, "from Intent GEOGIFT_DATABASE_KEY: " + geogiftUid);
 
@@ -126,7 +133,6 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         locationPickerIcon.setOnClickListener(this);
         locationPickerText = (TextView) root.findViewById(R.id.geogift_textview_topbar);
         locationPickerText.setOnClickListener(this);
-
 
         messageIconButton = (View) root.findViewById(R.id.message_geogift_layout);
         messageIconButton.setOnClickListener(this);
@@ -148,6 +154,19 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         clearImageButton.setVisibility(View.GONE);
         clearImageButton.setOnClickListener(this);
 
+        messageEditText = (EditText) root.findViewById(R.id.text_geogift);
+        messageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                messageGeogift = s.toString();
+                checkGeogiftFields();
+            }
+        });
+
         timeExpirationSpinner = (Spinner) root.findViewById(R.id.expiration_geogift_spinner);
         ArrayAdapter<CharSequence> adapterExpiration = ArrayAdapter.createFromResource(getContext(),
                 R.array.geogift_expiration_time, android.R.layout.simple_spinner_item);
@@ -158,16 +177,16 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         //sendingFragment.setVisibility(View.VISIBLE);
         uploadingPercent = (TextView) sendingFragment.findViewById(R.id.uploading_percent_geogift_text);
 
-        /*mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_new_geogift);
-        mFabAddGeogift.setClickable(false);*/
+        mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_add_photo);
+        mFabAddGeogift.setClickable(false);
 
-        /*// Add listener
+        // Add listener
         mFabAddGeogift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });*/
+        });
 
         //TODO
         switchContainerGift(PHOTO_SELECTION);
@@ -184,11 +203,6 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-    @Override
-    public void setPresenter(GeogiftContract.Presenter presenter) {
-
     }
 
     @Override
@@ -233,6 +247,9 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
 
                 imageThumb.setVisibility(View.GONE);
                 clearImageButton.setVisibility(View.GONE);
+
+                currentSelection = MESSAGE_SELECTION;
+                checkGeogiftFields();
                 break;
             case PHOTO_SELECTION:
                 messageSelector.setVisibility(View.GONE);
@@ -242,6 +259,9 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
                 imageThumb.setVisibility(View.VISIBLE);
                 if(isImageTaken) clearImageButton.setVisibility(View.VISIBLE);
                 else clearImageButton.setVisibility(View.GONE);
+
+                currentSelection = PHOTO_SELECTION;
+                checkGeogiftFields();
                 break;
             case HEART_SELECTION:
                 messageSelector.setVisibility(View.GONE);
@@ -250,7 +270,47 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
 
                 imageThumb.setVisibility(View.GONE);
                 clearImageButton.setVisibility(View.GONE);
+
+                currentSelection = HEART_SELECTION;
+                checkGeogiftFields();
                 break;
+        }
+    }
+
+    public void checkGeogiftFields(){
+        if(currentSelection == MESSAGE_SELECTION){
+            if(messageGeogift.length()>MIN_MESSAGE_LENGHT){
+                isGeogiftComplete = true;
+            }
+            else
+            {
+                isGeogiftComplete = false;
+            }
+        }
+        else if(currentSelection == PHOTO_SELECTION){
+            if (isImageTaken){
+                isGeogiftComplete = true;
+            }
+            else{
+                isGeogiftComplete = false;
+            }
+        }
+        else if(currentSelection == HEART_SELECTION)
+        {
+            isGeogiftComplete = true;
+        }
+
+        if(positionGeogift == null){
+            isGeogiftComplete = false;
+        }
+
+        if(isGeogiftComplete){
+            mFabAddGeogift.setClickable(true);
+            mFabAddGeogift.setAlpha(1.0f);
+        }
+        else{
+            mFabAddGeogift.setClickable(false);
+            mFabAddGeogift.setAlpha(0.5f);
         }
     }
 
@@ -259,6 +319,7 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
             //latLngBounds = new LatLngBounds(new LatLng(44.882494, 11.601847), new LatLng(44.909004, 11.613520));
             try {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+                // TODO set start bounds
                 //builder.setLatLngBounds(latLngBounds);
                 Intent i = builder.build(getActivity());
                 startActivityForResult(i, PLACE_PICKER_REQUEST);
@@ -307,7 +368,6 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
      public void onActivityResult(int requestCode, int resultCode, Intent data) {
          if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
              Place place = PlacePicker.getPlace(getContext(), data);
-             String address;
              LatLng latLng;
              String name;
 
@@ -317,10 +377,12 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
              }else
              {
                  name = place.getName().toString();
-                 address = place.getAddress().toString();
+                 addressGeogift = place.getAddress().toString();
+                 locationPickerText.setText(addressGeogift);
                  latLng = place.getLatLng();
+                 positionGeogift = new LatLng(latLng.latitude, latLng.latitude);
+                 checkGeogiftFields();
              }
-             locationPickerText.setText(address);
          }
          if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
              imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
@@ -343,6 +405,7 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
                      .into(imageThumb);
              isImageTaken = true;
              clearImageButton.setVisibility(View.VISIBLE);
+             checkGeogiftFields();
          }
      }
 
@@ -357,6 +420,7 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
                      .placeholder(R.drawable.image_placeholder)
                      .diskCacheStrategy(DiskCacheStrategy.ALL)
                      .into(imageThumb);
+             checkGeogiftFields();
          }
      }
 
@@ -393,6 +457,8 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         Log.w(TAG, "permissionsDenied()");
     }
 
+    // TODO
+    //Spinner expiration time
      @Override
      public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -402,4 +468,5 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
      public void onNothingSelected(AdapterView<?> parent) {
 
      }
+
  }

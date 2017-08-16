@@ -46,12 +46,12 @@ import static android.app.Activity.RESULT_OK;
  * Created by ghiro on 07/08/2017.
  */
 
-public class GeogiftFragment extends Fragment implements GeogiftContract.View,
+public class GeogiftMakerFragment extends Fragment implements
                                                          View.OnClickListener,
                                                          AdapterView.OnItemSelectedListener
 {
 
-    private static final String TAG = "GeogiftFragment";
+    private static final String TAG = "GeogiftMakerFragment";
 
     public static final int REQ_PERMISSION_UPDATE = 4001;
     private static final int PLACE_PICKER_REQUEST = 4002;
@@ -97,11 +97,11 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     private boolean isGeogiftComplete = false;
 
     private Context mContext;
-    public static GeogiftFragment newInstance(Bundle bundle) {
-        GeogiftFragment newGeogiftFragment = new GeogiftFragment();
-        newGeogiftFragment.setArguments(bundle);
+    public static GeogiftMakerFragment newInstance(Bundle bundle) {
+        GeogiftMakerFragment newGeogiftMakerFragment = new GeogiftMakerFragment();
+        newGeogiftMakerFragment.setArguments(bundle);
 
-        return newGeogiftFragment;
+        return newGeogiftMakerFragment;
     }
 
     @Override
@@ -114,11 +114,11 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.geogift_fragment, container, false);
+        final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.geogift_maker_fragment, container, false);
 
         // TODO: is useless to set titleGeogift, Firebase update it also if it is offline
-        String titleGeogift = getArguments().getString(GeogiftActivityTest.GEOGIFT_TITLE);
-        String geogiftUid = getArguments().getString(GeogiftActivityTest.GEOGIFT_DATABASE_KEY);
+        String titleGeogift = getArguments().getString(GeogiftTestActivity.GEOGIFT_TITLE);
+        String geogiftUid = getArguments().getString(GeogiftTestActivity.GEOGIFT_DATABASE_KEY);
         Log.d(TAG, "from Intent GEOGIFT_TITLE: " + titleGeogift);
         Log.d(TAG, "from Intent GEOGIFT_DATABASE_KEY: " + geogiftUid);
 
@@ -203,11 +203,6 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-    @Override
-    public void setPresenter(GeogiftContract.Presenter presenter) {
-
     }
 
     @Override

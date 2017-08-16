@@ -1,22 +1,17 @@
-package com.sweetcompany.sweetie.model;
-
-import com.google.firebase.database.Exclude;
+package com.sweetcompany.sweetie.geogift;
 
 /**
- * Created by ghiro on 07/08/2017.
+ * Created by ghiro on 16/08/2017.
  */
 
-public class GeogiftFB {
+public class GeoItem {
 
     public final static int MESSAGE_GEOGIFT = 0;
     public final static int PHOTO_GEOGIFT = 1;
     public final static int HEART_GEOGIFT = 2;
 
-    @Exclude
-    private String key;
-
-    private String mEmail;
-    private int mType;
+    private int type;
+    private String mail;
     private String message;
     private String address;
     private String lat;
@@ -25,35 +20,15 @@ public class GeogiftFB {
     private boolean bookmarked;
     private String datetime;
 
-
-    // For firebase
-    public GeogiftFB() {
+    public GeoItem() {
     }
 
-
-    @Exclude
-    public String getKey() {
-        return key;
-    }
-    @Exclude
-    public void setKey(String key) {
-        this.key = key;
+    public int getType() {
+        return type;
     }
 
-    public String getmEmail() {
-        return mEmail;
-    }
-
-    public void setmEmail(String mEmail) {
-        this.mEmail = mEmail;
-    }
-
-    public int getmType() {
-        return mType;
-    }
-
-    public void setmType(int mType) {
-        this.mType = mType;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getMessage() {
@@ -110,5 +85,13 @@ public class GeogiftFB {
 
     public void setDatetime(String datetime) {
         this.datetime = datetime;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 }

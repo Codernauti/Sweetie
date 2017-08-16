@@ -22,15 +22,17 @@
         android:id="@+id/todolist_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/todolist_toolbar" />
+        android:layout_below="@+id/todolist_toolbar"
+        android:paddingTop="20dp" />
 
     <LinearLayout
         android:id="@+id/todolist_add_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@+id/todolist_list"
-        >
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
 
         <CheckBox
             android:id="@+id/todolist_checkBox"

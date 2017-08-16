@@ -12,9 +12,9 @@ import java.util.List;
  * Created by ghiro on 16/08/2017.
  */
 
-public class GeogiftMakerPresenter implements GeogiftMakerContract.Presenter{
+public class GeogiftMakerPresenter implements GeogiftMakerContract.Presenter, FirebaseGeogiftMakerController.GeogiftMakerControllerListener{
 
-    public static final String TAG = "Action.presenter" ;
+    public static final String TAG = "GeogiftMaker.presenter" ;
 
     private final GeogiftMakerContract.View mView;
     private final FirebaseGeogiftMakerController mController;
@@ -24,6 +24,7 @@ public class GeogiftMakerPresenter implements GeogiftMakerContract.Presenter{
         mView = view;
         mView.setPresenter(this);
         mController = controller;
+        mController.addListener(this);
 
         mUserMail = userMail;
     }
@@ -41,5 +42,20 @@ public class GeogiftMakerPresenter implements GeogiftMakerContract.Presenter{
             Log.d(TAG, "An error in the creation of a new GeogiftAction occurs!");
             return null;
         }
+    }
+
+    @Override
+    public void uploadMedia(String uriImage) {
+        mController.uploadMedia(uriImage);
+    }
+
+    @Override
+    public void onMediaAdded(String uriStorage) {
+        mView.setUriStorage(uriStorage);
+    }
+
+    @Override
+    public void onUploadPercent(int perc) {
+        mView.updatePercentUpload(perc);
     }
 }

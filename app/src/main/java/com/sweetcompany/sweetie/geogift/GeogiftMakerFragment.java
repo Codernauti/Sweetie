@@ -96,6 +96,8 @@ public class GeogiftMakerFragment extends Fragment implements
     private String messageGeogift = "";
     private LatLng positionGeogift = null;
     private String addressGeogift = "";
+    private String stringUriLocal;
+    private String uriStorage;
 
     private boolean isGeogiftComplete = false;
 
@@ -178,7 +180,6 @@ public class GeogiftMakerFragment extends Fragment implements
         timeExpirationSpinner.setAdapter(adapterExpiration);
 
         sendingFragment = (View) root.findViewById(R.id.included_uploading_geogift);
-        //sendingFragment.setVisibility(View.VISIBLE);
         uploadingPercent = (TextView) sendingFragment.findViewById(R.id.uploading_percent_geogift_text);
 
         mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_add_photo);
@@ -189,7 +190,7 @@ public class GeogiftMakerFragment extends Fragment implements
             @Override
             public void onClick(View v) {
                 if(isGeogiftComplete){
-                    createNewGeogift();
+                    prepareNewGeogift();
                 }
             }
         });
@@ -401,7 +402,6 @@ public class GeogiftMakerFragment extends Fragment implements
          if(imagesPicked.size()>0) {
              //TODO upload on cloud every time ?
              Uri file = Uri.fromFile(new File(imagesPicked.get(0).getPath()));
-             String stringUriLocal;
              stringUriLocal = file.toString();
              Glide.with(this).load(stringUriLocal)
                      .thumbnail(0.5f)
@@ -479,6 +479,35 @@ public class GeogiftMakerFragment extends Fragment implements
     public void setPresenter(GeogiftMakerContract.Presenter presenter) {
         mPresenter = presenter;
     }
+
+    @Override
+    public void updatePercentUpload(int perc) {
+        uploadingPercent.setText(perc+"%");
+    }
+
+    @Override
+    public void setUriStorage(String uriS) {
+        //call when image is uploaded
+        uriStorage = uriS;
+        if(uriStorage!=null)
+        {
+            createNewGeogift();
+        }
+    }
+
+    public void prepareNewGeogift(){
+        if(currentSelection == PHOTO_SELECTION){
+            mPresenter.uploadMedia(stringUriLocal);
+            sendingFragment.setVisibility(View.VISIBLE);
+        }
+        else if(currentSelection == MESSAGE_SELECTION){
+            createNewGeogift();
+        }
+        else if(currentSelection == HEART_SELECTION){
+            createNewGeogift();
+        }
+    }
+
     public void createNewGeogift(){
 
             // [0] : geogiftKey, [1] : actionKey
@@ -487,6 +516,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
             if (keys != null) {
                 //backpress
+                // TODO ?????
                 getActivity().finish();
             }
 

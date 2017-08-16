@@ -33,6 +33,7 @@
     <string name="text_hint_geogift">\t\tInsert message …</string>
     <string name="hint_expiration_geogift">Expiration time</string>
     <string name="sending_geogift">Sending geogift …</string>
+    <string name="title_alter_dialog_back">Delete geogift creation?</string>
 
     <!-- Location Picker -->
     <string name="google_locate_picker_key">AIzaSyDtJP5SOBfQ4EJ67KcX7ughd4_DXxQEIv8</string>

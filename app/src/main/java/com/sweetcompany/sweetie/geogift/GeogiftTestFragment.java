@@ -1,8 +1,6 @@
 package com.sweetcompany.sweetie.geogift;
 
 import android.app.PendingIntent;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
@@ -52,22 +50,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.Utility;
 
-import java.util.concurrent.Executor;
-
 import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by ghiro on 07/08/2017.
  */
 
-public class GeogiftFragmentTest  extends Fragment implements GeogiftContract.View,
+public class GeogiftTestFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         OnMapReadyCallback,
         LocationListener,
         ResultCallback<Status>{
 
-    private static final String TAG = "GeogiftFragment";
+    private static final String TAG = "GeogiftMakerFragment";
 
     private static final int PLACE_PICKER_REQUEST = 1;
     private int REQ_PERMISSION_UPDATE = 202;
@@ -116,10 +112,8 @@ public class GeogiftFragmentTest  extends Fragment implements GeogiftContract.Vi
     private Marker locationMarker;
     private Marker geoFenceMarker;
 
-    private GeogiftContract.Presenter mPresenter;
-
-    public static GeogiftFragmentTest newInstance(Bundle bundle) {
-        GeogiftFragmentTest newGeogiftFragment = new GeogiftFragmentTest();
+    public static GeogiftTestFragment newInstance(Bundle bundle) {
+        GeogiftTestFragment newGeogiftFragment = new GeogiftTestFragment();
         newGeogiftFragment.setArguments(bundle);
 
         return newGeogiftFragment;
@@ -146,8 +140,8 @@ public class GeogiftFragmentTest  extends Fragment implements GeogiftContract.Vi
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.geogift_fragment_test, container, false);
 
         // TODO: is useless to set titleChat, Firebase update it also if it is offline
-        /*String titleGeogift = getArguments().getString(GeogiftActivityTest.GEOGIFT_TITLE);
-        String geogiftUid = getArguments().getString(GeogiftActivityTest.GEOGIFT_DATABASE_KEY);
+        /*String titleGeogift = getArguments().getString(GeogiftTestActivity.GEOGIFT_TITLE);
+        String geogiftUid = getArguments().getString(GeogiftTestActivity.GEOGIFT_DATABASE_KEY);
         Log.d(TAG, "from Intent GEOGIFT_TITLE: " + titleGeogift);
         Log.d(TAG, "from Intent GEOGIFT_DATABASE_KEY: " + geogiftUid);*/
 
@@ -322,11 +316,6 @@ public class GeogiftFragmentTest  extends Fragment implements GeogiftContract.Vi
         super.onPause();
         // Disconnect GoogleApiClient when stopping Activity
         googleApiClient.disconnect();
-    }
-
-    @Override
-    public void setPresenter(GeogiftContract.Presenter presenter) {
-        mPresenter = presenter;
     }
 
     @Override

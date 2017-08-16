@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie.geogift;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -11,11 +12,15 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +39,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.GeoUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
@@ -43,7 +49,8 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class GeogiftFragment extends Fragment implements GeogiftContract.View,
-                                                         View.OnClickListener
+                                                         View.OnClickListener,
+                                                         AdapterView.OnItemSelectedListener
                                                          {
 
     private static final String TAG = "GeogiftFragment";
@@ -64,17 +71,22 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     private ImageView locationPickerIcon;
     private TextView locationPickerText;
     //item selector bar
-    private ImageView messageIconButton;
-    private ImageView photoIconButton;
-    private ImageView heartIconButton;
+    private View messageIconButton;
+    private View photoIconButton;
+    private View heartIconButton;
     private ImageView messageSelector;
     private ImageView photoSelector;
     private ImageView heartSelector;
     //image selector container
     private ImageView imageThumb;
     private ImageView clearImageButton;
+   //spinner
+    private Spinner timeExpirationSpinner;
     //fabButton
     private FloatingActionButton mFabAddGeogift;
+    //uploading fragment
+    private View sendingFragment;
+    private TextView uploadingPercent;
 
     private Context mContext;
 
@@ -116,11 +128,11 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         locationPickerText.setOnClickListener(this);
 
 
-        messageIconButton = (ImageView) root.findViewById(R.id.item_message_geogift_button);
+        messageIconButton = (View) root.findViewById(R.id.message_geogift_layout);
         messageIconButton.setOnClickListener(this);
-        photoIconButton = (ImageView) root.findViewById(R.id.item_photo_geogift_button);
+        photoIconButton = (View) root.findViewById(R.id.photo_geogift_layout);
         photoIconButton.setOnClickListener(this);
-        heartIconButton = (ImageView) root.findViewById(R.id.item_heart_geogift_button);
+        heartIconButton = (View) root.findViewById(R.id.heart_geogift_layout);
         heartIconButton.setOnClickListener(this);
         messageSelector = (ImageView) root.findViewById(R.id.message_geogift_selector);
         messageSelector.setVisibility(View.GONE);
@@ -136,6 +148,16 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         clearImageButton.setVisibility(View.GONE);
         clearImageButton.setOnClickListener(this);
 
+        timeExpirationSpinner = (Spinner) root.findViewById(R.id.expiration_geogift_spinner);
+        ArrayAdapter<CharSequence> adapterExpiration = ArrayAdapter.createFromResource(getContext(),
+                R.array.geogift_expiration_time, android.R.layout.simple_spinner_item);
+        adapterExpiration.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeExpirationSpinner.setAdapter(adapterExpiration);
+
+        sendingFragment = (View) root.findViewById(R.id.included_uploading_geogift);
+        //sendingFragment.setVisibility(View.VISIBLE);
+        uploadingPercent = (TextView) sendingFragment.findViewById(R.id.uploading_percent_geogift_text);
+
         /*mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_new_geogift);
         mFabAddGeogift.setClickable(false);*/
 
@@ -146,6 +168,9 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
 
             }
         });*/
+
+        //TODO
+        switchContainerGift(PHOTO_SELECTION);
 
         return root;
     }
@@ -173,13 +198,13 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
             case R.id.geogift_textview_topbar:
                 pickPosition();
                 break;
-            case R.id.item_message_geogift_button:
+            case R.id.message_geogift_layout:
                 switchContainerGift(MESSAGE_SELECTION);
                 break;
-            case R.id.item_photo_geogift_button:
+            case R.id.photo_geogift_layout:
                 switchContainerGift(PHOTO_SELECTION);
                 break;
-            case R.id.item_heart_geogift_button:
+            case R.id.heart_geogift_layout:
                 switchContainerGift(HEART_SELECTION);
                 break;
             case R.id.image_thumb_geogift:
@@ -307,7 +332,10 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
      public void drawImage(){
          if(imagesPicked.size()>0) {
              //TODO upload on cloud every time ?
-             Glide.with(this).load("http://www.gstatic.com/webp/gallery/1.jpg")
+             Uri file = Uri.fromFile(new File(imagesPicked.get(0).getPath()));
+             String stringUriLocal;
+             stringUriLocal = file.toString();
+             Glide.with(this).load(stringUriLocal)
                      .thumbnail(0.5f)
                      .crossFade()
                      .placeholder(R.drawable.image_placeholder)
@@ -322,6 +350,7 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
          if(isImageTaken){
              isImageTaken = false;
              clearImageButton.setVisibility(View.GONE);
+             imagesPicked.clear();
              Glide.with(this).load(R.drawable.image_geogift_placeholder)
                      .thumbnail(0.5f)
                      .crossFade()
@@ -364,4 +393,13 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         Log.w(TAG, "permissionsDenied()");
     }
 
+     @Override
+     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+     }
+
+     @Override
+     public void onNothingSelected(AdapterView<?> parent) {
+
+     }
  }

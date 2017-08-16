@@ -64,6 +64,7 @@
         android:orientation="horizontal">
 
         <FrameLayout
+            android:id="@+id/message_geogift_layout"
             android:layout_width="80dp"
             android:layout_height="match_parent">
             <ImageView
@@ -91,6 +92,7 @@
             android:background="@color/fragmentSeparator"/>
 
         <FrameLayout
+            android:id="@+id/photo_geogift_layout"
             android:layout_width="80dp"
             android:layout_height="match_parent">
             <ImageView
@@ -117,7 +119,9 @@
             android:layout_marginBottom="12dp"
             android:background="@color/fragmentSeparator"/>
 
+
         <FrameLayout
+            android:id="@+id/heart_geogift_layout"
             android:layout_width="80dp"
             android:layout_height="match_parent">
             <ImageView
@@ -190,6 +194,29 @@
         android:layout_marginEnd="10dp"
         android:background="@color/fragmentSeparator"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:padding="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/hint_expiration_geogift"/>
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_access_time_black_24dp"/>
+        <Spinner
+            android:id="@+id/expiration_geogift_spinner"
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:entries="@array/geogift_expiration_time"/>
+    </LinearLayout>
+
+
 </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -206,5 +233,9 @@
         android:tint="@color/white"
         app2:backgroundTint="@color/purple_sweetie"
         />
+
+    <include
+        android:id="@+id/included_uploading_geogift"
+        layout="@layout/geogift_uploading"/>
 
 </RelativeLayout>

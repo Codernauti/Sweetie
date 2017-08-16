@@ -26,6 +26,7 @@
     <color name="separatorAction">#E0E0E0</color>
     <color name="fragmentSeparator">#E0E0E0</color>
     <color name="geogiftItem">#708090</color>
+    <color name="background_uploading_geogift">#E67973D6</color>
 
 
 </resources>

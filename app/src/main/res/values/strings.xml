@@ -31,6 +31,7 @@
     <string name="select_location_geogift">Select an address where to place a gift …</string>
     <string name="text_hint_geogift">\t\tInsert message …</string>
     <string name="hint_expiration_geogift">Expiration time</string>
+    <string name="sending_geogift">Sending geogift …</string>
 
     <!-- Location Picker -->
     <string name="google_locate_picker_key">AIzaSyDtJP5SOBfQ4EJ67KcX7ughd4_DXxQEIv8</string>

@@ -64,6 +64,7 @@
         android:orientation="horizontal">
 
         <FrameLayout
+            android:id="@+id/message_geogift_layout"
             android:layout_width="80dp"
             android:layout_height="match_parent">
             <ImageView
@@ -91,6 +92,7 @@
             android:background="@color/fragmentSeparator"/>
 
         <FrameLayout
+            android:id="@+id/photo_geogift_layout"
             android:layout_width="80dp"
             android:layout_height="match_parent">
             <ImageView
@@ -119,6 +121,7 @@
 
 
         <FrameLayout
+            android:id="@+id/heart_geogift_layout"
             android:layout_width="80dp"
             android:layout_height="match_parent">
             <ImageView
@@ -231,5 +234,8 @@
         app2:backgroundTint="@color/purple_sweetie"
         />
 
+    <include
+        android:id="@+id/included_uploading_geogift"
+        layout="@layout/geogift_uploading"/>
 
 </RelativeLayout>

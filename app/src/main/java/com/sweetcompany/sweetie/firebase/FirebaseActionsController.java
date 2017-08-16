@@ -185,7 +185,6 @@ public class FirebaseActionsController {
 
         // Create Gallery and set Gallery
         GeogiftFB geogift = new GeogiftFB();
-        geogift.setTitle(geogiftTitle);
 
         // put into queue for network
         newGeogiftPush.setValue(geogift);

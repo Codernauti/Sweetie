@@ -12,6 +12,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.sweetcompany.sweetie.geogift.GeoItem;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GeogiftFB;
 import com.sweetcompany.sweetie.model.MediaFB;
@@ -57,7 +58,7 @@ public class FirebaseGeogiftMakerController {
     }
 
 
-    public List<String> pushGeogiftAction(ActionFB actionFB, String geogiftTitle) {
+    public List<String> pushGeogiftAction(ActionFB actionFB, String geogiftTitle, GeoItem geoItem) {
         List<String> newKeys =  new ArrayList<String>();
 
         DatabaseReference newGeogiftPush = mGeogiftDbReference.push();
@@ -72,7 +73,14 @@ public class FirebaseGeogiftMakerController {
 
         // Create Gallery and set Gallery
         GeogiftFB geogift = new GeogiftFB();
-        geogift.setTitle(geogiftTitle);
+        geogift.setmEmail(geoItem.getMail());
+        geogift.setAddress(geoItem.getAddress());
+        geogift.setDatetime(actionFB.getDataTime());
+        geogift.setBookmarked(geoItem.isBookmarked());
+        geogift.setUriS(geoItem.getUriS());
+        geogift.setLat(geoItem.getLat());
+        geogift.setLon(geoItem.getLon());
+        geogift.setmType(geoItem.getType());
 
         // put into queue for network
         newGeogiftPush.setValue(geogift);

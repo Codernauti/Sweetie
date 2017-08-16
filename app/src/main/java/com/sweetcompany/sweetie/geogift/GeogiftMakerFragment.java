@@ -105,6 +105,8 @@ public class GeogiftMakerFragment extends Fragment implements
     private GeogiftMakerContract.Presenter mPresenter;
     String titleGeogift;
 
+    private GeoItem mGeoItem;
+
     public static GeogiftMakerFragment newInstance(Bundle bundle) {
         GeogiftMakerFragment newGeogiftMakerFragment = new GeogiftMakerFragment();
         newGeogiftMakerFragment.setArguments(bundle);
@@ -197,6 +199,8 @@ public class GeogiftMakerFragment extends Fragment implements
 
         //TODO
         switchContainerGift(PHOTO_SELECTION);
+
+        mGeoItem = new GeoItem();
 
         return root;
     }
@@ -491,6 +495,7 @@ public class GeogiftMakerFragment extends Fragment implements
         uriStorage = uriS;
         if(uriStorage!=null)
         {
+            mGeoItem.setUriS(uriStorage);
             createNewGeogift();
         }
     }
@@ -499,20 +504,31 @@ public class GeogiftMakerFragment extends Fragment implements
         if(currentSelection == PHOTO_SELECTION){
             mPresenter.uploadMedia(stringUriLocal);
             sendingFragment.setVisibility(View.VISIBLE);
+            mGeoItem.setType(GeoItem.PHOTO_GEOGIFT);
         }
         else if(currentSelection == MESSAGE_SELECTION){
+            mGeoItem.setType(GeoItem.MESSAGE_GEOGIFT);
             createNewGeogift();
         }
         else if(currentSelection == HEART_SELECTION){
+            mGeoItem.setType(GeoItem.HEART_GEOGIFT);
             createNewGeogift();
         }
     }
 
     public void createNewGeogift(){
 
+          String userMail = Utility.getStringPreference(mContext, Utility.MAIL);
+
+           mGeoItem.setMail(userMail);
+           mGeoItem.setAddress(addressGeogift);
+           mGeoItem.setBookmarked(false); //TODO
+           mGeoItem.setLat(String.valueOf(positionGeogift.latitude));
+           mGeoItem.setLon(String.valueOf(positionGeogift.longitude));
+
             // [0] : geogiftKey, [1] : actionKey
             String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
-            List<String> keys = mPresenter.pushGeogiftAction(titleGeogift, userName);
+            List<String> keys = mPresenter.pushGeogiftAction(mGeoItem, titleGeogift, userName);
 
             if (keys != null) {
                 //backpress

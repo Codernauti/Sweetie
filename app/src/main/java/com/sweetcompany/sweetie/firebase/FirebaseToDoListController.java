@@ -95,6 +95,7 @@ public class FirebaseToDoListController {
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     CheckEntryFB removedCheckEntry = dataSnapshot.getValue(CheckEntryFB.class);
+                    removedCheckEntry.setKey(dataSnapshot.getKey());
                     Log.d(TAG, "onCheckEntryRemoved from todo list: " + removedCheckEntry.getText());
 
                     for (ToDoListControllerListener listener : mListeners) {
@@ -149,4 +150,10 @@ public class FirebaseToDoListController {
         actionUpdates.put("dataTime", chk.getDateTime());
         mAction.updateChildren(actionUpdates);
     }
+
+    public void removeCheckEntry(CheckEntryFB chk){
+        Log.d(TAG, "Remove CheckEntryFB: " + chk);
+        mToDoListCheckEntry.child(chk.getKey()).removeValue();
+    }
+
 }

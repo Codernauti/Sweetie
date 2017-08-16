@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.todolist;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.actions.ActionNewToDoListFragment;
+import com.sweetcompany.sweetie.actions.ActionsContract;
 import com.sweetcompany.sweetie.model.CheckEntryFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
@@ -147,7 +150,9 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     }
 
     @Override
-    public void onCheckEntryLongClicked(int position, List<CheckEntryVM> checkEntriesVM) {
-
+    public void onCheckEntryLongClicked(CheckEntryVM checkEntry) {
+        ToDoListLongPressDialogFragment dialogFragment = ToDoListLongPressDialogFragment.newInstance(checkEntry);
+        dialogFragment.setPresenter(mPresenter);
+        dialogFragment.show(getActivity().getFragmentManager(),ActionNewToDoListFragment.TAG);
     }
 }

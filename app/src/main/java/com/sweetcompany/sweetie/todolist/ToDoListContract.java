@@ -20,6 +20,11 @@ public interface ToDoListContract {
     }
     interface Presenter {
         void addCheckEntry(CheckEntryVM checkEntry);
+        void removeCheckEntry(CheckEntryVM checkEntry);
+
         void checkedCheckEntry(CheckEntryVM checkEntry);
+    }
+    interface DialogView {
+        void setPresenter(Presenter presenter);
     }
 }

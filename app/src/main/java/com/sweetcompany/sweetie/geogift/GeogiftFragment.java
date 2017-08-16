@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,9 +71,9 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     private ImageView locationPickerIcon;
     private TextView locationPickerText;
     //item selector bar
-    private ImageView messageIconButton;
-    private ImageView photoIconButton;
-    private ImageView heartIconButton;
+    private View messageIconButton;
+    private View photoIconButton;
+    private View heartIconButton;
     private ImageView messageSelector;
     private ImageView photoSelector;
     private ImageView heartSelector;
@@ -83,6 +84,9 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
     private Spinner timeExpirationSpinner;
     //fabButton
     private FloatingActionButton mFabAddGeogift;
+    //uploading fragment
+    private View sendingFragment;
+    private TextView uploadingPercent;
 
     private Context mContext;
 
@@ -124,11 +128,11 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         locationPickerText.setOnClickListener(this);
 
 
-        messageIconButton = (ImageView) root.findViewById(R.id.item_message_geogift_button);
+        messageIconButton = (View) root.findViewById(R.id.message_geogift_layout);
         messageIconButton.setOnClickListener(this);
-        photoIconButton = (ImageView) root.findViewById(R.id.item_photo_geogift_button);
+        photoIconButton = (View) root.findViewById(R.id.photo_geogift_layout);
         photoIconButton.setOnClickListener(this);
-        heartIconButton = (ImageView) root.findViewById(R.id.item_heart_geogift_button);
+        heartIconButton = (View) root.findViewById(R.id.heart_geogift_layout);
         heartIconButton.setOnClickListener(this);
         messageSelector = (ImageView) root.findViewById(R.id.message_geogift_selector);
         messageSelector.setVisibility(View.GONE);
@@ -150,6 +154,9 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
         adapterExpiration.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeExpirationSpinner.setAdapter(adapterExpiration);
 
+        sendingFragment = (View) root.findViewById(R.id.included_uploading_geogift);
+        //sendingFragment.setVisibility(View.VISIBLE);
+        uploadingPercent = (TextView) sendingFragment.findViewById(R.id.uploading_percent_geogift_text);
 
         /*mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_new_geogift);
         mFabAddGeogift.setClickable(false);*/
@@ -191,13 +198,13 @@ public class GeogiftFragment extends Fragment implements GeogiftContract.View,
             case R.id.geogift_textview_topbar:
                 pickPosition();
                 break;
-            case R.id.item_message_geogift_button:
+            case R.id.message_geogift_layout:
                 switchContainerGift(MESSAGE_SELECTION);
                 break;
-            case R.id.item_photo_geogift_button:
+            case R.id.photo_geogift_layout:
                 switchContainerGift(PHOTO_SELECTION);
                 break;
-            case R.id.item_heart_geogift_button:
+            case R.id.heart_geogift_layout:
                 switchContainerGift(HEART_SELECTION);
                 break;
             case R.id.image_thumb_geogift:

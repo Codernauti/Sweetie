@@ -26,7 +26,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
 
     interface ToDoListAdapterListener {
         void onCheckEntryClicked(CheckEntryVM checkEntry);
-        void onCheckEntryLongClicked(int position, List<CheckEntryVM> checkEntriesVM);
+        void onCheckEntryLongClicked(CheckEntryVM checkEntry);
     }
 
     private List<CheckEntryVM> mCheckEntryList = new ArrayList<>();
@@ -86,9 +86,8 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
 
     void removeCheckEntry(CheckEntryVM checkEntryVM) {
         int indexOldCheckEntry = searchIndexCheckEntryOf(checkEntryVM);
-        if (indexOldCheckEntry != -1) {
             mCheckEntryList.remove(indexOldCheckEntry);
-            notifyDataSetChanged();    }
+            notifyDataSetChanged();
     }
 
     void changeCheckEntry(CheckEntryVM checkEntryVM) {
@@ -122,5 +121,12 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
         CheckEntryVM checkEntryVM = mCheckEntryList.get(adapterPosition);
         checkEntryVM.setChecked(isChecked);
         mListener.onCheckEntryClicked(checkEntryVM);
+    }
+
+    @Override
+    public void onCheckBoxLongClicked(int adapterPosition) {
+        CheckEntryVM checkEntryVM = mCheckEntryList.get(adapterPosition);
+        mListener.onCheckEntryLongClicked(checkEntryVM);
+
     }
 }

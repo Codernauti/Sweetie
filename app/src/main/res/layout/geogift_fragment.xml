@@ -232,6 +232,7 @@
         android:src="@drawable/check_icon"
         android:tint="@color/white"
         app2:backgroundTint="@color/purple_sweetie"
+        android:alpha="0.5"
         />
 
     <include

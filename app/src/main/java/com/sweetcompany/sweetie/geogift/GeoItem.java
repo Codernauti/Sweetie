@@ -18,7 +18,9 @@ public class GeoItem {
     private String lon;
     private String uriS;
     private boolean bookmarked;
-    private String datetime;
+    private String datetimeCreation;
+    private String datetimeVisited;
+    private boolean isVisited;
 
     public GeoItem() {
     }
@@ -29,6 +31,14 @@ public class GeoItem {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public String getMessage() {
@@ -79,19 +89,27 @@ public class GeoItem {
         this.bookmarked = bookmarked;
     }
 
-    public String getDatetime() {
-        return datetime;
+    public String getDatetimeCreation() {
+        return datetimeCreation;
     }
 
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
+    public void setDatetimeCreation(String datetimeCreation) {
+        this.datetimeCreation = datetimeCreation;
     }
 
-    public String getMail() {
-        return mail;
+    public String getDatetimeVisited() {
+        return datetimeVisited;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setDatetimeVisited(String datetimeVisited) {
+        this.datetimeVisited = datetimeVisited;
+    }
+
+    public boolean isVisited() {
+        return isVisited;
+    }
+
+    public void setVisited(boolean visited) {
+        isVisited = visited;
     }
 }

@@ -73,14 +73,16 @@ public class FirebaseGeogiftMakerController {
 
         // Create Gallery and set Gallery
         GeogiftFB geogift = new GeogiftFB();
+        geogift.setmType(geoItem.getType());
         geogift.setmEmail(geoItem.getMail());
         geogift.setAddress(geoItem.getAddress());
-        geogift.setDatetime(actionFB.getDataTime());
-        geogift.setBookmarked(geoItem.isBookmarked());
         geogift.setUriS(geoItem.getUriS());
         geogift.setLat(geoItem.getLat());
         geogift.setLon(geoItem.getLon());
-        geogift.setmType(geoItem.getType());
+        geogift.setBookmarked(geoItem.isBookmarked());
+        geogift.setDatetimeCreation(actionFB.getDataTime());
+        geogift.setVisited(false);
+
 
         // put into queue for network
         newGeogiftPush.setValue(geogift);

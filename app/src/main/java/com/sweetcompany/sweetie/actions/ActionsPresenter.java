@@ -137,10 +137,13 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     mActionsList.add(newActionVM);
                     break;
                 case 3:
+                    //TODO
                     if(action.getUserCreator()!= null) {
-                        newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
-                                action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.isVisited());
-                        mActionsList.add(newActionVM);
+                        if(action.getUserCreator().equals(mUserID) || action.isVisited()) {
+                            newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
+                                    action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.isVisited());
+                            mActionsList.add(newActionVM);
+                        }
                     }
                     break;
             }

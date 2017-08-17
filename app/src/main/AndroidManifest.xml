@@ -59,6 +59,8 @@
             android:theme="@style/AppTheme"/>
         <activity android:name=".geogift.GeogiftMakerActivity"
             android:theme="@style/AppTheme"/>
+        <activity android:name=".geogift.GeogiftDoneActivity"
+            android:theme="@style/AppTheme"/>
 
         <activity android:name=".geogift.GeogiftTestActivity"
             android:theme="@style/AppTheme"/>

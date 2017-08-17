@@ -392,7 +392,7 @@ public class GeogiftMakerFragment extends Fragment implements
                  addressGeogift = place.getAddress().toString();
                  locationPickerText.setText(addressGeogift);
                  latLng = place.getLatLng();
-                 positionGeogift = new LatLng(latLng.latitude, latLng.latitude);
+                 positionGeogift = new LatLng(latLng.latitude, latLng.longitude);
                  checkGeogiftFields();
              }
          }
@@ -517,6 +517,7 @@ public class GeogiftMakerFragment extends Fragment implements
     public void createNewGeogift(){
 
        mGeoItem.setAddress(addressGeogift);
+       mGeoItem.setMessage(messageGeogift);
        mGeoItem.setBookmarked(false); //TODO
        mGeoItem.setLat(String.valueOf(positionGeogift.latitude));
        mGeoItem.setLon(String.valueOf(positionGeogift.longitude));

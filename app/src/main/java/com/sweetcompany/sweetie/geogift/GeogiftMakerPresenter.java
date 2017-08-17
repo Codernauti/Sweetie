@@ -18,7 +18,7 @@ public class GeogiftMakerPresenter implements GeogiftMakerContract.Presenter, Fi
 
     private final GeogiftMakerContract.View mView;
     private final FirebaseGeogiftMakerController mController;
-    private String mUserMail;   // id of messages of main user
+    private String mUserUID;   // id of messages of main user
 
     public GeogiftMakerPresenter(GeogiftMakerContract.View view, FirebaseGeogiftMakerController controller, String userMail) {
         mView = view;
@@ -26,14 +26,14 @@ public class GeogiftMakerPresenter implements GeogiftMakerContract.Presenter, Fi
         mController = controller;
         mController.addListener(this);
 
-        mUserMail = userMail;
+        mUserUID = userMail;
     }
 
     @Override
     public List<String> pushGeogiftAction(GeoItem geoItem, String userInputGeogiftTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
-        action = new ActionFB(userInputGeogiftTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GEOGIFT);
+        action = new ActionFB(userInputGeogiftTitle, mUserUID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GEOGIFT);
 
         if (action != null) {
             return mController.pushGeogiftAction(action, userInputGeogiftTitle, geoItem);

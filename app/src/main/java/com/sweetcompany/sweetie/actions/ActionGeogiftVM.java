@@ -12,7 +12,9 @@ import com.sweetcompany.sweetie.geogift.GeogiftMakerActivity;
 
 public class ActionGeogiftVM extends ActionVM {
 
-    ActionGeogiftVM(String title, String description, String date, int type, String childKey, String actionKey) {
+    boolean isVisited;
+
+    ActionGeogiftVM(String title, String description, String date, int type, String childKey, String actionKey, boolean visited) {
         // TODO: complete all fields
         super.setTitle(title);
         super.setDescription(description);
@@ -20,6 +22,11 @@ public class ActionGeogiftVM extends ActionVM {
         super.setType(type);
         super.setChildKey(childKey);
         super.setActionKey(actionKey);
+        isVisited = visited;
+    }
+
+    public boolean getVisited(){
+        return isVisited;
     }
 
     @Override

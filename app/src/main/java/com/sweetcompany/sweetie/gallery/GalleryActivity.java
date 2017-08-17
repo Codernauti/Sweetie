@@ -10,7 +10,7 @@ import com.sweetcompany.sweetie.utils.Utility;
 
 public class GalleryActivity extends AppCompatActivity {
 
-    private String TAG = GalleryActivity.class.getSimpleName();
+    private static final String TAG = "GalleryActivity";
 
     // key for Intent extras
     public static final String GALLERY_DATABASE_KEY = "GalleryDatabaseKey";

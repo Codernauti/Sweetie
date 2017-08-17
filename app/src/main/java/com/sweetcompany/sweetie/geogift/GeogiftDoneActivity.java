@@ -76,25 +76,23 @@ public class GeogiftDoneActivity extends AppCompatActivity {
             Log.w(TAG, "Impossible to create GeogiftDoneController and GeogiftDonePresenter because geogiftKey is NULL");
         }
 
-        //mController.attachListeners();
+        mController.attachListeners();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //mController.attachListeners();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //mController.detachListeners();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //////mController.detachListeners();
+        mController.detachListeners();
     }
 
     @Override

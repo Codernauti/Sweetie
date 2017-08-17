@@ -128,10 +128,10 @@ public class GeogiftTestFragment extends Fragment implements
         //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         //create GoogleApiClient
-        //createGoogleApi();
+        createGoogleApi();
         // Call GoogleApiClient connection when starting the Activity
-        //googleApiClient.connect();
-        initGMaps();
+        googleApiClient.connect();
+        //initGMaps();
     }
 
     @Override
@@ -182,7 +182,7 @@ public class GeogiftTestFragment extends Fragment implements
 
     // Initialize GoogleMaps
     private void initGMaps(){
-        mapFragment = (SupportMapFragment) getChildFragmentManager() .findFragmentById(R.id.map_geogift_done_fragment);
+        mapFragment = (SupportMapFragment) getChildFragmentManager() .findFragmentById(R.id.mapFragment);
 
         if(mapFragment != null) {
             mapFragment.getMapAsync(this);

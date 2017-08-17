@@ -57,7 +57,6 @@ public class FirebaseGeogiftDoneController {
             mGeogiftListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // TODO: test
                     GeogiftFB geogift = dataSnapshot.getValue(GeogiftFB.class);
                     geogift.setKey(dataSnapshot.getKey());
 
@@ -75,21 +74,11 @@ public class FirebaseGeogiftDoneController {
         }
     }
 
-
-    public GeogiftFB getGeoItemFB(){
-        final GeogiftFB[] newGeogiftFB = {null};
-
-        mGeogiftDbReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                newGeogiftFB[0] = snapshot.getValue(GeogiftFB.class);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-        return null;
+    public void detachListeners() {
+        if (mGeogiftListener != null) {
+            mGeogiftDbReference.removeEventListener(mGeogiftListener);
+        }
+        mGeogiftListener = null;
     }
 
 }

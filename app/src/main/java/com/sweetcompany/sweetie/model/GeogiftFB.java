@@ -16,7 +16,7 @@ public class GeogiftFB {
     private String key;
 
     private String mEmail;
-    private int mType;
+    private int type;
     private String message;
     private String address;
     private String lat;
@@ -50,12 +50,12 @@ public class GeogiftFB {
         this.mEmail = mEmail;
     }
 
-    public int getmType() {
-        return mType;
+    public int getType() {
+        return type;
     }
 
-    public void setmType(int mType) {
-        this.mType = mType;
+    public void setType(int mType) {
+        this.type = mType;
     }
 
     public String getMessage() {

@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftDoneController;
-import com.sweetcompany.sweetie.gallery.GeogiftDonePresenter;
 import com.sweetcompany.sweetie.utils.Utility;
 
 /**
@@ -25,6 +24,8 @@ public class GeogiftDoneActivity extends AppCompatActivity {
 
     private String mGeogiftKey;
     private String mActionKey;
+
+    private GeogiftDoneFragment mView;
 
     private GeogiftDonePresenter mPresenter;
     private FirebaseGeogiftDoneController mController;
@@ -53,14 +54,14 @@ public class GeogiftDoneActivity extends AppCompatActivity {
             Log.w(TAG, "No savedInstanceState or intentArgs!");
         }
 
-        GeogiftDoneFragment view = (GeogiftDoneFragment) getSupportFragmentManager()
+        mView = (GeogiftDoneFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.geogift_done_fragment_container);
 
-        if (view == null) {
-            view = GeogiftDoneFragment.newInstance(getIntent().getExtras());
+        if (mView == null) {
+            mView = GeogiftDoneFragment.newInstance(getIntent().getExtras());
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            transaction.add(R.id.geogift_done_fragment_container, view);
+            transaction.add(R.id.geogift_done_fragment_container, mView);
             transaction.commit();
         }
 
@@ -68,8 +69,8 @@ public class GeogiftDoneActivity extends AppCompatActivity {
         String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
 
         if (mGeogiftKey != null) {
-            //mController = new FirebaseGeogiftDoneController(coupleUid, mGeogiftKey, mActionKey);
-            //mPresenter = new GeogiftDonePresenter(view, mController, userMail);
+            mController = new FirebaseGeogiftDoneController(coupleUid, mGeogiftKey, mActionKey);
+            mPresenter = new GeogiftDonePresenter(mView, mController, userMail);
         }
         else {
             Log.w(TAG, "Impossible to create GeogiftDoneController and GeogiftDonePresenter because geogiftKey is NULL");

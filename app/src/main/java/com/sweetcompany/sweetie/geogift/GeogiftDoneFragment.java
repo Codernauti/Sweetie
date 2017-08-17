@@ -1,7 +1,10 @@
 package com.sweetcompany.sweetie.geogift;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,21 +12,54 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
 
 /**
  * Created by ghiro on 17/08/2017.
  */
 
-public class GeogiftDoneFragment extends Fragment {
+public class GeogiftDoneFragment extends Fragment implements
+        OnMapReadyCallback,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        GeogiftDoneContract.View{
 
     private static final String TAG = "GeogiftDoneFragment";
 
     private Toolbar mToolBar;
+    private SupportMapFragment mapFragment;
+    private GoogleMap map;
+    private TextView addressText;
+    private TextView datetimePositionedText;
+    private LatLng latLng = null;
+
+    private GoogleApiClient googleApiClient;
+    private Circle geoFenceLimits;
+    private Marker geoFenceMarker;
 
     private Context mContext;
     private String titleGeogift;
+    private float geofenceRadius = 100.0f; // in meters
+
+    private GeoItem geoItem = null;
+
+    private GeogiftDoneContract.Presenter mPresenter;
 
     public static GeogiftDoneFragment newInstance(Bundle bundle) {
         GeogiftDoneFragment newGeogiftDoneFragment = new GeogiftDoneFragment();
@@ -37,6 +73,10 @@ public class GeogiftDoneFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mContext = getContext();
+
+        //create GoogleApiClient
+        createGoogleApi();
+        googleApiClient.connect();
     }
 
     @Override
@@ -55,10 +95,13 @@ public class GeogiftDoneFragment extends Fragment {
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         parentActivity.getSupportActionBar().setTitle(titleGeogift);
 
+        addressText = (TextView) root.findViewById(R.id.address_geogift_done_text);
+        datetimePositionedText = (TextView) root.findViewById(R.id.datetime_geogift_done_text);
+
+        geoItem = mPresenter.getGeoItem();
 
         return root;
     }
-
 
     @Override
     public void onResume() {
@@ -70,5 +113,108 @@ public class GeogiftDoneFragment extends Fragment {
         super.onPause();
     }
 
+    // Create GoogleApiClient instance
+    private void createGoogleApi() {
+        Log.d(TAG, "createGoogleApi()");
+        if ( googleApiClient == null ) {
+            googleApiClient = new GoogleApiClient.Builder(getContext())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+    }
 
+
+    // Initialize GoogleMaps
+    private void initGMaps(){
+        mapFragment = (SupportMapFragment) getChildFragmentManager() .findFragmentById(R.id.mapFragment);
+
+        if(mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
+    }
+
+    // Callback called when Map is ready
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady()");
+        map = googleMap;
+        //map.setOnMapClickListener(this);
+        //map.setOnMarkerClickListener(this);
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        //map.setMyLocationEnabled(true);
+        //map.setIndoorEnabled(true);
+        //map.setBuildingsEnabled(true);
+        //map.getUiSettings().setZoomControlsEnabled(true);
+    }
+
+    private void centerMap(LatLng latLng){
+        float zoom = 15f;
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
+        map.animateCamera(cameraUpdate);
+    }
+
+    // Create a marker for the geofence creation
+    private void markerForGeofence(LatLng latLng) {
+        Log.i(TAG, "markerForGeofence("+latLng+")");
+        String title = latLng.latitude + ", " + latLng.longitude;
+        // Define marker options
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                .title(title);
+        if ( map!=null ) {
+            // Remove last geoFenceMarker
+            if (geoFenceMarker != null)
+                geoFenceMarker.remove();
+
+            geoFenceMarker = map.addMarker(markerOptions);
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "onConnected()");
+        // initialize GoogleMaps
+        initGMaps();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    // Draw Geofence circle on GoogleMap
+    private void drawGeofence() {
+        Log.d(TAG, "drawGeofence()");
+
+        if ( geoFenceLimits != null )
+            geoFenceLimits.remove();
+
+        CircleOptions circleOptions = new CircleOptions()
+                .center( geoFenceMarker.getPosition())
+                .strokeColor(Color.argb(50, 70,70,70))
+                .fillColor( Color.argb(100, 150,150,150) )
+                .radius( geofenceRadius );
+        geoFenceLimits = map.addCircle( circleOptions );
+    }
+
+    private void removeGeofenceDraw() {
+        Log.d(TAG, "removeGeofenceDraw()");
+        if ( geoFenceMarker != null)
+            geoFenceMarker.remove();
+        if ( geoFenceLimits != null )
+            geoFenceLimits.remove();
+    }
+
+    @Override
+    public void setPresenter(GeogiftDoneContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
 }

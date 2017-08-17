@@ -170,7 +170,7 @@ public class FirebaseActionsController {
         return newKeys;
     }
 
-    public List<String> pushGeogiftAction(ActionFB actionFB, String geogiftTitle) {
+    /*public List<String> pushGeogiftAction(ActionFB actionFB, String geogiftTitle) {
         List<String> newKeys =  new ArrayList<String>();
 
         DatabaseReference newGeogiftPush = mGeogiftDbReference.push();
@@ -191,6 +191,6 @@ public class FirebaseActionsController {
         newActionPush.setValue(actionFB);
 
         return newKeys;
-    }
+    }*/
 
 }

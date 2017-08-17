@@ -103,7 +103,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
     private Context mContext;
     private GeogiftMakerContract.Presenter mPresenter;
-    String titleGeogift;
+    private String titleGeogift;
 
     private GeoItem mGeoItem;
 
@@ -131,7 +131,7 @@ public class GeogiftMakerFragment extends Fragment implements
         Log.d(TAG, "from Intent GEOGIFT_TITLE: " + titleGeogift);
 
         // initialize toolbar
-        mToolBar = (Toolbar) root.findViewById(R.id.geogift_toolbar);
+        mToolBar = (Toolbar) root.findViewById(R.id.geogift_maker_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(mToolBar);
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);

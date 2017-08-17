@@ -33,12 +33,12 @@ public class ActionGeogiftVM extends ActionVM {
     public void showAction() {
         Log.d("ActionGeogiftVM", getTitle() + " openAction");
 
-        Intent intent = new Intent(mContext, GeogiftMakerActivity.class);
-        intent.putExtra(GeogiftMakerActivity.GEOGIFT_TITLE, super.getTitle());
-        //intent.putExtra(GeogiftMakerActivity.GEOGIFT_DATABASE_KEY, super.getChildKey());
-        //intent.putExtra(GeogiftMakerActivity.ACTION_DATABASE_KEY, super.getActionKey());
+        /*Intent intent = new Intent(mContext, GeogiftDoneActivity.class);
+        intent.putExtra(GeogiftDoneActivity.GEOGIFT_TITLE, super.getTitle());
+        intent.putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, super.getChildKey());
+        intent.putExtra(GeogiftDoneActivity.ACTION_DATABASE_KEY, super.getActionKey());
 
-        mContext.startActivity(intent);
+        mContext.startActivity(intent);*/
     }
 
     @Override

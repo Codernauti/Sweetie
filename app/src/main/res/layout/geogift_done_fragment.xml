@@ -21,6 +21,35 @@
         app2:theme="@style/ToolBarStyle"
         />
 
+        <!--GoogleMap fragment-->
+        <fragment
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/map_geogift_done_fragment"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:id="@+id/address_geogift_done_text"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/datetime_geogift_done_text"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+
+
     </LinearLayout>
 
 </RelativeLayout>

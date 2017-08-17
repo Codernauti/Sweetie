@@ -90,7 +90,8 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         action = new ActionFB(userInputGeogiftTitle, mUserID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GEOGIFT);
 
         if (action != null) {
-            return mController.pushGeogiftAction(action, userInputGeogiftTitle);
+            //return mController.pushGeogiftAction(action, userInputGeogiftTitle);
+            return null;
         }
         else {
             Log.d(TAG, "An error in the creation of a new GeogiftAction occurs!");

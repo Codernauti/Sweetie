@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 /**
  * Created by ghiro on 17/08/2017.
@@ -47,7 +48,7 @@ public class GeogiftDoneFragment extends Fragment implements
     private GoogleMap map;
     private TextView addressText;
     private TextView datetimePositionedText;
-    private LatLng latLng = null;
+    //private LatLng latLng = null;
 
     private GoogleApiClient googleApiClient;
     private Circle geoFenceLimits;
@@ -58,6 +59,9 @@ public class GeogiftDoneFragment extends Fragment implements
     private float geofenceRadius = 100.0f; // in meters
 
     private GeoItem geoItem = null;
+    double lat;
+    double lon;
+    LatLng coord;
 
     private GeogiftDoneContract.Presenter mPresenter;
 
@@ -76,7 +80,8 @@ public class GeogiftDoneFragment extends Fragment implements
 
         //create GoogleApiClient
         createGoogleApi();
-        googleApiClient.connect();
+        //googleApiClient.connect();
+
     }
 
     @Override
@@ -97,8 +102,6 @@ public class GeogiftDoneFragment extends Fragment implements
 
         addressText = (TextView) root.findViewById(R.id.address_geogift_done_text);
         datetimePositionedText = (TextView) root.findViewById(R.id.datetime_geogift_done_text);
-
-        geoItem = mPresenter.getGeoItem();
 
         return root;
     }
@@ -128,7 +131,7 @@ public class GeogiftDoneFragment extends Fragment implements
 
     // Initialize GoogleMaps
     private void initGMaps(){
-        mapFragment = (SupportMapFragment) getChildFragmentManager() .findFragmentById(R.id.mapFragment);
+        mapFragment = (SupportMapFragment) getChildFragmentManager() .findFragmentById(R.id.map_geogift_done_fragment);
 
         if(mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -147,6 +150,9 @@ public class GeogiftDoneFragment extends Fragment implements
         //map.setIndoorEnabled(true);
         //map.setBuildingsEnabled(true);
         //map.getUiSettings().setZoomControlsEnabled(true);
+        markerForGeofence(coord);
+        centerMap(coord);
+        drawGeofence();
     }
 
     private void centerMap(LatLng latLng){
@@ -173,23 +179,6 @@ public class GeogiftDoneFragment extends Fragment implements
         }
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "onConnected()");
-        // initialize GoogleMaps
-        initGMaps();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
     // Draw Geofence circle on GoogleMap
     private void drawGeofence() {
         Log.d(TAG, "drawGeofence()");
@@ -214,7 +203,39 @@ public class GeogiftDoneFragment extends Fragment implements
     }
 
     @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "onConnected()");
+        // initialize GoogleMaps
+        initGMaps();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+
+
+    @Override
     public void setPresenter(GeogiftDoneContract.Presenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void updateGeogift(GeoItem geoitem) {
+        Log.d(TAG, "updateGeogift");
+        //mToolBar.setTitle(geoitem.getTytle);
+        addressText.setText(getResources().getString(R.string.address_geogift)+" "+geoitem.getAddress());
+        datetimePositionedText.setText(getResources().getString(R.string.datetime_positioned_geogift)+" "+ DataMaker.get_dd_MM_Local(geoitem.getDatetimeCreation()));
+        lat = Double.parseDouble(geoitem.getLat());
+        lon = Double.parseDouble(geoitem.getLon());
+        coord = new LatLng(lat, lon);
+        //TODO
+        googleApiClient.connect();
     }
 }

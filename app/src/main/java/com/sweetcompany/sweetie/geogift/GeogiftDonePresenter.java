@@ -25,20 +25,27 @@ public class GeogiftDonePresenter implements GeogiftDoneContract.Presenter, Fire
     }
 
     @Override
-    public GeoItem getGeoItem() {
-        GeogiftFB geoGiftFB= null;
-        geoGiftFB = mController.getGeoItemFB();
-        GeoItem geoItem = createGeoItem(geoGiftFB);
-
-        return geoItem;
+    public void onGeogiftChanged(GeogiftFB geogiftFB) {
+        GeoItem geoItem = new GeoItem();
+        geoItem = createGeoItem(geogiftFB);
+        mView.updateGeogift(geoItem);
     }
+
     /**
      * Convert GeogiftFB to GeoItem
      */
     private GeoItem createGeoItem(GeogiftFB geoItemFB) {
-        GeoItem geoItemNew = null;
-        geoItemNew.setType(geoItemFB.getmType());
-        
+        GeoItem geoItemNew = new GeoItem();
+        geoItemNew.setType(geoItemFB.getType());
+        geoItemNew.setMessage(geoItemFB.getMessage());
+        geoItemNew.setAddress(geoItemFB.getAddress());
+        geoItemNew.setLat(geoItemFB.getLat());
+        geoItemNew.setLon(geoItemFB.getLon());
+        geoItemNew.setUriS(geoItemFB.getUriS());
+        geoItemNew.setBookmarked(geoItemFB.isBookmarked());
+        geoItemNew.setDatetimeCreation(geoItemFB.getDatetimeCreation());
+        geoItemNew.setDatetimeVisited(geoItemFB.getDatetimeVisited());
+
         return geoItemNew;
     }
 }

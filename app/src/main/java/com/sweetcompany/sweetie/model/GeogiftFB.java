@@ -23,7 +23,9 @@ public class GeogiftFB {
     private String lon;
     private String uriS;
     private boolean bookmarked;
-    private String datetime;
+    private String datetimeCreation;
+    private String datetimeVisited;
+    private boolean isVisited;
 
 
     // For firebase
@@ -104,11 +106,27 @@ public class GeogiftFB {
         this.bookmarked = bookmarked;
     }
 
-    public String getDatetime() {
-        return datetime;
+    public String getDatetimeCreation() {
+        return datetimeCreation;
     }
 
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
+    public void setDatetimeCreation(String datetimeCreation) {
+        this.datetimeCreation = datetimeCreation;
+    }
+
+    public String getDatetimeVisited() {
+        return datetimeVisited;
+    }
+
+    public void setDatetimeVisited(String datetimeVisited) {
+        this.datetimeVisited = datetimeVisited;
+    }
+
+    public boolean isVisited() {
+        return isVisited;
+    }
+
+    public void setVisited(boolean visited) {
+        isVisited = visited;
     }
 }

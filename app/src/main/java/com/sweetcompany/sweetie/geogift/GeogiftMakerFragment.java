@@ -354,6 +354,7 @@ public class GeogiftMakerFragment extends Fragment implements
         }
     }
 
+    //TODO show image at click
     public void showPicture(){
 
     }
@@ -469,21 +470,18 @@ public class GeogiftMakerFragment extends Fragment implements
 
     // TODO
     //Spinner expiration time
-     @Override
-     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
      }
-
-     @Override
-     public void onNothingSelected(AdapterView<?> parent) {
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
      }
-
     @Override
     public void setPresenter(GeogiftMakerContract.Presenter presenter) {
         mPresenter = presenter;
     }
-
     @Override
     public void updatePercentUpload(int perc) {
         uploadingPercent.setText(perc+"%");
@@ -518,23 +516,21 @@ public class GeogiftMakerFragment extends Fragment implements
 
     public void createNewGeogift(){
 
-          String userMail = Utility.getStringPreference(mContext, Utility.MAIL);
+       mGeoItem.setAddress(addressGeogift);
+       mGeoItem.setBookmarked(false); //TODO
+       mGeoItem.setLat(String.valueOf(positionGeogift.latitude));
+       mGeoItem.setLon(String.valueOf(positionGeogift.longitude));
 
-           mGeoItem.setMail(userMail);
-           mGeoItem.setAddress(addressGeogift);
-           mGeoItem.setBookmarked(false); //TODO
-           mGeoItem.setLat(String.valueOf(positionGeogift.latitude));
-           mGeoItem.setLon(String.valueOf(positionGeogift.longitude));
+       // [0] : geogiftKey, [1] : actionKey
+       String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
+       List<String> keys = mPresenter.pushGeogiftAction(mGeoItem, titleGeogift, userName);
 
-            // [0] : geogiftKey, [1] : actionKey
-            String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
-            List<String> keys = mPresenter.pushGeogiftAction(mGeoItem, titleGeogift, userName);
-
-            if (keys != null) {
-                //backpress
-                // TODO ?????
-                getActivity().finish();
-            }
+       if (keys != null) {
+           //backpress
+           // TODO ?????
+           getActivity().finish();
+       }
 
     }
+
 }

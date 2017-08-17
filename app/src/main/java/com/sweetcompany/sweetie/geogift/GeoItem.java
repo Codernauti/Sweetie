@@ -11,7 +11,6 @@ public class GeoItem {
     public final static int HEART_GEOGIFT = 2;
 
     private int type;
-    private String mail;
     private String message;
     private String address;
     private String lat;
@@ -31,14 +30,6 @@ public class GeoItem {
 
     public void setType(int type) {
         this.type = type;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public String getMessage() {

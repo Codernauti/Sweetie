@@ -18,6 +18,7 @@ import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.folders.FoldersFragment;
 import com.sweetcompany.sweetie.actions.ActionsFragment;
 import com.sweetcompany.sweetie.map.MapFragment;
+import com.sweetcompany.sweetie.utils.Utility;
 
 
 public class DashboardPagerAdapter extends FragmentPagerAdapter {
@@ -31,6 +32,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
     // For getString From Resource
     private final Context mContext;
+    String userID;
 
     private final FirebaseActionsController mActionsController;
     private ActionsContract.Presenter mActionsPresenter;
@@ -46,6 +48,9 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
         mActionsController = actionsController;
         mCalendarController = calendarController;
+
+        userID = Utility.getStringPreference(mContext, Utility.USER_UID);
+
     }
 
     @Override
@@ -75,7 +80,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
                 break;
             case HOME_TAB:
                 ActionsContract.View view = (ActionsContract.View) createdFragment;
-                mActionsPresenter = new ActionsPresenter(view, mActionsController);
+                mActionsPresenter = new ActionsPresenter(view, mActionsController, userID);
                 Log.d("ActionFragment", "instantiate Presenter");
                 break;
             case FOLDERS_TAB:

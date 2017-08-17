@@ -14,79 +14,96 @@ public class ActionFB {
     public final static int GEOGIFT = 3;
 
     private String key;
+    private String userCreator;
     private String title;
     private String lastUser;
     private String description;
-    private String dateTime;
+    private String dataTime;
     private int type;
     private String childKey;
     private String actionKey;
+    private boolean visited; //for geogift
 
     ActionFB() {}
 
-    public ActionFB(String title, String lastUser, String description, String date, int type) {
+    public ActionFB(String title, String usrCreator, String lastUser, String description, String date, int type) {
         this.title = title;
+        this.userCreator = usrCreator;
         this.lastUser = lastUser;
         this.description = description;
-        this.dateTime = date;
+        this.dataTime = date;
         this.type = type;
     }
 
-
-    /*** SETTER ***/
     @Exclude
-    public void setKey(String key){
+    public String getKey() {
+        return key;
+    }
+    @Exclude
+    public void setKey(String key) {
         this.key = key;
     }
 
-    public void setTitle(String title){
+    public String getUserCreator() {
+        return userCreator;
+    }
+    public void setUserCreator(String userCreator) {
+        this.userCreator = userCreator;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public void setDescription(String description){
+    public String getLastUser() {
+        return lastUser;
+    }
+    public void setLastUser(String lastUser) {
+        this.lastUser = lastUser;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setDataTime(String data){
-        this.dateTime = data;
+    public String getDataTime() {
+        return dataTime;
+    }
+    public void setDataTime(String dataTime) {
+        this.dataTime = dataTime;
     }
 
-    public void setType(int type){
+    public int getType() {
+        return type;
+    }
+    public void setType(int type) {
         this.type = type;
     }
 
+    public String getChildKey() {
+        return childKey;
+    }
     public void setChildKey(String childKey) {
         this.childKey = childKey;
     }
 
-    public void setActionKey(String childKey) {
+    public String getActionKey() {
+        return actionKey;
+    }
+    public void setActionKey(String actionKey) {
         this.actionKey = actionKey;
     }
 
-    /*** GETTER ***/ //TODO crate assert null function
-    @Exclude
-    public String getKey(){
-        return key;
+    public boolean isVisited() {
+        return visited;
     }
-
-    public String getTitle(){
-        return title;
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
-
-    public String getLastUser() { return lastUser; }
-
-    public String getDescription(){
-        return description;
-    }
-
-    public String getDataTime(){
-        return dateTime;
-    }
-
-    public int getType() { return type; }
-
-    public String getChildKey() {
-        return this.childKey;
-    }
-
 }

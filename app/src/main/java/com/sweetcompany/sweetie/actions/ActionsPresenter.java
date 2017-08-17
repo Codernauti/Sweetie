@@ -7,7 +7,6 @@ import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +24,23 @@ public class ActionsPresenter implements ActionsContract.Presenter,
 
     private List<ActionVM> mActionsList = new ArrayList<>();
 
+    private String mUserID;
 
-    public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller) {
+
+    public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userID) {
         mView = view;
         mView.setPresenter(this);
         mController = controller;
         mController.addListener(this);
+
+        mUserID = userID;
     }
 
     @Override
     public List<String> pushChatAction(String userInputChatTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
-        action = new ActionFB(userInputChatTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
+        action = new ActionFB(userInputChatTitle, mUserID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
 
         if (action != null) {
             return mController.pushChatAction(action, userInputChatTitle);
@@ -52,7 +55,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     public List<String> pushGalleryAction(String userInputGalleryTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
-        action = new ActionFB(userInputGalleryTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GALLERY);
+        action = new ActionFB(userInputGalleryTitle, mUserID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GALLERY);
 
         if (action != null) {
             return mController.pushGalleryAction(action, userInputGalleryTitle);
@@ -68,7 +71,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
 
-            action = new ActionFB(userInputToDoListTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.TODOLIST);
+            action = new ActionFB(userInputToDoListTitle, mUserID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.TODOLIST);
 
 
         if (action != null) {
@@ -84,7 +87,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     public List<String> pushGeogiftAction(String userInputGeogiftTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
-        action = new ActionFB(userInputGeogiftTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GEOGIFT);
+        action = new ActionFB(userInputGeogiftTitle, mUserID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GEOGIFT);
 
         if (action != null) {
             return mController.pushGeogiftAction(action, userInputGeogiftTitle);
@@ -134,9 +137,11 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     mActionsList.add(newActionVM);
                     break;
                 case 3:
-                    newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
-                            action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
-                    mActionsList.add(newActionVM);
+                    if(action.getUserCreator()!= null) {
+                        newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
+                                action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.isVisited());
+                        mActionsList.add(newActionVM);
+                    }
                     break;
             }
         }

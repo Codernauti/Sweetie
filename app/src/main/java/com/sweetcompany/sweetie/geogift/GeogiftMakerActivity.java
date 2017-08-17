@@ -65,10 +65,11 @@ public class GeogiftMakerActivity extends AppCompatActivity implements
         }
 
         String userMail = Utility.getStringPreference(this, Utility.MAIL);
+        String userUID = Utility.getStringPreference(this, Utility.USER_UID);
         String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
 
         mController = new FirebaseGeogiftMakerController(coupleUid);
-        mPresenter = new GeogiftMakerPresenter(mView, mController, userMail);
+        mPresenter = new GeogiftMakerPresenter(mView, mController, userUID);
 
         //create GoogleApiClient
         createGoogleApi();

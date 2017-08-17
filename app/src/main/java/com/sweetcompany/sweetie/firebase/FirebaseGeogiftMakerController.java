@@ -15,12 +15,9 @@ import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.geogift.GeoItem;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GeogiftFB;
-import com.sweetcompany.sweetie.model.MediaFB;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ghiro on 16/08/2017.
@@ -74,7 +71,6 @@ public class FirebaseGeogiftMakerController {
         // Create Gallery and set Gallery
         GeogiftFB geogift = new GeogiftFB();
         geogift.setmType(geoItem.getType());
-        geogift.setmEmail(geoItem.getMail());
         geogift.setAddress(geoItem.getAddress());
         geogift.setUriS(geoItem.getUriS());
         geogift.setLat(geoItem.getLat());

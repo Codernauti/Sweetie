@@ -36,6 +36,8 @@
     <string name="title_alter_dialog_back">Delete geogift creation?</string>
     <string name="address_geogift">Address:</string>
     <string name="datetime_positioned_geogift">Positioned on</string>
+    <string name="isvisited_no_geogifty">Not open yet</string>
+    <string name="isvisited_yes_geogifty">Opened!</string>
 
     <!-- Location Picker -->
     <string name="google_locate_picker_key">AIzaSyDtJP5SOBfQ4EJ67KcX7ughd4_DXxQEIv8</string>

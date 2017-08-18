@@ -48,6 +48,7 @@ public class GeogiftDoneFragment extends Fragment implements
     private GoogleMap map;
     private TextView addressText;
     private TextView datetimePositionedText;
+    private TextView isVisitedText;
     //private LatLng latLng = null;
 
     private GoogleApiClient googleApiClient;
@@ -102,6 +103,7 @@ public class GeogiftDoneFragment extends Fragment implements
 
         addressText = (TextView) root.findViewById(R.id.address_geogift_done_text);
         datetimePositionedText = (TextView) root.findViewById(R.id.datetime_geogift_done_text);
+        isVisitedText = (TextView) root.findViewById(R.id.isvisited_geogift_done_text);
 
         return root;
     }
@@ -158,7 +160,7 @@ public class GeogiftDoneFragment extends Fragment implements
     private void centerMap(LatLng latLng){
         float zoom = 15f;
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
-        map.animateCamera(cameraUpdate);
+        map.moveCamera(cameraUpdate);
     }
 
     // Create a marker for the geofence creation
@@ -232,6 +234,14 @@ public class GeogiftDoneFragment extends Fragment implements
         //mToolBar.setTitle(geoitem.getTytle);
         addressText.setText(getResources().getString(R.string.address_geogift)+" "+geoitem.getAddress());
         datetimePositionedText.setText(getResources().getString(R.string.datetime_positioned_geogift)+" "+ DataMaker.get_dd_MM_Local(geoitem.getDatetimeCreation()));
+        if(geoitem.isVisited()){
+            isVisitedText.setText(getResources().getString(R.string.isvisited_yes_geogifty));
+            isVisitedText.setTextColor(Color.GREEN);
+        }
+        else{
+            isVisitedText.setText(getResources().getString(R.string.isvisited_no_geogifty));
+            isVisitedText.setTextColor(Color.RED);
+        }
         lat = Double.parseDouble(geoitem.getLat());
         lon = Double.parseDouble(geoitem.getLon());
         coord = new LatLng(lat, lon);

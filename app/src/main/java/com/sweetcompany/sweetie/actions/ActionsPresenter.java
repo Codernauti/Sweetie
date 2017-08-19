@@ -1,14 +1,17 @@
 package com.sweetcompany.sweetie.actions;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.utils.DataMaker;
+import com.sweetcompany.sweetie.utils.MiniPrefDB;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Eduard on 10/05/2017.
@@ -26,14 +29,16 @@ public class ActionsPresenter implements ActionsContract.Presenter,
 
     private String mUserID;
 
+    private MiniPrefDB miniPrefDB;
 
-    public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userID) {
+    public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userID, Context context) {
         mView = view;
         mView.setPresenter(this);
         mController = controller;
         mController.addListener(this);
 
         mUserID = userID;
+        miniPrefDB = new MiniPrefDB(context);
     }
 
     @Override
@@ -139,13 +144,18 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     break;
                 case 3:
                     //TODO
-                    if(action.getUserCreator()!= null) {
+                    Log.d(TAG, "geogift finded!");
                         if(action.getUserCreator().equals(mUserID) || action.isVisited()) {
                             newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
                                     action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.isVisited());
                             mActionsList.add(newActionVM);
+                        }else{
+                            Set<String> listaGeogift = miniPrefDB.getGeogiftSet();
+                            if(!listaGeogift.contains(action.getChildKey())){
+                                miniPrefDB.addGeogiftToSet(action.getChildKey());
+                            }
+                            listaGeogift.size();
                         }
-                    }
                     break;
             }
         }

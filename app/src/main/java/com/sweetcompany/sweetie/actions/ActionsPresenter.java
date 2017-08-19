@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie.actions;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
@@ -38,6 +39,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         mController.addListener(this);
 
         mUserID = userID;
+
         miniPrefDB = new MiniPrefDB(context);
     }
 
@@ -154,7 +156,6 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                             if(!listaGeogift.contains(action.getChildKey())){
                                 miniPrefDB.addGeogiftToSet(action.getChildKey());
                             }
-                            listaGeogift.size();
                         }
                     break;
             }

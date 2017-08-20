@@ -32,11 +32,10 @@
         android:id="@+id/chat_user_input_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/chat_emojicons_container"
         android:layout_alignWithParentIfMissing="true"
         android:orientation="horizontal"
-        android:background="@color/white"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/chat_emojicons_container">
+        android:background="@color/white">
 
         <ImageButton
             android:id="@+id/chat_emoticons_button"

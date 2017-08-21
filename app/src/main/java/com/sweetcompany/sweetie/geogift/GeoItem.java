@@ -10,6 +10,7 @@ public class GeoItem {
     public final static int PHOTO_GEOGIFT = 1;
     public final static int HEART_GEOGIFT = 2;
 
+    private String userCreatorUID;
     private int type;
     private String message;
     private String address;
@@ -22,6 +23,14 @@ public class GeoItem {
     private boolean isVisited;
 
     public GeoItem() {
+    }
+
+    public String getUserCreatorUID() {
+        return userCreatorUID;
+    }
+
+    public void setUserCreatorUID(String userCreatorUID) {
+        this.userCreatorUID = userCreatorUID;
     }
 
     public int getType() {
@@ -103,4 +112,5 @@ public class GeoItem {
     public void setVisited(boolean visited) {
         isVisited = visited;
     }
+
 }

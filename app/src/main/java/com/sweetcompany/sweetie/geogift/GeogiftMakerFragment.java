@@ -516,6 +516,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
     public void createNewGeogift(){
 
+       mGeoItem.setUserCreatorUID(Utility.getStringPreference(mContext, Utility.USER_UID));
        mGeoItem.setAddress(addressGeogift);
        mGeoItem.setMessage(messageGeogift);
        mGeoItem.setBookmarked(false); //TODO

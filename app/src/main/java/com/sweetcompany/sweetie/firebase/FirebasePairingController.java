@@ -189,7 +189,9 @@ public class FirebasePairingController {
                     }
                     else {
                         Log.d(TAG, "No user with that phone number.");
-                        // TODO: tell to the user no phone number found, send an invite to Sweetie
+                        for (PairingControllerListener listener : mListeners) {
+                            listener.onSearchUserWithPhoneNumberFinished(null);
+                        }
                     }
                 }
 

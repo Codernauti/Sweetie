@@ -5,8 +5,10 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.sweetcompany.sweetie.geogift.GeoItem;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
+import com.sweetcompany.sweetie.model.GeogiftFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.GeoUtils;
 import com.sweetcompany.sweetie.utils.MiniPrefDB;
@@ -28,6 +30,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     private final FirebaseActionsController mController;
 
     private List<ActionVM> mActionsList = new ArrayList<>();
+    private List<ActionVM> mActionsGeofitList = new ArrayList<>();
     private String mUserID;
     private MiniPrefDB miniPrefDB;
     private GeoUtils geoUtils;
@@ -42,9 +45,6 @@ public class ActionsPresenter implements ActionsContract.Presenter,
 
         mUserID = userID;
         mContext = context;
-
-        miniPrefDB = new MiniPrefDB(mContext);
-        geoUtils = new GeoUtils(mContext);
     }
 
     @Override
@@ -95,6 +95,11 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     }
 
     @Override
+    public void retrieveGeogift() {
+        mController.retrieveGeogiftFB();
+    }
+
+    /*@Override
     public List<String> pushGeogiftAction(String userInputGeogiftTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
@@ -108,7 +113,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
             Log.d(TAG, "An error in the creation of a new GeogiftAction occurs!");
             return null;
         }
-    }
+    }*/
 
     /*@Override
     public void pushAction(String userInputGalleryTitle, String username) {
@@ -149,26 +154,44 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     mActionsList.add(newActionVM);
                     break;
                 case 3:
-                    //TODO
                     Log.d(TAG, "geogift finded!");
                         if(action.getUserCreator().equals(mUserID) || action.isVisited()) {
                             newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
                                     action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.isVisited());
                             mActionsList.add(newActionVM);
                         }else{
-                            Set<String> listaGeogift = miniPrefDB.getGeogiftSet();
-                            String childKey = action.getChildKey();
-                            if(!listaGeogift.contains(childKey)){
-                                miniPrefDB.addGeogiftToSet(action.getChildKey());
-                                geoUtils.registerGeofences();
-                                Log.d(TAG, "geogift registration... user sender: " + action.getUserCreator());
-                            }
-
+                            mView.checkGeofences();
                         }
                     break;
             }
         }
         mView.updateActionsList(mActionsList);
+    }
+
+    @Override
+    public void onRetrievedGeogift(List<GeogiftFB> geogiftsFB) {
+        ArrayList<GeoItem> geoItems = new ArrayList<>();
+        for(GeogiftFB geogift: geogiftsFB){
+            GeoItem geoItem = createGeoItem(geogift);
+            geoItems.add(geoItem);
+        }
+        mView.registerGeofence(geoItems);
+    }
+
+    private GeoItem createGeoItem(GeogiftFB geoItemFB){
+        GeoItem geoItemNew = new GeoItem();
+        geoItemNew.setUserCreatorUID(geoItemFB.getUserCreatorUID());
+        geoItemNew.setType(geoItemFB.getType());
+        geoItemNew.setMessage(geoItemFB.getMessage());
+        geoItemNew.setAddress(geoItemFB.getAddress());
+        geoItemNew.setLat(geoItemFB.getLat());
+        geoItemNew.setLon(geoItemFB.getLon());
+        geoItemNew.setUriS(geoItemFB.getUriS());
+        geoItemNew.setBookmarked(geoItemFB.isBookmarked());
+        geoItemNew.setDatetimeCreation(geoItemFB.getDatetimeCreation());
+        geoItemNew.setDatetimeVisited(geoItemFB.getDatetimeVisited());
+
+        return geoItemNew;
     }
 
 }

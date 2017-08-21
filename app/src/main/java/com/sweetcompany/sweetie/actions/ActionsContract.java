@@ -1,5 +1,8 @@
 package com.sweetcompany.sweetie.actions;
 
+import com.sweetcompany.sweetie.geogift.GeoItem;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,14 +14,17 @@ public interface ActionsContract {
     interface View {
         void setPresenter(ActionsContract.Presenter presenter);
         void updateActionsList(List<ActionVM> actionsVM);
+        void registerGeofence(ArrayList<GeoItem> geoItems);
+        void checkGeofences();
     }
 
     interface Presenter {
         List<String> pushChatAction(String userInputChatTitle, String username);
         List<String> pushGalleryAction(String userInputGalleryTitle, String username);
         List<String> pushToDoListAction(String userInputToDoListTitle, String username);
-        List<String> pushGeogiftAction(String userInputGeogiftTitle, String username);
 
+        void retrieveGeogift();
+        //List<String> pushGeogiftAction(String userInputGeogiftTitle, String username);
         //void pushAction(String userInputGalleryTitle, String username);
     }
 

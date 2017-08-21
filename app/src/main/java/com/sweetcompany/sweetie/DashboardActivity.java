@@ -40,8 +40,9 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
 
         // init the Controllers for fragments
         String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+        String userUid = Utility.getStringPreference(this, Utility.USER_UID);
 
-        mActionsController = new FirebaseActionsController(coupleUid);
+        mActionsController = new FirebaseActionsController(coupleUid, userUid);
         mCalendarController = new FirebaseCalendarController(coupleUid);
         // mMapsController = ...
 

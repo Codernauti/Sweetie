@@ -16,7 +16,7 @@ import java.util.List;
  * Created by ghiro on 16/05/2017.
  */
 
-class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
+class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
         implements MessageViewHolder.OnViewHolderClickListener {
 
     private static final String TAG = "ChatAdapter";
@@ -26,7 +26,7 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
         void onPhotoClicked(TextPhotoMessageVM photoMessage);
     }
 
-    private List<MessageVM> mMessageList = new ArrayList<>();
+    private List<ChatItemVM> mMessageList = new ArrayList<>();
     private ChatAdapterListener mListener;
 
     /**
@@ -45,22 +45,28 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     }
 
     @Override
-    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //MessageVM message = mMessageList.get(viewType);
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         View viewToInflate = inflater.inflate(viewType, parent, false);
-        MessageViewHolder viewHolder;
+        ChatViewHolder viewHolder;
         switch (viewType) {
 
             case R.layout.chat_user_list_item_text:
             case R.layout.chat_partner_list_item_text:
                 viewHolder = new TextMessageViewHolder(viewToInflate);
+                ((MessageViewHolder) viewHolder).setViewHolderClickListener(this);
                 break;
 
             case R.layout.chat_user_list_item_photo:
             case R.layout.chat_partner_list_item_photo:
                 viewHolder = new TextPhotoMessageViewHolder(viewToInflate);
+                ((MessageViewHolder) viewHolder).setViewHolderClickListener(this);
+                break;
+
+            case R.layout.chat_date_list_item:
+                viewHolder = new DateViewHolder(viewToInflate);
                 break;
 
             default:
@@ -70,19 +76,15 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
                 break;
         }
 
-        viewHolder.setViewHolderClickListener(this);
-
         Log.d(TAG, "onCreateViewHolder(): " + viewHolder.toString());
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MessageViewHolder holder, int position) {
-        MessageVM msgVM = mMessageList.get(position);
+    public void onBindViewHolder(ChatViewHolder holder, int position) {
+        ChatItemVM msgVM = mMessageList.get(position);
         msgVM.configViewHolder(holder);
-
-        Log.d(TAG, "onBindViewHolder(): " + msgVM.getKey());
     }
 
     @Override
@@ -91,9 +93,14 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
     }
 
 
+    void addDateItem(DateItemVM date) {
+        mMessageList.add(date);
+        notifyItemInserted(mMessageList.size() - 1);
+    }
+
     void addMessage(MessageVM message) {
         //TODO optimize change object field instead of remove
-        if(searchIndexMessageOf(message)!=-1){
+        if(searchIndexMessageOf(message) != -1){
             removeMessage(message);
         }
         mMessageList.add(message);
@@ -148,7 +155,8 @@ class ChatAdapter extends RecyclerView.Adapter<MessageViewHolder>
 
     @Override
     public void onBookmarkClicked(int adapterPosition, boolean isBookmarked, int type) {
-        MessageVM msgToUpdate = mMessageList.get(adapterPosition);
+        // Only MessageViewHolder are listened, cast is secured
+        MessageVM msgToUpdate = (MessageVM) mMessageList.get(adapterPosition);
 
         // Update MessageVM associate with ViewHolder
         msgToUpdate.setBookmarked(isBookmarked);

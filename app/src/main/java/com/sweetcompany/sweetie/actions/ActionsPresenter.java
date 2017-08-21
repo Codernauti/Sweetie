@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.utils.DataMaker;
+import com.sweetcompany.sweetie.utils.GeoUtils;
 import com.sweetcompany.sweetie.utils.MiniPrefDB;
 
 import java.util.ArrayList;
@@ -27,10 +28,11 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     private final FirebaseActionsController mController;
 
     private List<ActionVM> mActionsList = new ArrayList<>();
-
     private String mUserID;
-
     private MiniPrefDB miniPrefDB;
+    private GeoUtils geoUtils;
+    private Context mContext;
+
 
     public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userID, Context context) {
         mView = view;
@@ -39,8 +41,10 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         mController.addListener(this);
 
         mUserID = userID;
+        mContext = context;
 
-        miniPrefDB = new MiniPrefDB(context);
+        miniPrefDB = new MiniPrefDB(mContext);
+        geoUtils = new GeoUtils(mContext);
     }
 
     @Override
@@ -155,7 +159,10 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                             Set<String> listaGeogift = miniPrefDB.getGeogiftSet();
                             if(!listaGeogift.contains(action.getChildKey())){
                                 miniPrefDB.addGeogiftToSet(action.getChildKey());
+                                geoUtils.registerGeofences();
+                                Log.d(TAG, "geogift registration... user sender: " + action.getUserCreator());
                             }
+
                         }
                     break;
             }

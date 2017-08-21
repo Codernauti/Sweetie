@@ -15,7 +15,7 @@ public class GeogiftFB {
     @Exclude
     private String key;
 
-    private String mEmail;
+    private String userCreatorUID;
     private int type;
     private String message;
     private String address;
@@ -37,17 +37,17 @@ public class GeogiftFB {
     public String getKey() {
         return key;
     }
+
+    public String getUserCreatorUID() {
+        return userCreatorUID;
+    }
+
+    public void setUserCreatorUID(String userCreatorUID) {
+        this.userCreatorUID = userCreatorUID;
+    }
     @Exclude
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public String getmEmail() {
-        return mEmail;
-    }
-
-    public void setmEmail(String mEmail) {
-        this.mEmail = mEmail;
     }
 
     public int getType() {
@@ -129,4 +129,5 @@ public class GeogiftFB {
     public void setVisited(boolean visited) {
         isVisited = visited;
     }
+
 }

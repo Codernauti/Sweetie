@@ -33,6 +33,7 @@ public class FirebaseGeogiftMakerController {
     private final FirebaseStorage mStorage;
 
     private final String coupleID;
+    private final String userID;
 
     private List<GeogiftMakerControllerListener> mListeners = new ArrayList<>();
 
@@ -42,12 +43,13 @@ public class FirebaseGeogiftMakerController {
     }
 
 
-    public FirebaseGeogiftMakerController(String coupleUid) {
+    public FirebaseGeogiftMakerController(String coupleUid, String userUID) {
         mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS + "/" + coupleUid);
         mGeogiftDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GEOGIFT + "/" + coupleUid);
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
         coupleID = coupleUid;
+        userID = userUID;
     }
 
     public void addListener(FirebaseGeogiftMakerController.GeogiftMakerControllerListener listener) {
@@ -70,6 +72,7 @@ public class FirebaseGeogiftMakerController {
 
         // Create Gallery and set Gallery
         GeogiftFB geogift = new GeogiftFB();
+        geogift.setUserCreatorUID(geoItem.getUserCreatorUID());
         geogift.setType(geoItem.getType());
         geogift.setMessage(geoItem.getMessage());
         geogift.setAddress(geoItem.getAddress());

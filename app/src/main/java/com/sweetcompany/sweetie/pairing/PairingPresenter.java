@@ -94,7 +94,15 @@ class PairingPresenter implements PairingContract.Presenter,
 
     @Override
     public void onSearchUserWithPhoneNumberFinished(UserFB user) {
-        mController.createNewPairingRequest(user, mUserPhoneNumber, mUserPairingRequestSent);
+        if (user != null) {
+            mController.createNewPairingRequest(user, mUserPhoneNumber, mUserPairingRequestSent);
+        } else {
+            mView.hideLoadingProgress();
+            // TODO: tell to the user no phone number found, send an invite to Sweetie
+            mView.showMessage("The user you are looking for is not already register to Sweetie");
+            // TODO: show an alert where the user can try another number or go to Dashboard
+            mView.startDashboardActivity();
+        }
     }
 
     @Override

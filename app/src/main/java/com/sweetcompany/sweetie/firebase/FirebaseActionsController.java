@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie.firebase;
 
 import android.util.Log;
 
+import com.google.android.gms.location.Geofence;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,17 +34,21 @@ public class FirebaseActionsController {
     private List<OnFirebaseActionsDataChange> mListeners = new ArrayList<>();
     private ValueEventListener mActionsEventListener;
 
+    private String userID;
+
     public interface OnFirebaseActionsDataChange {
         void updateActionsList(List<ActionFB> actions);
+        void onRetrievedGeogift(List<GeogiftFB> geogifts);
     }
 
 
-    public FirebaseActionsController(String coupleUid) {
+    public FirebaseActionsController(String coupleUid, String userUid) {
         mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS + "/" + coupleUid);
         mChatsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.CHATS + "/" + coupleUid);
         mGalleriesDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GALLERIES + "/" + coupleUid);
         mToDoListsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.TODOLIST + "/" + coupleUid);
         mGeogiftDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GEOGIFT + "/" + coupleUid);
+        userID = userUid;
     }
 
     public void addListener(OnFirebaseActionsDataChange listener) {
@@ -91,6 +96,32 @@ public class FirebaseActionsController {
             mActionsDbReference.removeEventListener(mActionsEventListener);
         }
         mActionsEventListener = null;
+    }
+
+    public void retrieveGeogiftFB(){
+
+        final ArrayList<GeogiftFB> geogiftFBlist = new ArrayList<>();
+        mGeogiftDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.w(TAG, "geogiftFB retrieving");
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    GeogiftFB geogiftFB = snapshot.getValue(GeogiftFB.class);
+                    if(!geogiftFB.isVisited() && !geogiftFB.getUserCreatorUID().equals(userID)) {
+                        geogiftFBlist.add(geogiftFB);
+                    }
+                }
+
+                for (OnFirebaseActionsDataChange listener : mListeners) {
+                    listener.onRetrievedGeogift(geogiftFBlist);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "onCancelled", databaseError.toException());
+            }
+        });
     }
 
     public void pushAction(ActionFB act) {

@@ -1,13 +1,17 @@
 package com.sweetcompany.sweetie.actions;
 
 
-import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +19,32 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.geogift.GeoItem;
+import com.sweetcompany.sweetie.geogift.GeofenceTrasitionService;
+import com.sweetcompany.sweetie.utils.GeoUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ActionsFragment extends Fragment implements ActionsContract.View {
+public class ActionsFragment extends Fragment implements ActionsContract.View, ResultCallback<Status>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "ActionsFragment";
+
+    private static final long GEO_DURATION = 10 * 60 * 1000;
+    private static final String GEOFENCE_REQ_ID = "My Geofence";
+    private static final float GEOFENCE_RADIUS = 100.0f; // in meters
+    private static final int GEOFENCE_REQ_CODE = 4005;
+    private static final int DWELL = 1000;
+
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
@@ -36,6 +58,10 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
     private boolean mIsFabOpen = false;
 
     private FrameLayout mFrameBackground;
+
+    private static GoogleApiClient googleApiClient;
+    private static PendingIntent geoFencePendingIntent;
+    public ArrayList<Geofence> mGeofenceList;
 
     private ActionsContract.Presenter mPresenter;
 
@@ -245,4 +271,108 @@ public class ActionsFragment extends Fragment implements ActionsContract.View {
         mActionAdapter.updateActionsList(actionsVM);
     }
 
+    @Override
+    public void registerGeofence(ArrayList<GeoItem> geoItems){
+        // Empty list for storing geofences.
+        mGeofenceList = new ArrayList<Geofence>();
+
+        geoFencePendingIntent = null;
+
+        for(GeoItem geoItem : geoItems){
+            mGeofenceList.add(new Geofence.Builder()
+                    .setRequestId(geoItem.getAddress()) //TODO change!!!
+                    .setCircularRegion(Double.parseDouble(geoItem.getLat()),
+                            Double.parseDouble(geoItem.getLon()),
+                            GEOFENCE_RADIUS
+                    )
+                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                    .build());
+        }
+
+        addGeofencesOnLoad();
+
+    }
+
+    @Override
+    public void checkGeofences() {
+        //TODO if...
+        if(googleApiClient!= null && googleApiClient.isConnected()){
+            mPresenter.retrieveGeogift();
+        }
+        else {
+            buildGoogleApiClient();
+        }
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        Log.d(TAG, "createGoogleApi()");
+        if ( googleApiClient == null ) {
+            googleApiClient = new GoogleApiClient.Builder(mContext)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
+        googleApiClient.connect();
+    }
+
+    private GeofencingRequest getGeofencingRequest() {
+        Log.d(TAG, "createGeofencingRequest");
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
+    }
+
+    public void addGeofencesOnLoad() {
+        if (!googleApiClient.isConnected()) {
+            Log.w(TAG, "googleApiclient not connected");
+            return;
+        }
+
+        try {
+            LocationServices.GeofencingApi.addGeofences(
+                    googleApiClient,
+                    getGeofencingRequest(),
+                    getGeofencePendingIntent()
+            ).setResultCallback(this); // Result processed in onResult().
+        } catch (SecurityException securityException) {
+            //logSecurityException(securityException);
+        }
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        Log.d(TAG, "createGeofencePendingIntent");
+        if ( geoFencePendingIntent != null )
+            return geoFencePendingIntent;
+
+        Intent intent = new Intent( mContext, GeofenceTrasitionService.class);
+        return PendingIntent.getService(
+                mContext, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+    }
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if(GeoUtils.checkPermissionAccessFineLocation(mContext)) {
+            mPresenter.retrieveGeogift();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "googleApi connection suspended");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i(TAG, "googleApi connection failed");
+    }
+
+    @Override
+    public void onResult(@NonNull Status status) {
+        Log.i(TAG, "onResult: " + status);
+    }
 }

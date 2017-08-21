@@ -296,7 +296,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
     @Override
     public void checkGeofences() {
-        //TODO if...
+        //TODO if getsharedpreference geogift list !!!!!
         if(googleApiClient!= null && googleApiClient.isConnected()){
             mPresenter.retrieveGeogift();
         }

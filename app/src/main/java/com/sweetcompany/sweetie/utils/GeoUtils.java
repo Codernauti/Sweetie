@@ -69,7 +69,7 @@ public class GeoUtils implements ResultCallback<Status>, GoogleApiClient.Connect
         geoFencePendingIntent = null;
 
         miniPrefDB = new MiniPrefDB(mContext);
-        listGeogift = miniPrefDB.getGeogiftSet();
+        //listGeogift = miniPrefDB.getGeogiftSet();
     }
 
     // Check for permission to access Location
@@ -173,7 +173,9 @@ public class GeoUtils implements ResultCallback<Status>, GoogleApiClient.Connect
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(TAG, "googleApi connected");
-        addGeofencesOnLoad();
+        if(checkPermissionAccessFineLocation(mContext)) {
+            addGeofencesOnLoad();
+        }
     }
 
     @Override

@@ -122,7 +122,7 @@ public class FirebaseGalleryController {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {}
             };
-            mGalleryPhotos.addChildEventListener(mGalleryPhotosListener);
+            mGalleryPhotos.orderByChild("dataTime").addChildEventListener(mGalleryPhotosListener);
         }
 
         if (mGalleryListener == null) {

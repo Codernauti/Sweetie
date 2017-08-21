@@ -157,7 +157,8 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                             mActionsList.add(newActionVM);
                         }else{
                             Set<String> listaGeogift = miniPrefDB.getGeogiftSet();
-                            if(!listaGeogift.contains(action.getChildKey())){
+                            String childKey = action.getChildKey();
+                            if(!listaGeogift.contains(childKey)){
                                 miniPrefDB.addGeogiftToSet(action.getChildKey());
                                 geoUtils.registerGeofences();
                                 Log.d(TAG, "geogift registration... user sender: " + action.getUserCreator());

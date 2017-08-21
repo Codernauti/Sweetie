@@ -1,8 +1,15 @@
 package com.sweetcompany.sweetie.chat;
 
+import android.util.Log;
+
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.model.MessageFB;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ghiro on 11/05/2017.
@@ -15,6 +22,11 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
     private final ChatContract.View mView;
     private final FirebaseChatController mController;
     private final String mUserMail;   // id of messages of main user
+
+    private static final SimpleDateFormat mIsoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private Date mLastMsgDate;
+    private Calendar mLastMsgDateCalendar = Calendar.getInstance();
+    private Calendar mMsgcalendar = Calendar.getInstance();
 
     ChatPresenter(ChatContract.View view, FirebaseChatController controller, String userMail){
         mView = view;
@@ -87,7 +99,47 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
 
     @Override
     public void onMessageAdded(MessageFB message) {
+        Date messageDate = getDateFromString(message.getDateTime());
+
+        insertDateItemVM(messageDate);
+        insertMessageVM(message);
+    }
+
+    private Date getDateFromString(String dateString) {
+        Date messageDate = null;
+        try {
+            messageDate = mIsoFormat.parse(dateString);
+        } catch (ParseException ex) {
+            Log.w(TAG, ex.getMessage());
+            messageDate = new Date();
+        }
+
+        return messageDate;
+    }
+
+    private void insertDateItemVM(Date messageDate) {
+        if (mLastMsgDate == null) {
+            // first message
+            mLastMsgDate = messageDate;
+            mView.insertDateItem(new DateItemVM(messageDate));
+        }
+        else {
+            mLastMsgDateCalendar.setTime(mLastMsgDate);
+            mMsgcalendar.setTime(messageDate);
+
+            if (mLastMsgDateCalendar.get(Calendar.YEAR) != mMsgcalendar.get(Calendar.YEAR) ||
+                    mLastMsgDateCalendar.get(Calendar.MONTH) != mMsgcalendar.get(Calendar.MONTH) ||
+                    mLastMsgDateCalendar.get(Calendar.DAY_OF_MONTH) != mMsgcalendar.get(Calendar.DAY_OF_MONTH)) {
+                // insert Data ViewModel if LastMsgDate is before messageDate
+                mLastMsgDate = messageDate;
+                mView.insertDateItem(new DateItemVM(messageDate));
+            }
+        }
+    }
+
+    private void insertMessageVM(MessageFB message) {
         MessageVM msgVM = null;
+        // insert the message ViewModel
         if (message.getType() == MessageFB.TEXT_MSG){
             msgVM = createTextMessageVM(message);
         }
@@ -95,8 +147,13 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
         {
             msgVM = createTextPhotoMessageVM(message);
         }
+        else {
+            Log.w(TAG, "messageVM not initialize!");
+            // TODO: build default messageVM?
+        }
         mView.updateMessage(msgVM);
     }
+
 
     @Override
     public void onMessageRemoved(MessageFB message) {

@@ -6,17 +6,17 @@ import android.view.View;
  * Created by Eduard on 18-May-17.
  */
 
-abstract class MessageVM {
+abstract class MessageVM implements ChatItemVM {
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
 
-    public final static int TEXT_MSG = 0;
-    public final static int TEXT_PHOTO_MSG = 1;
+    static final int TEXT_MSG = 0;
+    static final int TEXT_PHOTO_MSG = 1;
 
     private String mKey;
 
     private final boolean mWho;
-    private final String mTime;   // Format HH:mm
+    private final String mTime;
     private boolean mBookMarked;
     private int percent;
 
@@ -39,7 +39,8 @@ abstract class MessageVM {
     boolean isBookmarked() {return mBookMarked; }
     void setBookmarked(boolean bookmarked) {mBookMarked = bookmarked; }
 
-    String getKey() { return mKey; }
+    @Override
+    public String getKey() { return mKey; }
     void setKey(String key){
         this.mKey = key;
     }
@@ -51,7 +52,4 @@ abstract class MessageVM {
         percent = perc;
     }
 
-    abstract void configViewHolder(MessageViewHolder viewHolder);
-
-    abstract int getIdView();
 }

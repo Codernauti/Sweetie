@@ -58,7 +58,7 @@ public class MiniPrefDB {
         if(setId == null){
             setId = new HashSet<String>();
         }
-        setId.add("null");
+        setId.add("empty");
         SharedPreferences.Editor editor = preferences.edit();
         editor.putStringSet(GEOGIFT_SET, setId);
 

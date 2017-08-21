@@ -51,7 +51,7 @@ public class TextPhotoMessageVM extends MessageVM implements Serializable {
     }
 
     @Override
-    void configViewHolder(MessageViewHolder viewHolder) {
+    public void configViewHolder(ChatViewHolder viewHolder) {
         // TODO: This downcast is secure?
         TextPhotoMessageViewHolder view = (TextPhotoMessageViewHolder) viewHolder;
 
@@ -76,7 +76,7 @@ public class TextPhotoMessageVM extends MessageVM implements Serializable {
     }
 
     @Override
-    int getIdView() {
+    public int getIdView() {
         if (isTheMainUser()) {
             return R.layout.chat_user_list_item_photo;
         }

@@ -13,6 +13,8 @@ interface ChatContract {
         void updateMessages(List<MessageVM> messages);
         void updateChatInfo(ChatVM chat);
 
+        void insertDateItem(DateItemVM dateVM);
+
         void updateMessage(MessageVM msgVM);
         void removeMessage(MessageVM msgVM);
         void changeMessage(MessageVM msgVM);

@@ -310,6 +310,11 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     }
 
     @Override
+    public void insertDateItem(DateItemVM dateVM) {
+        mChatAdapter.addDateItem(dateVM);
+    }
+
+    @Override
     public void updateMessage(MessageVM msgVM) {
         mChatAdapter.addMessage(msgVM);
         mChatListView.scrollToPosition(mChatAdapter.getItemCount() - 1);

@@ -10,7 +10,7 @@ import com.sweetcompany.sweetie.R;
  * Created by Eduard on 21-May-17.
  */
 
-abstract class MessageViewHolder extends RecyclerView.ViewHolder {
+abstract class MessageViewHolder extends ChatViewHolder {
 
     private final ImageView mMsgStatus;
 

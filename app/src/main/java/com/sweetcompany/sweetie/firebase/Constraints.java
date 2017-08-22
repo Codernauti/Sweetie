@@ -6,6 +6,12 @@ package com.sweetcompany.sweetie.firebase;
 
 interface Constraints {
 
+    int ACTION_CHAT_TYPE = 0;
+    int ACTION_GALLERY_TYPE = 1;
+    int ACTION_TODO_TYPE = 2;
+    int ACTION_GEOGIFT_TYPE = 3;
+
+
     String USERS = "users";
         String COUPLE_INFO = "coupleInfo";
             String ACTIVE_COUPLE = "activeCouple";

@@ -38,7 +38,8 @@ public class FirebaseActionsController {
 
     public interface OnFirebaseActionsDataChange {
         void updateActionsList(List<ActionFB> actions);
-        void onRetrievedGeogift(List<GeogiftFB> geogifts);
+        void onRetrievedGeogift(GeogiftFB geogiftFB);
+        void updateGeogiftList(ArrayList<String> geogiftNotVisitedKeys);
     }
 
 
@@ -65,6 +66,7 @@ public class FirebaseActionsController {
                 @Override
                 public void onDataChange(DataSnapshot actionsSnapshot) {
                     List<ActionFB> actions = new ArrayList<>();
+                    ArrayList<String> geogiftNotVisitedKeys = new ArrayList<>();
 
                     for (DataSnapshot actionSnapshot : actionsSnapshot.getChildren()) {
                         String actionKey = actionSnapshot.getKey();
@@ -73,10 +75,19 @@ public class FirebaseActionsController {
                         ActionFB action = actionSnapshot.getValue(ActionFB.class);
                         action.setKey(actionKey);
                         actions.add(action);
+
+                        if(action.getType() == Constraints.ACTION_GEOGIFT_TYPE &&
+                           !action.getUserCreator().equals(userID) &&
+                           !action.isVisited()){
+                            geogiftNotVisitedKeys.add(action.getChildKey());
+                        }
                     }
 
                     for (OnFirebaseActionsDataChange listener : mListeners) {
                         listener.updateActionsList(actions);
+                        if(geogiftNotVisitedKeys.size()>0){
+                            listener.updateGeogiftList(geogiftNotVisitedKeys);
+                        }
                     }
                 }
 
@@ -98,22 +109,17 @@ public class FirebaseActionsController {
         mActionsEventListener = null;
     }
 
-    public void retrieveGeogiftFB(){
+    public void retrieveGeogiftFB(String geoKey){
 
-        final ArrayList<GeogiftFB> geogiftFBlist = new ArrayList<>();
-        mGeogiftDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        mGeogiftDbReference.child(geoKey).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.w(TAG, "geogiftFB retrieving");
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    GeogiftFB geogiftFB = snapshot.getValue(GeogiftFB.class);
-                    if(!geogiftFB.isVisited() && !geogiftFB.getUserCreatorUID().equals(userID)) {
-                        geogiftFBlist.add(geogiftFB);
-                    }
-                }
+
+                GeogiftFB geogiftFB = dataSnapshot.getValue(GeogiftFB.class);
 
                 for (OnFirebaseActionsDataChange listener : mListeners) {
-                    listener.onRetrievedGeogift(geogiftFBlist);
+                    listener.onRetrievedGeogift(geogiftFB);
                 }
             }
 

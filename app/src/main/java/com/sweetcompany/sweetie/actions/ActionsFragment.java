@@ -31,9 +31,12 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.geogift.GeoItem;
 import com.sweetcompany.sweetie.geogift.GeofenceTrasitionService;
 import com.sweetcompany.sweetie.utils.GeoUtils;
+import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ActionsFragment extends Fragment implements ActionsContract.View, ResultCallback<Status>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -276,29 +279,50 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
         // Empty list for storing geofences.
         mGeofenceList = new ArrayList<Geofence>();
 
+        Set<String> geofenceListPref = new HashSet<>();
+        geofenceListPref = Utility.getGeofenceKeyList(mContext);
+
         geoFencePendingIntent = null;
 
         for(GeoItem geoItem : geoItems){
-            mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId(geoItem.getAddress()) //TODO change!!!
-                    .setCircularRegion(Double.parseDouble(geoItem.getLat()),
-                            Double.parseDouble(geoItem.getLon()),
-                            GEOFENCE_RADIUS
-                    )
-                    .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                    .build());
+            boolean isInPref = false;
+            //TODO improve complex
+            for (String geofenceKey : geofenceListPref)
+            {
+                if (geofenceKey!=null && geofenceKey.equals(geoItem.getKey())){
+                    isInPref = true;
+                }
+            }
+            if(!isInPref){//if not in shared pref
+                mGeofenceList.add(new Geofence.Builder()
+                        .setRequestId(geoItem.getAddress()) //TODO change!!!
+                        .setCircularRegion(Double.parseDouble(geoItem.getLat()),
+                                Double.parseDouble(geoItem.getLon()),
+                                GEOFENCE_RADIUS
+                        )
+                        .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                        .build());
+                Utility.addGeofenceToSharedPreference(mContext, geoItem.getKey());
+                Log.d(TAG, "geogift registration...");
+            }
+            else{
+                Log.d(TAG, "geogift ALREADY registred");
+            }
         }
 
-        addGeofencesOnLoad();
+        if(mGeofenceList.size()>0) {
+            addGeofencesOnLoad();
+        }
 
     }
 
     @Override
     public void checkGeofences() {
         //TODO if getsharedpreference geogift list !!!!!
+
         if(googleApiClient!= null && googleApiClient.isConnected()){
-            mPresenter.retrieveGeogift();
+            //mPresenter.retrieveGeogift();
         }
         else {
             buildGoogleApiClient();

@@ -2,12 +2,14 @@ package com.sweetcompany.sweetie.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by lucas on 22/05/2017.
@@ -32,6 +34,7 @@ public class Utility {
 
     public static final String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
     public static final String KEY_GEOFENCE_LON = "GEOFENCE LONGITUDE";
+    public static final String GEOGIFT_SET = "GEOGIFT_SET";
 
 
     //Method for saving a shared preference
@@ -103,6 +106,32 @@ public class Utility {
         boolean isAvaible = false;
         if(new File(uriLocal).isFile()) isAvaible = true;
         return isAvaible;
+    }
+
+    public static void addGeofenceToSharedPreference(Context context, String key){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> setId = preferences.getStringSet(GEOGIFT_SET, null);
+        //The second argument 'null' means if there is no value for key "id", it will return null
+        if(setId == null){
+            setId = new HashSet<String>();
+        }
+        setId.add(key);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putStringSet(GEOGIFT_SET, setId);
+        editor.commit();
+    }
+
+    public static Set<String> getGeofenceKeyList(Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> setId = preferences.getStringSet(GEOGIFT_SET, null);
+        if(setId == null){
+            setId = new HashSet<String>();
+        }
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putStringSet(GEOGIFT_SET, setId);
+
+        return  setId;
     }
 
 }

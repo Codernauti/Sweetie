@@ -37,13 +37,13 @@ public class MessageConverter {
     }
 
     private static MessageVM createTextMessageVM(MessageFB message, boolean who) {
-        return new TextMessageVM(message.getText(), who, message.getDateTime(),
-                message.isBookmarked(), message.getKey(), 0);
+        return new TextMessageVM(message.getText(), message.getEmail(), who, message.getDateTime(),
+                message.isBookmarked(), message.getKey());
     }
 
     private static MessageVM createTextPhotoMessageVM(MessageFB message, boolean who) {
-        return new TextPhotoMessageVM(message.getText(), who, message.getDateTime(),
+        return new TextPhotoMessageVM(message.getText(), message.getEmail(), who, message.getDateTime(),
                 message.isBookmarked(), message.getKey(), message.getUriLocal(),
-                message.getUriStorage(), 0);
+                message.getUriStorage());
     }
 }

@@ -30,21 +30,16 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     private final FirebaseActionsController mController;
 
     private List<ActionVM> mActionsList = new ArrayList<>();
-    private List<ActionVM> mActionsGeofitList = new ArrayList<>();
     private String mUserID;
-    private MiniPrefDB miniPrefDB;
-    private GeoUtils geoUtils;
-    private Context mContext;
 
 
-    public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userID, Context context) {
+    public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userID) {
         mView = view;
         mView.setPresenter(this);
         mController = controller;
         mController.addListener(this);
 
         mUserID = userID;
-        mContext = context;
     }
 
     @Override

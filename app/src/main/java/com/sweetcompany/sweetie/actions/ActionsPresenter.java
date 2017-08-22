@@ -180,6 +180,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
 
     private GeoItem createGeoItem(GeogiftFB geoItemFB){
         GeoItem geoItemNew = new GeoItem();
+        geoItemNew.setKey(geoItemFB.getKey());
         geoItemNew.setUserCreatorUID(geoItemFB.getUserCreatorUID());
         geoItemNew.setType(geoItemFB.getType());
         geoItemNew.setMessage(geoItemFB.getMessage());

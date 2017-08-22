@@ -12,7 +12,7 @@ public class GeogiftFB {
     public final static int PHOTO_GEOGIFT = 1;
     public final static int HEART_GEOGIFT = 2;
 
-    @Exclude
+    //@Exclude
     private String key;
 
     private String userCreatorUID;
@@ -33,9 +33,14 @@ public class GeogiftFB {
     }
 
 
-    @Exclude
+    //Exclude
     public String getKey() {
         return key;
+    }
+
+    //@Exclude
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getUserCreatorUID() {
@@ -44,10 +49,6 @@ public class GeogiftFB {
 
     public void setUserCreatorUID(String userCreatorUID) {
         this.userCreatorUID = userCreatorUID;
-    }
-    @Exclude
-    public void setKey(String key) {
-        this.key = key;
     }
 
     public int getType() {

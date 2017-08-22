@@ -16,12 +16,12 @@ import java.util.List;
  * Created by ghiro on 16/05/2017.
  */
 
-class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
+public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
         implements MessageViewHolder.OnViewHolderClickListener {
 
     private static final String TAG = "ChatAdapter";
 
-    interface ChatAdapterListener {
+    public interface ChatAdapterListener {
         void onBookmarkClicked(MessageVM messageVM, int type);
         void onPhotoClicked(TextPhotoMessageVM photoMessage);
     }
@@ -33,7 +33,7 @@ class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
      * Call when create ChatAdapter or when destroy ChatAdapter, in this case pass null
      * @param listener
      */
-    void setListener(ChatAdapterListener listener) {
+    public void setListener(ChatAdapterListener listener) {
         mListener = listener;
     }
 
@@ -98,7 +98,7 @@ class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
         notifyItemInserted(mMessageList.size() - 1);
     }
 
-    void addMessage(MessageVM message) {
+    public void addMessage(MessageVM message) {
         //TODO optimize change object field instead of remove
         if(searchIndexMessageOf(message) != -1){
             removeMessage(message);
@@ -134,6 +134,16 @@ class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
         return -1;
     }
 
+    public void removeMessage(String msgUid) {
+        for (int i = 0; i < mMessageList.size(); i++) {
+            String msgKey = mMessageList.get(i).getKey();
+            if (msgKey.equals(msgUid)) {
+                mMessageList.remove(i);
+                return;
+            }
+        }
+    }
+
     void updateMessageList(List<MessageVM> messagesVM) {
         mMessageList.clear();
         mMessageList.addAll(messagesVM);
@@ -141,13 +151,23 @@ class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
         this.notifyDataSetChanged();
     }
 
-    void updatePercentUpload(MessageVM mediaVM, int perc){
-        int indexOldMedia = searchIndexMessageOf(mediaVM);
-        if (indexOldMedia != -1) {
-            mediaVM.setPercent(perc);
-            mMessageList.set(indexOldMedia, mediaVM);
-            notifyItemChanged(indexOldMedia);
+    void updatePercentUpload(String msgUid, int perc){
+        for (int indexMessageOf = 0; indexMessageOf < mMessageList.size(); indexMessageOf++) {
+
+            String msgKey = mMessageList.get(indexMessageOf).getKey();
+
+            if (msgKey.equals(msgUid)) {
+                ((TextPhotoMessageVM) mMessageList.get(indexMessageOf)).setPercent(perc);
+                notifyItemChanged(indexMessageOf);
+                return;
+            }
         }
+        /*int indexMessageOf = searchIndexMessageOf(mediaVM);
+        if (indexMessageOf != -1) {
+            //mediaVM.setPercent(perc);
+            //mMessageList.set(indexMessageOf, mediaVM);
+            notifyItemChanged(indexMessageOf);
+        }*/
     }
 
 

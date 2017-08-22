@@ -1,12 +1,10 @@
 package com.sweetcompany.sweetie.chat;
 
-import android.view.View;
-
 /**
  * Created by Eduard on 18-May-17.
  */
 
-abstract class MessageVM implements ChatItemVM {
+public abstract class MessageVM implements ChatItemVM {
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
 

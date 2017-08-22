@@ -10,7 +10,6 @@ interface ChatContract {
 
     interface View {
         void setPresenter(ChatContract.Presenter presenter);
-        void updateMessages(List<MessageVM> messages);
         void updateChatInfo(ChatVM chat);
 
         void insertDateItem(DateItemVM dateVM);
@@ -18,7 +17,7 @@ interface ChatContract {
         void updateMessage(MessageVM msgVM);
         void removeMessage(MessageVM msgVM);
         void changeMessage(MessageVM msgVM);
-        void updatePercentUpload(MessageVM mediaVM, int perc);
+        void updatePercentUpload(String msgUid, int progress);
 
         boolean hideKeyboardPlaceholder();
     }

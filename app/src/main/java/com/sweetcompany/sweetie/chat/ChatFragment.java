@@ -300,11 +300,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     }
 
     @Override
-    public void updateMessages(List<MessageVM> messagesVM) {
-        mChatAdapter.updateMessageList(messagesVM);
-    }
-
-    @Override
     public void updateChatInfo(ChatVM chat) {
         mToolBar.setTitle(chat.getTitle());
     }
@@ -332,8 +327,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
 
     @Override
-    public void updatePercentUpload(MessageVM mediaVM, int perc) {
-        mChatAdapter.updatePercentUpload(mediaVM, perc);
+    public void updatePercentUpload(String msgUid, int perc) {
+        mChatAdapter.updatePercentUpload(msgUid, perc);
     }
 
     @Override

@@ -71,7 +71,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
         if(type == MessageVM.TEXT_MSG){
             TextMessageVM msgVM = (TextMessageVM) messageVM;
             MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(),
-                    msgVM.isBookmarked(), MessageFB.PHOTO_MSG, "", "");
+                    msgVM.isBookmarked(), MessageFB.TEXT_MSG, null, null);
             updateMessage.setKey(msgVM.getKey());
 
             mController.updateMessage(updateMessage);
@@ -138,77 +138,27 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
     }
 
     private void insertMessageVM(MessageFB message) {
-        MessageVM msgVM = null;
-        // insert the message ViewModel
-        if (message.getType() == MessageFB.TEXT_MSG){
-            msgVM = createTextMessageVM(message);
-        }
-        else if (message.getType() == MessageFB.PHOTO_MSG)
-        {
-            msgVM = createTextPhotoMessageVM(message);
-        }
-        else {
-            Log.w(TAG, "messageVM not initialize!");
-            // TODO: build default messageVM?
-        }
+        MessageVM msgVM = MessageConverter.createMessageVM(message, mUserMail);
         mView.updateMessage(msgVM);
     }
 
 
     @Override
     public void onMessageRemoved(MessageFB message) {
-        MessageVM msgVM = null;
-        if(message.getType()==MessageFB.TEXT_MSG){
-            msgVM = createTextMessageVM(message);
-        }
-        else if(message.getType()==MessageFB.PHOTO_MSG)
-        {
-            msgVM = createTextPhotoMessageVM(message);
-        }
+        MessageVM msgVM = MessageConverter.createMessageVM(message, mUserMail);
         mView.removeMessage(msgVM);
     }
 
     @Override
     public void onMessageChanged(MessageFB message) {
-        MessageVM msgVM = null;
-        if(message.getType()==MessageFB.TEXT_MSG){
-            msgVM = createTextMessageVM(message);
-        }
-        else if(message.getType()==MessageFB.PHOTO_MSG)
-        {
-            msgVM = createTextPhotoMessageVM(message);
-        }
+        MessageVM msgVM = MessageConverter.createMessageVM(message, mUserMail);
         mView.changeMessage(msgVM);
-    }
-
-    private MessageVM createTextMessageVM(MessageFB message) {
-        // Understand if the message is of Main User
-        boolean who = MessageVM.THE_PARTNER;
-        if (message.getEmail().equals(mUserMail)) {
-            who = MessageVM.THE_MAIN_USER;
-        }
-        // Create respective ViewModel
-        return new TextMessageVM(message.getText(), who, message.getDateTime(),
-                message.isBookmarked(), message.getKey(), 0);
-    }
-
-    private MessageVM createTextPhotoMessageVM(MessageFB message) {
-        // Understand if the message is of Main User
-        boolean who = MessageVM.THE_PARTNER;
-        if (message.getEmail().equals(mUserMail)) {
-            who = MessageVM.THE_MAIN_USER;
-        }
-        // Create respective ViewModel
-        return new TextPhotoMessageVM(message.getText(), who, message.getDateTime(),
-                message.isBookmarked(), message.getKey(), message.getUriLocal(),
-                message.getUriStorage(), 0);
     }
 
 
     @Override
-    public void onUploadPercent(MessageFB media, int perc){
-        MessageVM messageVM = createTextPhotoMessageVM(media);
-        mView.updatePercentUpload(messageVM, perc);
+    public void onUploadPercent(MessageFB media, int progress){
+        mView.updatePercentUpload(media.getKey(), progress);
     }
 
 }

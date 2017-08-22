@@ -90,36 +90,9 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     }
 
     @Override
-    public void retrieveGeogift() {
-        mController.retrieveGeogiftFB();
+    public void retrieveGeogift(String geoKey) {
+        mController.retrieveGeogiftFB(geoKey);
     }
-
-    /*@Override
-    public List<String> pushGeogiftAction(String userInputGeogiftTitle, String username) {
-        ActionFB action = null;
-        // TODO: add description and fix username variable, what username???
-        action = new ActionFB(userInputGeogiftTitle, mUserID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GEOGIFT);
-
-        if (action != null) {
-            //return mController.pushGeogiftAction(action, userInputGeogiftTitle);
-            return null;
-        }
-        else {
-            Log.d(TAG, "An error in the creation of a new GeogiftAction occurs!");
-            return null;
-        }
-    }*/
-
-    /*@Override
-    public void pushAction(String userInputGalleryTitle, String username) {
-        ActionFB action = null;
-        try {
-            action = new ActionFB(userInputGalleryTitle, username, "", DataMaker.get_UTC_DateTime(), ActionFB.PHOTO);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        mController.pushAction(action);
-    }*/
 
     // Controller callbacks
 
@@ -154,8 +127,6 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                             newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
                                     action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.isVisited());
                             mActionsList.add(newActionVM);
-                        }else{
-                            mView.checkGeofences();
                         }
                     break;
             }
@@ -164,13 +135,14 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     }
 
     @Override
-    public void onRetrievedGeogift(List<GeogiftFB> geogiftsFB) {
-        ArrayList<GeoItem> geoItems = new ArrayList<>();
-        for(GeogiftFB geogift: geogiftsFB){
-            GeoItem geoItem = createGeoItem(geogift);
-            geoItems.add(geoItem);
-        }
-        mView.registerGeofence(geoItems);
+    public void onRetrievedGeogift(GeogiftFB geogiftFB) {
+        GeoItem geoItem = createGeoItem(geogiftFB);
+        mView.registerGeofence(geoItem);
+    }
+
+    @Override
+    public void updateGeogiftList(ArrayList<String> geogiftNotVisitedKeys) {
+        mView.updateGeogiftList(geogiftNotVisitedKeys);
     }
 
     private GeoItem createGeoItem(GeogiftFB geoItemFB){

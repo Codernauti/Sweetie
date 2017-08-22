@@ -4,11 +4,14 @@ package com.sweetcompany.sweetie.actions;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -44,8 +47,9 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
     private static final long GEO_DURATION = 10 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 100.0f; // in meters
+    private static final float GEOFENCE_RADIUS = 100000.0f; // in meters
     private static final int GEOFENCE_REQ_CODE = 4005;
+    private int REQ_PERMISSION_UPDATE = 202;
     private static final int DWELL = 1000;
 
 
@@ -64,7 +68,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
     private static GoogleApiClient googleApiClient;
     private static PendingIntent geoFencePendingIntent;
-    public ArrayList<Geofence> mGeofenceList;
+    public ArrayList<String> mGeogiftKeyToRegister;
 
     private ActionsContract.Presenter mPresenter;
 
@@ -85,6 +89,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
         fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(mContext ,R.anim.rotate_backward);
+
+        buildGoogleApiClient();
 
     }
 
@@ -266,6 +272,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
     @Override
     public void updateActionsList(List<ActionVM> actionsVM) {
+        Log.d(TAG, "updateActionsList");
         for(ActionVM actionVM : actionsVM) {
             actionVM.setPageChanger((IPageChanger)getActivity());
             actionVM.setContext(getContext());
@@ -275,57 +282,65 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
     }
 
     @Override
-    public void registerGeofence(ArrayList<GeoItem> geoItems){
-        // Empty list for storing geofences.
-        mGeofenceList = new ArrayList<Geofence>();
-
+    public void updateGeogiftList(ArrayList<String> geogiftNotVisitedKeys) {
+        Log.d(TAG, "updateGeogiftList");
+        mGeogiftKeyToRegister = new ArrayList<>();
+        //check if not registered in shared pref
         Set<String> geofenceListPref = new HashSet<>();
         geofenceListPref = Utility.getGeofenceKeyList(mContext);
 
-        geoFencePendingIntent = null;
-
-        for(GeoItem geoItem : geoItems){
-            boolean isInPref = false;
+        for(String geoKeyUpdated : geogiftNotVisitedKeys){
             //TODO improve complex
-            for (String geofenceKey : geofenceListPref)
+            boolean isInPref = false;
+            for (String geofenceKeyRegistred : geofenceListPref)
             {
-                if (geofenceKey!=null && geofenceKey.equals(geoItem.getKey())){
+                if (geofenceKeyRegistred!=null && geofenceKeyRegistred.equals(geoKeyUpdated)){
                     isInPref = true;
                 }
             }
-            if(!isInPref){//if not in shared pref
-                mGeofenceList.add(new Geofence.Builder()
-                        .setRequestId(geoItem.getAddress()) //TODO change!!!
-                        .setCircularRegion(Double.parseDouble(geoItem.getLat()),
-                                Double.parseDouble(geoItem.getLon()),
-                                GEOFENCE_RADIUS
-                        )
-                        .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
-                        .build());
-                Utility.addGeofenceToSharedPreference(mContext, geoItem.getKey());
-                Log.d(TAG, "geogift registration...");
-            }
-            else{
-                Log.d(TAG, "geogift ALREADY registred");
+            if(!isInPref){
+                mGeogiftKeyToRegister.add(geoKeyUpdated);
             }
         }
 
-        if(mGeofenceList.size()>0) {
-            addGeofencesOnLoad();
+        if(mGeogiftKeyToRegister.size()>0){
+            for(String geoKey : mGeogiftKeyToRegister){
+                mPresenter.retrieveGeogift(geoKey);
+            }
         }
 
     }
 
     @Override
-    public void checkGeofences() {
-        //TODO if getsharedpreference geogift list !!!!!
+    public void registerGeofence(GeoItem geoItem){
+
+        Log.d(TAG, "registerGeofence" + String.valueOf(geoItem.getKey()));
+        geoFencePendingIntent = null;
+
+        askPermission();
+
+        Geofence geofence = new Geofence.Builder()
+                .setRequestId(geoItem.getAddress())
+                .setCircularRegion(Double.parseDouble(geoItem.getLat()),
+                        Double.parseDouble(geoItem.getLon()),
+                        GEOFENCE_RADIUS
+                )
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setLoiteringDelay(DWELL)
+                .setTransitionTypes( Geofence.GEOFENCE_TRANSITION_ENTER
+                        | Geofence.GEOFENCE_TRANSITION_EXIT  | Geofence.GEOFENCE_TRANSITION_DWELL)
+                .build();
+
+        Utility.addGeofenceToSharedPreference(mContext, geoItem.getKey());
 
         if(googleApiClient!= null && googleApiClient.isConnected()){
-            //mPresenter.retrieveGeogift();
-        }
-        else {
-            buildGoogleApiClient();
+            //if(GeoUtils.checkPermissionAccessFineLocation(mContext)) {
+            if(checkPermission()){
+                addGeofencesOnLoad(geofence);
+            }
+            else{
+                askPermission();
+            }
         }
     }
 
@@ -342,15 +357,15 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
         googleApiClient.connect();
     }
 
-    private GeofencingRequest getGeofencingRequest() {
+    private GeofencingRequest getGeofencingRequest(Geofence geofence) {
         Log.d(TAG, "createGeofencingRequest");
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofences(mGeofenceList);
+        builder.addGeofence(geofence);
         return builder.build();
     }
 
-    public void addGeofencesOnLoad() {
+    public void addGeofencesOnLoad(Geofence geofence) {
         if (!googleApiClient.isConnected()) {
             Log.w(TAG, "googleApiclient not connected");
             return;
@@ -359,7 +374,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
         try {
             LocationServices.GeofencingApi.addGeofences(
                     googleApiClient,
-                    getGeofencingRequest(),
+                    getGeofencingRequest(geofence),
                     getGeofencePendingIntent()
             ).setResultCallback(this); // Result processed in onResult().
         } catch (SecurityException securityException) {
@@ -380,9 +395,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if(GeoUtils.checkPermissionAccessFineLocation(mContext)) {
-            mPresenter.retrieveGeogift();
-        }
     }
 
     @Override
@@ -397,6 +409,50 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
     @Override
     public void onResult(@NonNull Status status) {
-        Log.i(TAG, "onResult: " + status);
+        Log.i(TAG, "geofence onResult: " + status);
+    }
+
+    // Check for permission to access Location
+    private boolean checkPermission() {
+        Log.d(TAG, "checkPermission()");
+        // Ask for permission if it wasn't granted yet
+        return (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED );
+    }
+
+    // Asks for permission
+    private void askPermission() {
+        Log.d(TAG, "askPermission()");
+        ActivityCompat.requestPermissions(
+                getActivity(),
+                new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION },
+                REQ_PERMISSION_UPDATE
+        );
+    }
+
+    // Verify user's response of the permission requested
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d(TAG, "onRequestPermissionsResult()");
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch ( requestCode ) {
+            case 202: //REQ_PERMISSION
+            {
+                if ( grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
+                    // Permission granted
+
+                } else {
+                    // Permission denied
+                    permissionsDenied();
+                }
+                break;
+            }
+        }
+    }
+
+    // App cannot work without the permissions
+    private void permissionsDenied() {
+        Log.w(TAG, "permissionsDenied()");
     }
 }

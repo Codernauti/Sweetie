@@ -48,6 +48,9 @@
             android:windowSoftInputMode="adjustPan"
             />
 
+        <activity android:name=".chatDiary.ChatDiaryActivity"
+            android:theme="@style/AppTheme" />
+
         <activity android:name=".gallery.GalleryActivity"
             android:theme="@style/AppTheme"/>
         <activity android:name=".couple.CoupleActivity"

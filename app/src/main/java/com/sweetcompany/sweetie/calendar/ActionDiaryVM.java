@@ -12,6 +12,7 @@ import com.sweetcompany.sweetie.R;
 public interface ActionDiaryVM {
     String getKey();
     int getType();
+    String getDate();
     String getDescription();
     String getTitle();
 }

@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.calendar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -32,6 +34,7 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.chatDiary.ChatDiaryActivity;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
 
 import java.text.SimpleDateFormat;
@@ -101,6 +104,18 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
 
         mAdapter = new ActionsDiaryAdapter(getContext(), R.layout.action_list_item);
         mDayActionsDiaryList.setAdapter(mAdapter);
+
+        mDayActionsDiaryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                ActionDiaryVM actionDiary = mAdapter.getItem(position);
+
+                Intent intent = new Intent(getActivity(), ChatDiaryActivity.class);
+                intent.putExtra(ChatDiaryActivity.ACTION_DIARY_DATE, actionDiary.getDate());
+                intent.putExtra(ChatDiaryActivity.ACTION_DIARY_UID, actionDiary.getKey());
+                startActivity(intent);
+            }
+        });
 
         return root;
     }
@@ -201,7 +216,16 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         String day = mDayFormat.format(date.getDate());
         if (mMonthActionsDiary != null && mMonthActionsDiary.get(day) != null) {
             // TODO: slow operation
-            List<ActionDiaryFB> actionsDiary = new ArrayList<>(mMonthActionsDiary.get(day).values());
+            List<ActionDiaryFB> actionsDiary = new ArrayList<>();
+
+            // set ActionDiary uid and extract into an ArrayList
+            for (Map.Entry<String, ActionDiaryFB> actionDiaryEntry : mMonthActionsDiary.get(day).entrySet()) {
+                String actionDiaryUid = actionDiaryEntry.getKey();
+                ActionDiaryFB actionDiary = actionDiaryEntry.getValue();
+
+                actionDiary.setKey(actionDiaryUid);
+                actionsDiary.add(actionDiary);
+            }
 
             if (!actionsDiary.isEmpty()) {
                 mAdapter.addAll(actionsDiary);

@@ -70,7 +70,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
         // TODO: remove down cast -> use Factory method
         if(type == MessageVM.TEXT_MSG){
             TextMessageVM msgVM = (TextMessageVM) messageVM;
-            MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(),
+            MessageFB updateMessage = new MessageFB(msgVM.getCreatorEmail(), msgVM.getText(), msgVM.getTime(),
                     msgVM.isBookmarked(), MessageFB.TEXT_MSG, null, null);
             updateMessage.setKey(msgVM.getKey());
 
@@ -79,7 +79,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
         else if(type == MessageVM.TEXT_PHOTO_MSG)
         {
             TextPhotoMessageVM msgVM = (TextPhotoMessageVM) messageVM;
-            MessageFB updateMessage = new MessageFB(mUserMail, msgVM.getText(), msgVM.getTime(),
+            MessageFB updateMessage = new MessageFB(msgVM.getCreatorEmail(), msgVM.getText(), msgVM.getTime(),
                     msgVM.isBookmarked(), MessageFB.PHOTO_MSG, msgVM.getUriLocal(), msgVM.getUriStorage());
             updateMessage.setKey(msgVM.getKey());
 

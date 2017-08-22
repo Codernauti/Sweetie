@@ -60,7 +60,7 @@ public class ChatDiaryFragment extends Fragment implements ChatDiaryContract.Vie
         parentActivity.getSupportActionBar().setTitle(titleChatDiary);
 
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mLinearLayoutManager.setStackFromEnd(true);
+        mLinearLayoutManager.setStackFromEnd(false);
 
         mChatListView = (RecyclerView) root.findViewById(R.id.chat_diary_list);
         mChatListView.setLayoutManager(mLinearLayoutManager);

@@ -14,20 +14,24 @@ public abstract class MessageVM implements ChatItemVM {
     private String mKey;
 
     private final boolean mWho;
+    private final String mCreatorEmail;
     private final String mTime;
     private boolean mBookMarked;
-    private int percent;
 
-    MessageVM(boolean who, String date, boolean bookMarked, String key, int perc) {
+    MessageVM(boolean who, String creatorEmail, String date, boolean bookMarked, String key) {
         mWho = who;
+        mCreatorEmail = creatorEmail;
         mTime = date;
         mBookMarked = bookMarked;
         mKey = key;
-        percent = perc;
     }
 
     boolean isTheMainUser() {
         return mWho;
+    }
+
+    String getCreatorEmail() {
+        return mCreatorEmail;
     }
 
     String getTime() {
@@ -43,11 +47,7 @@ public abstract class MessageVM implements ChatItemVM {
         this.mKey = key;
     }
 
-    int getPercent(){
-        return percent;
-    }
-    void setPercent(int perc){
-        percent = perc;
-    }
+    int getPercent() { return 0; }
+    void setPercent(int progress) {}
 
 }

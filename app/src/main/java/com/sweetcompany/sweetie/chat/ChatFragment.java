@@ -90,6 +90,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     private ChatContract.Presenter mPresenter;
 
+    private String mUserMail;
+
 
     public static ChatFragment newInstance(Bundle bundle) {
         ChatFragment newChatFragment = new ChatFragment();
@@ -107,6 +109,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mChatAdapter.setListener(this);
 
         mInputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        mUserMail = Utility.getStringPreference(getContext(), Utility.MAIL);
     }
 
     @Override
@@ -286,8 +290,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             String stringUriLocal = file.toString();
             String inputText = "";
 
-            MessageVM newMessage = new TextPhotoMessageVM(inputText, MessageVM.THE_MAIN_USER,
-                    DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "", 0);
+            MessageVM newMessage = new TextPhotoMessageVM(inputText, mUserMail, MessageVM.THE_MAIN_USER,
+                    DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "");
 
             mPresenter.sendPhotoMessage(newMessage);
         }
@@ -297,11 +301,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     @Override
     public void setPresenter(ChatContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    @Override
-    public void updateMessages(List<MessageVM> messagesVM) {
-        mChatAdapter.updateMessageList(messagesVM);
     }
 
     @Override
@@ -332,8 +331,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
 
     @Override
-    public void updatePercentUpload(MessageVM mediaVM, int perc) {
-        mChatAdapter.updatePercentUpload(mediaVM, perc);
+    public void updatePercentUpload(String msgUid, int perc) {
+        mChatAdapter.updatePercentUpload(msgUid, perc);
     }
 
     @Override
@@ -359,8 +358,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
                 if (!inputText.isEmpty()) {
                     // TODO: is this responsibility of fragment?
-                    MessageVM newMessage = new TextMessageVM(inputText, MessageVM.THE_MAIN_USER,
-                            DataMaker.get_UTC_DateTime(), false, null, 0);
+                    MessageVM newMessage = new TextMessageVM(inputText, mUserMail, MessageVM.THE_MAIN_USER,
+                            DataMaker.get_UTC_DateTime(), false, null);
 
                     mPresenter.sendTextMessage(newMessage);
                 }

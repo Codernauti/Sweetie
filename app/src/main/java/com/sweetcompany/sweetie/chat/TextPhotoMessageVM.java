@@ -18,8 +18,9 @@ public class TextPhotoMessageVM extends MessageVM implements Serializable {
     private String mUriStorage;
     private int mPercent;
 
-    TextPhotoMessageVM(String text, boolean mainUser, String date, boolean bookMarked, String key, String uriL, String uriS, int perc) {
-        super(mainUser, date, bookMarked, key, perc);
+    TextPhotoMessageVM(String text, String creatorEmail, boolean mainUser, String date,
+                       boolean bookMarked, String key, String uriL, String uriS) {
+        super(mainUser, creatorEmail, date, bookMarked, key);
         mText = text;
         mUriLocal = uriL;
         mUriStorage = uriS;
@@ -43,11 +44,9 @@ public class TextPhotoMessageVM extends MessageVM implements Serializable {
         return mUriStorage;
     }
 
-    int getPercent(){
-        return mPercent;
-    }
-    void setPercent(int perc){
-        this.mPercent = perc;
+    @Override
+    void setPercent(int progress){
+        this.mPercent = progress;
     }
 
     @Override
@@ -72,7 +71,7 @@ public class TextPhotoMessageVM extends MessageVM implements Serializable {
         }
 
         view.setImage(uriToLoad);
-        view.setPercentUploading(getPercent());
+        view.setPercentUploading(mPercent);
     }
 
     @Override

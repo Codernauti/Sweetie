@@ -12,19 +12,18 @@ import io.github.rockerhieu.emojicon.EmojiconTextView;
  * Created by Eduard on 21-May-17.
  */
 
-class TextMessageViewHolder extends MessageViewHolder implements View.OnClickListener {
+class TextMessageViewHolder extends MessageViewHolder {
     private EmojiconTextView mTextMessage;
     private TextView mTextTime;
-    private ImageButton mBookmarkButton;
+    /*private ImageButton mBookmarkButton;*/
 
     TextMessageViewHolder(View itemView) {
         super(itemView);
 
         mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
         mTextTime = (TextView) itemView.findViewById(R.id.chat_item_time_text_view);
-        mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_bookmark_button);
-
-        mBookmarkButton.setOnClickListener(this);
+        /*mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_bookmark_button);
+        mBookmarkButton.setOnClickListener(this);*/
     }
 
     public void setText(String text) { mTextMessage.setText(text);}
@@ -33,14 +32,18 @@ class TextMessageViewHolder extends MessageViewHolder implements View.OnClickLis
         mTextTime.setText(time);
     }
 
-    public void setBookmark(boolean isBookmarked) {
+    /*public void setBookmark(boolean isBookmarked) {
         mBookmarkButton.setSelected(isBookmarked);
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void onClick(View v) {
         boolean wasBookmarked = mBookmarkButton.isSelected();
         mBookmarkButton.setSelected(!wasBookmarked);
         mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, MessageVM.TEXT_MSG);
+    }*/
+
+    int getType() {
+        return MessageVM.TEXT_MSG;
     }
 }

@@ -42,6 +42,7 @@ public class ChatDiaryFragment extends Fragment implements ChatDiaryContract.Vie
         super.onCreate(savedInstanceState);
 
         mChatAdapter = new ChatAdapter();
+        mChatAdapter.setModeChatDiary();
         mChatAdapter.setListener(this);
     }
 

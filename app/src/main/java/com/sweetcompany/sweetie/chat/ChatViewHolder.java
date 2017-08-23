@@ -7,7 +7,7 @@ import android.view.View;
  * Created by Eduard on 21-Aug-17.
  */
 
-class ChatViewHolder extends RecyclerView.ViewHolder {
+abstract class ChatViewHolder extends RecyclerView.ViewHolder {
 
     ChatViewHolder(View itemView) {
         super(itemView);

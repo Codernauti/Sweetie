@@ -18,9 +18,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
-import com.sweetcompany.sweetie.utils.Utility;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +37,6 @@ public class FirebaseGalleryController {
     private final DatabaseReference mAction;
     private final StorageReference mStorageRef;
     private final FirebaseStorage mStorage;
-    //private final StorageReference imagesRef;
 
     private final String coupleID;
 
@@ -47,7 +44,6 @@ public class FirebaseGalleryController {
     private ChildEventListener mGalleryPhotosListener;
 
     private List<GalleryControllerListener> mListeners = new ArrayList<>();
-
 
     public interface GalleryControllerListener {
         void onGalleryChanged(GalleryFB gallery);

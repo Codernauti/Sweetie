@@ -31,13 +31,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
-import com.sweetcompany.sweetie.utils.MiniPrefDB;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
 /**
  * Created by ghiro on 17/08/2017.
  */
@@ -56,8 +49,6 @@ public class GeogiftDoneFragment extends Fragment implements
     private TextView addressText;
     private TextView datetimePositionedText;
     private TextView isVisitedText;
-    //private LatLng latLng = null;
-    private MiniPrefDB miniPrefDB;
 
     private GoogleApiClient googleApiClient;
     private Circle geoFenceLimits;

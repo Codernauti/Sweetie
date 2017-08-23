@@ -2,7 +2,6 @@ package com.sweetcompany.sweetie.firebase;
 
 import android.util.Log;
 
-import com.google.android.gms.location.Geofence;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -206,28 +205,5 @@ public class FirebaseActionsController {
 
         return newKeys;
     }
-
-    /*public List<String> pushGeogiftAction(ActionFB actionFB, String geogiftTitle) {
-        List<String> newKeys =  new ArrayList<String>();
-
-        DatabaseReference newGeogiftPush = mGeogiftDbReference.push();
-        String newGeogiftKey = newGeogiftPush.getKey();
-        newKeys.add(newGeogiftKey);
-        DatabaseReference newActionPush = mActionsDbReference.push();
-        String newActionKey = newActionPush.getKey();
-        newKeys.add(newActionKey);
-
-        // Set Action
-        actionFB.setChildKey(newGeogiftKey);
-
-        // Create Gallery and set Gallery
-        GeogiftFB geogift = new GeogiftFB();
-
-        // put into queue for network
-        newGeogiftPush.setValue(geogift);
-        newActionPush.setValue(actionFB);
-
-        return newKeys;
-    }*/
 
 }

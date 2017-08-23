@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -35,7 +36,6 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.utils.GeoUtils;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.File;
@@ -51,8 +51,7 @@ import static android.app.Activity.RESULT_OK;
 public class GeogiftMakerFragment extends Fragment implements
                                                          View.OnClickListener,
                                                          GeogiftMakerContract.View,
-                                                         AdapterView.OnItemSelectedListener
-{
+                                                         AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "GeogiftMakerFragment";
 
@@ -197,7 +196,6 @@ public class GeogiftMakerFragment extends Fragment implements
             }
         });
 
-        //TODO
         switchContainerGift(PHOTO_SELECTION);
 
         mGeoItem = new GeoItem();
@@ -234,7 +232,7 @@ public class GeogiftMakerFragment extends Fragment implements
                 break;
             case R.id.image_thumb_geogift:
                 if (isImageTaken){
-                    // TODO
+                    // TODO show full screen picture ?
                     //showPicture();
                 }
                 else {
@@ -326,7 +324,7 @@ public class GeogiftMakerFragment extends Fragment implements
     }
 
     public void pickPosition(){
-        if( GeoUtils.checkPermissionAccessFineLocation(mContext) ){
+        if( checkPermission() ){
             //latLngBounds = new LatLngBounds(new LatLng(44.882494, 11.601847), new LatLng(44.909004, 11.613520));
             try {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
@@ -350,7 +348,7 @@ public class GeogiftMakerFragment extends Fragment implements
             }
         }
         else{
-            askPermissionAccessFineLocation();
+            askPermission();
         }
     }
 
@@ -435,7 +433,16 @@ public class GeogiftMakerFragment extends Fragment implements
          }
      }
 
-    public void askPermissionAccessFineLocation() {
+    // Check for permission to access Location
+    private boolean checkPermission() {
+        Log.d(TAG, "checkPermission()");
+        // Ask for permission if it wasn't granted yet
+        return (ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED );
+    }
+
+    // Asks for permission
+    private void askPermission() {
         Log.d(TAG, "askPermission()");
         ActivityCompat.requestPermissions(
                 getActivity(),
@@ -516,6 +523,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
     public void createNewGeogift(){
 
+        //TODO implement GeoItem with costructor not only setter
        mGeoItem.setUserCreatorUID(Utility.getStringPreference(mContext, Utility.USER_UID));
        mGeoItem.setAddress(addressGeogift);
        mGeoItem.setMessage(messageGeogift);
@@ -532,7 +540,6 @@ public class GeogiftMakerFragment extends Fragment implements
            // TODO ?????
            getActivity().finish();
        }
-
     }
 
 }

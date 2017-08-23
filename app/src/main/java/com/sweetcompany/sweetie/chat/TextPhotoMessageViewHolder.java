@@ -17,10 +17,10 @@ import io.github.rockerhieu.emojicon.EmojiconTextView;
  * Created by ghiro on 03/08/2017.
  */
 
-public class TextPhotoMessageViewHolder extends MessageViewHolder implements View.OnClickListener {
+public class TextPhotoMessageViewHolder extends MessageViewHolder {
     private EmojiconTextView mTextMessage;
     private TextView mTextTime;
-    private ImageButton mBookmarkButton;
+    /*private ImageButton mBookmarkButton;*/
     private TextView mPercentUploading;
     private ImageView mThumbnail;
     private ProgressBar mPbar;
@@ -31,12 +31,12 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
         // viewIds are the same between the user and the partner
         //mTextMessage = (EmojiconTextView) itemView.findViewById(R.id.chat_item_text_view);
         mTextTime = (TextView) itemView.findViewById(R.id.chat_item_photo_time_view);
-        mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_photo_bookmark_button);
+        /*mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_photo_bookmark_button);*/
         mThumbnail = (ImageView) itemView.findViewById(R.id.chat_thumbnail);
         mPbar = (ProgressBar) itemView.findViewById(R.id.chat_progressBarUpload);
         mPercentUploading = (TextView) itemView.findViewById(R.id.chat_progress_percent);
 
-        mBookmarkButton.setOnClickListener(this);
+        /*mBookmarkButton.setOnClickListener(this);*/
         mThumbnail.setOnClickListener(this);
     }
 
@@ -48,27 +48,21 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder implements Vie
         mTextTime.setText(time);
     }
 
-    public void setBookmark(boolean isBookmarked) {
+    /*public void setBookmark(boolean isBookmarked) {
         mBookmarkButton.setSelected(isBookmarked);
+    }*/
+
+    @Override
+    int getType() {
+        return MessageVM.TEXT_PHOTO_MSG;
     }
 
     @Override
     public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.chat_thumbnail:
-                mListener.onPhotoClicked(getAdapterPosition());
-                break;
-
-            case R.id.chat_item_photo_bookmark_button:
-                boolean wasBookmarked = mBookmarkButton.isSelected();
-                mBookmarkButton.setSelected(!wasBookmarked);
-                mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, MessageVM.TEXT_PHOTO_MSG);
-                break;
-
-            default:
-                Log.d("TextPhotoMessageVH", "onClick() lost");
-                break;
+        if (v.getId() == R.id.chat_thumbnail) {
+            super.photoClicked();
+        } else {
+            super.onClick(v);
         }
     }
 

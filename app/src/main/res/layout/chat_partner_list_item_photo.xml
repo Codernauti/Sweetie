@@ -50,7 +50,7 @@
         />
 
     <ImageButton
-        android:id="@+id/chat_item_photo_bookmark_button"
+        android:id="@+id/chat_item_bookmark_button"
         android:layout_width="30dp"
         android:layout_height="30dp"
 

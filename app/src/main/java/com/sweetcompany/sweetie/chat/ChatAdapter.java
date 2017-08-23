@@ -21,13 +21,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
 
     private static final String TAG = "ChatAdapter";
 
-    public interface ChatAdapterListener {
-        void onBookmarkClicked(MessageVM messageVM, int type);
-        void onPhotoClicked(TextPhotoMessageVM photoMessage);
-    }
+
+    private boolean chatDiary = false;  // dirty bit
 
     private List<ChatItemVM> mMessageList = new ArrayList<>();
     private ChatAdapterListener mListener;
+
+    public interface ChatAdapterListener {
+        void onBookmarkClicked(MessageVM messageVM, int type);
+        void onPhotoClicked(TextPhotoMessageVM photoMessage);
+
+    }
 
     /**
      * Call when create ChatAdapter or when destroy ChatAdapter, in this case pass null
@@ -36,6 +40,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
     public void setListener(ChatAdapterListener listener) {
         mListener = listener;
     }
+
+    /**
+     *  Call from ChatDiary fragment for disable the bookmark option
+     */
+    public void setModeChatDiary() { chatDiary = true; }
 
 
     @Override
@@ -57,12 +66,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
             case R.layout.chat_partner_list_item_text:
                 viewHolder = new TextMessageViewHolder(viewToInflate);
                 ((MessageViewHolder) viewHolder).setViewHolderClickListener(this);
+
+                if (chatDiary) {
+                    ((MessageViewHolder) viewHolder).disableBookmarkButton();
+                }
                 break;
 
             case R.layout.chat_user_list_item_photo:
             case R.layout.chat_partner_list_item_photo:
                 viewHolder = new TextPhotoMessageViewHolder(viewToInflate);
                 ((MessageViewHolder) viewHolder).setViewHolderClickListener(this);
+
+                if (chatDiary) {
+                    ((MessageViewHolder) viewHolder).disableBookmarkButton();
+                }
                 break;
 
             case R.layout.chat_date_list_item:

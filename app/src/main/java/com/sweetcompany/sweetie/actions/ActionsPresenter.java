@@ -1,28 +1,22 @@
 package com.sweetcompany.sweetie.actions;
 
-
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.sweetcompany.sweetie.geogift.GeoItem;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.model.GeogiftFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
-import com.sweetcompany.sweetie.utils.GeoUtils;
-import com.sweetcompany.sweetie.utils.MiniPrefDB;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Eduard on 10/05/2017.
  */
 
 public class ActionsPresenter implements ActionsContract.Presenter,
-                                        FirebaseActionsController.OnFirebaseActionsDataChange {
+                                         FirebaseActionsController.OnFirebaseActionsDataChange {
 
     public static final String TAG = "Action.presenter" ;
 
@@ -31,7 +25,6 @@ public class ActionsPresenter implements ActionsContract.Presenter,
 
     private List<ActionVM> mActionsList = new ArrayList<>();
     private String mUserID;
-
 
     public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userID) {
         mView = view;
@@ -146,6 +139,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     }
 
     private GeoItem createGeoItem(GeogiftFB geoItemFB){
+        // TODO refactore GeoItem with constructor and not only setter
         GeoItem geoItemNew = new GeoItem();
         geoItemNew.setKey(geoItemFB.getKey());
         geoItemNew.setUserCreatorUID(geoItemFB.getUserCreatorUID());

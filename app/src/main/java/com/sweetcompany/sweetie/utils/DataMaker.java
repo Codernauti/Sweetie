@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-
 /**
  * Created by ghiro on 05/06/2017.
  */

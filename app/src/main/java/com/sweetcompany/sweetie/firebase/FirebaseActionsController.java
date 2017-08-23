@@ -76,7 +76,7 @@ public class FirebaseActionsController {
                         action.setKey(actionKey);
                         actions.add(action);
 
-                        if(action.getType() == Constraints.ACTION_GEOGIFT_TYPE &&
+                        if(action.getType() == ActionFB.GEOGIFT &&
                            !action.getUserCreator().equals(userID) &&
                            !action.isVisited()){
                             geogiftNotVisitedKeys.add(action.getChildKey());

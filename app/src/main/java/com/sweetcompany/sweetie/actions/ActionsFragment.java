@@ -33,13 +33,10 @@ import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.geogift.GeoItem;
 import com.sweetcompany.sweetie.geogift.GeofenceTrasitionService;
-import com.sweetcompany.sweetie.utils.GeoUtils;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ActionsFragment extends Fragment implements ActionsContract.View, ResultCallback<Status>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -89,6 +86,9 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
         fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(mContext ,R.anim.rotate_backward);
+
+
+        askPermission();
 
         buildGoogleApiClient();
 
@@ -271,6 +271,18 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        googleApiClient.connect();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        googleApiClient.disconnect();
+    }
+
+    @Override
     public void updateActionsList(List<ActionVM> actionsVM) {
         Log.d(TAG, "updateActionsList");
         for(ActionVM actionVM : actionsVM) {
@@ -286,7 +298,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
         Log.d(TAG, "updateGeogiftList");
         mGeogiftKeyToRegister = new ArrayList<>();
         //check if not registered in shared pref
-        Set<String> geofenceListPref = new HashSet<>();
+        ArrayList<String> geofenceListPref;
         geofenceListPref = Utility.getGeofenceKeyList(mContext);
 
         for(String geoKeyUpdated : geogiftNotVisitedKeys){
@@ -305,7 +317,9 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
         if(mGeogiftKeyToRegister.size()>0){
             for(String geoKey : mGeogiftKeyToRegister){
-                mPresenter.retrieveGeogift(geoKey);
+                if(!geoKey.equals("empty")){
+                    mPresenter.retrieveGeogift(geoKey);
+                }
             }
         }
 
@@ -316,8 +330,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
         Log.d(TAG, "registerGeofence" + String.valueOf(geoItem.getKey()));
         geoFencePendingIntent = null;
-
-        askPermission();
 
         Geofence geofence = new Geofence.Builder()
                 .setRequestId(geoItem.getAddress())

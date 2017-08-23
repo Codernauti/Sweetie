@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +29,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
@@ -38,7 +41,11 @@ import com.sweetcompany.sweetie.utils.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionsFragment extends Fragment implements ActionsContract.View, ResultCallback<Status>, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class ActionsFragment extends Fragment implements ActionsContract.View,
+                                                         ResultCallback<Status>,
+                                                         GoogleApiClient.ConnectionCallbacks,
+                                                         GoogleApiClient.OnConnectionFailedListener,
+                                                         LocationListener {
 
     private static final String TAG = "ActionsFragment";
 
@@ -48,7 +55,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
     private static final int GEOFENCE_REQ_CODE = 4005;
     private int REQ_PERMISSION_UPDATE = 202;
     private static final int DWELL = 1000;
-
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
@@ -63,6 +69,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
     private FrameLayout mFrameBackground;
 
+    private Location lastLocation;
+    private LocationRequest locationRequest;
     private static GoogleApiClient googleApiClient;
     private static PendingIntent geoFencePendingIntent;
     public ArrayList<String> mGeogiftKeyToRegister;
@@ -87,11 +95,10 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
         rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(mContext ,R.anim.rotate_backward);
 
-
-        askPermission();
-
+        //create GoogleApiClient
         buildGoogleApiClient();
-
+        // Call GoogleApiClient connection when starting the Activity
+        googleApiClient.connect();
     }
 
     @Override
@@ -346,17 +353,11 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
         Utility.addGeofenceToSharedPreference(mContext, geoItem.getKey());
 
         if(googleApiClient!= null && googleApiClient.isConnected()){
-            //if(GeoUtils.checkPermissionAccessFineLocation(mContext)) {
-            if(checkPermission()){
                 addGeofencesOnLoad(geofence);
-            }
-            else{
-                askPermission();
-            }
         }
     }
 
-    protected synchronized void buildGoogleApiClient() {
+    private void buildGoogleApiClient() {
         Log.d(TAG, "createGoogleApi()");
         if ( googleApiClient == null ) {
             googleApiClient = new GoogleApiClient.Builder(mContext)
@@ -365,8 +366,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
                     .addApi(LocationServices.API)
                     .build();
         }
-
-        googleApiClient.connect();
     }
 
     private GeofencingRequest getGeofencingRequest(Geofence geofence) {
@@ -407,6 +406,8 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.i(TAG, "googleApi connected");
+        getLastKnownLocation();
     }
 
     @Override
@@ -428,7 +429,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
     private boolean checkPermission() {
         Log.d(TAG, "checkPermission()");
         // Ask for permission if it wasn't granted yet
-        return (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+        return (ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED );
     }
 
@@ -453,18 +454,35 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, R
                 if ( grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
                     // Permission granted
-
+                    Log.w(TAG, "ACCESS_FINE_LOCATION permissions granted");
                 } else {
                     // Permission denied
-                    permissionsDenied();
+                    Log.w(TAG, "ACCESS_FINE_LOCATION permissions denied");
                 }
                 break;
             }
         }
     }
 
-    // App cannot work without the permissions
-    private void permissionsDenied() {
-        Log.w(TAG, "permissionsDenied()");
+    @Override
+    public void onLocationChanged(Location location) {
+
     }
+
+    // Get last known location
+    private void getLastKnownLocation() {
+        Log.d(TAG, "getLastKnownLocation()");
+
+          if ( checkPermission() ) {
+            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            if ( lastLocation != null ) {
+                //writeLastLocation();
+                //startLocationUpdates();
+            } else {
+                Log.w(TAG, "No location retrieved yet");
+            }
+        }
+        else askPermission();
+    }
+
 }

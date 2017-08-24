@@ -104,9 +104,8 @@ public class Utility {
     }
 
     public static boolean isImageAvaibleInLocal(String uriLocal){
-        boolean isAvaible = false;
-        if(new File(uriLocal).isFile()) isAvaible = true;
-        return isAvaible;
+        // TODO: this method remove too less complexity, redundancy remain into code base
+        return (new File(uriLocal)).isFile();
     }
 
     public static void addGeofenceToSharedPreference(Context context, String key){

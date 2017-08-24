@@ -38,7 +38,7 @@ interface Constraints {
         String TODOLIST_CHECKENTRY = "todolist-checkentry";
         String CHECKED = "checked";
 
-    String GEOGIFT = "geogifts";
+    String GEOGIFTS = "geogifts";
         String GEOGIFT_ITEMS = "geogift-items";
 
     String GALLERY_PHOTOS_DIREECTORY = "gallery_photos/";

@@ -1,20 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="25dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <ImageView
+        android:id="@+id/couple_image"
+        android:layout_width="0dp"
+        android:layout_height="220dp"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:elevation="-10dp" />
+
+    <ImageButton
+        android:id="@+id/couple_change_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="8dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/couple_image"
+
+        android:alpha="0.7"
+        android:background="@drawable/ic_photo_camera_black_24dp"
+         />
+
+    <!---->
+
+    <TextView
+        android:id="@+id/couple_names"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/couple_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:text="@string/couples_name_text" />
+
+    <!-- Anniversary row -->
+
+    <TextView
+        android:id="@+id/couple_anniversary_label"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="4dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/couple_names"
+        app:layout_constraintEnd_toStartOf="@+id/couple_anniversary"
+
+        android:text="@string/couple_anniversary_label"
+        android:textStyle="bold"
+        android:background="#FFF"
+        />
+
+    <TextView
+        android:id="@+id/couple_anniversary"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:gravity="center"
+
+        app:layout_constraintStart_toEndOf="@+id/couple_anniversary_label"
+        app:layout_constraintTop_toBottomOf="@+id/couple_names"
+        app:layout_constraintEnd_toStartOf="@+id/couple_edit_anniversary_button"
+        app:layout_constraintBottom_toBottomOf="@+id/couple_edit_anniversary_button"
+
+        android:text="@string/couples_date_default"
+        android:background="#FFF"
+        />
+
+    <ImageButton
+        android:id="@+id/couple_edit_anniversary_button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:layout_marginTop="8dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+
+        app:layout_constraintStart_toEndOf="@+id/couple_anniversary"
+        app:layout_constraintTop_toBottomOf="@+id/couple_names"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+
+        android:src="@drawable/ic_mode_edit_black_24dp"
+        android:background="#FFF"
+        android:alpha="0.7"
+        />
+
+    <!-- Pairing row -->
+
+    <TextView
+        android:id="@+id/couple_date_pairing_label"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="4dp"
+
+        android:layout_marginTop="8dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/couple_anniversary_label"
+        app:layout_constraintEnd_toStartOf="@+id/couple_anniversary"
+
+        android:text="@string/couple_date_pairing_label"
+        android:textStyle="bold"
+        android:background="#FFF"
+        />
+
+    <TextView
+        android:id="@+id/couple_date_pairing"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:layout_marginTop="8dp"
+
+        app:layout_constraintStart_toEndOf="@+id/couple_date_pairing_label"
+        app:layout_constraintTop_toBottomOf="@+id/couple_anniversary"
+        app:layout_constraintEnd_toEndOf="@+id/couple_anniversary"
+
+        android:gravity="center"
+        android:text="@string/couples_date_default"
+        android:background="#FFF"
+        />
+
+    <View
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:layout_marginTop="8dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+
+        app:layout_constraintStart_toEndOf="@+id/couple_date_pairing"
+        app:layout_constraintTop_toBottomOf="@+id/couple_edit_anniversary_button"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:background="#FFF"
+        />
+
+    <!-- -->
 
     <Button
         android:id="@+id/couple_details_find_partner_button"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Find Partner"/>
+        android:text="@string/search_partner_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <Button
         android:id="@+id/couple_details_break_button"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Break"/>
+        android:text="@string/break_couple_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

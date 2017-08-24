@@ -1,12 +1,23 @@
 package com.sweetcompany.sweetie.firebase;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.sweetcompany.sweetie.model.CoupleFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +33,10 @@ public class FirebaseCoupleDetailsController {
     private static final String ARCHIVED_COUPLES_PARTIAL_URL = Constraints.COUPLE_INFO + "/" + Constraints.ARCHIVED_COUPLES;
 
     private final DatabaseReference mDatabase;
+    private final StorageReference mCoupleStorage;
+
+    private final DatabaseReference mCouple;
+    private ValueEventListener mCoupleListener;
 
     private final String mUserArchivedCouplesUrl;       // users/<userUid>/coupleInfo/activeCouple/<coupleUid>
     private final String mUserActiveCoupleUrl;          // users/<userUid>/coupleInfo/archivedCouples
@@ -29,9 +44,17 @@ public class FirebaseCoupleDetailsController {
     private final String mPartnerActiveCoupleUrl;       // users/<partnerUid>/coupleInfo/archivedCouples
     private final String mCoupleUidUrl;                 // couples/<coupleUid>
 
+    private CoupleDetailsControllerListener mListener;
+
+    public interface CoupleDetailsControllerListener {
+        void onCoupleDetailsChanged(CoupleFB couple);
+    }
+
+
     public FirebaseCoupleDetailsController(String userUid, String partnerUid, String coupleUid) {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mCoupleStorage = FirebaseStorage.getInstance().getReference(Constraints.COUPLES_DETAILS + "/" + coupleUid);
 
         mUserArchivedCouplesUrl = buildArchivedCouplesUrl(userUid, coupleUid);
         mUserActiveCoupleUrl = buildActiveCoupleUrl(userUid);
@@ -40,15 +63,50 @@ public class FirebaseCoupleDetailsController {
         mPartnerActiveCoupleUrl = buildActiveCoupleUrl(partnerUid);
 
         mCoupleUidUrl = Constraints.COUPLES + "/" + coupleUid;
+
+        mCouple = mDatabase.child(mCoupleUidUrl);
     }
 
     private String buildArchivedCouplesUrl(String genericUserUid, String coupleUid) {
         return Constraints.USERS + "/" + genericUserUid + "/" + ARCHIVED_COUPLES_PARTIAL_URL + "/" + coupleUid;
     }
+
     private String buildActiveCoupleUrl(String genericUserUid) {
         return Constraints.USERS + "/" + genericUserUid + "/" + ACTIVE_COUPLE_PARTIAL_URL;
     }
 
+
+    public void setListener(CoupleDetailsControllerListener listener) {
+        mListener = listener;
+    }
+
+    public void attachCoupleListener() {
+        if (mCoupleListener == null) {
+            mCoupleListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    CoupleFB couple = dataSnapshot.getValue(CoupleFB.class);
+
+                    if (mListener != null && couple != null) {
+                        mListener.onCoupleDetailsChanged(couple);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            mCouple.addValueEventListener(mCoupleListener);
+        }
+    }
+
+    public void detachCoupleListener() {
+        if (mCoupleListener != null) {
+            mCouple.removeEventListener(mCoupleListener);
+        }
+        mCoupleListener = null;
+    }
 
     public void archiveCouple() {
         // TODO: remove try catch
@@ -71,6 +129,43 @@ public class FirebaseCoupleDetailsController {
         updates.put(mCoupleUidUrl + "/" + Constraints.BREAK_TIME, now);
 
         mDatabase.updateChildren(updates);
+    }
+
+
+    public void changeCoupleImage(Uri image) {
+
+
+        // TODO: duplicated code with ChatController
+        StorageReference photoRef = mCoupleStorage.child(image.getLastPathSegment());
+        UploadTask uploadTask = photoRef.putFile(image);
+
+
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                String stringUriStorage = downloadUrl.toString();
+
+                mCouple.child(Constraints.IMAGE_URI_STORAGE).setValue(stringUriStorage);
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                Log.d(TAG, "Upload image progress: " + progress);
+
+                /*for (FirebaseChatController.ChatControllerListener listener : mListeners) {
+                    listener.onUploadPercent(media, ((int) progress));
+                }*/
+            }
+        });
+
     }
 
 }

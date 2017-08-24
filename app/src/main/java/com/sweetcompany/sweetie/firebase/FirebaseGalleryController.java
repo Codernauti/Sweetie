@@ -198,6 +198,14 @@ public class FirebaseGalleryController {
                 //actionUpdates.put("description", photo.getText());
                 actionUpdates.put("dataTime", media.getDateTime());
                 mAction.updateChildren(actionUpdates);
+
+                //TODO is not like action, cover is selected once or in settings gallery
+                // update photo cover gallery
+                Map<String, Object> galleryUpdates = new HashMap<>();
+                galleryUpdates.put("uriCover", media.getUriStorage());
+                mGallery.updateChildren(galleryUpdates);
+
+
             }
         }).addOnProgressListener(
                 new OnProgressListener<UploadTask.TaskSnapshot>() {

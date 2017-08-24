@@ -1,17 +1,18 @@
-package com.sweetcompany.sweetie.gallery;
+package com.sweetcompany.sweetie.map;
 
 /**
- * Created by ghiro on 22/07/2017.
+ * Created by ghiro on 24/08/2017.
  */
 
-class GalleryVM {
+public class GalleryMapVM {
+
     private String mKey;
     private String mTitle;
     private String mLat;
     private String mLon;
     private String mUriCover;
 
-    GalleryVM(String key, String title) {
+    GalleryMapVM(String key, String title) {
         mKey = key;
         mTitle = title;
     }
@@ -43,4 +44,5 @@ class GalleryVM {
     public void setmUriCover(String mUriCover) {
         this.mUriCover = mUriCover;
     }
+
 }

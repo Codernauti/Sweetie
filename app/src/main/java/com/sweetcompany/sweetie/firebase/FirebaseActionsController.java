@@ -47,7 +47,7 @@ public class FirebaseActionsController {
         mChatsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.CHATS + "/" + coupleUid);
         mGalleriesDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GALLERIES + "/" + coupleUid);
         mToDoListsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.TODOLIST + "/" + coupleUid);
-        mGeogiftDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GEOGIFT + "/" + coupleUid);
+        mGeogiftDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GEOGIFTS + "/" + coupleUid);
         userID = userUid;
     }
 
@@ -174,6 +174,10 @@ public class FirebaseActionsController {
         // Create Gallery and set Gallery
         GalleryFB gallery = new GalleryFB();
         gallery.setTitle(galleryTitle);
+        //TODO
+        gallery.setLatitude("null");
+        gallery.setLongitude("null");
+        gallery.setUriCover("null");
 
         // put into queue for network
         newGalleryPush.setValue(gallery);

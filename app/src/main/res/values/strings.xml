@@ -19,6 +19,16 @@
     <!-- ActionNewGeogiftFragment dialog -->
     <string name="action_new_geogift_title_dialog">Insert new geogift title</string>
 
+    <!-- CoupleDetailsFragment -->
+    <string name="search_partner_button">Find Partner</string>
+    <string name="break_couple_button">Break</string>
+    <string name="couple_anniversary_label">Anniversary:</string>
+    <string name="couple_date_pairing_label">Date pairing:</string>
+    <string name="and">and</string>
+
+    <!-- CoupleDetailsFragment placeholder -->
+    <string name="couples_name_text">John and Mary</string>
+    <string name="couples_date_default">16 settembre 2017</string>
 
 
     <!-- Test String for debug version -->

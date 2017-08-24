@@ -44,4 +44,16 @@ public class CoupleDetailsActivity extends AppCompatActivity {
         mController = new FirebaseCoupleDetailsController(userUid, partnerUid, coupleUid);
         mPresenter = new CoupleDetailsPresenter(view, mController);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mController.attachCoupleListener();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mController.detachCoupleListener();
+    }
 }

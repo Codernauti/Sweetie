@@ -15,6 +15,9 @@ interface Constraints {
     String COUPLES = "couples";
         String ACTIVE = "active";
         String BREAK_TIME = "brokenTime";
+        String IMAGE_URI_LOCAL = "imageUriLocal";
+        String IMAGE_URI_STORAGE = "imageUriStorage";
+        String ANNIVERSARY = "anniversary";
 
     String PAIRING_REQUESTS = "pairing-requests";
 
@@ -41,6 +44,13 @@ interface Constraints {
     String GEOGIFTS = "geogifts";
         String GEOGIFT_ITEMS = "geogift-items";
 
+
+    // STORAGE CONSTRAINT
+
+    String COUPLES_DETAILS = "couples_details";
+
+    // TODO: never put slash into constraints
     String GALLERY_PHOTOS_DIREECTORY = "gallery_photos/";
     String GALLERY_GEOGIFTS = "gallery_geogifts/";
+
 }

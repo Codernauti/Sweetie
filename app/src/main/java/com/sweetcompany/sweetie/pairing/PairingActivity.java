@@ -37,12 +37,14 @@ public class PairingActivity extends AppCompatActivity
         }
 
         // get active user data
+        // TODO: think to store a User json object into sharedPreferences
         String userUid = Utility.getStringPreference(this, Utility.USER_UID);
+        String userUsername = Utility.getStringPreference(this, Utility.USERNAME);
         String userPhoneNumber = Utility.getStringPreference(this, Utility.PHONE_NUMBER);
         String userPairingRequestSent = Utility.getStringPreference(this, Utility.FUTURE_PARTNER_PAIRING_REQUEST);
 
-        mController = new FirebasePairingController(userUid);
-        mPresenter = new PairingPresenter(mView, mController, userPhoneNumber, userPairingRequestSent);
+        mController = new FirebasePairingController(userUid, userUsername);
+        mPresenter = new PairingPresenter(mView, mController, userUsername, userPhoneNumber, userPairingRequestSent);
 
         mController.addListener(mPresenter);
         mController.setPairingListener(this);

@@ -17,6 +17,7 @@ class PairingPresenter implements PairingContract.Presenter,
 
     private static final String TAG = "PairingPresenter";
 
+    private final String mUserUsername;
     private final String mUserPhoneNumber;
     private final String mUserPairingRequestSent;
     private final PairingContract.View mView;
@@ -26,7 +27,8 @@ class PairingPresenter implements PairingContract.Presenter,
     private String mParterPhone;
 
     PairingPresenter(PairingContract.View view, FirebasePairingController controller,
-                     String userPhoneNumber, String userPairingRequestSent) {
+                     String userUsername, String userPhoneNumber, String userPairingRequestSent) {
+        mUserUsername = userUsername;
         mUserPhoneNumber = userPhoneNumber;
         mUserPairingRequestSent = userPairingRequestSent;
 
@@ -72,10 +74,10 @@ class PairingPresenter implements PairingContract.Presenter,
 
     @Override
     public void onDownloadPairingRequestsCompleted(List<PairingRequestFB> userPairingRequests) {
-        String partnerUid = getPartnerUidFromPairingRequests(userPairingRequests);
-        if (partnerUid != null) {
+        PairingRequestFB partnerPairingRequest = getPartnerPairingRequest(userPairingRequests);
+        if (partnerPairingRequest != null) {
             Log.d(TAG, "Implicitly couple because the user has already this request from " + mParterPhone);
-            mController.createNewCouple(partnerUid);
+            mController.createNewCouple(partnerPairingRequest);
         }
         else {
             mController.searchUserWithPhoneNumber(mParterPhone);
@@ -83,10 +85,10 @@ class PairingPresenter implements PairingContract.Presenter,
 
     }
 
-    private String getPartnerUidFromPairingRequests(List<PairingRequestFB> userPairingRequests) {
+    private PairingRequestFB getPartnerPairingRequest(List<PairingRequestFB> userPairingRequests) {
         for (PairingRequestFB request : userPairingRequests) {
             if (request.getPhoneNumber().equals(mParterPhone)) {
-                return request.getKey();
+                return request;
             }
         }
         return null;
@@ -95,7 +97,7 @@ class PairingPresenter implements PairingContract.Presenter,
     @Override
     public void onSearchUserWithPhoneNumberFinished(UserFB user) {
         if (user != null) {
-            mController.createNewPairingRequest(user, mUserPhoneNumber, mUserPairingRequestSent);
+            mController.createNewPairingRequest(user, mUserUsername, mUserPhoneNumber, mUserPairingRequestSent);
         } else {
             mView.hideLoadingProgress();
             // TODO: tell to the user no phone number found, send an invite to Sweetie

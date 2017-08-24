@@ -10,28 +10,34 @@ public class PairingRequestFB {
 
     @Exclude
     private String key;
+    private String username;
     private String phoneNumber;
 
     public PairingRequestFB() {}
 
-    public PairingRequestFB(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
+    public PairingRequestFB(String username, String phoneNumber) {
+        this.username = username;
         this.phoneNumber = phoneNumber;
     }
 
     public String getKey() {
         return this.key;
     }
-
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

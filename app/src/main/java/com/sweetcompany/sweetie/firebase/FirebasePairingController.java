@@ -32,7 +32,9 @@ public class FirebasePairingController {
 
     private List<PairingControllerListener> mListeners = new ArrayList<>();
     private NewPairingListener mActivityListener;
+
     private final String mUserId;
+    private final String mUserUsername;
 
     private final DatabaseReference mUserPairingRequests;
     private final DatabaseReference mUsers;
@@ -53,8 +55,9 @@ public class FirebasePairingController {
     }
 
 
-    public FirebasePairingController(String userUid) {
+    public FirebasePairingController(String userUid, String userUsername) {
         mUserId = userUid;
+        mUserUsername = userUsername;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference();
@@ -112,9 +115,11 @@ public class FirebasePairingController {
         mUserPairingRequests.addListenerForSingleValueEvent(mUserPairingRequestsListener);
     }
 
-    public void createNewCouple(String partnerUid) {
+    public void createNewCouple(PairingRequestFB partnerPairingRequest) {
         String now = DataMaker.get_UTC_DateTime();
-        CoupleFB newCouple = new CoupleFB(mUserId, partnerUid, now);
+        String partnerUid = partnerPairingRequest.getKey();
+        String partnerUsername = partnerPairingRequest.getUsername();
+        CoupleFB newCouple = new CoupleFB(mUserId, partnerUid, mUserUsername, partnerUsername, now);
 
         DatabaseReference newCoupleRef = mDatabase.child(Constraints.COUPLES).push();
         String newCoupleKey = newCoupleRef.getKey();
@@ -202,8 +207,9 @@ public class FirebasePairingController {
         }
     }
 
-    public void createNewPairingRequest(final UserFB futurePartner, String userPhoneNumber, String oldPairingRequestedUserUid) {
-        PairingRequestFB newRequest = new PairingRequestFB(userPhoneNumber);
+    public void createNewPairingRequest(final UserFB futurePartner, String userUsername,
+                                        String userPhoneNumber, String oldPairingRequestedUserUid) {
+        PairingRequestFB newRequest = new PairingRequestFB(userUsername, userPhoneNumber);
 
         Map<String, Object> updates = new HashMap<>();
 

@@ -69,7 +69,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private boolean mIsSoftActionButtonsMeasured;
     private int mSoftKeyHeight = 0;
 
-    private ArrayList<Image> imagesPicked = new ArrayList<>();
+    private ArrayList<Image> mImagesPicked = new ArrayList<>();
 
     private InputMethodManager mInputMethodManager;
     private Toolbar mToolBar;
@@ -274,8 +274,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
-            imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
-            createMessageFromImageAndSend(imagesPicked);
+            mImagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
+            createMessageFromImageAndSend(mImagesPicked);
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -288,6 +288,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         for (int i = 0, l = images.size(); i < l; i++) {
             Uri file = Uri.fromFile(new File(images.get(i).getPath()));
             String stringUriLocal = file.toString();
+            // TODO: remove this hard coded empty string
             String inputText = "";
 
             MessageVM newMessage = new TextPhotoMessageVM(inputText, mUserMail, MessageVM.THE_MAIN_USER,
@@ -416,7 +417,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                 .limit(10) // max images can be selected (99 by default)
                 .showCamera(true) // show camera or not (true by default)
                 .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
-                .origin(imagesPicked); // original selected images, used in multi mode
+                .origin(mImagesPicked); // original selected images, used in multi mode
 
         imagePicker.start(RC_CODE_PICKER); // start image picker activity with request code
         // go to onActivityResult

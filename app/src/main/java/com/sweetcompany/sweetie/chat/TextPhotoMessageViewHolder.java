@@ -75,6 +75,7 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder {
     }
 
     public void setImage(String uri){
+        // TODO: useless checking, if uri is empty glide put a image placeholder
         if(!uri.equals("")) {
             //Uri uriP;
             //uriP = Uri.parse(uri);

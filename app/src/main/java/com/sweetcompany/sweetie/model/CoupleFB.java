@@ -18,6 +18,9 @@ public class CoupleFB {
     private String partnerTwoUid;
     private String partnerOneUsername;
     private String partnerTwoUsername;
+    private String imageUriLocal;
+    private String imageUriStorage;
+    private String anniversary;
 
     public CoupleFB() {}
 
@@ -84,5 +87,27 @@ public class CoupleFB {
     }
     public void setPartnerTwoUsername(String partnerTwoUsername) {
         this.partnerTwoUsername = partnerTwoUsername;
+    }
+
+    public String getImageUriLocal() {
+        return imageUriLocal;
+    }
+    public void setImageUriLocal(String imageUriLocal) {
+        this.imageUriLocal = imageUriLocal;
+    }
+
+    public String getImageUriStorage() {
+        return imageUriStorage;
+    }
+    public void setImageUriStorage(String imageUriStorage) {
+        this.imageUriStorage = imageUriStorage;
+    }
+
+    public String getAnniversary() {
+        return this.anniversary;
+    }
+
+    public void setAnniversary(String anniversary) {
+        this.anniversary = anniversary;
     }
 }

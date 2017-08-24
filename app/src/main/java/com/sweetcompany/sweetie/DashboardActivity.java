@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.sweetcompany.sweetie.couple.CoupleDetailsActivity;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
+import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 import com.sweetcompany.sweetie.geogift.GeogiftTestActivity;
 import com.sweetcompany.sweetie.utils.Utility;
 
@@ -30,6 +31,7 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
 
     private FirebaseActionsController mActionsController;
     private FirebaseCalendarController mCalendarController;
+    private FirebaseMapController mMapController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +46,11 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
 
         mActionsController = new FirebaseActionsController(coupleUid, userUid);
         mCalendarController = new FirebaseCalendarController(coupleUid);
+        mMapController = new FirebaseMapController(coupleUid);
         // mMapsController = ...
 
         mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext,
-                mActionsController, mCalendarController);
+                mActionsController, mCalendarController, mMapController);
 
         mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
         mViewPager.setAdapter(mAdapter);

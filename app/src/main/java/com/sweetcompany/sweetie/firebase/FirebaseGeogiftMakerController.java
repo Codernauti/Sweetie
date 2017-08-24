@@ -45,7 +45,7 @@ public class FirebaseGeogiftMakerController {
 
     public FirebaseGeogiftMakerController(String coupleUid, String userUID) {
         mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS + "/" + coupleUid);
-        mGeogiftDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GEOGIFT + "/" + coupleUid);
+        mGeogiftDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GEOGIFTS + "/" + coupleUid);
         mStorage = FirebaseStorage.getInstance();
         mStorageRef = mStorage.getReference();
         coupleID = coupleUid;

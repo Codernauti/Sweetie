@@ -1,18 +1,11 @@
 package com.sweetcompany.sweetie.firebase;
 
-
-import android.util.Log;
-
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.sweetcompany.sweetie.geogift.GeoItem;
-import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.GeogiftFB;
-import com.sweetcompany.sweetie.model.MediaFB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +34,7 @@ public class FirebaseGeogiftDoneController {
 
     public FirebaseGeogiftDoneController(String coupleUid, String geogiftKey, String actionKey) {
         mGeogiftDbReference = FirebaseDatabase.getInstance()
-                .getReference(Constraints.GEOGIFT + "/" + coupleUid + "/" + geogiftKey);
+                .getReference(Constraints.GEOGIFTS + "/" + coupleUid + "/" + geogiftKey);
         mActionsDbReference = FirebaseDatabase.getInstance()
                 .getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
 

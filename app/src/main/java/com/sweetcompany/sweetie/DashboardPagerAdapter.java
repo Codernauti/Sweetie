@@ -15,9 +15,12 @@ import com.sweetcompany.sweetie.calendar.CalendarFragment;
 import com.sweetcompany.sweetie.calendar.CalendarPresenter;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
+import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 import com.sweetcompany.sweetie.folders.FoldersFragment;
 import com.sweetcompany.sweetie.actions.ActionsFragment;
+import com.sweetcompany.sweetie.map.MapContract;
 import com.sweetcompany.sweetie.map.MapFragment;
+import com.sweetcompany.sweetie.map.MapPresenter;
 import com.sweetcompany.sweetie.utils.Utility;
 
 
@@ -40,14 +43,19 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
     private final FirebaseCalendarController mCalendarController;
     private CalendarContract.Presenter mCalendarPresenter;
 
+    private final FirebaseMapController mMapController;
+    private MapContract.Presenter mMapPresenter;
+
     DashboardPagerAdapter(FragmentManager fm, Context context,
                           FirebaseActionsController actionsController,
-                          FirebaseCalendarController calendarController) {
+                          FirebaseCalendarController calendarController,
+                          FirebaseMapController mapController) {
         super(fm);
         mContext = context;
 
         mActionsController = actionsController;
         mCalendarController = calendarController;
+        mMapController = mapController;
 
         userID = Utility.getStringPreference(mContext, Utility.USER_UID);
 
@@ -86,6 +94,9 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
             case FOLDERS_TAB:
                 break;
             case MAP_TAB:
+                MapContract.View mapView = (MapContract.View) createdFragment;
+                mMapPresenter = new MapPresenter(mapView, mMapController);
+                Log.d("MapFragment", "instantiate Presenter");
                 break;
             default:
                 Log.d("DashboardPagerAdapter", "No fragment position found!");

@@ -36,15 +36,15 @@ import com.sweetcompany.sweetie.utils.DataMaker;
  */
 
 public class GeogiftDoneFragment extends Fragment implements
-        OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        GeogiftDoneContract.View{
+                                                                OnMapReadyCallback,
+                                                                GoogleApiClient.ConnectionCallbacks,
+                                                                GoogleApiClient.OnConnectionFailedListener,
+                                                                GeogiftDoneContract.View{
 
     private static final String TAG = "GeogiftDoneFragment";
 
     private Toolbar mToolBar;
-    private SupportMapFragment mapFragment;
+    private SupportMapFragment mapGoogleFragment;
     private GoogleMap map;
     private TextView addressText;
     private TextView datetimePositionedText;
@@ -131,10 +131,10 @@ public class GeogiftDoneFragment extends Fragment implements
 
     // Initialize GoogleMaps
     private void initGMaps(){
-        mapFragment = (SupportMapFragment) getChildFragmentManager() .findFragmentById(R.id.map_geogift_done_fragment);
+        mapGoogleFragment = (SupportMapFragment) getChildFragmentManager() .findFragmentById(R.id.map_geogift_done_fragment);
 
-        if(mapFragment != null) {
-            mapFragment.getMapAsync(this);
+        if(mapGoogleFragment != null) {
+            mapGoogleFragment.getMapAsync(this);
         }
     }
 

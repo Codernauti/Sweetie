@@ -124,7 +124,9 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
     public void updateCoupleData(String imageUri, String partnerOneName, String partnerTwoName,
                                  Date anniversary, String anniversaryString, String creationTime) {
         Log.d(TAG, "updateCoupleData()");
-        mCalendar.setTime(anniversary);
+        if (anniversary != null) {
+            mCalendar.setTime(anniversary);
+        }
 
         Glide.with(this)
                 .load(imageUri)

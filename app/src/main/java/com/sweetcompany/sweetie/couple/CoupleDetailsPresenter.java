@@ -5,7 +5,11 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.firebase.FirebaseCoupleDetailsController;
 import com.sweetcompany.sweetie.model.CoupleFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Eduard on 20-Jul-17.
@@ -15,6 +19,8 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
         FirebaseCoupleDetailsController.CoupleDetailsControllerListener {
 
     private static final String TAG = "CoupleDetailsPresenter";
+
+    private final SimpleDateFormat mDateFormat = new SimpleDateFormat("d MMMM yyyy");
 
     private CoupleDetailsContract.View mView;
     private FirebaseCoupleDetailsController mController;
@@ -38,6 +44,13 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
         mController.changeCoupleImage(image);
     }
 
+    @Override
+    public void sendNewAnniversaryData(Date newAnniversary) {
+        String anniversary = DataMaker.getIsoFormatDateFromDate(newAnniversary);
+        Log.d(TAG, "sendNewAnniversary: " + anniversary);
+        mController.changeAnniversaryDate(anniversary);
+    }
+
 
     // Controller callbacks
 
@@ -47,8 +60,12 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
         String imageUriToLoad = getCorrectImageUri(couple);
         Log.d(TAG, "onCoupleDetailsChanged taken uri: " + imageUriToLoad);
 
-        mView.updateCoupleData(imageUriToLoad, couple.getPartnerOneUsername(), couple.getPartnerTwoUsername(),
-                    couple.getAnniversary(), couple.getCreationTime());
+        mView.updateCoupleData(imageUriToLoad,
+                couple.getPartnerOneUsername(), couple.getPartnerTwoUsername(),
+                DataMaker.getDateFromIsoFormatString(couple.getAnniversary()),
+                getFormattedDate(couple.getAnniversary()),
+                getFormattedDate(couple.getCreationTime())
+        );
     }
 
     private String getCorrectImageUri(CoupleFB couple) {
@@ -56,6 +73,15 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
             return couple.getImageLocalUri();
         } else {
             return couple.getImageStorageUri();
+        }
+    }
+
+    private String getFormattedDate(String dateString) {
+        if (dateString != null) {
+            Date date = DataMaker.getDateFromIsoFormatString(dateString);
+            return mDateFormat.format(date);
+        } else {
+            return "";
         }
     }
 

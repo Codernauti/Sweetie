@@ -1,5 +1,8 @@
 package com.sweetcompany.sweetie.utils;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -116,6 +119,22 @@ public class DataMaker {
             b = true;
         }
         return b;
+    }
+
+    public static String getIsoFormatDateFromDate(@NonNull Date date) {
+        return isoFormat.format(date);
+    }
+
+    public static Date getDateFromIsoFormatString(@NonNull String dateString) {
+        Date messageDate = null;
+        try {
+            messageDate = isoFormat.parse(dateString);
+        } catch (ParseException ex) {
+            Log.w("utils.DataMaker", ex.getMessage());
+            messageDate = new Date();
+        }
+
+        return messageDate;
     }
 
 }

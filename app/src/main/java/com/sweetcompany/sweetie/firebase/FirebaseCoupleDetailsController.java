@@ -170,7 +170,10 @@ public class FirebaseCoupleDetailsController {
                 }
             }
         });
+    }
 
+    public void changeAnniversaryDate(String anniversary) {
+        mCouple.child(Constraints.ANNIVERSARY).setValue(anniversary);
     }
 
 }

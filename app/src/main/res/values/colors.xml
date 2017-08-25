@@ -10,7 +10,9 @@
     <color name="green_sweetie">#8CE25B</color>
     <color name="purple_sweetie">#7973D6</color>
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="grey">#E0E0E0</color>
+    <color name="grey_alpha_50">#80E0E0E0</color>
     <color name="pink_light">#FFCCCC</color>
     <color name="azzurro_pastello">#66B2FF</color>
 
@@ -21,6 +23,7 @@
     <color name="textHighlight">#FFFFFF</color>
     <color name="chat_emoticons_tabs">#e6e6e6</color>
     <color name="chat_emoticons_grid">#f2f2f2</color>
+    <color name="chat_date_list_back">#26000000</color>
 
     <color name="titleAction">#000000</color>
     <color name="separatorAction">#E0E0E0</color>

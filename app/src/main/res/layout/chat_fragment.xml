@@ -18,13 +18,15 @@
         />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/chat_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/chat_toolbar"
-        android:layout_above="@+id/chat_user_input_panel"
-        />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/chat_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/chat_toolbar"
+            android:layout_above="@+id/chat_user_input_panel"
+            android:background="@drawable/background_chat"
+            />
+
 
     <!--android.support.v7.recyclerview:stackFromEnd-->
 

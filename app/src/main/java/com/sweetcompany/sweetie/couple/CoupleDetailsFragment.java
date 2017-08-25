@@ -52,6 +52,7 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
     private TextView mCoupleNames;
     private TextView mDatePairingText;
     private TextView mAnniversaryText;
+    private ImageButton mAnniversaryEditButton;
 
     private Button mBreakButton;
 
@@ -78,9 +79,11 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
         mCoupleNames = (TextView) root.findViewById(R.id.couple_names);
         mDatePairingText = (TextView) root.findViewById(R.id.couple_date_pairing);
         mAnniversaryText = (TextView) root.findViewById(R.id.couple_anniversary);
+        mAnniversaryEditButton = (ImageButton) root.findViewById(R.id.couple_edit_anniversary_button);
         mBreakButton = (Button) root.findViewById(R.id.couple_details_break_button);
 
         mChangeImageButton.setOnClickListener(this);
+        mAnniversaryEditButton.setOnClickListener(this);
         mBreakButton.setOnClickListener(this);
 
         return root;
@@ -93,6 +96,7 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
             if (mImagesPicked != null) {
                 Uri fileUri = Uri.fromFile(new File(mImagesPicked.get(0).getPath()));
                 mPresenter.sendCoupleImage(fileUri);
+                mCoupleImage.setImageDrawable(null);
                 showUploadProgress();
             }
         }
@@ -114,29 +118,30 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
     public void updateCoupleData(String imageUri, String partnerOneName, String partnerTwoName, String anniversary, String creationTime) {
         Log.d(TAG, "updateCoupleData()");
 
-        Glide.with(getContext())
+        Glide.with(this)
                 .load(imageUri)
-                .thumbnail(0.5f)
-                .crossFade()
                 .placeholder(R.drawable.image_placeholder)
-                /*.diskCacheStrategy(DiskCacheStrategy.ALL)*/
+                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mCoupleImage);
 
         mCoupleNames.setText(partnerOneName + " " + getString(R.string.and) + " " + partnerTwoName);
         mAnniversaryText.setText(anniversary);
         mDatePairingText.setText(creationTime);
-
-        hideUploadProgress();
-    }
-
-    private void hideUploadProgress() {
-        mUploadProgressBar.setVisibility(View.GONE);
-        mUploadProgress.setVisibility(View.GONE);
     }
 
     @Override
     public void updateUploadProgress(int progress) {
-        mUploadProgress.setText(progress + "%");
+        if (progress < 100) {
+            mUploadProgress.setText(progress + "%");
+        } else {
+            hideUploadProgress();
+        }
+    }
+
+    public void hideUploadProgress() {
+        mUploadProgressBar.setVisibility(View.GONE);
+        mUploadProgress.setVisibility(View.GONE);
     }
 
     @Override
@@ -176,7 +181,7 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
                 .folderTitle("Folder") // folder selection title
                 .imageTitle(String.valueOf(R.string.image_picker_select)) // image selection title
                 .single()
-                .limit(10) // max images can be selected (99 by default)
+                .limit(1) // max images can be selected (99 by default)
                 .showCamera(true) // show camera or not (true by default)
                 .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
                 .origin(mImagesPicked); // original selected images, used in multi mode

@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -22,6 +24,8 @@ import com.esafirm.imagepicker.model.Image;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.pairing.PairingActivity;
 import com.sweetcompany.sweetie.utils.Utility;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,19 +39,23 @@ import static android.app.Activity.RESULT_OK;
 public class CoupleDetailsFragment extends Fragment implements CoupleDetailsContract.View,
         View.OnClickListener {
 
+    private static final String TAG = "CoupleDetailsFragment";
+
     // TODO: extract into a general class
     private static final int RC_CODE_PICKER = 2000;
 
     private ImageView mCoupleImage;
     private ImageButton mChangeImageButton;
+    private ProgressBar mUploadProgressBar;
+    private TextView mUploadProgress;
+
     private TextView mCoupleNames;
     private TextView mDatePairingText;
     private TextView mAnniversaryText;
-    private Button mFindPartnerButton;
+
     private Button mBreakButton;
 
     private ArrayList<Image> mImagesPicked = new ArrayList<>();
-
     private CoupleDetailsContract.Presenter mPresenter;
 
     public static CoupleDetailsFragment newInstance() {
@@ -60,15 +68,19 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
         View root = inflater.inflate(R.layout.couple_details_fragment, container, false);
 
         mCoupleImage = (ImageView) root.findViewById(R.id.couple_image);
+        mUploadProgressBar = (ProgressBar) root.findViewById(R.id.couple_progress_bar_image_upload);
+        mUploadProgress = (TextView) root.findViewById(R.id.couple_progress_image_upload);
+        mUploadProgressBar.setVisibility(View.GONE);
+        mUploadProgressBar.setVisibility(View.GONE);
+
         mChangeImageButton = (ImageButton) root.findViewById(R.id.couple_change_image_button);
+
         mCoupleNames = (TextView) root.findViewById(R.id.couple_names);
         mDatePairingText = (TextView) root.findViewById(R.id.couple_date_pairing);
         mAnniversaryText = (TextView) root.findViewById(R.id.couple_anniversary);
-        mFindPartnerButton = (Button) root.findViewById(R.id.couple_details_find_partner_button);
         mBreakButton = (Button) root.findViewById(R.id.couple_details_break_button);
 
         mChangeImageButton.setOnClickListener(this);
-        mFindPartnerButton.setOnClickListener(this);
         mBreakButton.setOnClickListener(this);
 
         return root;
@@ -81,9 +93,15 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
             if (mImagesPicked != null) {
                 Uri fileUri = Uri.fromFile(new File(mImagesPicked.get(0).getPath()));
                 mPresenter.sendCoupleImage(fileUri);
+                showUploadProgress();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void showUploadProgress() {
+        mUploadProgressBar.setVisibility(View.VISIBLE);
+        mUploadProgress.setVisibility(View.VISIBLE);
     }
 
 
@@ -94,17 +112,31 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
 
     @Override
     public void updateCoupleData(String imageUri, String partnerOneName, String partnerTwoName, String anniversary, String creationTime) {
+        Log.d(TAG, "updateCoupleData()");
+
         Glide.with(getContext())
                 .load(imageUri)
                 .thumbnail(0.5f)
                 .crossFade()
                 .placeholder(R.drawable.image_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                /*.diskCacheStrategy(DiskCacheStrategy.ALL)*/
                 .into(mCoupleImage);
 
         mCoupleNames.setText(partnerOneName + " " + getString(R.string.and) + " " + partnerTwoName);
         mAnniversaryText.setText(anniversary);
         mDatePairingText.setText(creationTime);
+
+        hideUploadProgress();
+    }
+
+    private void hideUploadProgress() {
+        mUploadProgressBar.setVisibility(View.GONE);
+        mUploadProgress.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void updateUploadProgress(int progress) {
+        mUploadProgress.setText(progress + "%");
     }
 
     @Override

@@ -3,9 +3,6 @@ package com.sweetcompany.sweetie.couple;
 import android.net.Uri;
 import android.util.Log;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseCoupleDetailsController;
 import com.sweetcompany.sweetie.model.CoupleFB;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -41,21 +38,29 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
         mController.changeCoupleImage(image);
     }
 
+
+    // Controller callbacks
+
     @Override
     public void onCoupleDetailsChanged(CoupleFB couple) {
         //TODO extract this code into a CoupleVM? or into another utility class?
         String imageUriToLoad = getCorrectImageUri(couple);
+        Log.d(TAG, "onCoupleDetailsChanged taken uri: " + imageUriToLoad);
 
         mView.updateCoupleData(imageUriToLoad, couple.getPartnerOneUsername(), couple.getPartnerTwoUsername(),
                     couple.getAnniversary(), couple.getCreationTime());
     }
 
     private String getCorrectImageUri(CoupleFB couple) {
-    // TODO: check not null
-        if (couple.getImageUriLocal() != null && Utility.isImageAvaibleInLocal(couple.getImageUriLocal())) {
-            return couple.getImageUriLocal();
+        if (couple.getImageLocalUri() != null && Utility.isImageAvaibleInLocal(couple.getImageLocalUri())) {
+            return couple.getImageLocalUri();
         } else {
-            return couple.getImageUriStorage();
+            return couple.getImageStorageUri();
         }
+    }
+
+    @Override
+    public void onImageUploadProgress(int progress) {
+        mView.updateUploadProgress(progress);
     }
 }

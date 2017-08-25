@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 import com.sweetcompany.sweetie.geogift.GeogiftTestActivity;
+import com.sweetcompany.sweetie.pairing.PairingActivity;
 import com.sweetcompany.sweetie.utils.Utility;
 
 public class DashboardActivity extends AppCompatActivity implements IPageChanger {
@@ -96,6 +98,13 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+
+        if (Utility.getStringPreference(this, Utility.COUPLE_UID).equals(Utility.DEFAULT_VALUE)) {
+            menu.findItem(R.id.menu_couple_details).setVisible(false);
+        } else {
+            menu.findItem(R.id.menu_search_partner).setVisible(false);
+        }
+
         return true;
     }
 
@@ -104,18 +113,28 @@ public class DashboardActivity extends AppCompatActivity implements IPageChanger
         switch (item.getItemId()) {
             case R.id.menu_sign_out:
                 // TODO: extract these lines of code
+                // TODO: clear all Shared preferences ?
+                SharedPreferences sharedPreferences = getSharedPreferences(Utility.USER_UID, MODE_PRIVATE);
+                sharedPreferences.edit().clear().apply();
+
                 Utility.saveStringPreference(this, Utility.USER_UID, "error");
                 Utility.saveStringPreference(this, Utility.MAIL, "error");
                 FirebaseAuth.getInstance().signOut();
 
                 startActivity(new Intent(this, MainActivity.class));
                 return true;
+
+            case R.id.menu_search_partner:
+                startActivity(new Intent(this, PairingActivity.class));
+                return true;
             case R.id.menu_couple_details:
                 startActivity(new Intent(this, CoupleDetailsActivity.class));
                 return true;
+
             case R.id.menu_fake_geogift:
                 startActivity(new Intent(this, GeogiftTestActivity.class));
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

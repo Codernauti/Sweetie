@@ -16,6 +16,28 @@
         android:scaleType="fitXY"
         android:elevation="-10dp" />
 
+    <ProgressBar
+        android:id="@+id/couple_progress_bar_image_upload"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/couple_image"
+        />
+
+    <TextView
+        android:id="@+id/couple_progress_image_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/couple_image"
+        />
+
     <ImageButton
         android:id="@+id/couple_change_image_button"
         android:layout_width="wrap_content"

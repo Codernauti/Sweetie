@@ -18,8 +18,8 @@ public class CoupleFB {
     private String partnerTwoUid;
     private String partnerOneUsername;
     private String partnerTwoUsername;
-    private String imageUriLocal;
-    private String imageUriStorage;
+    private String imageLocalUri;
+    private String imageStorageUri;
     private String anniversary;
 
     public CoupleFB() {}
@@ -89,18 +89,18 @@ public class CoupleFB {
         this.partnerTwoUsername = partnerTwoUsername;
     }
 
-    public String getImageUriLocal() {
-        return imageUriLocal;
+    public String getImageLocalUri() {
+        return imageLocalUri;
     }
-    public void setImageUriLocal(String imageUriLocal) {
-        this.imageUriLocal = imageUriLocal;
+    public void setImageLocalUri(String imageLocalUri) {
+        this.imageLocalUri = imageLocalUri;
     }
 
-    public String getImageUriStorage() {
-        return imageUriStorage;
+    public String getImageStorageUri() {
+        return imageStorageUri;
     }
-    public void setImageUriStorage(String imageUriStorage) {
-        this.imageUriStorage = imageUriStorage;
+    public void setImageStorageUri(String imageStorageUri) {
+        this.imageStorageUri = imageStorageUri;
     }
 
     public String getAnniversary() {

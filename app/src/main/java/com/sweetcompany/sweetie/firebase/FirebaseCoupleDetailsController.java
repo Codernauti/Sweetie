@@ -48,6 +48,7 @@ public class FirebaseCoupleDetailsController {
 
     public interface CoupleDetailsControllerListener {
         void onCoupleDetailsChanged(CoupleFB couple);
+        void onImageUploadProgress(int progress);
     }
 
 
@@ -85,6 +86,7 @@ public class FirebaseCoupleDetailsController {
             mCoupleListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d(TAG, "onCoupleChange trigger!");
                     CoupleFB couple = dataSnapshot.getValue(CoupleFB.class);
 
                     if (mListener != null && couple != null) {
@@ -132,13 +134,11 @@ public class FirebaseCoupleDetailsController {
     }
 
 
-    public void changeCoupleImage(Uri image) {
-
-
+    public void changeCoupleImage(final Uri imageLocalUri) {
         // TODO: duplicated code with ChatController
-        StorageReference photoRef = mCoupleStorage.child(image.getLastPathSegment());
-        UploadTask uploadTask = photoRef.putFile(image);
-
+        StorageReference photoRef = mCoupleStorage.child(imageLocalUri.getLastPathSegment());
+        UploadTask uploadTask = photoRef.putFile(imageLocalUri);
+        final String imageLocalUriString = imageLocalUri.toString();
 
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -148,10 +148,15 @@ public class FirebaseCoupleDetailsController {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "onSuccess sendImage(): " + taskSnapshot.getDownloadUrl() +"\n" + "update into uri: " + mCouple);
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                String stringUriStorage = downloadUrl.toString();
+                String imageStorageUriString = downloadUrl.toString();
 
-                mCouple.child(Constraints.IMAGE_URI_STORAGE).setValue(stringUriStorage);
+                Map<String, Object> updates = new HashMap<>();
+                updates.put(Constraints.IMAGE_LOCAL_URI, imageLocalUriString);
+                updates.put(Constraints.IMAGE_STORAGE_URI, imageStorageUriString);
+
+                mCouple.updateChildren(updates);
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -160,9 +165,9 @@ public class FirebaseCoupleDetailsController {
 
                 Log.d(TAG, "Upload image progress: " + progress);
 
-                /*for (FirebaseChatController.ChatControllerListener listener : mListeners) {
-                    listener.onUploadPercent(media, ((int) progress));
-                }*/
+                if (mListener != null) {
+                    mListener.onImageUploadProgress((int) progress);
+                }
             }
         });
 

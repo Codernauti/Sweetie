@@ -60,9 +60,14 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
         String imageUriToLoad = getCorrectImageUri(couple);
         Log.d(TAG, "onCoupleDetailsChanged taken uri: " + imageUriToLoad);
 
+        Date anniversary = null;
+        if (couple.getAnniversary() != null) {
+            anniversary = DataMaker.getDateFromIsoFormatString(couple.getAnniversary());
+        }
+
         mView.updateCoupleData(imageUriToLoad,
                 couple.getPartnerOneUsername(), couple.getPartnerTwoUsername(),
-                DataMaker.getDateFromIsoFormatString(couple.getAnniversary()),
+                anniversary,
                 getFormattedDate(couple.getAnniversary()),
                 getFormattedDate(couple.getCreationTime())
         );

@@ -126,14 +126,14 @@ public class DataMaker {
     }
 
     public static Date getDateFromIsoFormatString(@NonNull String dateString) {
-        Date messageDate = null;
-        try {
-            messageDate = isoFormat.parse(dateString);
-        } catch (ParseException ex) {
-            Log.w("utils.DataMaker", ex.getMessage());
-            messageDate = new Date();
+        Date messageDate = new Date();
+        if (dateString != null) {
+            try {
+                messageDate = isoFormat.parse(dateString);
+            } catch (ParseException ex) {
+                Log.w("utils.DataMaker", ex.getMessage());
+            }
         }
-
         return messageDate;
     }
 

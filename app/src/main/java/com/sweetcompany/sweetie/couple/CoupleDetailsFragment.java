@@ -67,24 +67,6 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
         mFindPartnerButton = (Button) root.findViewById(R.id.couple_details_find_partner_button);
         mBreakButton = (Button) root.findViewById(R.id.couple_details_break_button);
 
-        if (Utility.getStringPreference(getContext(), Utility.COUPLE_UID).equals(Utility.DEFAULT_VALUE)) {
-            // TODO: remove this responsibility
-            mCoupleImage.setVisibility(View.GONE);
-            mChangeImageButton.setVisibility(View.GONE);
-
-            mCoupleNames.setVisibility(View.GONE);
-            root.findViewById(R.id.couple_date_pairing_label).setVisibility(View.GONE);
-            root.findViewById(R.id.couple_edit_anniversary_button).setVisibility(View.GONE);
-
-            mDatePairingText.setVisibility(View.GONE);
-            root.findViewById(R.id.couple_date_pairing_label).setVisibility(View.GONE);
-
-            mAnniversaryText.setVisibility(View.GONE);
-            mBreakButton.setVisibility(View.GONE);
-        } else {
-            mFindPartnerButton.setVisibility(View.GONE);
-        }
-
         mChangeImageButton.setOnClickListener(this);
         mFindPartnerButton.setOnClickListener(this);
         mBreakButton.setOnClickListener(this);
@@ -148,9 +130,6 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
                         .setNegativeButton("Back", null)
                         .create()
                         .show();
-                break;
-            case R.id.couple_details_find_partner_button:
-                startActivity(new Intent(getActivity(), PairingActivity.class));
                 break;
             default:
                 break;

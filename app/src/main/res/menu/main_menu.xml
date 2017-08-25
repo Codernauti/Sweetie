@@ -7,9 +7,16 @@
         android:title="@string/menu_sign_out"
         app:showAsAction="never" />
 
+
+    <!-- Show search partner OR couple details -->
+    <item android:id="@+id/menu_search_partner"
+        android:title="@string/search_partner_button"
+        app:showAsAction="never" />
+
     <item android:id="@+id/menu_couple_details"
         android:title="@string/menu_couple_details"
         app:showAsAction="never" />
+
 
     <item android:id="@+id/menu_fake_geogift"
         android:title="Test Geogift"

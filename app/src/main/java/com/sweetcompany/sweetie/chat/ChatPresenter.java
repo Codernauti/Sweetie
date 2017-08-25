@@ -1,12 +1,10 @@
 package com.sweetcompany.sweetie.chat;
 
-import android.util.Log;
-
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.model.MessageFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -99,22 +97,10 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
 
     @Override
     public void onMessageAdded(MessageFB message) {
-        Date messageDate = getDateFromString(message.getDateTime());
+        Date messageDate = DataMaker.getDateFromIsoFormatString(message.getDateTime());
 
         insertDateItemVM(messageDate);
         insertMessageVM(message);
-    }
-
-    private Date getDateFromString(String dateString) {
-        Date messageDate = null;
-        try {
-            messageDate = mIsoFormat.parse(dateString);
-        } catch (ParseException ex) {
-            Log.w(TAG, ex.getMessage());
-            messageDate = new Date();
-        }
-
-        return messageDate;
     }
 
     private void insertDateItemVM(Date messageDate) {

@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.couple;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -22,13 +24,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.pairing.PairingActivity;
-import com.sweetcompany.sweetie.utils.Utility;
-
-import org.w3c.dom.Text;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -37,7 +39,7 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class CoupleDetailsFragment extends Fragment implements CoupleDetailsContract.View,
-        View.OnClickListener {
+        View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "CoupleDetailsFragment";
 
@@ -56,7 +58,11 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
 
     private Button mBreakButton;
 
+    // view cache
+    // TODO: think to move this to Presenter
+    private final Calendar mCalendar = Calendar.getInstance();
     private ArrayList<Image> mImagesPicked = new ArrayList<>();
+
     private CoupleDetailsContract.Presenter mPresenter;
 
     public static CoupleDetailsFragment newInstance() {
@@ -115,8 +121,10 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
     }
 
     @Override
-    public void updateCoupleData(String imageUri, String partnerOneName, String partnerTwoName, String anniversary, String creationTime) {
+    public void updateCoupleData(String imageUri, String partnerOneName, String partnerTwoName,
+                                 Date anniversary, String anniversaryString, String creationTime) {
         Log.d(TAG, "updateCoupleData()");
+        mCalendar.setTime(anniversary);
 
         Glide.with(this)
                 .load(imageUri)
@@ -126,7 +134,7 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
                 .into(mCoupleImage);
 
         mCoupleNames.setText(partnerOneName + " " + getString(R.string.and) + " " + partnerTwoName);
-        mAnniversaryText.setText(anniversary);
+        mAnniversaryText.setText(anniversaryString);
         mDatePairingText.setText(creationTime);
     }
 
@@ -139,7 +147,7 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
         }
     }
 
-    public void hideUploadProgress() {
+    private void hideUploadProgress() {
         mUploadProgressBar.setVisibility(View.GONE);
         mUploadProgress.setVisibility(View.GONE);
     }
@@ -150,21 +158,22 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
             case R.id.couple_change_image_button:
                 initAndStartImagePicker();
                 break;
+
             case R.id.couple_edit_anniversary_button:
-                // TODO: change TextView into an EditText
+                initAndStartDatePicker();
                 break;
+
             case R.id.couple_details_break_button:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
                 builder.setMessage("")
-                        .setTitle("Are you sure?")
-                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        .setTitle(getString(R.string.break_couple_question))
+                        .setPositiveButton(getString(R.string.break_yes), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mPresenter.deleteCouple();
                             }
                         })
-                        .setNegativeButton("Back", null)
+                        .setNegativeButton(getString(R.string.break_no), null)
                         .create()
                         .show();
                 break;
@@ -189,4 +198,23 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
         imagePicker.start(RC_CODE_PICKER); // start image picker activity with request code
         // go to onActivityResult
     }
+
+    private void initAndStartDatePicker() {
+        DatePickerDialog datePicker = new DatePickerDialog(getContext(), this,
+                mCalendar.get(Calendar.YEAR),
+                mCalendar.get(Calendar.MONTH),
+                mCalendar.get(Calendar.DAY_OF_MONTH));
+
+        datePicker.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        mCalendar.set(Calendar.YEAR, year);
+        mCalendar.set(Calendar.MONTH, month);
+        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        mPresenter.sendNewAnniversaryData(mCalendar.getTime());
+    }
+
 }

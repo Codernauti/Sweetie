@@ -48,7 +48,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View,
 
     private static final long GEO_DURATION = 10 * 60 * 1000;
     private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 100000.0f; // in meters
+    private static final float GEOFENCE_RADIUS = 100.0f; // in meters
     private static final int GEOFENCE_REQ_CODE = 4005;
     private int REQ_PERMISSION_UPDATE = 202;
     private static final int DWELL = 1000;

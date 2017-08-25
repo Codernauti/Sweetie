@@ -162,15 +162,6 @@
     <!-- -->
 
     <Button
-        android:id="@+id/couple_details_find_partner_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/search_partner_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <Button
         android:id="@+id/couple_details_break_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

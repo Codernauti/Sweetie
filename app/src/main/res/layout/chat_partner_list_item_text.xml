@@ -9,17 +9,15 @@
             android:id="@+id/chat_item_bookmark_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
-
             android:layout_alignParentEnd="true"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="5dp"
-
             android:layout_centerInParent="true"
             android:layout_gravity="center_vertical"
             android:src="@drawable/selector_image_bookmark"
-            android:background="@drawable/shape_circle"
+            android:background="@null"
     />
 
     <io.github.rockerhieu.emojicon.EmojiconTextView

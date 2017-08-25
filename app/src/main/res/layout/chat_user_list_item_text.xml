@@ -18,7 +18,7 @@
         android:layout_gravity="center_vertical"
         android:src="@drawable/selector_image_bookmark"
         android:tint="@color/grey_alpha_50"
-        android:background="@drawable/shape_circle"
+        android:background="@null"
         />
 
     <TextView

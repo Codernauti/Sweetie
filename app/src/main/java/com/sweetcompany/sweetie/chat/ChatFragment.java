@@ -149,7 +149,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         mKeyboardPlaceholder = (FrameLayout) root.findViewById(R.id.chat_emojicons_container);
 
-        initializaEmoticons(root);
+        initializeEmoticons(root);
 
         // get saved height of past keyboard used
         mKeyboardHeight = Utility.getIntPreference(getContext(), Utility.KB_HEIGHT);
@@ -217,7 +217,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         return root;
     }
 
-    private void initializaEmoticons(ViewGroup root) {
+    private void initializeEmoticons(ViewGroup root) {
         mEmoticonsView = (ViewPager) getLayoutInflater(null).inflate(R.layout.chat_emoticons_keyboard, root, false);
         mEmoticonsAdapter = new EmoticonsPagerAdapter(getContext());
 
@@ -425,7 +425,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     private void insertKeyboardSpaceHolder() {
         if (mKeyboardPlaceholder.getVisibility() == View.GONE) {
-            mKeyboardPlaceholder.setVisibility(View.INVISIBLE);
+            mKeyboardPlaceholder.setVisibility(View.VISIBLE);
         }
     }
 

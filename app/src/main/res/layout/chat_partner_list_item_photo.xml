@@ -10,9 +10,8 @@
         android:layout_height="150dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
         android:background="@drawable/shape_rounded_rectangle">
 
         <TextView
@@ -31,39 +30,44 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" />
 
-        <ImageView
-            android:id="@+id/chat_thumbnail"
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:padding="6dp"
-            android:scaleType="centerCrop" />
+            android:padding="2dp">
+            <ImageView
+                android:id="@+id/chat_thumbnail"
+                android:padding="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_photo_chat"
+                android:scaleType="centerCrop" />
+            <ImageView
+                android:src="@drawable/shape_photo_chat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+
     </com.sweetcompany.sweetie.gallery.SquareLayout>
 
     <TextView
         android:id="@+id/chat_item_photo_time_view"
+        style="@style/DateTime_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/chat_item_photo_container"
         android:layout_toEndOf="@+id/chat_item_photo_container"
-        android:textSize="12sp"
         />
 
     <ImageButton
         android:id="@+id/chat_item_bookmark_button"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-
+        style="@style/Bookmarker_chat"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-
         android:layout_centerInParent="true"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/selector_image_bookmark"
-        android:background="@drawable/shape_circle"
         />
 
 </RelativeLayout>

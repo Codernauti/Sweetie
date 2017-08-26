@@ -29,6 +29,9 @@
     <string name="break_yes">Confirm</string>
     <string name="break_no">Back</string>
 
+    <!-- ChatFragment -->
+    <string name="hint_chat_message">\tWrite a new message</string>
+
     <!-- CoupleDetailsFragment placeholder -->
     <string name="couples_name_text">John and Mary</string>
     <string name="couples_date_default">16 settembre 2017</string>

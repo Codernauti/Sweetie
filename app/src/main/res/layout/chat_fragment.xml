@@ -65,7 +65,10 @@
             android:id="@+id/chat_text_message_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="10"
+            android:layout_weight="29"
+            android:hint="@string/hint_chat_message"
+            android:textColorHint="@color/grey"
+            android:backgroundTint="@color/rosa_sweetie"
             android:focusableInTouchMode="true"
             app2:emojiconSize="@dimen/emoticons">
             <requestFocus/>
@@ -87,6 +90,7 @@
             android:id="@+id/chat_send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/rosa_sweetie"
             android:layout_gravity="bottom"
             android:layout_weight="0"
             android:text="Send"/>

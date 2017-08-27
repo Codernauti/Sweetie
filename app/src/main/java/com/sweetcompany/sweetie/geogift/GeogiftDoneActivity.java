@@ -65,8 +65,8 @@ public class GeogiftDoneActivity extends BaseActivity {
         }
 
         if (mGeogiftKey != null) {
-            mController = new FirebaseGeogiftDoneController(mCoupleUid, mGeogiftKey, mActionKey);
-            mPresenter = new GeogiftDonePresenter(mView, mController, mUserUid);
+            mController = new FirebaseGeogiftDoneController(super.mCoupleUid, mGeogiftKey, mActionKey);
+            mPresenter = new GeogiftDonePresenter(mView, mController, super.mUserUid);
         }
         else {
             Log.w(TAG, "Impossible to create GeogiftDoneController and GeogiftDonePresenter because geogiftKey is NULL");

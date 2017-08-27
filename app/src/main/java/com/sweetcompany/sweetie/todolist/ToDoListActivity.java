@@ -65,8 +65,8 @@ public class ToDoListActivity extends BaseActivity {
         }
 
         if (mToDoListKey != null) {
-            mController = new FirebaseToDoListController(mCoupleUid, mToDoListKey, mActionKey);
-            mPresenter = new ToDoListPresenter(mView, mController, mUserEmail);
+            mController = new FirebaseToDoListController(super.mCoupleUid, mToDoListKey, mActionKey);
+            mPresenter = new ToDoListPresenter(mView, mController, super.mUserEmail);
         }
         else {
             Log.w(TAG, "Impossible to create ToDoListController and ToDoListPresenter because ToDoListKey is NULL");

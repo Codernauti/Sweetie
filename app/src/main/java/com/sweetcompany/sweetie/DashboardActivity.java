@@ -44,12 +44,12 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         mContext = getApplicationContext();
 
         // init the Controllers for fragments
-        mActionsController = new FirebaseActionsController(mCoupleUid, mUserUid);
-        mCalendarController = new FirebaseCalendarController(mCoupleUid);
-        mMapController = new FirebaseMapController(mCoupleUid);
+        mActionsController = new FirebaseActionsController(super.mCoupleUid, super.mUserUid);
+        mCalendarController = new FirebaseCalendarController(super.mCoupleUid);
+        mMapController = new FirebaseMapController(super.mCoupleUid);
 
         mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext,
-                mActionsController, mCalendarController, mMapController, mUserUid);
+                mActionsController, mCalendarController, mMapController, super.mUserUid);
 
         mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
         mViewPager.setAdapter(mAdapter);
@@ -96,7 +96,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
 
-        if (mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
+        if (super.mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
             menu.findItem(R.id.menu_couple_details).setVisible(false);
         } else {
             menu.findItem(R.id.menu_search_partner).setVisible(false);

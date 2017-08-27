@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -15,8 +14,6 @@ import com.google.android.gms.location.LocationServices;
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftMakerController;
-import com.sweetcompany.sweetie.utils.SharedPrefKeys;
-import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by ghiro on 07/08/2017.
@@ -65,12 +62,8 @@ public class GeogiftMakerActivity extends BaseActivity implements
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
-        String userUID = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
-        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
-
-        mController = new FirebaseGeogiftMakerController(coupleUid, userUID);
-        mPresenter = new GeogiftMakerPresenter(mView, mController, userUID);
+        mController = new FirebaseGeogiftMakerController(mCoupleUid, mUserUid);
+        mPresenter = new GeogiftMakerPresenter(mView, mController, mUserUid);
 
         //create GoogleApiClient
         createGoogleApi();
@@ -87,7 +80,6 @@ public class GeogiftMakerActivity extends BaseActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        googleApiClient.disconnect();
     }
 
     @Override

@@ -45,7 +45,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
     private Toolbar mToolBar;
     private RecyclerView mGalleryListView;
-    private LinearLayoutManager mLinearLayoutManager;
 
     private GalleryAdapter mGalleryAdapter;
     private GalleryContract.Presenter mPresenter;

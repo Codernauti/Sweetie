@@ -44,16 +44,12 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         mContext = getApplicationContext();
 
         // init the Controllers for fragments
-        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
-        String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
-
-        mActionsController = new FirebaseActionsController(coupleUid, userUid);
-        mCalendarController = new FirebaseCalendarController(coupleUid);
-        mMapController = new FirebaseMapController(coupleUid);
-        // mMapsController = ...
+        mActionsController = new FirebaseActionsController(mCoupleUid, mUserUid);
+        mCalendarController = new FirebaseCalendarController(mCoupleUid);
+        mMapController = new FirebaseMapController(mCoupleUid);
 
         mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext,
-                mActionsController, mCalendarController, mMapController);
+                mActionsController, mCalendarController, mMapController, mUserUid);
 
         mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
         mViewPager.setAdapter(mAdapter);
@@ -100,7 +96,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
 
-        if (Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID).equals(SharedPrefKeys.DEFAULT_VALUE)) {
+        if (mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
             menu.findItem(R.id.menu_couple_details).setVisible(false);
         } else {
             menu.findItem(R.id.menu_search_partner).setVisible(false);

@@ -3,14 +3,11 @@ package com.sweetcompany.sweetie.chatDiary;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseChatDiaryController;
-import com.sweetcompany.sweetie.utils.SharedPrefKeys;
-import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by Eduard on 22-Aug-17.
@@ -57,12 +54,9 @@ public class ChatDiaryActivity extends BaseActivity {
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
-        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
-
         if (mActionDiaryDate != null && mActionDiaryUid != null) {
-            mController = new FirebaseChatDiaryController(coupleUid, mActionDiaryDate, mActionDiaryUid);
-            mPresenter = new ChatDiaryPresenter(mView, mController, userMail);
+            mController = new FirebaseChatDiaryController(mCoupleUid, mActionDiaryDate, mActionDiaryUid);
+            mPresenter = new ChatDiaryPresenter(mView, mController, mUserEmail);
         }
         else {
             Log.w(TAG, "Impossible to create ChatDiaryController and ChatDiaryPresenter because actionDiaryUid OR actionDiaryDate are NULL");

@@ -17,10 +17,12 @@ public interface SharedPrefKeys {
     String FUTURE_PARTNER_PAIRING_REQUEST = "future_partner";
     String PARTNER_USERNAME = "partner_username";
     String USER_RELATIONSHIP_STATUS = "user_relationship_status";
+    String USER_RELATIONSHIP_STATUS_CHANGED = "user_relationship_status_changed";
 
     // Default values
     String DEFAULT_VALUE = "error";
     int DEFAULT_INT_VALUE = 0;
+    boolean DEFAULT_BOOLEAN_VALUE = false;
 
     String KB_HEIGHT = "keyboard_height";
 

@@ -42,26 +42,32 @@ public class UserMonitorService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
-        mCoupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         mUserNode = FirebaseDatabase.getInstance().getReference("users/" + userUid);
 
         mUserListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mCoupleUid = Utility.getStringPreference(UserMonitorService.this, SharedPrefKeys.COUPLE_UID);
                 UserFB newUserData = dataSnapshot.getValue(UserFB.class);
 
                 if (newUserData != null && newUserData.getCoupleInfo() != null) {
 
                     String newCoupleUidData = newUserData.getCoupleInfo().getActiveCouple();
-                    // TODO: get partner username not UID
-                    String partnerName = newUserData.getFuturePartner();
-                    Utility.saveStringPreference(UserMonitorService.this,
-                            SharedPrefKeys.PARTNER_USERNAME, partnerName);
 
                     if (newCoupleUidData != null) {
                         if (!newCoupleUidData.equals(mCoupleUid)) {
                             Log.d(TAG, "couple_uid is changed!");
+
+                            // TODO: get partner username not UID
+                            Utility.saveStringPreference(UserMonitorService.this,
+                                    SharedPrefKeys.PARTNER_USERNAME, newUserData.getFuturePartner());
+
+                            Utility.saveStringPreference(UserMonitorService.this,
+                                    SharedPrefKeys.PARTNER_UID, newUserData.getFuturePartner());
+
+                            Utility.saveBooleanPreference(UserMonitorService.this,
+                                    SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED, true);
 
                             Utility.saveStringPreference(UserMonitorService.this,
                                     SharedPrefKeys.COUPLE_UID, newCoupleUidData);
@@ -73,6 +79,9 @@ public class UserMonitorService extends Service {
                     else {
                         if (!mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
                             Log.d(TAG, "couple break!");
+
+                            Utility.saveBooleanPreference(UserMonitorService.this,
+                                    SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED, true);
 
                             Utility.saveStringPreference(UserMonitorService.this,
                                     SharedPrefKeys.COUPLE_UID, SharedPrefKeys.DEFAULT_VALUE);

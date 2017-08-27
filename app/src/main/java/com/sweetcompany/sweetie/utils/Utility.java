@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.UserMonitorService;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,6 +19,13 @@ import java.util.Map;
  */
 
 public class Utility {
+
+    public static void removePreference(Context context, String key) {
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .remove(key)
+                .apply();
+    }
 
     //How to use: pass the context, a key string and the data string; returns true if successfully saved
     public static void saveStringPreference(Context context, String key, String data) {
@@ -51,6 +59,16 @@ public class Utility {
                 .apply();
     }
 
+    public static int getIntPreference(Context context, String key) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getInt(key, SharedPrefKeys.DEFAULT_INT_VALUE);
+    }
+
+    public static int getUserRelationshipStatus(Context context, String key) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getInt(key, UserMonitorService.SINGLE);
+    }
+
     public static int getKeyboardHeightFromPreference(Context context, String key) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -65,6 +83,21 @@ public class Utility {
             return data;
         }
     }
+
+    public static void saveBooleanPreference(Context context, String key, boolean value) {
+        Log.d("Save boolean pref", key + ": " + value);
+
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(key, value)
+                .apply();
+    }
+
+    public static boolean getBooleanPreference(Context context, String key) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(key, SharedPrefKeys.DEFAULT_BOOLEAN_VALUE);
+    }
+
 
     public static Double getDoublePreference(Context context, String key){
         SharedPreferences setting = context.getSharedPreferences(key, Context.MODE_PRIVATE);

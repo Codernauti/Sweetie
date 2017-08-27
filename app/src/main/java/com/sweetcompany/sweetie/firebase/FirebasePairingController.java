@@ -131,6 +131,8 @@ public class FirebasePairingController {
 
         updateUsersCoupleInfo(updates, newCoupleKey, partnerUid);
 
+        updateUserFuturePartner(updates, partnerUid);
+
         mDatabase.updateChildren(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -170,6 +172,14 @@ public class FirebasePairingController {
                 Constraints.COUPLE_INFO + "/" +
                 Constraints.ACTIVE_COUPLE;
         updates.put(partnerActiveCoupleUrl, newCoupleKey);
+    }
+
+    private void updateUserFuturePartner(Map<String, Object> updates, String partnerUid) {
+        // users/<userUid>/futurePartner
+        String userFuturePartnerUrl = Constraints.USERS + "/"
+                + mUserId + "/"
+                + Constraints.FUTURE_PARTNER;
+        updates.put(userFuturePartnerUrl, partnerUid);
     }
 
 

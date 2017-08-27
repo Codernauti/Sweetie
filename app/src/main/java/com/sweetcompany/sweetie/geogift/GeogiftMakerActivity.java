@@ -62,8 +62,8 @@ public class GeogiftMakerActivity extends BaseActivity implements
             transaction.commit();
         }
 
-        mController = new FirebaseGeogiftMakerController(mCoupleUid, mUserUid);
-        mPresenter = new GeogiftMakerPresenter(mView, mController, mUserUid);
+        mController = new FirebaseGeogiftMakerController(super.mCoupleUid, super.mUserUid);
+        mPresenter = new GeogiftMakerPresenter(mView, mController, super.mUserUid);
 
         //create GoogleApiClient
         createGoogleApi();

@@ -59,8 +59,8 @@ public class GalleryActivity extends BaseActivity {
         }
 
         if (mGalleryKey != null) {
-            mController = new FirebaseGalleryController(mCoupleUid, mGalleryKey, mActionKey);
-            mPresenter = new GalleryPresenter(view, mController, mUserEmail);
+            mController = new FirebaseGalleryController(super.mCoupleUid, mGalleryKey, mActionKey);
+            mPresenter = new GalleryPresenter(view, mController, super.mUserEmail);
         }
         else {
             Log.w(TAG, "Impossible to create GalleryController and GalleryPresenter because galleryKey is NULL");

@@ -35,7 +35,7 @@ public class CoupleDetailsActivity extends BaseActivity {
             transaction.commit();
         }
 
-        mController = new FirebaseCoupleDetailsController(mUserUid, mPartnerUid, mCoupleUid);
+        mController = new FirebaseCoupleDetailsController(super.mUserUid, super.mPartnerUid, super.mCoupleUid);
         mPresenter = new CoupleDetailsPresenter(view, mController);
     }
 

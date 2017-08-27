@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class ActionNewGalleryFragment extends DialogFragment implements ActionsC
                                 String userInputGalleryTitle = mTitleGalleryEditText.getText().toString();
 
                                 if (!userInputGalleryTitle.isEmpty()) {
-                                    String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
+                                    String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);
                                     List<String> keys = mPresenter.pushGalleryAction(userInputGalleryTitle, userName);
 
                                     if (keys != null) {

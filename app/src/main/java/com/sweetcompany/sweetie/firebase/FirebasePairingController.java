@@ -11,12 +11,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.utils.DataMaker;
-import com.sweetcompany.sweetie.utils.Utility;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.model.CoupleFB;
 import com.sweetcompany.sweetie.model.PairingRequestFB;
 import com.sweetcompany.sweetie.model.UserFB;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -213,7 +212,7 @@ public class FirebasePairingController {
 
         Map<String, Object> updates = new HashMap<>();
 
-        if (!oldPairingRequestedUserUid.equals(Utility.DEFAULT_VALUE)) {
+        if (!oldPairingRequestedUserUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
             // remove previous pairing request send by mUserId
             // pairing-request/<oldPairingRequestUserUid>/<mUserId>
             String oldUserPairingRequestUrl =   Constraints.PAIRING_REQUESTS + "/" +

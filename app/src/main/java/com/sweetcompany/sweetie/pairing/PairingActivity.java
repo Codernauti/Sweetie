@@ -5,15 +5,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.firebase.FirebasePairingController;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by Eduard on 29-Jun-17.
  */
 
-public class PairingActivity extends AppCompatActivity
+public class PairingActivity extends BaseActivity
         implements FirebasePairingController.NewPairingListener {
 
     private PairingFragment mView;
@@ -38,10 +40,10 @@ public class PairingActivity extends AppCompatActivity
 
         // get active user data
         // TODO: think to store a User json object into sharedPreferences
-        String userUid = Utility.getStringPreference(this, Utility.USER_UID);
-        String userUsername = Utility.getStringPreference(this, Utility.USERNAME);
-        String userPhoneNumber = Utility.getStringPreference(this, Utility.PHONE_NUMBER);
-        String userPairingRequestSent = Utility.getStringPreference(this, Utility.FUTURE_PARTNER_PAIRING_REQUEST);
+        String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
+        String userUsername = Utility.getStringPreference(this, SharedPrefKeys.USERNAME);
+        String userPhoneNumber = Utility.getStringPreference(this, SharedPrefKeys.PHONE_NUMBER);
+        String userPairingRequestSent = Utility.getStringPreference(this, SharedPrefKeys.FUTURE_PARTNER_PAIRING_REQUEST);
 
         mController = new FirebasePairingController(userUid, userUsername);
         mPresenter = new PairingPresenter(mView, mController, userUsername, userPhoneNumber, userPairingRequestSent);
@@ -58,6 +60,6 @@ public class PairingActivity extends AppCompatActivity
 
     @Override
     public void onCreateNewPairingRequestComplete(String futurePartnerUid) {
-        Utility.saveStringPreference(this, Utility.FUTURE_PARTNER_PAIRING_REQUEST, futurePartnerUid);
+        Utility.saveStringPreference(this, SharedPrefKeys.FUTURE_PARTNER_PAIRING_REQUEST, futurePartnerUid);
     }
 }

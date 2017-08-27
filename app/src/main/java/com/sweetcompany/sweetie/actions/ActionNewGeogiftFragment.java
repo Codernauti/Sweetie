@@ -12,9 +12,8 @@ import android.widget.EditText;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.geogift.GeogiftMakerActivity;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
-
-import java.util.List;
 
 /**
  * Created by ghiro on 07/08/2017.
@@ -60,7 +59,7 @@ public class ActionNewGeogiftFragment extends DialogFragment implements ActionsC
 
                                 if (!userInputGeogiftTitle.isEmpty()) {
                                     // [0] : geogiftKey, [1] : actionKey
-                                    String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
+                                    String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);
                                     //List<String> keys = mPresenter.pushGeogiftAction(userInputGeogiftTitle, userName);
 
                                     //if (keys != null) {

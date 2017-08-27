@@ -11,10 +11,11 @@ import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.model.UserFB;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 import com.sweetcompany.sweetie.pairing.PairingActivity;
 
-
+// TODO: extend BaseActivity???
 public class RegisterActivity extends AppCompatActivity
         implements FirebaseLoginController.FbLoginControllerListener {
 
@@ -60,9 +61,9 @@ public class RegisterActivity extends AppCompatActivity
     @Override
     public void onUserDownloadFinished(UserFB user) {
         if (user != null) {
-            Utility.saveStringPreference(this, Utility.USERNAME, user.getUsername());
-            Utility.saveStringPreference(this, Utility.PHONE_NUMBER, user.getPhone());
-            Utility.saveStringPreference(this, Utility.GENDER, String.valueOf(user.isGender()));
+            Utility.saveStringPreference(this, SharedPrefKeys.USERNAME, user.getUsername());
+            Utility.saveStringPreference(this, SharedPrefKeys.PHONE_NUMBER, user.getPhone());
+            Utility.saveStringPreference(this, SharedPrefKeys.GENDER, String.valueOf(user.isGender()));
             startActivity(new Intent(this, MainActivity.class));
         }
         else {  // user == null, he need to sign in

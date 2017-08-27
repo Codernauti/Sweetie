@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.sweetcompany.sweetie.chat.ChatActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.List;
@@ -61,7 +62,7 @@ public class ActionNewChatFragment extends DialogFragment implements ActionsCont
 
                                 if (!userInputChatTitle.isEmpty()) {
                                     // [0] : chatKey, [1] : actionKey
-                                    String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
+                                    String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);
                                     List<String> keys = mPresenter.pushChatAction(userInputChatTitle, userName);
 
                                     if (keys != null) {

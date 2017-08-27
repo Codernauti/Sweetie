@@ -3,12 +3,15 @@ package com.sweetcompany.sweetie.gallery;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+
+import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import android.util.Log;
 import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
-public class GalleryActivity extends AppCompatActivity {
+public class GalleryActivity extends BaseActivity {
 
     private static final String TAG = "GalleryActivity";
 
@@ -58,8 +61,8 @@ public class GalleryActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, Utility.MAIL);
-        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
+        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         if (mGalleryKey != null) {
             mController = new FirebaseGalleryController(coupleUid, mGalleryKey, mActionKey);

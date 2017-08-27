@@ -3,21 +3,19 @@ package com.sweetcompany.sweetie.couple;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
 
+import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseCoupleDetailsController;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by Eduard on 20-Jul-17.
  */
 
-public class CoupleDetailsActivity extends AppCompatActivity {
+public class CoupleDetailsActivity extends BaseActivity {
 
     CoupleDetailsContract.Presenter mPresenter;
     FirebaseCoupleDetailsController mController;
@@ -37,9 +35,9 @@ public class CoupleDetailsActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-        String userUid = Utility.getStringPreference(this, Utility.USER_UID);
-        String partnerUid = Utility.getStringPreference(this, Utility.FUTURE_PARTNER_PAIRING_REQUEST);
-        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+        String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
+        String partnerUid = Utility.getStringPreference(this, SharedPrefKeys.FUTURE_PARTNER_PAIRING_REQUEST);
+        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         mController = new FirebaseCoupleDetailsController(userUid, partnerUid, coupleUid);
         mPresenter = new CoupleDetailsPresenter(view, mController);

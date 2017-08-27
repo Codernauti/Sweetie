@@ -18,8 +18,13 @@
         app:showAsAction="never" />
 
 
+    <!--TODO: DEBUG-->
     <item android:id="@+id/menu_fake_geogift"
         android:title="Test Geogift"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/menu_print_sp"
+        android:title="Print log sp"
         app:showAsAction="never" />
 
 </menu>

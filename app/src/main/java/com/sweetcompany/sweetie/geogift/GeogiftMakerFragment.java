@@ -36,6 +36,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.File;
@@ -524,7 +525,7 @@ public class GeogiftMakerFragment extends Fragment implements
     public void createNewGeogift(){
 
         //TODO implement GeoItem with costructor not only setter
-       mGeoItem.setUserCreatorUID(Utility.getStringPreference(mContext, Utility.USER_UID));
+       mGeoItem.setUserCreatorUID(Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID));
        mGeoItem.setAddress(addressGeogift);
        mGeoItem.setMessage(messageGeogift);
        mGeoItem.setBookmarked(false); //TODO
@@ -532,7 +533,7 @@ public class GeogiftMakerFragment extends Fragment implements
        mGeoItem.setLon(String.valueOf(positionGeogift.longitude));
 
        // [0] : geogiftKey, [1] : actionKey
-       String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
+       String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);
        List<String> keys = mPresenter.pushGeogiftAction(mGeoItem, titleGeogift, userName);
 
        if (keys != null) {

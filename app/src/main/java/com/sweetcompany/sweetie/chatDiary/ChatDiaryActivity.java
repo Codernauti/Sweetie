@@ -6,15 +6,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseChatDiaryController;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by Eduard on 22-Aug-17.
  */
 
-public class ChatDiaryActivity extends AppCompatActivity {
+public class ChatDiaryActivity extends BaseActivity {
 
     private static final String TAG = "ChatDiaryActivity";
 
@@ -55,8 +57,8 @@ public class ChatDiaryActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, Utility.MAIL);
-        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
+        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         if (mActionDiaryDate != null && mActionDiaryUid != null) {
             mController = new FirebaseChatDiaryController(coupleUid, mActionDiaryDate, mActionDiaryUid);

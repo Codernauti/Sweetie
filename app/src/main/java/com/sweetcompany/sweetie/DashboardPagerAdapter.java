@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.view.ViewGroup;
 
@@ -21,6 +20,7 @@ import com.sweetcompany.sweetie.actions.ActionsFragment;
 import com.sweetcompany.sweetie.map.MapContract;
 import com.sweetcompany.sweetie.map.MapFragment;
 import com.sweetcompany.sweetie.map.MapPresenter;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 
@@ -57,7 +57,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
         mCalendarController = calendarController;
         mMapController = mapController;
 
-        userID = Utility.getStringPreference(mContext, Utility.USER_UID);
+        userID = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
 
     }
 

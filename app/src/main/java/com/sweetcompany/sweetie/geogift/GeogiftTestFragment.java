@@ -48,6 +48,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import static android.app.Activity.RESULT_OK;
@@ -526,8 +527,8 @@ public class GeogiftTestFragment extends Fragment implements
     // Saving GeoFence marker with prefs mng
     public void saveGeofence() {
         Log.d(TAG, "saveGeofence()");
-        Utility.saveStringPreference(getContext(), Utility.KEY_GEOFENCE_LAT, String.valueOf(geoFenceMarker.getPosition().latitude));
-        Utility.saveStringPreference(getContext(), Utility.KEY_GEOFENCE_LON, String.valueOf(geoFenceMarker.getPosition().longitude));
+        Utility.saveStringPreference(getContext(), SharedPrefKeys.KEY_GEOFENCE_LAT, String.valueOf(geoFenceMarker.getPosition().latitude));
+        Utility.saveStringPreference(getContext(), SharedPrefKeys.KEY_GEOFENCE_LON, String.valueOf(geoFenceMarker.getPosition().longitude));
     }
 
     // Recovering last Geofence marker

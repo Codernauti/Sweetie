@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 
@@ -55,8 +56,8 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
         switch (v.getId()) {
             case R.id.pairing_send_button:
                 // get data of Auth
-                String userUid = Utility.getStringPreference(mContext, Utility.USER_UID);
-                String userEmail = Utility.getStringPreference(mContext, Utility.MAIL);
+                String userUid = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
+                String userEmail = Utility.getStringPreference(mContext, SharedPrefKeys.MAIL);
 
                 // get user's input
                 //TODO Check if not empty
@@ -75,9 +76,9 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
 
     // TODO: move this method in register activity?
     private void savePreferences(String username, String phoneNumber, boolean gender) {
-        Utility.saveStringPreference(mContext,Utility.USERNAME, username);
-        Utility.saveStringPreference(mContext,Utility.PHONE_NUMBER, phoneNumber);
-        Utility.saveStringPreference(mContext,Utility.GENDER,String.valueOf(gender));
+        Utility.saveStringPreference(mContext, SharedPrefKeys.USERNAME, username);
+        Utility.saveStringPreference(mContext, SharedPrefKeys.PHONE_NUMBER, phoneNumber);
+        Utility.saveStringPreference(mContext, SharedPrefKeys.GENDER,String.valueOf(gender));
     }
 
 

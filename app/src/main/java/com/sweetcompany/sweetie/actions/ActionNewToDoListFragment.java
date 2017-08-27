@@ -13,6 +13,7 @@ import android.widget.EditText;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.actions.ActionsContract.DialogView;
 import com.sweetcompany.sweetie.todolist.ToDoListActivity;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.List;
@@ -58,7 +59,7 @@ public class ActionNewToDoListFragment extends DialogFragment implements DialogV
                         String userInputChatTitle = mTitleToDoListEditText.getText().toString();
 
                         if (!userInputChatTitle.isEmpty()) {
-                            String userName = Utility.getStringPreference(getActivity(), Utility.USER_UID);
+                            String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);
                             List<String> keys = mPresenter.pushToDoListAction(userInputChatTitle, userName);
 
                             if (keys != null) {

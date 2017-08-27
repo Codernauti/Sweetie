@@ -2,7 +2,6 @@ package com.sweetcompany.sweetie;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -11,10 +10,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.sweetcompany.sweetie.couple.CoupleDetailsActivity;
 import com.sweetcompany.sweetie.model.UserFB;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
-import com.sweetcompany.sweetie.couple.CoupleActivity;
 
 /**
  * Created by Eduard on 15-Jul-17.
@@ -23,6 +21,11 @@ import com.sweetcompany.sweetie.couple.CoupleActivity;
 public class UserMonitorService extends Service {
 
     private static final String TAG = "UserMonitorService";
+
+    // monitor the user relationship status
+    public static final int SINGLE = 0;
+    public static final int COUPLED = 1;
+    public static final int BREAK_SINGLE = 2;
 
     private DatabaseReference mUserNode;
     private ValueEventListener mUserListener;
@@ -38,8 +41,8 @@ public class UserMonitorService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String userUid = Utility.getStringPreference(this, Utility.USER_UID);
-        mCoupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+        String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
+        mCoupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         mUserNode = FirebaseDatabase.getInstance().getReference("users/" + userUid);
 
@@ -48,22 +51,33 @@ public class UserMonitorService extends Service {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserFB newUserData = dataSnapshot.getValue(UserFB.class);
 
-                if (newUserData.getCoupleInfo() != null) {
+                if (newUserData != null && newUserData.getCoupleInfo() != null) {
+
                     String newCoupleUidData = newUserData.getCoupleInfo().getActiveCouple();
                     // TODO: get partner username not UID
                     String partnerName = newUserData.getFuturePartner();
+                    Utility.saveStringPreference(UserMonitorService.this,
+                            SharedPrefKeys.PARTNER_USERNAME, partnerName);
 
                     if (newCoupleUidData != null) {
                         if (!newCoupleUidData.equals(mCoupleUid)) {
                             Log.d(TAG, "couple_uid is changed!");
-                            startCoupleActivity(newCoupleUidData, "You are now coupled with " + partnerName);
+
+                            Utility.saveStringPreference(UserMonitorService.this,
+                                    SharedPrefKeys.COUPLE_UID, newCoupleUidData);
+                            Utility.saveIntPreference(UserMonitorService.this,
+                                    SharedPrefKeys.USER_RELATIONSHIP_STATUS, COUPLED);
                         }
                         // else coupleUid remains the same
                     }
                     else {
-                        if (!mCoupleUid.equals(Utility.DEFAULT_VALUE)) {
+                        if (!mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
                             Log.d(TAG, "couple break!");
-                            startCoupleActivity(Utility.DEFAULT_VALUE, "You break up with " + partnerName);
+
+                            Utility.saveStringPreference(UserMonitorService.this,
+                                    SharedPrefKeys.COUPLE_UID, SharedPrefKeys.DEFAULT_VALUE);
+                            Utility.saveIntPreference(UserMonitorService.this,
+                                    SharedPrefKeys.USER_RELATIONSHIP_STATUS, BREAK_SINGLE);
                         }
                         // else mCouple == DEFAULT.VALUE -> the user is single
                     }
@@ -76,16 +90,6 @@ public class UserMonitorService extends Service {
         mUserNode.addValueEventListener(mUserListener);
 
         return super.onStartCommand(intent, flags, startId);
-    }
-
-    private void startCoupleActivity(String newCoupleUid, String messageToShow) {
-        Utility.saveStringPreference(this, Utility.COUPLE_UID, newCoupleUid);
-
-        // start activity and clean the Task (back stack of activity)
-        Intent intent = new Intent(this, CoupleActivity.class);
-        intent.putExtra(CoupleActivity.MESSAGE_TO_SHOW_KEY, messageToShow);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
     }
 
     @Override

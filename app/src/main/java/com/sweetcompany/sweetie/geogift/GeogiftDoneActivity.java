@@ -5,15 +5,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftDoneController;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by ghiro on 17/08/2017.
  */
 
-public class GeogiftDoneActivity extends AppCompatActivity {
+public class GeogiftDoneActivity extends BaseActivity {
 
     private static final String TAG = "GeogiftDoneActivity";
 
@@ -65,8 +67,8 @@ public class GeogiftDoneActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, Utility.MAIL);
-        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
+        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         if (mGeogiftKey != null) {
             mController = new FirebaseGeogiftDoneController(coupleUid, mGeogiftKey, mActionKey);

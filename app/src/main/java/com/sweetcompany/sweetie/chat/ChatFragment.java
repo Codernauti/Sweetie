@@ -36,6 +36,7 @@ import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.File;
@@ -110,7 +111,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         mInputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        mUserMail = Utility.getStringPreference(getContext(), Utility.MAIL);
+        mUserMail = Utility.getStringPreference(getContext(), SharedPrefKeys.MAIL);
     }
 
     @Override
@@ -152,7 +153,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         initializeEmoticons(root);
 
         // get saved height of past keyboard used
-        mKeyboardHeight = Utility.getIntPreference(getContext(), Utility.KB_HEIGHT);
+        mKeyboardHeight = Utility.getKeyboardHeightFromPreference(getContext(), SharedPrefKeys.KB_HEIGHT);
         updateHeightPlaceholder();
 
         mEmoticonsPopup = new PopupWindow(mEmoticonsView, ViewGroup.LayoutParams.MATCH_PARENT, mKeyboardHeight, false);
@@ -182,7 +183,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
                         updateHeightPlaceholder();
                         mEmoticonsPopup.setHeight(mKeyboardHeight);
 
-                        Utility.saveIntPreference(getContext(), Utility.KB_HEIGHT, heightDifference);
+                        Utility.saveIntPreference(getContext(), SharedPrefKeys.KB_HEIGHT, heightDifference);
                     }
                 }
                 else {

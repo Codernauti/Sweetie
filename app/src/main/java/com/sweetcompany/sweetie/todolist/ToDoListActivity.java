@@ -6,8 +6,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseToDoListController;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 
@@ -15,7 +17,7 @@ import com.sweetcompany.sweetie.utils.Utility;
  * Created by lucas on 04/08/2017.
  */
 
-public class ToDoListActivity extends AppCompatActivity {
+public class ToDoListActivity extends BaseActivity {
     private static final String TAG = "ToDoListActivity";
 
     // key for Intent extras
@@ -64,8 +66,8 @@ public class ToDoListActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, Utility.MAIL);
-        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
+        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         if (mToDoListKey != null) {
             mController = new FirebaseToDoListController(coupleUid, mToDoListKey, mActionKey);

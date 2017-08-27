@@ -8,20 +8,21 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftMakerController;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by ghiro on 07/08/2017.
  */
 
-public class GeogiftMakerActivity extends AppCompatActivity implements
+public class GeogiftMakerActivity extends BaseActivity implements
                                                        GoogleApiClient.ConnectionCallbacks,
                                                        GoogleApiClient.OnConnectionFailedListener{
 
@@ -64,9 +65,9 @@ public class GeogiftMakerActivity extends AppCompatActivity implements
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, Utility.MAIL);
-        String userUID = Utility.getStringPreference(this, Utility.USER_UID);
-        String coupleUid = Utility.getStringPreference(this, Utility.COUPLE_UID);
+        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
+        String userUID = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
+        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         mController = new FirebaseGeogiftMakerController(coupleUid, userUID);
         mPresenter = new GeogiftMakerPresenter(mView, mController, userUID);

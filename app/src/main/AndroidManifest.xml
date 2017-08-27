@@ -36,8 +36,6 @@
 
         <activity android:name=".DashboardActivity"
                   android:theme="@style/AppTheme"/>
-        <activity android:name=".LoginActivity"
-                  android:theme="@style/AppTheme"/>
 
         <activity android:name=".registration.RegisterActivity" android:theme="@style/AppTheme" />
         <activity android:name=".pairing.PairingActivity" android:theme="@style/AppTheme" />

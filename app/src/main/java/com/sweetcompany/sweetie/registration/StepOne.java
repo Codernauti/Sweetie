@@ -27,6 +27,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 // TODO: extract firebase dependencies
@@ -141,8 +142,10 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
                         else {
                             //save id token
                             // TODO: here or after into RegisterActivity?
-                            Utility.saveStringPreference(mContext,Utility.USER_UID,task.getResult().getUser().getUid());
-                            Utility.saveStringPreference(mContext,Utility.MAIL,task.getResult().getUser().getEmail());
+                            Utility.saveStringPreference(mContext, SharedPrefKeys.USER_UID,
+                                    task.getResult().getUser().getUid());
+                            Utility.saveStringPreference(mContext, SharedPrefKeys.MAIL,
+                                    task.getResult().getUser().getEmail());
 
                             mLoginPresenter.attachUserCheckListener(task.getResult().getUser().getUid());
                         }

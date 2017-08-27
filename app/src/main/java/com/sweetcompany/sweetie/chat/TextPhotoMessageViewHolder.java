@@ -1,8 +1,6 @@
 package com.sweetcompany.sweetie.chat;
 
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,7 +34,6 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder {
         mPbar = (ProgressBar) itemView.findViewById(R.id.chat_progressBarUpload);
         mPercentUploading = (TextView) itemView.findViewById(R.id.chat_progress_percent);
 
-        /*mBookmarkButton.setOnClickListener(this);*/
         mThumbnail.setOnClickListener(this);
     }
 
@@ -47,10 +44,6 @@ public class TextPhotoMessageViewHolder extends MessageViewHolder {
     public void setTextTime(String time) {
         mTextTime.setText(time);
     }
-
-    /*public void setBookmark(boolean isBookmarked) {
-        mBookmarkButton.setSelected(isBookmarked);
-    }*/
 
     @Override
     int getType() {

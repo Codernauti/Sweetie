@@ -48,6 +48,10 @@ abstract class MessageViewHolder extends ChatViewHolder implements View.OnClickL
         mBookmarkButton.setSelected(isBookmarked);
     }
 
+    void enableBookmarkButton(){
+        mBookmarkButton.setVisibility(View.VISIBLE);
+    }
+
     void disableBookmarkButton() {
         mBookmarkButton.setVisibility(View.GONE);
     }

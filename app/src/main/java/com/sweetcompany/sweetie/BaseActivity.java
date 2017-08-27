@@ -41,6 +41,7 @@ public class BaseActivity extends AppCompatActivity implements
     protected String mUserUid;
     protected String mUserEmail;
     protected String mCoupleUid;
+    protected String mPartnerUid;
 
     protected GoogleApiClient mGoogleApiClient;
 
@@ -71,6 +72,8 @@ public class BaseActivity extends AppCompatActivity implements
         mUserUid = sp.getString(SharedPrefKeys.USER_UID, SharedPrefKeys.DEFAULT_VALUE);
         mUserEmail = sp.getString(SharedPrefKeys.MAIL, SharedPrefKeys.DEFAULT_VALUE);
         mCoupleUid = sp.getString(SharedPrefKeys.COUPLE_UID, SharedPrefKeys.DEFAULT_VALUE);
+        mPartnerUid = sp.getString(SharedPrefKeys.PARTNER_UID, SharedPrefKeys.DEFAULT_VALUE);
+
     }
 
     @Override

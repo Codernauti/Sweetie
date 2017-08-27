@@ -3,13 +3,11 @@ package com.sweetcompany.sweetie.todolist;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseToDoListController;
-import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 
@@ -66,12 +64,9 @@ public class ToDoListActivity extends BaseActivity {
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
-        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
-
         if (mToDoListKey != null) {
-            mController = new FirebaseToDoListController(coupleUid, mToDoListKey, mActionKey);
-            mPresenter = new ToDoListPresenter(mView, mController, userMail);
+            mController = new FirebaseToDoListController(mCoupleUid, mToDoListKey, mActionKey);
+            mPresenter = new ToDoListPresenter(mView, mController, mUserEmail);
         }
         else {
             Log.w(TAG, "Impossible to create ToDoListController and ToDoListPresenter because ToDoListKey is NULL");

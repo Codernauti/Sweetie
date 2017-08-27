@@ -3,14 +3,11 @@ package com.sweetcompany.sweetie.chat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.utils.SharedPrefKeys;
-import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by ghiro on 11/05/2017.
@@ -70,12 +67,9 @@ public class ChatActivity extends BaseActivity {
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
-        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
-
         if (mChatKey != null) {
-            mController = new FirebaseChatController(coupleUid, mChatKey, mChatTitle, mActionKey);
-            mPresenter = new ChatPresenter(mView, mController, userMail);
+            mController = new FirebaseChatController(mCoupleUid, mChatKey, mChatTitle, mActionKey);
+            mPresenter = new ChatPresenter(mView, mController, mUserEmail);
         }
         else {
             Log.w(TAG, "Impossible to create ChatController and ChatPresenter because chatKey is NULL");
@@ -87,13 +81,11 @@ public class ChatActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //mController.attachListeners();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //mController.detachListeners();
     }
 
     @Override
@@ -101,7 +93,6 @@ public class ChatActivity extends BaseActivity {
         super.onDestroy();
         mController.detachListeners();
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -35,11 +35,7 @@ public class CoupleDetailsActivity extends BaseActivity {
             transaction.commit();
         }
 
-        String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
-        String partnerUid = Utility.getStringPreference(this, SharedPrefKeys.PARTNER_UID);
-        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
-
-        mController = new FirebaseCoupleDetailsController(userUid, partnerUid, coupleUid);
+        mController = new FirebaseCoupleDetailsController(mUserUid, mPartnerUid, mCoupleUid);
         mPresenter = new CoupleDetailsPresenter(view, mController);
     }
 

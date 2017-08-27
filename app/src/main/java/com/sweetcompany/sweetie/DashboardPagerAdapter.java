@@ -20,8 +20,6 @@ import com.sweetcompany.sweetie.actions.ActionsFragment;
 import com.sweetcompany.sweetie.map.MapContract;
 import com.sweetcompany.sweetie.map.MapFragment;
 import com.sweetcompany.sweetie.map.MapPresenter;
-import com.sweetcompany.sweetie.utils.SharedPrefKeys;
-import com.sweetcompany.sweetie.utils.Utility;
 
 
 public class DashboardPagerAdapter extends FragmentPagerAdapter {
@@ -35,7 +33,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
     // For getString From Resource
     private final Context mContext;
-    String userID;
+    String mUserID;
 
     private final FirebaseActionsController mActionsController;
     private ActionsContract.Presenter mActionsPresenter;
@@ -49,16 +47,16 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
     DashboardPagerAdapter(FragmentManager fm, Context context,
                           FirebaseActionsController actionsController,
                           FirebaseCalendarController calendarController,
-                          FirebaseMapController mapController) {
+                          FirebaseMapController mapController,
+                          String userUID) {
+
         super(fm);
         mContext = context;
 
         mActionsController = actionsController;
         mCalendarController = calendarController;
         mMapController = mapController;
-
-        userID = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
-
+        mUserID = userUID;
     }
 
     @Override
@@ -88,7 +86,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
                 break;
             case HOME_TAB:
                 ActionsContract.View view = (ActionsContract.View) createdFragment;
-                mActionsPresenter = new ActionsPresenter(view, mActionsController, userID);
+                mActionsPresenter = new ActionsPresenter(view, mActionsController, mUserID);
                 Log.d("ActionFragment", "instantiate Presenter");
                 break;
             case FOLDERS_TAB:

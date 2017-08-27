@@ -91,8 +91,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View,
         rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(mContext ,R.anim.rotate_backward);
 
-        buildGoogleApiClient();
-        googleApiClient.connect();
     }
 
     @Override
@@ -274,6 +272,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View,
     @Override
     public void onResume() {
         super.onResume();
+        buildGoogleApiClient();
         googleApiClient.connect();
     }
 

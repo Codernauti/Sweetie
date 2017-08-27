@@ -2,14 +2,11 @@ package com.sweetcompany.sweetie.geogift;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftDoneController;
-import com.sweetcompany.sweetie.utils.SharedPrefKeys;
-import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by ghiro on 17/08/2017.
@@ -67,12 +64,9 @@ public class GeogiftDoneActivity extends BaseActivity {
             transaction.commit();
         }
 
-        String userMail = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
-        String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
-
         if (mGeogiftKey != null) {
-            mController = new FirebaseGeogiftDoneController(coupleUid, mGeogiftKey, mActionKey);
-            mPresenter = new GeogiftDonePresenter(mView, mController, userMail);
+            mController = new FirebaseGeogiftDoneController(mCoupleUid, mGeogiftKey, mActionKey);
+            mPresenter = new GeogiftDonePresenter(mView, mController, mUserUid);
         }
         else {
             Log.w(TAG, "Impossible to create GeogiftDoneController and GeogiftDonePresenter because geogiftKey is NULL");

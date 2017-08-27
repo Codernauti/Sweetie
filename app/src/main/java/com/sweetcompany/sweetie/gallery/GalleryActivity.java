@@ -20,7 +20,7 @@ public class GalleryActivity extends BaseActivity {
     private String mGalleryKey;
     private String mActionKey;
 
-    private GalleryPresenter mPresenter;
+    private GalleryContract.Presenter mPresenter;
     private FirebaseGalleryController mController;
 
     @Override

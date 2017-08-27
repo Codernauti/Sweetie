@@ -38,6 +38,8 @@ public class FirebaseCoupleDetailsController {
     private final DatabaseReference mCouple;
     private ValueEventListener mCoupleListener;
 
+    private final String mUserFuturePartnerUrl;         // users/<userUid>/futurePartner
+    private final String mPartnerFuturePartnerUrl;      // users/<partnerUid>/futurePartner
     private final String mUserArchivedCouplesUrl;       // users/<userUid>/coupleInfo/activeCouple/<coupleUid>
     private final String mUserActiveCoupleUrl;          // users/<userUid>/coupleInfo/archivedCouples
     private final String mPartnerArchivedCouplesUrl;    // users/<partnerUid>/coupleInfo/activeCouple/<coupleUid>
@@ -56,6 +58,9 @@ public class FirebaseCoupleDetailsController {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mCoupleStorage = FirebaseStorage.getInstance().getReference(Constraints.COUPLES_DETAILS + "/" + coupleUid);
+
+        mUserFuturePartnerUrl = Constraints.USERS + "/" + userUid + "/" + Constraints.FUTURE_PARTNER;
+        mPartnerFuturePartnerUrl = Constraints.USERS + "/" + partnerUid + "/" + Constraints.FUTURE_PARTNER;
 
         mUserArchivedCouplesUrl = buildArchivedCouplesUrl(userUid, coupleUid);
         mUserActiveCoupleUrl = buildActiveCoupleUrl(userUid);
@@ -117,8 +122,11 @@ public class FirebaseCoupleDetailsController {
 
         Map<String, Object> updates = new HashMap<>();
 
+        // remove futurePartner field for each user
+        updates.put(mUserFuturePartnerUrl, null);
+        updates.put(mPartnerFuturePartnerUrl, null);
+
         // added the coupleUid into archived of each partner
-        // TODO: don't work
         updates.put(mPartnerArchivedCouplesUrl, true);
         updates.put(mUserArchivedCouplesUrl, true);
 

@@ -27,6 +27,8 @@ import com.sweetcompany.sweetie.utils.Utility;
  *  BaseActivity class for every activity of app, her responsibilities are:
  *  - Manage the login status
  *  - Manage the user relationship status
+ *      if app in foreground onSharedPreferenceChange() is trigger
+ *      if app in background onStart() check if couple_uid changed
  *  - TODO: Manage the Geogift trigger
  */
 public class BaseActivity extends AppCompatActivity implements
@@ -76,6 +78,11 @@ public class BaseActivity extends AppCompatActivity implements
         super.onStart();
         Log.d(BASE_TAG, "onStart()");
 
+        boolean coupleUidChanged = Utility.getBooleanPreference(this, SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED);
+        if (coupleUidChanged) {
+            checkUserRelationshipStatus();
+        }
+
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.registerOnSharedPreferenceChangeListener(this);
 
@@ -100,6 +107,42 @@ public class BaseActivity extends AppCompatActivity implements
         };
         mFirebaseAuth.addAuthStateListener(mAuthListener);
         //}
+    }
+
+    private void checkUserRelationshipStatus() {
+        // Reset coupleUidChanged
+        Utility.saveBooleanPreference(this, SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED, false);
+
+        int userRelationshipStatus = Utility.getUserRelationshipStatus(this,
+                SharedPrefKeys.USER_RELATIONSHIP_STATUS);
+        String partnerUsername = Utility.getStringPreference(this, SharedPrefKeys.PARTNER_USERNAME);
+        mCoupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
+
+        Log.d(BASE_TAG, "onSharedPreferenceChanged() - USER_RELATIONSHIP_STATUS = " + userRelationshipStatus);
+
+        if (userRelationshipStatus == UserMonitorService.BREAK_SINGLE) {
+            removePartnerPreferenceValues();
+            startCoupleActivity(getString(R.string.break_up_notification) + partnerUsername);
+        }
+        else if (userRelationshipStatus == UserMonitorService.COUPLED) {
+            startCoupleActivity(getString(R.string.couple_notification) + partnerUsername);
+        }
+    }
+
+    private void removePartnerPreferenceValues() {
+        Utility.removePreference(this, SharedPrefKeys.PARTNER_UID);
+        Utility.removePreference(this, SharedPrefKeys.PARTNER_USERNAME);
+        Utility.removePreference(this, SharedPrefKeys.FUTURE_PARTNER_PAIRING_REQUEST);
+    }
+
+    private void startCoupleActivity(String messageToShow) {
+        // start activity and clean the Task (back stack of activity)
+        Intent intent = new Intent(this, CoupleActivity.class);
+        intent.putExtra(CoupleActivity.MESSAGE_TO_SHOW_KEY, messageToShow);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        startActivity(intent);
+        finish();
     }
 
     private void takeUserToLoginScreenOnUnAuth() {
@@ -139,33 +182,9 @@ public class BaseActivity extends AppCompatActivity implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-
         if (key.equals(SharedPrefKeys.USER_RELATIONSHIP_STATUS)) {
-            int userRelationshipStatus = sp.getInt(SharedPrefKeys.USER_RELATIONSHIP_STATUS,
-                    UserMonitorService.SINGLE);
-            String partnerUsername = sp.getString(SharedPrefKeys.PARTNER_USERNAME, SharedPrefKeys.DEFAULT_VALUE);
-            mCoupleUid = sp.getString(SharedPrefKeys.COUPLE_UID, SharedPrefKeys.DEFAULT_VALUE);
-
-            Log.d(BASE_TAG, "onSharedPreferenceChanged() - USER_RELATIONSHIP_STATUS = " + userRelationshipStatus);
-
-            if (userRelationshipStatus == UserMonitorService.BREAK_SINGLE) {
-                startCoupleActivity("You break up with " + partnerUsername);
-            }
-            else if (userRelationshipStatus == UserMonitorService.COUPLED) {
-                startCoupleActivity("You couple with " + partnerUsername);
-            }
+            checkUserRelationshipStatus();
         }
-
-    }
-
-    private void startCoupleActivity(String messageToShow) {
-        // start activity and clean the Task (back stack of activity)
-        Intent intent = new Intent(this, CoupleActivity.class);
-        intent.putExtra(CoupleActivity.MESSAGE_TO_SHOW_KEY, messageToShow);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        startActivity(intent);
-        finish();
     }
 
 }

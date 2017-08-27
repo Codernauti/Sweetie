@@ -25,9 +25,14 @@
     <string name="couple_anniversary_label">Anniversary:</string>
     <string name="couple_date_pairing_label">Date pairing:</string>
     <string name="and">and</string>
+
     <string name="break_couple_question">Are you sure?</string>
     <string name="break_yes">Confirm</string>
     <string name="break_no">Back</string>
+
+    <string name="break_up_notification">You break up with\u0020</string>
+    <string name="couple_notification">You couple with\u0020</string>
+
 
     <!-- ChatFragment -->
     <string name="hint_chat_message">\tWrite a new message</string>

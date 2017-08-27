@@ -36,7 +36,7 @@ public class CoupleDetailsActivity extends BaseActivity {
         }
 
         String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
-        String partnerUid = Utility.getStringPreference(this, SharedPrefKeys.FUTURE_PARTNER_PAIRING_REQUEST);
+        String partnerUid = Utility.getStringPreference(this, SharedPrefKeys.PARTNER_UID);
         String coupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         mController = new FirebaseCoupleDetailsController(userUid, partnerUid, coupleUid);

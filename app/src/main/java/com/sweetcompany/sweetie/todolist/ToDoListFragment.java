@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.todolist;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -44,6 +46,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     private Button mInputButton;
     private Button mEditButton;
     private String keyCheckEntrySelected;
+    InputMethodManager inputMethodManager;
 
 
     private ToDoListContract.Presenter mPresenter;
@@ -97,6 +100,8 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         mToDoListListView.setAdapter(toDoListAdapter);
         mInputButton.setOnClickListener(this);
         mEditButton.setOnClickListener(this);
+
+        inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         return root;
     }
@@ -165,8 +170,11 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
 
     @Override
     public void editCheckEntry(CheckEntryVM checkEntry) {
-        mEditText.setText(checkEntry.getText());
+        String entryText = checkEntry.getText();
+        mEditText.setText(entryText);
+        mEditText.setSelection(entryText.length());
         mEditText.requestFocus();
+        inputMethodManager.showSoftInput(mEditText, InputMethodManager.SHOW_IMPLICIT);
         mCheckBox.setChecked(checkEntry.isChecked());
         keyCheckEntrySelected = checkEntry.getKey();
         mInputButton.setVisibility(View.GONE);

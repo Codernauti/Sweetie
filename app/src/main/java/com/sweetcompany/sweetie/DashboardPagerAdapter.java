@@ -18,8 +18,8 @@ import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 import com.sweetcompany.sweetie.folders.FoldersFragment;
 import com.sweetcompany.sweetie.actions.ActionsFragment;
 import com.sweetcompany.sweetie.map.MapContract;
-import com.sweetcompany.sweetie.map.MapFragment;
 import com.sweetcompany.sweetie.map.MapPresenter;
+import com.sweetcompany.sweetie.map.MapsFragment;
 
 
 public class DashboardPagerAdapter extends FragmentPagerAdapter {
@@ -69,7 +69,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
             case FOLDERS_TAB:
                 return new FoldersFragment();
             case MAP_TAB:
-                return new MapFragment();
+                return new MapsFragment();
         }
         return null;
     }

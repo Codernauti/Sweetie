@@ -123,6 +123,9 @@ public class Utility {
         return new ArrayList<String>(Arrays.asList(TextUtils.split(preferences.getString(SharedPrefKeys.GEOGIFT_SET, ""), "‚‗‚")));
     }
 
+    /**
+     * Clear out shared preferences in the file "sweetie_preferences.xml"
+     */
     public static void clearSharedPreferences(Context context) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()

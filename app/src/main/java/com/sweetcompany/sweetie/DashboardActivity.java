@@ -111,16 +111,6 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
             case R.id.menu_sign_out:
                 // TODO: extract these lines of code
                 FirebaseAuth.getInstance().signOut();
-
-                // moved to AuthListener of BaseActivity
-                /*SharedPreferences sharedPreferences = getSharedPreferences(Utility.USER_UID, MODE_PRIVATE);
-                sharedPreferences.edit().clear().apply();
-
-                Utility.saveStringPreference(this, Utility.USER_UID, "error");
-                Utility.saveStringPreference(this, Utility.MAIL, "error");
-                */
-
-                //startActivity(new Intent(this, MainActivity.class));
                 return true;
 
             case R.id.menu_search_partner:

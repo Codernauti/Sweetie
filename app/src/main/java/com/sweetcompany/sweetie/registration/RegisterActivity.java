@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity
         if (user != null) {
             Utility.saveStringPreference(this, SharedPrefKeys.USERNAME, user.getUsername());
             Utility.saveStringPreference(this, SharedPrefKeys.PHONE_NUMBER, user.getPhone());
-            Utility.saveStringPreference(this, SharedPrefKeys.GENDER, String.valueOf(user.isGender()));
+            Utility.saveStringPreference(this, SharedPrefKeys.GENDER, String.valueOf(user.getGender()));
             startActivity(new Intent(this, MainActivity.class));
         }
         else {  // user == null, he need to sign in

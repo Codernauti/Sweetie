@@ -14,6 +14,7 @@ public class UserFB {
     private boolean gender;
     private String phone;
     private String email;
+    private String imageUrl;
     private CoupleInfoFB coupleInfo;
     private String futurePartner;
 
@@ -34,7 +35,7 @@ public class UserFB {
         this.username = mUsername;
     }
 
-    public boolean isGender() {
+    public boolean getGender() {
         return gender;
     }
 
@@ -82,5 +83,13 @@ public class UserFB {
 
     public void setFuturePartner(String futurePartner) {
         this.futurePartner = futurePartner;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

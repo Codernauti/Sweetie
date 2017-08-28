@@ -56,8 +56,13 @@
             android:theme="@style/AppTheme"/>
         <activity android:name=".couple.CoupleDetailsActivity"
             android:theme="@style/AppTheme"/>
+
         <activity android:name=".todolist.ToDoListActivity"
             android:theme="@style/AppTheme"/>
+
+        <activity android:name=".settings.SettingsActivity"
+            android:theme="@style/AppTheme" />
+
         <activity android:name=".geogift.GeogiftMakerActivity"
             android:theme="@style/AppTheme"/>
         <activity android:name=".geogift.GeogiftDoneActivity"

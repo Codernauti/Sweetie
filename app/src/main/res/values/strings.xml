@@ -46,6 +46,7 @@
     <string name="settings_info_label">Info</string>
     <string name="settings_username_label">Username:</string>
     <string name="settings_email_label">Email:</string>
+    <string name="settings_phone_label">Telephone: </string>
     <string name="settings_gender_label">Gender:</string>
 
     <string name="gender_male">Male</string>

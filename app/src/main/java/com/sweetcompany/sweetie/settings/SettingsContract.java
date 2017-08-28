@@ -8,7 +8,7 @@ interface SettingsContract {
 
     interface View {
         void setPresenter(Presenter presenter);
-        void updateUserInfo(String userImageUri, String username, String email, boolean gender);
+        void updateUserInfo(String userImageUri, String username, String email, String telephone, boolean gender);
     }
 
     interface Presenter {

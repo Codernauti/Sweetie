@@ -28,6 +28,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
     private ImageView mImageView;
     private TextView mUsernameTextView;
     private TextView mEmailTextView;
+    private TextView mTelephoneTextView;
     private TextView mGenderTextView;
 
     @Nullable
@@ -41,6 +42,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         mChangeImageButton = (ImageButton) root.findViewById(R.id.settings_change_image_button);
         mUsernameTextView = (TextView) root.findViewById(R.id.settings_username);
         mEmailTextView = (TextView) root.findViewById(R.id.settings_email);
+        mTelephoneTextView = (TextView) root.findViewById(R.id.settings_phone);
         mGenderTextView = (TextView) root.findViewById(R.id.settings_gender);
 
         mChangeImageButton.setOnClickListener(this);
@@ -58,7 +60,8 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
     }
 
     @Override
-    public void updateUserInfo(String userImageUri, String username, String email, boolean gender) {
+    public void updateUserInfo(String userImageUri, String username, String email, String telephone,
+                               boolean gender) {
         Glide.with(getActivity())
                 .load(userImageUri)
                 .dontAnimate()
@@ -66,6 +69,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
 
         mUsernameTextView.setText(username);
         mEmailTextView.setText(email);
+        mTelephoneTextView.setText(telephone);
         mGenderTextView.setText(gender ? getString(R.string.gender_male) : getString(R.string.gender_female));
     }
 

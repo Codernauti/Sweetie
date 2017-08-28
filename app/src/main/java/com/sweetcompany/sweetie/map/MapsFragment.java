@@ -1,12 +1,11 @@
 package com.sweetcompany.sweetie.map;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,23 +17,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.Random;
 
-public class MapFragment  extends Fragment implements MapContract.View,
+public class MapsFragment extends Fragment implements MapContract.View,
                                                       OnMapReadyCallback,
                                                       GoogleApiClient.ConnectionCallbacks,
                                                       GoogleApiClient.OnConnectionFailedListener{
@@ -67,8 +59,7 @@ public class MapFragment  extends Fragment implements MapContract.View,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View root = inflater.inflate(R.layout.map_fragment, container, false);
+        View root = inflater.inflate(R.layout.maps_fragment, container, false);
 
         return root;
     }
@@ -125,7 +116,7 @@ public class MapFragment  extends Fragment implements MapContract.View,
 
     // Initialize GoogleMaps
     private void initGMaps(){
-        mapFragment = (SupportMapFragment) getChildFragmentManager() .findFragmentById(R.id.map_gallery_fragment);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_gallery_fragment);
 
         if(mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -175,6 +166,16 @@ public class MapFragment  extends Fragment implements MapContract.View,
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        SupportMapFragment mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map_gallery_fragment));
+        if(mapFragment != null) {
+            FragmentManager fM = getFragmentManager();
+            fM.beginTransaction().remove(mapFragment).commit();
+        }
     }
 
 }

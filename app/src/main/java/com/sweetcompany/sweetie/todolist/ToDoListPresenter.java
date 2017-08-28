@@ -45,6 +45,20 @@ public class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseTo
     }
 
     @Override
+    public void changeCheckEntry(CheckEntryVM checkEntry) {
+        CheckEntryFB updateCheckEntry = new CheckEntryFB(mUserMail, checkEntry.getText(),
+                checkEntry.isChecked(),checkEntry.getTime());
+        updateCheckEntry.setKey(checkEntry.getKey());
+
+        mController.updateCheckEntry(updateCheckEntry);
+    }
+
+    @Override
+    public void editCheckEntry(CheckEntryVM checkEntry) {
+        mView.editCheckEntry(checkEntry);
+    }
+
+    @Override
     public void checkedCheckEntry(CheckEntryVM checkEntry) {
         CheckEntryFB updateCheckEntry = new CheckEntryFB(mUserMail, checkEntry.getText(),
                 checkEntry.isChecked(),checkEntry.getTime());

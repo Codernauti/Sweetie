@@ -1,9 +1,6 @@
 package com.sweetcompany.sweetie.todolist;
 
-import android.content.Context;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +28,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
 
     private List<CheckEntryVM> mCheckEntryList = new ArrayList<>();
     private ToDoListAdapterListener mListener;
+    public static int selected_item = 0;
 
     void setListener(ToDoListAdapterListener listener) {
         mListener = listener;
@@ -47,6 +45,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
 
         View viewToInflate = inflater.inflate(viewType, parent, false);
         CheckEntryViewHolder viewHolder;
+
         switch (viewType) {
 
             case R.layout.todolist_item:
@@ -64,7 +63,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(CheckEntryViewHolder holder, int position) {
+    public void onBindViewHolder(CheckEntryViewHolder holder, final int position) {
         CheckEntryVM checkEntryVM = mCheckEntryList.get(position);
         checkEntryVM.configViewHolder(holder);
         Log.d(TAG, "onBindViewHolder(): " + checkEntryVM.getKey());
@@ -92,6 +91,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
 
     void changeCheckEntry(CheckEntryVM checkEntryVM) {
         int indexOldCheckEntry = searchIndexCheckEntryOf(checkEntryVM);
+
         if (indexOldCheckEntry != -1) {
             mCheckEntryList.set(indexOldCheckEntry, checkEntryVM);
             notifyDataSetChanged();
@@ -99,10 +99,10 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
     }
 
     private int searchIndexCheckEntryOf(CheckEntryVM checkEntryVM) {
-        String modifyCheckEntryKey = checkEntryVM.getKey();
+        String editCheckEntryKey = checkEntryVM.getKey();
         for (int i = 0; i < mCheckEntryList.size(); i++) {
             String checkEntryKey = mCheckEntryList.get(i).getKey();
-            if (checkEntryKey.equals(modifyCheckEntryKey)) {
+            if (checkEntryKey.equals(editCheckEntryKey)) {
                 return i;
             }
         }
@@ -127,6 +127,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
     public void onCheckBoxLongClicked(int adapterPosition) {
         CheckEntryVM checkEntryVM = mCheckEntryList.get(adapterPosition);
         mListener.onCheckEntryLongClicked(checkEntryVM);
-
     }
+
 }

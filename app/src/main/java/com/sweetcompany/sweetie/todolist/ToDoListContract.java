@@ -17,10 +17,13 @@ public interface ToDoListContract {
         void updateCheckEntry(CheckEntryVM checkEntry);
         void removeCheckEntry(CheckEntryVM checkEntry);
         void changeCheckEntry(CheckEntryVM checkEntry);
+        void editCheckEntry(CheckEntryVM checkEntry);
     }
     interface Presenter {
         void addCheckEntry(CheckEntryVM checkEntry);
         void removeCheckEntry(CheckEntryVM checkEntry);
+        void changeCheckEntry(CheckEntryVM checkEntry);
+        void editCheckEntry(CheckEntryVM checkEntry);
 
         void checkedCheckEntry(CheckEntryVM checkEntry);
     }

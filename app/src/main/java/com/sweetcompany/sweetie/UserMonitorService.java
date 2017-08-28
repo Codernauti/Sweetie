@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sweetcompany.sweetie.model.CoupleInfoFB;
 import com.sweetcompany.sweetie.model.UserFB;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -52,16 +53,15 @@ public class UserMonitorService extends Service {
                 UserFB newUserData = dataSnapshot.getValue(UserFB.class);
 
                 if (newUserData != null && newUserData.getCoupleInfo() != null) {
-
-                    String newCoupleUidData = newUserData.getCoupleInfo().getActiveCouple();
+                    CoupleInfoFB newCoupleInfo = newUserData.getCoupleInfo();
+                    String newCoupleUidData = newCoupleInfo.getActiveCouple();
 
                     if (newCoupleUidData != null) {
                         if (!newCoupleUidData.equals(mCoupleUid)) {
                             Log.d(TAG, "couple_uid is changed!");
 
-                            // TODO: get partner username not UID
                             Utility.saveStringPreference(UserMonitorService.this,
-                                    SharedPrefKeys.PARTNER_USERNAME, newUserData.getFuturePartner());
+                                    SharedPrefKeys.PARTNER_USERNAME, newCoupleInfo.getPartnerUsername());
 
                             Utility.saveStringPreference(UserMonitorService.this,
                                     SharedPrefKeys.PARTNER_UID, newUserData.getFuturePartner());

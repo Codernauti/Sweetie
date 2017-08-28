@@ -8,6 +8,7 @@ interface Constraints {
 
     String USERS = "users";
         String COUPLE_INFO = "coupleInfo";
+            String PARTNER_USERNAME = "partnerUsername";
             String ACTIVE_COUPLE = "activeCouple";
             String ARCHIVED_COUPLES = "archivedCouples";
         String FUTURE_PARTNER = "futurePartner";
@@ -54,3 +55,4 @@ interface Constraints {
     String GALLERY_GEOGIFTS = "gallery_geogifts/";
 
 }
+

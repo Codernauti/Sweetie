@@ -95,15 +95,7 @@ public class BaseActivity extends AppCompatActivity implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) { // user sign out
-                    // Clear out shared preferences "sweetie_preferences.xml"
                     Utility.clearSharedPreferences(BaseActivity.this);
-                    sp.edit().clear().apply();
-
-                    /*SharedPreferences.Editor spe = mSharedPref.edit();
-                    spe.putString(Utility.USER_UID, Utility.DEFAULT_VALUE);
-                    spe.putString(Utility.MAIL, Utility.DEFAULT_VALUE);
-                    spe.apply();*/
-
                     takeUserToLoginScreenOnUnAuth();
                 }
             }

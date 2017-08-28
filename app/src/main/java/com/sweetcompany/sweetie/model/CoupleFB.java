@@ -9,9 +9,6 @@ import java.util.List;
 
 public class CoupleFB {
 
-    // TODO: remove arraylist
-    private List<String> users = new ArrayList<>();
-
     private String creationTime;
     private String breakTime;
     private String partnerOneUid;
@@ -26,21 +23,11 @@ public class CoupleFB {
 
     public CoupleFB(String userUid, String partnerUid,
                     String userUsername, String partnerUsername, String creationTime) {
-        users.add(userUid);
-        users.add(partnerUid);
         partnerOneUid = userUid;
         partnerTwoUid = partnerUid;
         partnerOneUsername = userUsername;
         partnerTwoUsername = partnerUsername;
         this.creationTime = creationTime;
-    }
-
-    public List<String> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<String> users) {
-        this.users = users;
     }
 
     public String getCreationTime() {

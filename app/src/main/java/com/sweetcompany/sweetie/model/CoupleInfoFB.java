@@ -8,11 +8,21 @@ import java.util.Map;
 
 public class CoupleInfoFB {
 
+    private String partnerUsername;
     private String activeCouple;
-    private Map<String, Boolean> archivedCouples;
     private String creationTime;
 
+    private Map<String, Boolean> archivedCouples;
+
     public CoupleInfoFB() {}
+
+    public String getPartnerUsername() {
+        return partnerUsername;
+    }
+
+    public void setPartnerUsername(String partnerUsername) {
+        this.partnerUsername = partnerUsername;
+    }
 
     public String getActiveCouple() {
         return activeCouple;
@@ -22,19 +32,19 @@ public class CoupleInfoFB {
         this.activeCouple = activeCouple;
     }
 
-    public Map<String, Boolean> getArchivedCouples() {
-        return archivedCouples;
-    }
-
-    public void setArchivedCouples(Map<String, Boolean> archivedCouples) {
-        this.archivedCouples = archivedCouples;
-    }
-
     public String getCreationTime() {
         return creationTime;
     }
 
     public void setCreationTime(String creationTime) {
         this.creationTime = creationTime;
+    }
+
+    public Map<String, Boolean> getArchivedCouples() {
+        return archivedCouples;
+    }
+
+    public void setArchivedCouples(Map<String, Boolean> archivedCouples) {
+        this.archivedCouples = archivedCouples;
     }
 }

@@ -89,9 +89,9 @@
 
         <TextView
             android:id="@+id/settings_username_label"
-            android:layout_width="96dp"
+            android:layout_width="@dimen/settings_label_width"
             android:layout_height="wrap_content"
-            android:padding="6dp"
+            android:padding="@dimen/settings_general_padding"
 
             android:layout_below="@+id/settings_info_label"
             android:layout_alignParentStart="true"
@@ -102,7 +102,7 @@
             android:id="@+id/settings_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="6dp"
+            android:padding="@dimen/settings_general_padding"
             android:layout_below="@+id/settings_info_label"
             android:layout_toEndOf="@+id/settings_username_label"
             android:layout_alignParentEnd="true"
@@ -113,9 +113,9 @@
 
         <TextView
             android:id="@+id/settings_email_label"
-            android:layout_width="96dp"
+            android:layout_width="@dimen/settings_label_width"
             android:layout_height="wrap_content"
-            android:padding="6dp"
+            android:padding="@dimen/settings_general_padding"
 
             android:layout_below="@+id/settings_username_label"
             android:layout_alignParentStart="true"
@@ -133,6 +133,30 @@
             android:gravity="center"
             android:text=""/>
 
+        <!-- phone number row -->
+
+        <TextView
+            android:id="@+id/settings_phone_label"
+            android:layout_width="@dimen/settings_label_width"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/settings_general_padding"
+
+            android:layout_below="@+id/settings_email_label"
+            android:layout_alignParentStart="true"
+            android:text="@string/settings_phone_label"/>
+
+        <TextView
+            android:id="@+id/settings_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/settings_general_padding"
+
+            android:layout_below="@+id/settings_email_label"
+            android:layout_toEndOf="@+id/settings_email_label"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:text=""/>
+
         <!-- Gender row -->
 
         <TextView
@@ -141,7 +165,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/settings_general_padding"
 
-            android:layout_below="@+id/settings_email_label"
+            android:layout_below="@+id/settings_phone_label"
             android:text="@string/settings_gender_label"
             />
 
@@ -151,7 +175,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/settings_general_padding"
 
-            android:layout_below="@+id/settings_email_label"
+            android:layout_below="@+id/settings_phone_label"
             android:layout_toEndOf="@+id/settings_gender_label"
             android:layout_alignParentEnd="true"
             android:gravity="center"

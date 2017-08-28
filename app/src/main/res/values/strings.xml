@@ -9,6 +9,7 @@
     <string name="menu_sign_out">Sign Out</string>
     <string name="menu_send_couple_request">Find your partner</string>
     <string name="menu_couple_details">Couples</string>
+    <string name="menu_settings">Settings</string>
 
     <!-- ActionNewChatFragment dialog -->
     <string name="action_new_chat_title_dialog">Insert new chat title</string>
@@ -41,6 +42,14 @@
     <string name="couples_name_text">John and Mary</string>
     <string name="couples_date_default">16 settembre 2017</string>
 
+    <!-- SettingsFragment -->
+    <string name="settings_info_label">Info</string>
+    <string name="settings_username_label">Username:</string>
+    <string name="settings_email_label">Email:</string>
+    <string name="settings_gender_label">Gender:</string>
+
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
 
     <!-- Test String for debug version -->
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</string>

@@ -2,4 +2,9 @@
 <resources>
     <dimen name="keyboard_height_default">240dp</dimen>
     <dimen name="emoticons">20dp</dimen>
+
+    <!-- Settings dimens -->
+    <dimen name="settings_label_width">96dp</dimen>
+    <dimen name="settings_general_padding">6dp</dimen>
+
 </resources>

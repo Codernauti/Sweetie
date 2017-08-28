@@ -20,6 +20,7 @@ import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 import com.sweetcompany.sweetie.geogift.GeogiftTestActivity;
 import com.sweetcompany.sweetie.pairing.PairingActivity;
+import com.sweetcompany.sweetie.settings.SettingsActivity;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
@@ -118,6 +119,9 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
                 return true;
             case R.id.menu_couple_details:
                 startActivity(new Intent(this, CoupleDetailsActivity.class));
+                return true;
+            case R.id.menu_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
             case R.id.menu_fake_geogift:

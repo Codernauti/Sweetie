@@ -134,6 +134,7 @@ public class FirebaseToDoListController {
 
         HashMap<String, Object> updates = new HashMap<>();
         updates.put(mToDoListUrl + "/" + chk.getKey() + "/" + Constraints.CHECKED, chk.isChecked());
+        updates.put(mToDoListUrl + "/" + chk.getKey() + "/" + Constraints.TEXT, chk.getText());
         mDatabase.updateChildren(updates);
     }
 

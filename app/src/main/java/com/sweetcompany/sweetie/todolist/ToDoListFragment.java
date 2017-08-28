@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,8 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     private CheckBox mCheckBox;
     private EditText mEditText;
     private Button mInputButton;
+    private Button mEditButton;
+    private String keyCheckEntrySelected;
 
 
     private ToDoListContract.Presenter mPresenter;
@@ -82,6 +85,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         mCheckBox = (CheckBox) root.findViewById(R.id.todolist_checkBox);
         mEditText = (EditText) root.findViewById(R.id.todolist_text_input);
         mInputButton = (Button) root.findViewById(R.id.todolist_add_button);
+        mEditButton = (Button) root.findViewById(R.id.todolist_edit_button);
 
         // initialize message's list
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
@@ -92,6 +96,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         mToDoListListView.setLayoutManager(mLinearLayoutManager);
         mToDoListListView.setAdapter(toDoListAdapter);
         mInputButton.setOnClickListener(this);
+        mEditButton.setOnClickListener(this);
 
         return root;
     }
@@ -103,11 +108,25 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
                 String text = mEditText.getText().toString();
                 Log.d(TAG, "text: "+text);
                 mEditText.setText("");
-                mCheckBox.setChecked(false);
+
                 if (!text.equals("")) {
                     CheckEntryVM checkEntryVM = new CheckEntryVM(CheckEntryVM.THE_MAIN_USER, null, text,
                             DataMaker.get_UTC_DateTime(), mCheckBox.isChecked());
                     mPresenter.addCheckEntry(checkEntryVM);
+                    mCheckBox.setChecked(false);
+                }
+                break;
+            case R.id.todolist_edit_button:
+                String editText = mEditText.getText().toString();
+                Log.d(TAG, "text: "+editText);
+                mEditText.setText("");
+                if (!editText.equals("")) {
+                    CheckEntryVM checkEntryVM = new CheckEntryVM(CheckEntryVM.THE_MAIN_USER, keyCheckEntrySelected, editText,
+                            DataMaker.get_UTC_DateTime(), mCheckBox.isChecked());
+                    mPresenter.changeCheckEntry(checkEntryVM);
+                    mCheckBox.setChecked(false);
+                    mEditButton.setVisibility(View.GONE);
+                    mInputButton.setVisibility(View.VISIBLE);
                 }
                 break;
         }
@@ -145,6 +164,16 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     }
 
     @Override
+    public void editCheckEntry(CheckEntryVM checkEntry) {
+        mEditText.setText(checkEntry.getText());
+        mEditText.requestFocus();
+        mCheckBox.setChecked(checkEntry.isChecked());
+        keyCheckEntrySelected = checkEntry.getKey();
+        mInputButton.setVisibility(View.GONE);
+        mEditButton.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onCheckEntryClicked(CheckEntryVM checkEntry) {
         mPresenter.checkedCheckEntry(checkEntry);
     }
@@ -155,4 +184,5 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         dialogFragment.setPresenter(mPresenter);
         dialogFragment.show(getActivity().getFragmentManager(),ActionNewToDoListFragment.TAG);
     }
+
 }

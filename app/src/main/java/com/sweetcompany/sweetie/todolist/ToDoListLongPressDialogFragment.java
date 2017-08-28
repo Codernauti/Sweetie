@@ -53,6 +53,7 @@ public class ToDoListLongPressDialogFragment extends DialogFragment implements T
                                 mPresenter.removeCheckEntry(checkEntry);
                                 break;
                             case 1:
+                                mPresenter.editCheckEntry(checkEntry);
                                 Log.d(TAG, "Modify pressed");
                                 break;
                             default:

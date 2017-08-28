@@ -41,6 +41,7 @@ interface Constraints {
     String TODOLIST = "todolists";
         String TODOLIST_CHECKENTRY = "todolist-checkentry";
         String CHECKED = "checked";
+        String TEXT = "text";
 
     String GEOGIFTS = "geogifts";
         String GEOGIFT_ITEMS = "geogift-items";

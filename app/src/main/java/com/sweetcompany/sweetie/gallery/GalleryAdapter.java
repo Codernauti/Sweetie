@@ -82,18 +82,18 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
 
     void addMedia(MediaVM media) {
         //is already in VM exchange VM
-        if(searchIndexMediaByUri(media)!=-1)
+        if(searchIndexMediaOf(media)!=-1)
         {
             removeMedia(media);
         }
         //TODO not clear
         mMediasList.add(0, media); //add in head
-        notifyItemInserted(mMediasList.size() - 1);
+        notifyItemInserted(0);
         updateMediaList();
     }
 
     void removeMedia(MediaVM mediaVM) {
-        int indexOldMedia = searchIndexMediaByUri(mediaVM);
+        int indexOldMedia = searchIndexMediaOf(mediaVM);
         if (indexOldMedia != -1) {
             mMediasList.remove(indexOldMedia);
             notifyItemRemoved(indexOldMedia);
@@ -101,7 +101,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     }
 
     void changeMedia(MediaVM mediaVM) {
-        int indexOldMedia = searchIndexMediaByUri(mediaVM);
+        int indexOldMedia = searchIndexMediaOf(mediaVM);
         if (indexOldMedia != -1) {
             mMediasList.set(indexOldMedia, mediaVM);
             notifyItemChanged(indexOldMedia);

@@ -3,6 +3,8 @@ package com.sweetcompany.sweetie.settings;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -45,6 +48,16 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         mEmailTextView = (TextView) root.findViewById(R.id.settings_email);
         mTelephoneTextView = (TextView) root.findViewById(R.id.settings_phone);
         mGenderTextView = (TextView) root.findViewById(R.id.settings_gender);
+
+        // init toolbar
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
+        AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
+        parentActivity.setSupportActionBar(toolbar);
+        ActionBar actionBar = parentActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         mChangeImageButton.setOnClickListener(this);
 

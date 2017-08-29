@@ -25,9 +25,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
     private static String TAG = "ActionsAdapter";
     private static int VIEW_HOLDER_COUNT = 0;
 
-    private int mNumberItems;
     private List<ActionVM> mActionsList = new ArrayList<>();
-
 
     @Override
     public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

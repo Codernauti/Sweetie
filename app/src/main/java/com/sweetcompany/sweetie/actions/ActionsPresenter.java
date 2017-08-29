@@ -82,11 +82,6 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         }
     }
 
-    @Override
-    public void retrieveGeogift(String geoKey) {
-        mController.retrieveGeogiftFB(geoKey);
-    }
-
     // Controller callbacks
 
     // Clear actions, retrieve all actions on server
@@ -125,35 +120,6 @@ public class ActionsPresenter implements ActionsContract.Presenter,
             }
         }
         mView.updateActionsList(mActionsList);
-    }
-
-    @Override
-    public void onRetrievedGeogift(GeogiftFB geogiftFB) {
-        GeoItem geoItem = createGeoItem(geogiftFB);
-        mView.registerGeofence(geoItem);
-    }
-
-    @Override
-    public void updateGeogiftList(ArrayList<String> geogiftNotVisitedKeys) {
-        mView.updateGeogiftList(geogiftNotVisitedKeys);
-    }
-
-    private GeoItem createGeoItem(GeogiftFB geoItemFB){
-        // TODO refactore GeoItem with constructor and not only setter
-        GeoItem geoItemNew = new GeoItem();
-        geoItemNew.setKey(geoItemFB.getKey());
-        geoItemNew.setUserCreatorUID(geoItemFB.getUserCreatorUID());
-        geoItemNew.setType(geoItemFB.getType());
-        geoItemNew.setMessage(geoItemFB.getMessage());
-        geoItemNew.setAddress(geoItemFB.getAddress());
-        geoItemNew.setLat(geoItemFB.getLat());
-        geoItemNew.setLon(geoItemFB.getLon());
-        geoItemNew.setUriS(geoItemFB.getUriS());
-        geoItemNew.setBookmarked(geoItemFB.isBookmarked());
-        geoItemNew.setDatetimeCreation(geoItemFB.getDatetimeCreation());
-        geoItemNew.setDatetimeVisited(geoItemFB.getDatetimeVisited());
-
-        return geoItemNew;
     }
 
 }

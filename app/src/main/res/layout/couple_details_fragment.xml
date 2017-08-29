@@ -6,15 +6,33 @@
     android:layout_height="match_parent"
     >
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/couple_details_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/couple_image"
+        app:layout_constraintVertical_chainStyle="spread"
+
+        android:elevation="4dp"
+        android:background="?attr/colorPrimary"
+
+        app:theme="@style/ToolBarStyle"
+        app:title="@string/couple_details_title_appbar"
+        />
+
     <ImageView
         android:id="@+id/couple_image"
         android:layout_width="0dp"
         android:layout_height="220dp"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/couple_details_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/couple_names"
+        app:layout_constraintBottom_toTopOf="@+id/couple_names"
 
         android:scaleType="fitXY" />
 
@@ -24,8 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/couple_image"
         app:layout_constraintBottom_toBottomOf="@+id/couple_image"
         />
 
@@ -35,8 +53,8 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/couple_image"
         app:layout_constraintBottom_toBottomOf="@+id/couple_image"
         />
 

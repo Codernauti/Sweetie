@@ -7,7 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +90,15 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
         mAnniversaryText = (TextView) root.findViewById(R.id.couple_anniversary);
         mAnniversaryEditButton = (ImageButton) root.findViewById(R.id.couple_edit_anniversary_button);
         mBreakButton = (Button) root.findViewById(R.id.couple_details_break_button);
+
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.couple_details_toolbar);
+        AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
+        parentActivity.setSupportActionBar(toolbar);
+        ActionBar actionBar = parentActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         mChangeImageButton.setOnClickListener(this);
         mAnniversaryEditButton.setOnClickListener(this);

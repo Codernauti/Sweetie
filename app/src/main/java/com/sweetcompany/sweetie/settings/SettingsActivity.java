@@ -47,4 +47,10 @@ public class SettingsActivity extends BaseActivity {
         super.onPause();
         mController.detachListener();
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
 }

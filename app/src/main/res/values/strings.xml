@@ -21,6 +21,7 @@
     <string name="action_new_geogift_title_dialog">Insert new geogift title</string>
 
     <!-- CoupleDetailsFragment -->
+    <string name="couple_details_title_appbar">Couple</string>
     <string name="search_partner_button">Find Partner</string>
     <string name="break_couple_button">Break</string>
     <string name="couple_anniversary_label">Anniversary:</string>
@@ -43,6 +44,7 @@
     <string name="couples_date_default">16 settembre 2017</string>
 
     <!-- SettingsFragment -->
+    <string name="settings_title_appbar">Settings</string>
     <string name="settings_info_label">Info</string>
     <string name="settings_username_label">Username:</string>
     <string name="settings_email_label">Email:</string>

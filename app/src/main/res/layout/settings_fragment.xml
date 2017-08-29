@@ -8,7 +8,7 @@
     android:background="#FFF">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/settings_toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginBottom="10dp"
@@ -33,7 +33,7 @@
         android:layout_height="180dp"
         android:scaleType="fitXY"
 
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toBottomOf="@+id/settings_toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/settings_info_layout"
@@ -46,9 +46,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/settings_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/settings_info_layout"
+        app:layout_constraintBottom_toBottomOf="@+id/settings_image"
         />
 
     <TextView
@@ -58,9 +58,9 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/settings_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/settings_info_layout"
+        app:layout_constraintBottom_toBottomOf="@+id/settings_image"
         />
 
 

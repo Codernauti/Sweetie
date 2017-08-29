@@ -50,7 +50,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         mGenderTextView = (TextView) root.findViewById(R.id.settings_gender);
 
         // init toolbar
-        Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.settings_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(toolbar);
         ActionBar actionBar = parentActivity.getSupportActionBar();

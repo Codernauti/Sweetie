@@ -38,8 +38,10 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         PhotoVM photoVM = (PhotoVM) mediaVM;
         MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, photoVM.getUriLocal(), photoVM.getUriStorage());
 
-        mController.sendMedia(newMedia);
-        mView.updateMedia(mediaVM);
+        String newMediaUID = mController.sendMedia(newMedia);
+        newMedia.setKey(newMediaUID);
+        photoVM.setKey(newMediaUID);
+        mView.updateMedia(photoVM);
     }
 
     @Override
@@ -50,42 +52,24 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
 
     @Override
     public void onMediaAdded(MediaFB media) {
-        MediaVM mediaVM = createPhotoVM(media);
+        MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
         mView.updateMedia(mediaVM);
     }
 
     @Override
     public void onMediaRemoved(MediaFB media) {
-        MediaVM mediaVM = createPhotoVM(media);
+        MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
         mView.removeMedia(mediaVM);
     }
 
     @Override
     public void onMediaChanged(MediaFB media) {
-        MediaVM mediaVM = createPhotoVM(media);
+        MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
         mView.changeMedia(mediaVM);
     }
 
     @Override
     public void onUploadPercent(MediaFB media, int perc){
-        MediaVM mediaVM = createPhotoVM(media);
-        mView.updatePercentUpload(mediaVM, perc);
-    }
-
-    /**
-     * Convert MediaFB to PhotoVM
-     * @param media
-     * @return
-     */
-    private MediaVM createPhotoVM(MediaFB media) {
-        // Understand if the message is of Main User
-        boolean who = MediaVM.THE_PARTNER;
-        if (media.getEmail() != null) {   // TODO remove check in future
-            if (media.getEmail().equals(mUserMail)) {
-                who = MediaVM.THE_MAIN_USER;
-            }
-        }
-        // Create respective ViewModel
-        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getKey(), media.getUriLocal(), media.getUriStorage(), 0);
+        mView.updatePercentUpload(media.getKey(), perc);
     }
 }

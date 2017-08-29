@@ -11,13 +11,12 @@ interface GalleryContract {
 
     interface View {
         void setPresenter(GalleryContract.Presenter presenter);
-        void updateMediaList(List<MediaVM> medias);
         void updateGalleryInfo(GalleryVM gallery);
 
         void updateMedia(MediaVM mediaVM);
         void removeMedia(MediaVM mediaVM);
         void changeMedia(MediaVM mediaVM);
-        void updatePercentUpload(MediaVM mediaVM, int perc);
+        void updatePercentUpload(String mediaUid, int perc);
 
     }
     

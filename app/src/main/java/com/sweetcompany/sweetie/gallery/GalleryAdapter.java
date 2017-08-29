@@ -86,8 +86,10 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         {
             removeMedia(media);
         }
-        mMediasList.add(media);
+        //TODO not clear
+        mMediasList.add(0, media); //add in head
         notifyItemInserted(mMediasList.size() - 1);
+        updateMediaList();
     }
 
     void removeMedia(MediaVM mediaVM) {
@@ -128,10 +130,8 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         return -1;
     }
 
-    void updateMediaList(List<MediaVM> mediasVM) {
-        mMediasList.clear();
-        mMediasList.addAll(mediasVM);
-        Collections.reverse(mMediasList);
+    void updateMediaList() {
+        //Collections.reverse(mMediasList);
         this.notifyDataSetChanged();
     }
 

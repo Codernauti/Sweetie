@@ -10,7 +10,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.GeogiftFB;
 
-import java.util.ArrayList;
 
 /**
  * Created by ghiro on 29/08/2017.
@@ -24,6 +23,7 @@ public class FirebaseGeogiftController {
     private ChildEventListener mGeogiftsListener;
 
     private GeogiftControllerListener mListener;
+    private String userUid;
 
     public interface GeogiftControllerListener {
         void onAddedGeogift(GeogiftFB geogiftFB);
@@ -31,8 +31,13 @@ public class FirebaseGeogiftController {
     }
 
 
-    public FirebaseGeogiftController(String coupleUid) {
+    public FirebaseGeogiftController(String coupleUid, String userUid) {
         mGeogiftsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GEOGIFTS + "/" + coupleUid);
+        this.userUid = userUid;
+    }
+
+    public void setListener(GeogiftControllerListener listener){
+        mListener = listener;
     }
 
     public void retrieveGeogiftFB(String geoKey) {
@@ -61,9 +66,12 @@ public class FirebaseGeogiftController {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     GeogiftFB geogiftFB = dataSnapshot.getValue(GeogiftFB.class);
+                    if (!geogiftFB.getUserCreatorUID().equals(userUid)) {
+                        Log.d(TAG, "onGeogiftAdded");
 
-                    if (mListener != null) {
-                        mListener.onAddedGeogift(geogiftFB);
+                        if (mListener != null) {
+                            mListener.onAddedGeogift(geogiftFB);
+                        }
                     }
                 }
 

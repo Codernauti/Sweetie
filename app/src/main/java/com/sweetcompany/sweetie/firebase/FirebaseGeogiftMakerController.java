@@ -82,7 +82,7 @@ public class FirebaseGeogiftMakerController {
         geogift.setLon(geoItem.getLon());
         geogift.setBookmarked(geoItem.isBookmarked());
         geogift.setDatetimeCreation(actionFB.getDataTime());
-        geogift.setVisited(false);
+        geogift.setTriggered(false);
 
         // put into queue for network
         newGeogiftPush.setValue(geogift);

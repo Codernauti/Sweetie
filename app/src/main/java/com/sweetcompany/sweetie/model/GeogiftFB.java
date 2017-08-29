@@ -25,8 +25,7 @@ public class GeogiftFB {
     private boolean bookmarked;
     private String datetimeCreation;
     private String datetimeVisited;
-    private boolean isVisited;
-
+    private boolean isTriggered;
 
     // For firebase
     public GeogiftFB() {
@@ -123,12 +122,12 @@ public class GeogiftFB {
         this.datetimeVisited = datetimeVisited;
     }
 
-    public boolean isVisited() {
-        return isVisited;
+    public boolean isTriggered() {
+        return isTriggered;
     }
 
-    public void setVisited(boolean visited) {
-        isVisited = visited;
+    public void setTriggered(boolean visited) {
+        isTriggered = visited;
     }
 
 }

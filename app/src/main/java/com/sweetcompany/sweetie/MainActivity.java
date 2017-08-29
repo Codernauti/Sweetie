@@ -4,16 +4,11 @@ package com.sweetcompany.sweetie;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.sweetcompany.sweetie.registration.RegisterActivity;
-import com.sweetcompany.sweetie.utils.Utility;
-
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -40,6 +35,7 @@ public class MainActivity extends AppCompatActivity{
             // User logged, start Service UserMonitorService
             startService(new Intent(this, UserMonitorService.class));
             startActivity(new Intent(this, DashboardActivity.class));
+            startService(new Intent(this, GeogiftMonitorService.class));
         }
 
         /*if (Utility.checkPreferencesSetted(getApplicationContext())) {

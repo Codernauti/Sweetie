@@ -86,8 +86,10 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         {
             removeMedia(media);
         }
-        mMediasList.add(media);
+        //TODO not clear
+        mMediasList.add(0, media); //add in head
         notifyItemInserted(mMediasList.size() - 1);
+        updateMediaList();
     }
 
     void removeMedia(MediaVM mediaVM) {
@@ -117,13 +119,6 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         return -1;
     }
 
-    void updateMediaList(List<MediaVM> mediasVM) {
-        mMediasList.clear();
-        mMediasList.addAll(mediasVM);
-        Collections.reverse(mMediasList);
-        this.notifyDataSetChanged();
-    }
-
     private int searchIndexMediaByUri(MediaVM media) {
         String modifyMediaUri = media.getUriLocal();
         for (int i = 0; i < mMediasList.size(); i++) {
@@ -135,12 +130,22 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         return -1;
     }
 
-    void updatePercentUpload(MediaVM mediaVM, int perc){
-        int indexOldMedia = searchIndexMediaByUri(mediaVM);
-        if (indexOldMedia != -1) {
-            mediaVM.setPercent(perc);
-            mMediasList.set(indexOldMedia, mediaVM);
-            notifyItemChanged(indexOldMedia);
+    void updateMediaList() {
+        //Collections.reverse(mMediasList);
+        this.notifyDataSetChanged();
+    }
+
+
+    void updatePercentUpload(String mediaUid, int perc){
+        for (int indexMediaOf = 0; indexMediaOf < mMediasList.size(); indexMediaOf++) {
+
+            String mediaKey = mMediasList.get(indexMediaOf).getKey();
+
+            if (mediaKey.equals(mediaUid)) {
+                ((PhotoVM) mMediasList.get(indexMediaOf)).setPercent(perc);
+                notifyItemChanged(indexMediaOf);
+                return;
+            }
         }
     }
 

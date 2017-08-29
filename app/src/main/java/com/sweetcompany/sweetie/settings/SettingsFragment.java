@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
 
 /**
@@ -64,7 +65,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
                                boolean gender) {
         Glide.with(getActivity())
                 .load(userImageUri)
-                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mImageView);
 
         mUsernameTextView.setText(username);

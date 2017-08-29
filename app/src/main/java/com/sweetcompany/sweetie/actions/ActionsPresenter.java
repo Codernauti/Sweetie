@@ -99,22 +99,22 @@ public class ActionsPresenter implements ActionsContract.Presenter,
             // TODO: use a Factory Method
             // for example use ActionConverter.convertToViewModel(action);
             switch (action.getType()) {
-                case 0:
+                case ActionFB.CHAT:
                     newActionVM = new ActionChatVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
-                case 1:
+                case ActionFB.GALLERY:
                     newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
-                case 2:
+                case ActionFB.TODOLIST:
                     newActionVM = new ActionToDoListVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
-                case 3:
+                case ActionFB.GEOGIFT:
                     Log.d(TAG, "geogift finded!");
                         if(action.getUserCreator().equals(mUserID) || action.isVisited()) {
                             newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),

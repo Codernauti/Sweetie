@@ -119,22 +119,10 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         return -1;
     }
 
-    private int searchIndexMediaByUri(MediaVM media) {
-        String modifyMediaUri = media.getUriLocal();
-        for (int i = 0; i < mMediasList.size(); i++) {
-            String mediaUri = mMediasList.get(i).getUriLocal();
-            if (mediaUri.equals(modifyMediaUri)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     void updateMediaList() {
         //Collections.reverse(mMediasList);
         this.notifyDataSetChanged();
     }
-
 
     void updatePercentUpload(String mediaUid, int perc){
         for (int indexMediaOf = 0; indexMediaOf < mMediasList.size(); indexMediaOf++) {
@@ -148,7 +136,6 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
             }
         }
     }
-
 
     /* Listener from ViewHolder */
     @Override

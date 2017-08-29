@@ -114,11 +114,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     }
 
     @Override
-    public void updateMediaList(List<MediaVM> mediaVM) {
-        mGalleryAdapter.updateMediaList(mediaVM);
-    }
-
-    @Override
     public void updateGalleryInfo(GalleryVM gallery) {
         mToolBar.setTitle(gallery.getTitle());
     }
@@ -139,8 +134,8 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     }
 
     @Override
-    public void updatePercentUpload(MediaVM mediaVM, int perc){
-        mGalleryAdapter.updatePercentUpload(mediaVM, perc);
+    public void updatePercentUpload(String mediaUid, int perc){
+        mGalleryAdapter.updatePercentUpload(mediaUid, perc);
     }
 
     public void takePictures() {

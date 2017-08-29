@@ -1,7 +1,5 @@
 package com.sweetcompany.sweetie.chat;
 
-import android.view.View;
-
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;

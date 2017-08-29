@@ -131,7 +131,6 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
         Glide.with(this)
                 .load(imageUri)
                 .placeholder(R.drawable.image_placeholder)
-                .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mCoupleImage);
 

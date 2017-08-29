@@ -106,7 +106,6 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
                 showUploadProgress();
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void showUploadProgress() {

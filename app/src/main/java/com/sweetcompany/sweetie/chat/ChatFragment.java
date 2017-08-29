@@ -277,9 +277,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             mImagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
             createMessageFromImageAndSend(mImagesPicked);
-            return;
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void createMessageFromImageAndSend(List<Image> images) {

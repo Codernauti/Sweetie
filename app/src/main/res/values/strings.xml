@@ -51,6 +51,10 @@
     <string name="settings_phone_label">Telephone: </string>
     <string name="settings_gender_label">Gender:</string>
 
+    <string name="settings_options_label">Options</string>
+    <string name="settings_geogift_label">Geogift</string>
+    <string name="settings_geogift_desc">Give to app the permission to find geogift</string>
+
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
 

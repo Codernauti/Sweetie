@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
@@ -83,6 +84,7 @@ public class GeofenceTrasitionService extends IntentService {
 
             String geogiftKey = intent.getStringExtra(GEOGIFT_KEY);
             mGeogiftDbReference.child(geogiftKey + "/" + "isTriggered").setValue(true);
+            mGeogiftDbReference.child(geogiftKey + "/" + "datetimeVisited").setValue(DataMaker.get_UTC_DateTime());
         }
     }
 

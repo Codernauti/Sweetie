@@ -1,10 +1,14 @@
 package com.sweetcompany.sweetie.settings;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,14 +18,18 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.sweetcompany.sweetie.GeogiftMonitorService;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.geogift.GeofenceTrasitionService;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
+import com.sweetcompany.sweetie.utils.Utility;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -29,9 +37,11 @@ import static android.app.Activity.RESULT_OK;
  * Created by Eduard on 28-Aug-17.
  */
 
-public class SettingsFragment extends Fragment implements SettingsContract.View, View.OnClickListener {
+public class SettingsFragment extends Fragment implements SettingsContract.View,
+        View.OnClickListener {
 
     private static final String TAG = "SettingsFragment";
+    private static final int PERMISSION_ACCESS_FINE_LOCATION_CODE = 100;
 
     private SettingsContract.Presenter mPresenter;
 
@@ -39,10 +49,14 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
     private ImageView mImageView;
     private TextView mProgressImgUploadTextView;
     private ProgressBar mProgressImgUploadBar;
+
     private TextView mUsernameTextView;
     private TextView mEmailTextView;
     private TextView mTelephoneTextView;
     private TextView mGenderTextView;
+
+    private Switch mGeogiftSwitch;
+    private boolean mGeogiftWasEnabled;
 
     @Nullable
     @Override
@@ -62,6 +76,11 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         mTelephoneTextView = (TextView) root.findViewById(R.id.settings_phone);
         mGenderTextView = (TextView) root.findViewById(R.id.settings_gender);
 
+        mGeogiftSwitch = (Switch) root.findViewById(R.id.settings_geogift_switch);
+
+        mGeogiftWasEnabled = Utility.getBooleanPreference(getContext(), SharedPrefKeys.Options.GEOGIFT_ENABLED);
+        mGeogiftSwitch.setChecked(mGeogiftWasEnabled);
+
         // init toolbar
         Toolbar toolbar = (Toolbar) root.findViewById(R.id.settings_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
@@ -73,6 +92,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         }
 
         mChangeImageButton.setOnClickListener(this);
+        mGeogiftSwitch.setOnClickListener(this);
 
         return root;
     }
@@ -117,8 +137,43 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
                         .setAspectRatio(256,256)
                         .start(getContext(), this);
                 break;
+
+            case R.id.settings_geogift_switch:
+
+                if (mGeogiftWasEnabled) {
+                    setGeogiftFeature(false);
+                } else {
+                    Log.d(TAG, "ask permission");
+
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+
+                        requestPermissions(new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                                PERMISSION_ACCESS_FINE_LOCATION_CODE);
+                        // go to onRequestPermissionsResult()
+                    } else {
+                        // permission yet given
+                        setGeogiftFeature(true);
+                    }
+                }
             default:
                 break;
+        }
+    }
+
+    private void setGeogiftFeature(boolean enable) {
+        if (enable) {
+            Log.d(TAG, "enable geogift");
+            mGeogiftWasEnabled = true;
+            Utility.saveBooleanPreference(getContext(), SharedPrefKeys.Options.GEOGIFT_ENABLED, true);
+            getActivity().startService(new Intent(getContext(), GeogiftMonitorService.class));
+        } else {
+            Log.d(TAG, "disable geogift");
+            mGeogiftWasEnabled = false;
+            Utility.saveBooleanPreference(getContext(), SharedPrefKeys.Options.GEOGIFT_ENABLED, false);
+            getActivity().stopService(new Intent(getContext(), GeogiftMonitorService.class));
+            getActivity().stopService(new Intent(getContext(), GeofenceTrasitionService.class));
+            // TODO: unregister the geogift.
         }
     }
 
@@ -153,6 +208,25 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         } else {
             mProgressImgUploadTextView.setVisibility(View.GONE);
             mProgressImgUploadBar.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_ACCESS_FINE_LOCATION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "permission given");
+                    setGeogiftFeature(true);
+                } else {
+                    Log.d(TAG, "permission not give");
+                    setGeogiftFeature(false);
+                    mGeogiftSwitch.setChecked(false);
+                }
+                break;
+            }
+            default:
+                break;
         }
     }
 }

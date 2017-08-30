@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -160,6 +161,7 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
         Log.d(TAG, "getLastKnownLocation()");
 
         if ( checkPermissionFineLocation() ) {
+            Log.d(TAG, "permission ok... continuing");
             lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             if ( lastLocation != null ) {
                 //writeLastLocation();
@@ -167,28 +169,17 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
             } else {
                 Log.w(TAG, "No location retrieved yet");
             }
+        } else {
+            Log.d(TAG, "Service cannot execute, it need the permission of ACCES_FINE_LOCATION");
+            // TODO: show a notification to BaseActivity
         }
-        else askPermission();
     }
 
-    // Check for permission to access Location
     private boolean checkPermissionFineLocation() {
-        Log.d(TAG, "checkPermission()");
-        // Ask for permission if it wasn't granted yet
         return (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED );
     }
 
-    // Asks for permission
-    private void askPermission() {
-        Log.d(TAG, "askPermission()");
-        //TODO in activity
-        /*ActivityCompat.requestPermissions(
-                this,
-                new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION },
-                REQ_PERMISSION_UPDATE
-        );*/
-    }
 
     @Override
     public void onConnectionSuspended(int i) {

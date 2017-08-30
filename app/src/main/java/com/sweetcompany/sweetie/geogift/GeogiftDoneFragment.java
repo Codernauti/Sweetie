@@ -232,7 +232,7 @@ public class GeogiftDoneFragment extends Fragment implements
         addressText.setText(getResources().getString(R.string.address_geogift)+" "+geoitem.getAddress());
         datetimePositionedText.setText(getResources().getString(R.string.datetime_positioned_geogift)+" "+ DataMaker.get_dd_MM_Local(geoitem.getDatetimeCreation()));
         if(geoitem.getIsTriggered()){
-            isVisitedText.setText(getResources().getString(R.string.isvisited_yes_geogifty));
+            isVisitedText.setText(getResources().getString(R.string.isvisited_yes_geogifty) + " at " + geoitem.getDatetimeVisited());
             isVisitedText.setTextColor(Color.GREEN);
         }
         else{

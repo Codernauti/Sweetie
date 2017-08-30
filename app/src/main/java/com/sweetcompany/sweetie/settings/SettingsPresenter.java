@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.settings;
 
+import android.net.Uri;
+
 import com.sweetcompany.sweetie.firebase.FirebaseSettingsController;
 import com.sweetcompany.sweetie.model.UserFB;
 
@@ -22,6 +24,13 @@ public class SettingsPresenter implements SettingsContract.Presenter,
     }
 
     @Override
+    public void uploadImage(Uri uriImage) {
+        mController.changeUserImage(uriImage);
+    }
+
+    // controller callback
+
+    @Override
     public void onUserChanged(UserFB user) {
         // TODO: convert UserFB to UserVM
         mView.updateUserInfo(user.getImageUrl(), user.getUsername(), user.getEmail(),
@@ -30,6 +39,6 @@ public class SettingsPresenter implements SettingsContract.Presenter,
 
     @Override
     public void onImageUploadProgress(int progress) {
-
+        mView.updateImageUploadProgress(progress);
     }
 }

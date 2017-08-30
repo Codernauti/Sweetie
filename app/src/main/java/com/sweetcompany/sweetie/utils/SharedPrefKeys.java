@@ -29,4 +29,9 @@ public interface SharedPrefKeys {
     String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
     String KEY_GEOFENCE_LON = "GEOFENCE LONGITUDE";
     String GEOGIFT_SET = "GEOGIFT_SET_KEYS";
+
+    // Options sharedPreferences
+    interface Options {
+        String GEOGIFT_ENABLED = "geogift_enabled";
+    }
 }

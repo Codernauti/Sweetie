@@ -22,7 +22,7 @@ public class ActionGeogiftVM extends ActionVM {
         super.setDataTime(date);
         super.setType(type);
         super.setChildKey(childKey);
-        super.setActionKey(actionKey);
+        super.setKey(actionKey);
         isVisited = visited;
     }
 
@@ -37,7 +37,7 @@ public class ActionGeogiftVM extends ActionVM {
         Intent intent = new Intent(mContext, GeogiftDoneActivity.class);
         intent.putExtra(GeogiftDoneActivity.GEOGIFT_TITLE, super.getTitle());
         intent.putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, super.getChildKey());
-        intent.putExtra(GeogiftDoneActivity.ACTION_DATABASE_KEY, super.getActionKey());
+        intent.putExtra(GeogiftDoneActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);
     }

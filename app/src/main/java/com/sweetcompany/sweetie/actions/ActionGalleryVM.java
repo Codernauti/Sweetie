@@ -20,7 +20,7 @@ class ActionGalleryVM extends ActionVM {
         super.setDataTime(date);
         super.setType(type);
         super.setChildKey(childKey);
-        super.setActionKey(actionKey);
+        super.setKey(actionKey);
     }
 
     @Override
@@ -30,7 +30,7 @@ class ActionGalleryVM extends ActionVM {
         Intent intent = new Intent(mContext, GalleryActivity.class);
         intent.putExtra(GalleryActivity.GALLERY_TITLE, super.getTitle());
         intent.putExtra(GalleryActivity.GALLERY_DATABASE_KEY, super.getChildKey());
-        intent.putExtra(GalleryActivity.ACTION_DATABASE_KEY, super.getActionKey());
+        intent.putExtra(GalleryActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);
 

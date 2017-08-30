@@ -76,7 +76,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         mTelephoneTextView = (TextView) root.findViewById(R.id.settings_phone);
         mGenderTextView = (TextView) root.findViewById(R.id.settings_gender);
 
-        mGeogiftSwitch = (Switch) root.findViewById(R.id.settings_geogift_switch);
+        //mGeogiftSwitch = (Switch) root.findViewById(R.id.settings_geogift_switch);
 
         mGeogiftWasEnabled = Utility.getBooleanPreference(getContext(), SharedPrefKeys.Options.GEOGIFT_ENABLED);
         mGeogiftSwitch.setChecked(mGeogiftWasEnabled);
@@ -138,7 +138,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
                         .start(getContext(), this);
                 break;
 
-            case R.id.settings_geogift_switch:
+            /*case R.id.settings_geogift_switch:
 
                 if (mGeogiftWasEnabled) {
                     setGeogiftFeature(false);
@@ -155,7 +155,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
                         // permission yet given
                         setGeogiftFeature(true);
                     }
-                }
+                }*/
             default:
                 break;
         }

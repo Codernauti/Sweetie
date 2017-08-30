@@ -22,7 +22,6 @@ abstract class ActionVM {
     private String mDdata; // TODO change format
     private int mType;
     private String mChildKey;
-    private String mActionKey;
 
     ActionVM() {
     }
@@ -73,10 +72,6 @@ abstract class ActionVM {
         this.mChildKey = childKey;
     }
 
-    public void setActionKey(String actionKey){
-        this.mActionKey = actionKey;
-    }
-
     /*** GETTER ***/ //TODO crate assert null function
 
     public String getKey(){
@@ -99,7 +94,6 @@ abstract class ActionVM {
 
     String getChildKey() { return mChildKey; }
 
-    String getActionKey(){ return mActionKey; }
 
     /*** override method ***/
 

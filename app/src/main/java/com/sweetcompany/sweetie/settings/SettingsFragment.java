@@ -1,11 +1,14 @@
 package com.sweetcompany.sweetie.settings;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -73,7 +76,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         mTelephoneTextView = (TextView) root.findViewById(R.id.settings_phone);
         mGenderTextView = (TextView) root.findViewById(R.id.settings_gender);
 
-        //mGeogiftSwitch = (Switch) root.findViewById(R.id.settings_geogift_switch);
+        mGeogiftSwitch = (Switch) root.findViewById(R.id.settings_geogift_switch);
 
         mGeogiftWasEnabled = Utility.getBooleanPreference(getContext(), SharedPrefKeys.Options.GEOGIFT_ENABLED);
         mGeogiftSwitch.setChecked(mGeogiftWasEnabled);
@@ -135,7 +138,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
                         .start(getContext(), this);
                 break;
 
-            /*case R.id.settings_geogift_switch:
+            case R.id.settings_geogift_switch:
 
                 if (mGeogiftWasEnabled) {
                     setGeogiftFeature(false);
@@ -152,7 +155,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
                         // permission yet given
                         setGeogiftFeature(true);
                     }
-                }*/
+                }
             default:
                 break;
         }

@@ -14,10 +14,9 @@ import android.util.Log;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.firebase.FirebaseGeogiftIntentController;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -37,8 +36,7 @@ public class GeofenceTrasitionService extends IntentService {
     public static final String GEOGIFT_ACTION_KEY = "ACTION_KEY";
     public static final String GEOGIFT_KEY = "GEOGIFT_KEY";
 
-    private DatabaseReference mActionsDbReference;
-    private DatabaseReference mGeogiftDbReference;
+    private FirebaseGeogiftIntentController mController = null;
 
     public GeofenceTrasitionService() {
         super(TAG);
@@ -50,9 +48,7 @@ public class GeofenceTrasitionService extends IntentService {
         super.onCreate();
         Log.d(TAG, "onCreate");
 
-        //TODO add controller
-        mActionsDbReference = FirebaseDatabase.getInstance().getReference("actions" + "/" + Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID));
-        mGeogiftDbReference = FirebaseDatabase.getInstance().getReference("geogifts" + "/" + Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID));
+        mController = new FirebaseGeogiftIntentController(Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID), Utility.getStringPreference(this, SharedPrefKeys.USER_UID));
     }
 
     @Override
@@ -80,11 +76,10 @@ public class GeofenceTrasitionService extends IntentService {
 
             //Set geogift triggered
             String actionKey = intent.getStringExtra(GEOGIFT_ACTION_KEY);
-            mActionsDbReference.child(actionKey + "/" + "isTriggered").setValue(true);
-
             String geogiftKey = intent.getStringExtra(GEOGIFT_KEY);
-            mGeogiftDbReference.child(geogiftKey + "/" + "isTriggered").setValue(true);
-            mGeogiftDbReference.child(geogiftKey + "/" + "datetimeVisited").setValue(DataMaker.get_UTC_DateTime());
+            String dateTime = DataMaker.get_UTC_DateTime();
+
+            mController.setTriggeredGeogift(actionKey, geogiftKey, dateTime);
         }
     }
 
@@ -115,7 +110,6 @@ public class GeofenceTrasitionService extends IntentService {
         stackBuilder.addParentStack(MainActivity.class);
         stackBuilder.addNextIntent(notificationIntent);
         PendingIntent notificationPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
 
         // Creating and sending Notification
         NotificationManager notificatioMng =
@@ -152,6 +146,5 @@ public class GeofenceTrasitionService extends IntentService {
                 return "Unknown error.";
         }
     }
-
 
 }

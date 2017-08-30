@@ -22,7 +22,8 @@ public class ActionFB {
     private int type;
     private String childKey;
     private String actionKey;
-    private boolean visited; //for geogift
+    private boolean isOpened;
+    private boolean isTriggered; //geogift
 
     ActionFB() {}
 
@@ -100,10 +101,19 @@ public class ActionFB {
         this.actionKey = actionKey;
     }
 
-    public boolean isVisited() {
-        return visited;
+    public boolean isOpened() {
+        return isOpened;
     }
-    public void setVisited(boolean visited) {
-        this.visited = visited;
+
+    public void setOpened(boolean opened) {
+        this.isOpened = opened;
+    }
+
+    public boolean getIsTriggered() {
+        return isTriggered;
+    }
+
+    public void setIsTriggered(boolean isTriggered) {
+        this.isTriggered = isTriggered;
     }
 }

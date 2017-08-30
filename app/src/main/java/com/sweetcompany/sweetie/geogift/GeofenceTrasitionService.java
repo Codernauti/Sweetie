@@ -14,8 +14,12 @@ import android.util.Log;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
+import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +33,22 @@ public class GeofenceTrasitionService extends IntentService {
     private static final String TAG = "GeofenceTrasitionServ";
 
     public static final int GEOFENCE_NOTIFICATION_ID = 0;
+    public static final String GEOGIFT_ACTION_KEY = "ACTION_KEY";
+
+    private DatabaseReference mActionsDbReference;
 
     public GeofenceTrasitionService() {
         super(TAG);
+
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
+
+        //TODO add controller
+        mActionsDbReference = FirebaseDatabase.getInstance().getReference("actions" + "/" + Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID));
     }
 
     @Override
@@ -52,8 +63,7 @@ public class GeofenceTrasitionService extends IntentService {
 
         int geoFenceTransition = geofencingEvent.getGeofenceTransition();
         // Check if the transition type is of interest
-        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                geoFenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT  || geoFenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
+        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ) {
 
             Log.d(TAG, "geofence triggered!");
             // Get the geofence that were triggered
@@ -63,6 +73,10 @@ public class GeofenceTrasitionService extends IntentService {
 
             // Send notification details as a String
             sendNotification( geofenceTransitionDetails );
+
+            //Set geogift triggered
+            String actionKey = intent.getStringExtra(GEOGIFT_ACTION_KEY);
+            mActionsDbReference.child(actionKey + "/" + "isTriggered").setValue(true);
         }
     }
 
@@ -74,12 +88,10 @@ public class GeofenceTrasitionService extends IntentService {
         }
 
         String status = null;
-        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER )
+        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ) {
             status = "Entering ";
-        else if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT )
-            status = "Exiting ";
-        else if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL )
-            status = "Dwell ";
+        }
+
         return status + TextUtils.join( ", ", triggeringGeofencesList);
     }
 

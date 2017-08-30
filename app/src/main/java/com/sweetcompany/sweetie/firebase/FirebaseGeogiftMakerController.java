@@ -72,7 +72,7 @@ public class FirebaseGeogiftMakerController {
 
         // Create Gallery and set Gallery
         GeogiftFB geogift = new GeogiftFB();
-        geogift.setKey(newGeogiftKey);
+        geogift.setActionKey(newActionKey);
         geogift.setUserCreatorUID(geoItem.getUserCreatorUID());
         geogift.setType(geoItem.getType());
         geogift.setMessage(geoItem.getMessage());
@@ -82,7 +82,6 @@ public class FirebaseGeogiftMakerController {
         geogift.setLon(geoItem.getLon());
         geogift.setBookmarked(geoItem.isBookmarked());
         geogift.setDatetimeCreation(actionFB.getDataTime());
-        geogift.setTriggered(false);
 
         // put into queue for network
         newGeogiftPush.setValue(geogift);

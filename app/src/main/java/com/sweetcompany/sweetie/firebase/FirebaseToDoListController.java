@@ -136,6 +136,11 @@ public class FirebaseToDoListController {
         updates.put(mToDoListUrl + "/" + chk.getKey() + "/" + Constraints.CHECKED, chk.isChecked());
         updates.put(mToDoListUrl + "/" + chk.getKey() + "/" + Constraints.TEXT, chk.getText());
         mDatabase.updateChildren(updates);
+        // update description and dataTime of action of this associated ToDoList
+        Map<String, Object> actionUpdates = new HashMap<>();
+        actionUpdates.put("description", chk.getText());
+        actionUpdates.put("dataTime", chk.getDateTime());
+        mAction.updateChildren(actionUpdates);
     }
 
     public void addCheckEntry(CheckEntryFB chk) {
@@ -145,16 +150,12 @@ public class FirebaseToDoListController {
         // push a CheckEntry into mToDoListCheckEntry reference
         mToDoListCheckEntry.push().setValue(chk);
 
-        // update description and dataTime of action of this associated ToDoList
-        Map<String, Object> actionUpdates = new HashMap<>();
-        actionUpdates.put("description", chk.getText());
-        actionUpdates.put("dataTime", chk.getDateTime());
-        mAction.updateChildren(actionUpdates);
+
     }
 
-    public void removeCheckEntry(CheckEntryFB chk){
-        Log.d(TAG, "Remove CheckEntryFB: " + chk);
-        mToDoListCheckEntry.child(chk.getKey()).removeValue();
+    public void removeCheckEntry(String key){
+        Log.d(TAG, "Remove CheckEntryFB: " + key);
+        mToDoListCheckEntry.child(key).removeValue();
     }
 
 }

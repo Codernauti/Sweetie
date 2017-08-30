@@ -11,23 +11,16 @@ import java.util.List;
 public interface ToDoListContract {
     interface View {
         void setPresenter(ToDoListContract.Presenter presenter);
-        void updateCheckEntries(List<CheckEntryVM> checkEntries);
         void updateToDoListInfo(ToDoListVM toDoList);
-
         void updateCheckEntry(CheckEntryVM checkEntry);
         void removeCheckEntry(CheckEntryVM checkEntry);
         void changeCheckEntry(CheckEntryVM checkEntry);
-        void editCheckEntry(CheckEntryVM checkEntry);
+
     }
     interface Presenter {
         void addCheckEntry(CheckEntryVM checkEntry);
-        void removeCheckEntry(CheckEntryVM checkEntry);
+        void removeCheckEntry(String key);
         void changeCheckEntry(CheckEntryVM checkEntry);
-        void editCheckEntry(CheckEntryVM checkEntry);
-
         void checkedCheckEntry(CheckEntryVM checkEntry);
-    }
-    interface DialogView {
-        void setPresenter(Presenter presenter);
     }
 }

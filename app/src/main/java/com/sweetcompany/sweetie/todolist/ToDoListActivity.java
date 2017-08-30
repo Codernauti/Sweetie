@@ -49,7 +49,7 @@ public class ToDoListActivity extends BaseActivity {
                     savedInstanceState.getString(ACTION_DATABASE_KEY));
             Log.d(TAG, "from Intent ACTION_DATABASE_KEY: " +
                     savedInstanceState.getString(ACTION_DATABASE_KEY));
-        }else {
+        } else {
             Log.w(TAG, "No savedInstanceState or intentArgs!");
         }
 
@@ -67,8 +67,7 @@ public class ToDoListActivity extends BaseActivity {
         if (mToDoListKey != null) {
             mController = new FirebaseToDoListController(super.mCoupleUid, mToDoListKey, mActionKey);
             mPresenter = new ToDoListPresenter(mView, mController, super.mUserEmail);
-        }
-        else {
+        } else {
             Log.w(TAG, "Impossible to create ToDoListController and ToDoListPresenter because ToDoListKey is NULL");
         }
 

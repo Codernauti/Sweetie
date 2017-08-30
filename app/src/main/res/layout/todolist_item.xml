@@ -7,21 +7,28 @@
     android:paddingRight="20dp">
 
     <CheckBox
-        android:id="@+id/checkEntry"
+        android:id="@+id/todolist_checkEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="1dp" />
 
-    <TextView
-        android:id="@+id/todolist_textView"
+    <EditText
+        android:id="@+id/todolist_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="25"
         android:padding="1dp"
-        android:text="text"
+        android:background="@android:color/transparent"
+        android:text=""
         android:visibility="visible" />
 
-
+    <ImageButton
+        android:id="@+id/todolist_imageButton"
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:layout_weight="0.97"
+        android:visibility="invisible"
+        android:src="@drawable/close_circle" />
 
 </LinearLayout>

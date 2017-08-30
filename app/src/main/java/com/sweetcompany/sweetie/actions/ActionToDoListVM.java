@@ -17,7 +17,7 @@ public class ActionToDoListVM extends ActionVM{
         super.setDataTime(date);
         super.setType(type);
         super.setChildKey(childKey);
-        super.setActionKey(actionKey);
+        super.setKey(actionKey);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class ActionToDoListVM extends ActionVM{
         Intent intent = new Intent(mContext, ToDoListActivity.class);
         intent.putExtra(ToDoListActivity.TODOLIST_TITLE, super.getTitle());
         intent.putExtra(ToDoListActivity.TODOLIST_DATABASE_KEY, super.getChildKey());
-        intent.putExtra(ToDoListActivity.ACTION_DATABASE_KEY, super.getActionKey());
+        intent.putExtra(ToDoListActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);
     }

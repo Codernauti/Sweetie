@@ -20,7 +20,7 @@ class ActionChatVM extends ActionVM {
         super.setDataTime(date);
         super.setType(type);
         super.setChildKey(childKey);
-        super.setActionKey(actionKey);
+        super.setKey(actionKey);
     }
 
     @Override
@@ -30,7 +30,7 @@ class ActionChatVM extends ActionVM {
         Intent intent = new Intent(mContext, ChatActivity.class);
         intent.putExtra(ChatActivity.CHAT_TITLE, super.getTitle());
         intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, super.getChildKey());
-        intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, super.getActionKey());
+        intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);
 

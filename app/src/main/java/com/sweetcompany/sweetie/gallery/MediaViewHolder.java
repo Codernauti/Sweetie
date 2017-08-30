@@ -8,14 +8,14 @@ import android.view.View;
  * Created by ghiro on 25/07/2017.
  */
 
-abstract class MediaViewHolder extends RecyclerView.ViewHolder {
+abstract class MediaViewHolder extends GalleryViewHolder {
+
+    protected OnViewHolderClickListener mListener;
 
     interface OnViewHolderClickListener {
         void onPhotoClicked(int adapterPosition);
         void onPhotoLongClicked(int adapterPosition);
     }
-
-    protected OnViewHolderClickListener mListener;
 
     void setViewHolderClickListener(OnViewHolderClickListener listener) {
         mListener = listener;

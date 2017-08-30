@@ -19,7 +19,7 @@ class PairingPresenter implements PairingContract.Presenter,
 
     private final String mUserUsername;
     private final String mUserPhoneNumber;
-    private final String mUserPairingRequestSent;
+    private final String mUserPairingRequestSent;   // It keep trace of previous pairing request
     private final PairingContract.View mView;
 
     private final FirebasePairingController mController;

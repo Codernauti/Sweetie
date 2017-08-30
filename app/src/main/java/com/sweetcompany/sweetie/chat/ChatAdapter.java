@@ -179,12 +179,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
                 return;
             }
         }
-        /*int indexMessageOf = searchIndexMessageOf(mediaVM);
-        if (indexMessageOf != -1) {
-            //mediaVM.setPercent(perc);
-            //mMessageList.set(indexMessageOf, mediaVM);
-            notifyItemChanged(indexMessageOf);
-        }*/
     }
 
 

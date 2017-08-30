@@ -1,7 +1,5 @@
 package com.sweetcompany.sweetie.gallery;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.view.View;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -41,7 +39,12 @@ public class PhotoVM extends MediaVM implements Serializable {
 
 
     @Override
-    int getIdView() {
+    public void configViewHolder(GalleryViewHolder viewHolder) {
+
+    }
+
+    @Override
+    public int getIdView() {
             return R.layout.gallery_thumbnail;
     }
 

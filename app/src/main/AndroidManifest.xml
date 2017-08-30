@@ -83,6 +83,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_locate_picker_key" />
 
+        <service android:name=".GeogiftMonitorService"
+            android:enabled="true"/>
+
         <service android:name=".geogift.GeofenceTrasitionService"/>
 
 

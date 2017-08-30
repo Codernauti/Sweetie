@@ -2,10 +2,8 @@ package com.sweetcompany.sweetie.actions;
 
 import android.util.Log;
 
-import com.sweetcompany.sweetie.geogift.GeoItem;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
-import com.sweetcompany.sweetie.model.GeogiftFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.ArrayList;
@@ -82,11 +80,6 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         }
     }
 
-    @Override
-    public void retrieveGeogift(String geoKey) {
-        mController.retrieveGeogiftFB(geoKey);
-    }
-
     // Controller callbacks
 
     // Clear actions, retrieve all actions on server
@@ -99,61 +92,32 @@ public class ActionsPresenter implements ActionsContract.Presenter,
             // TODO: use a Factory Method
             // for example use ActionConverter.convertToViewModel(action);
             switch (action.getType()) {
-                case 0:
+                case ActionFB.CHAT:
                     newActionVM = new ActionChatVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
-                case 1:
+                case ActionFB.GALLERY:
                     newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
-                case 2:
+                case ActionFB.TODOLIST:
                     newActionVM = new ActionToDoListVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
-                case 3:
+                case ActionFB.GEOGIFT:
                     Log.d(TAG, "geogift finded!");
-                        if(action.getUserCreator().equals(mUserID) || action.isVisited()) {
+                        if(action.getUserCreator().equals(mUserID) || action.getIsTriggered()) {
                             newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
-                                    action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.isVisited());
+                                    action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.getIsTriggered());
                             mActionsList.add(newActionVM);
                         }
                     break;
             }
         }
         mView.updateActionsList(mActionsList);
-    }
-
-    @Override
-    public void onRetrievedGeogift(GeogiftFB geogiftFB) {
-        GeoItem geoItem = createGeoItem(geogiftFB);
-        mView.registerGeofence(geoItem);
-    }
-
-    @Override
-    public void updateGeogiftList(ArrayList<String> geogiftNotVisitedKeys) {
-        mView.updateGeogiftList(geogiftNotVisitedKeys);
-    }
-
-    private GeoItem createGeoItem(GeogiftFB geoItemFB){
-        // TODO refactore GeoItem with constructor and not only setter
-        GeoItem geoItemNew = new GeoItem();
-        geoItemNew.setKey(geoItemFB.getKey());
-        geoItemNew.setUserCreatorUID(geoItemFB.getUserCreatorUID());
-        geoItemNew.setType(geoItemFB.getType());
-        geoItemNew.setMessage(geoItemFB.getMessage());
-        geoItemNew.setAddress(geoItemFB.getAddress());
-        geoItemNew.setLat(geoItemFB.getLat());
-        geoItemNew.setLon(geoItemFB.getLon());
-        geoItemNew.setUriS(geoItemFB.getUriS());
-        geoItemNew.setBookmarked(geoItemFB.isBookmarked());
-        geoItemNew.setDatetimeCreation(geoItemFB.getDatetimeCreation());
-        geoItemNew.setDatetimeVisited(geoItemFB.getDatetimeVisited());
-
-        return geoItemNew;
     }
 
 }

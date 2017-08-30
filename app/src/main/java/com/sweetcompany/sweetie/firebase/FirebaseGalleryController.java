@@ -165,12 +165,13 @@ public class FirebaseGalleryController {
     }
 
     // push message to db and update action of this gallery
-    public void sendMedia(final MediaFB media) {
+    public String sendMedia(final MediaFB media) {
         Log.d(TAG, "Send MediaFB: " + media);
+
+        final String newMediaUID = mGalleryPhotos.push().getKey();
 
         Uri uriLocal;
         uriLocal = Uri.parse(media.getUriLocal());
-
         StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_PHOTOS_DIREECTORY + coupleID + "/" + uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
@@ -222,6 +223,8 @@ public class FirebaseGalleryController {
                         }
                     }
                 });
+
+        return newMediaUID;
     }
 
     /*private void updateActionLastMessage(String actionKey, MessageFB msg){

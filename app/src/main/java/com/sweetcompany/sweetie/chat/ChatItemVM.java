@@ -6,10 +6,10 @@ package com.sweetcompany.sweetie.chat;
 
 interface ChatItemVM {
 
-    void configViewHolder(ChatViewHolder viewHolder);
+        void configViewHolder(ChatViewHolder viewHolder);
 
-    int getIdView();
+        int getIdView();
 
-    String getKey();
+        String getKey();
 
-}
+        }

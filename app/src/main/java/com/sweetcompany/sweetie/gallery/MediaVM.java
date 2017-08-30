@@ -6,11 +6,11 @@ import android.view.View;
  * Created by ghiro on 25/07/2017.
  */
 
-abstract class MediaVM {
+abstract class MediaVM implements GalleryItemVM{
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
 
-    private final String mKey;
+    private String mKey;
 
     private final boolean mWho;
     private String mTime;
@@ -43,7 +43,11 @@ abstract class MediaVM {
     String getDescription(){ return description;}
     void setDescription(String desc){ description = desc;}
 
-    String getKey() { return mKey; }
+    @Override
+    public String getKey() { return mKey; }
+    void setKey(String key){
+        mKey = key;
+    }
 
     String getUriLocal(){
         return uriLocal;
@@ -67,8 +71,6 @@ abstract class MediaVM {
     }
 
     abstract void configViewHolder(MediaViewHolder viewHolder);
-
-    abstract int getIdView();
 
     @Deprecated
     abstract MediaViewHolder newViewHolder(View inflatedView);

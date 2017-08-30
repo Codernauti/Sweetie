@@ -37,11 +37,8 @@ public class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseTo
     }
 
     @Override
-    public void removeCheckEntry(CheckEntryVM checkEntry) {
-        CheckEntryFB removeCheckEntry = new CheckEntryFB(mUserMail, checkEntry.getText(),
-                checkEntry.isChecked(),checkEntry.getTime());
-        removeCheckEntry.setKey(checkEntry.getKey());
-        mController.removeCheckEntry(removeCheckEntry);
+    public void removeCheckEntry(String key) {
+        mController.removeCheckEntry(key);
     }
 
     @Override
@@ -51,11 +48,6 @@ public class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseTo
         updateCheckEntry.setKey(checkEntry.getKey());
 
         mController.updateCheckEntry(updateCheckEntry);
-    }
-
-    @Override
-    public void editCheckEntry(CheckEntryVM checkEntry) {
-        mView.editCheckEntry(checkEntry);
     }
 
     @Override

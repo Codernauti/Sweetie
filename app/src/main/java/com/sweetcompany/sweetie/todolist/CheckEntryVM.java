@@ -12,48 +12,59 @@ import com.sweetcompany.sweetie.model.CheckEntryFB;
 public class CheckEntryVM {
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
-    private final String key;
-    private final boolean who;
+    private final String mKey;
+    private final boolean mWho;
+    private String mText;
+    private final String mTime;   // Format HH:mm
+    private boolean mChecked;
 
-    private String text;
-    private final String time;   // Format HH:mm
-    private boolean checked;
+
+    private boolean mFocus;
 
     public CheckEntryVM(boolean who, String key, String text, String time, boolean checked) {
-        this.who = who;
-        this.key = key;
-        this.text = text;
-        this.time = time;
-        this.checked = checked;
+        this.mWho = who;
+        this.mKey = key;
+        this.mText = text;
+        this.mTime = time;
+        this.mChecked = checked;
+        this.mFocus = true;
     }
 
 
     public boolean isWho() {
-        return who;
+        return mWho;
     }
 
     public String getKey() {
-        return key;
+        return mKey;
     }
 
     public String getText() {
-        return text;
+        return mText;
     }
 
     public void setText(String text) {
-        this.text = text;
+        this.mText = text;
     }
 
     public String getTime() {
-        return time;
+        return mTime;
     }
 
     public boolean isChecked() {
-        return checked;
+        return mChecked;
     }
 
     public void setChecked(boolean checked) {
-        this.checked = checked;
+        this.mChecked = checked;
+    }
+
+    public boolean isFocus() {
+        return mFocus;
+    }
+
+    public void setFocus(boolean mFocus) {
+        this.mFocus = mFocus;
     }
 
     int getIdView() {
@@ -61,7 +72,12 @@ public class CheckEntryVM {
     }
 
     void configViewHolder(CheckEntryViewHolder viewHolder) {
-        viewHolder.setText(text);
-        viewHolder.setChecked(checked);
+        viewHolder.setText(mText);
+        viewHolder.setChecked(mChecked);
+        if(mFocus) {
+            viewHolder.setFocus();
+        } else {
+            mFocus = true;
+        }
     }
 }

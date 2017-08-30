@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.sweetcompany.sweetie.R;
@@ -16,53 +17,74 @@ import com.sweetcompany.sweetie.R;
  * Created by lucas on 12/08/2017.
  */
 
-public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-    CheckBox checkBox;
-    TextView textView;
-
+public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements View.OnFocusChangeListener, View.OnClickListener{
+    CheckBox mCheckBox;
+    EditText mEditText;
+    ImageButton mDeleteButton;
     OnViewHolderClickListener mListener;
+
+
 
     public CheckEntryViewHolder(View itemView) {
         super(itemView);
-        checkBox = (CheckBox) itemView.findViewById(R.id.checkEntry);
-        textView = (TextView) itemView.findViewById(R.id.todolist_textView);
+        mCheckBox = (CheckBox) itemView.findViewById(R.id.todolist_checkEntry);
+        mEditText = (EditText) itemView.findViewById(R.id.todolist_editText);
+        mDeleteButton = (ImageButton) itemView.findViewById(R.id.todolist_imageButton);
 
-        checkBox.setOnClickListener(this);
-        textView.setOnLongClickListener(this);
+        mCheckBox.setOnClickListener(this);
+        mEditText.setOnFocusChangeListener(this);
+        mDeleteButton.setOnClickListener(this);
     }
 
     void setViewHolderClickListener(OnViewHolderClickListener listener) {
         mListener = listener;
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        switch (v.getId()) {
+            case R.id.todolist_editText:
+                if(!hasFocus) {
+                    if(getAdapterPosition() != -1) {
+                        mListener.onCheckEntryUnfocus(getAdapterPosition(), mEditText.getText().toString());
+                    }
+                    mDeleteButton.setVisibility(View.INVISIBLE);
+                } else {
+                    mDeleteButton.setVisibility(View.VISIBLE);
+                }
+                break;
+        }
+    }
 
 
     interface OnViewHolderClickListener {
         void onCheckBoxClicked(int adapterPosition, boolean isChecked);
-        void onCheckBoxLongClicked(int adapterPosition);
+        void onCheckEntryUnfocus(int adapterPosition,String text);
+        void onCheckEntryRemove(int adapterPosition);
     }
 
-    @Override
-    public boolean onLongClick(View v) {
-        mListener.onCheckBoxLongClicked(getAdapterPosition());
-        return false;
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.todolist_checkBox:
-                mListener.onCheckBoxClicked(getAdapterPosition(), checkBox.isChecked());
+            case R.id.todolist_checkEntry:
+                mListener.onCheckBoxClicked(getAdapterPosition(), mCheckBox.isChecked());
                 break;
+            case R.id.todolist_imageButton:
+                mListener.onCheckEntryRemove(getAdapterPosition());
         }
 
     }
     public void setText(String text) {
-        textView.setText(text);
+        mEditText.setText(text);
     }
 
     public void setChecked(boolean checked){
-        checkBox.setChecked(checked);
+        mCheckBox.setChecked(checked);
+    }
+
+    public void setFocus(){
+        mEditText.requestFocus();
     }
 
 }

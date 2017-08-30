@@ -35,46 +35,14 @@
                 android:layout_above="@+id/todolist_fragment_container"
                 />
 
-            <LinearLayout
-                android:id="@+id/todolist_add_container"
+            <Button
+                android:id="@+id/todolist_add_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/todolist_list"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp">
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:text="Add Entry" />
 
-                <CheckBox
-                    android:id="@+id/todolist_checkBox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <EditText
-                    android:id="@+id/todolist_text_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="20"
-                    android:inputType="text" />
-
-                <Button
-                    android:id="@+id/todolist_add_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1"
-                    android:text="Add" />
-
-                <Button
-                    android:id="@+id/todolist_edit_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_weight="1"
-                    android:text="Done"
-                    android:visibility="gone" />
-
-            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

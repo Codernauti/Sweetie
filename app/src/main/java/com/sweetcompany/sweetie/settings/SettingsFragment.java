@@ -3,6 +3,8 @@ package com.sweetcompany.sweetie.settings;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +12,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
 
 /**
@@ -28,6 +32,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
     private ImageView mImageView;
     private TextView mUsernameTextView;
     private TextView mEmailTextView;
+    private TextView mTelephoneTextView;
     private TextView mGenderTextView;
 
     @Nullable
@@ -41,7 +46,18 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         mChangeImageButton = (ImageButton) root.findViewById(R.id.settings_change_image_button);
         mUsernameTextView = (TextView) root.findViewById(R.id.settings_username);
         mEmailTextView = (TextView) root.findViewById(R.id.settings_email);
+        mTelephoneTextView = (TextView) root.findViewById(R.id.settings_phone);
         mGenderTextView = (TextView) root.findViewById(R.id.settings_gender);
+
+        // init toolbar
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.settings_toolbar);
+        AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
+        parentActivity.setSupportActionBar(toolbar);
+        ActionBar actionBar = parentActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         mChangeImageButton.setOnClickListener(this);
 
@@ -58,14 +74,16 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
     }
 
     @Override
-    public void updateUserInfo(String userImageUri, String username, String email, boolean gender) {
+    public void updateUserInfo(String userImageUri, String username, String email, String telephone,
+                               boolean gender) {
         Glide.with(getActivity())
                 .load(userImageUri)
-                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mImageView);
 
         mUsernameTextView.setText(username);
         mEmailTextView.setText(email);
+        mTelephoneTextView.setText(telephone);
         mGenderTextView.setText(gender ? getString(R.string.gender_male) : getString(R.string.gender_female));
     }
 

@@ -62,7 +62,6 @@ public class ChatActivity extends BaseActivity {
         if (mView == null) {
             mView = ChatFragment.newInstance(getIntent().getExtras());
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
             transaction.add(R.id.chat_fragment_container, (ChatFragment)mView);
             transaction.commit();
         }
@@ -70,8 +69,7 @@ public class ChatActivity extends BaseActivity {
         if (mChatKey != null) {
             mController = new FirebaseChatController(super.mCoupleUid, mChatKey, mChatTitle, mActionKey);
             mPresenter = new ChatPresenter(mView, mController, super.mUserEmail);
-        }
-        else {
+        } else {
             Log.w(TAG, "Impossible to create ChatController and ChatPresenter because chatKey is NULL");
         }
 

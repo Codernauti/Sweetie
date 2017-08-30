@@ -82,16 +82,18 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
 
     void addMedia(MediaVM media) {
         //is already in VM exchange VM
-        if(searchIndexMediaByUri(media)!=-1)
+        if(searchIndexMediaOf(media)!=-1)
         {
             removeMedia(media);
         }
-        mMediasList.add(media);
-        notifyItemInserted(mMediasList.size() - 1);
+        //TODO not clear
+        mMediasList.add(0, media); //add in head
+        notifyItemInserted(0);
+        updateMediaList();
     }
 
     void removeMedia(MediaVM mediaVM) {
-        int indexOldMedia = searchIndexMediaByUri(mediaVM);
+        int indexOldMedia = searchIndexMediaOf(mediaVM);
         if (indexOldMedia != -1) {
             mMediasList.remove(indexOldMedia);
             notifyItemRemoved(indexOldMedia);
@@ -99,7 +101,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     }
 
     void changeMedia(MediaVM mediaVM) {
-        int indexOldMedia = searchIndexMediaByUri(mediaVM);
+        int indexOldMedia = searchIndexMediaOf(mediaVM);
         if (indexOldMedia != -1) {
             mMediasList.set(indexOldMedia, mediaVM);
             notifyItemChanged(indexOldMedia);
@@ -117,33 +119,23 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         return -1;
     }
 
-    void updateMediaList(List<MediaVM> mediasVM) {
-        mMediasList.clear();
-        mMediasList.addAll(mediasVM);
-        Collections.reverse(mMediasList);
+    void updateMediaList() {
+        //Collections.reverse(mMediasList);
         this.notifyDataSetChanged();
     }
 
-    private int searchIndexMediaByUri(MediaVM media) {
-        String modifyMediaUri = media.getUriLocal();
-        for (int i = 0; i < mMediasList.size(); i++) {
-            String mediaUri = mMediasList.get(i).getUriLocal();
-            if (mediaUri.equals(modifyMediaUri)) {
-                return i;
+    void updatePercentUpload(String mediaUid, int perc){
+        for (int indexMediaOf = 0; indexMediaOf < mMediasList.size(); indexMediaOf++) {
+
+            String mediaKey = mMediasList.get(indexMediaOf).getKey();
+
+            if (mediaKey.equals(mediaUid)) {
+                ((PhotoVM) mMediasList.get(indexMediaOf)).setPercent(perc);
+                notifyItemChanged(indexMediaOf);
+                return;
             }
         }
-        return -1;
     }
-
-    void updatePercentUpload(MediaVM mediaVM, int perc){
-        int indexOldMedia = searchIndexMediaByUri(mediaVM);
-        if (indexOldMedia != -1) {
-            mediaVM.setPercent(perc);
-            mMediasList.set(indexOldMedia, mediaVM);
-            notifyItemChanged(indexOldMedia);
-        }
-    }
-
 
     /* Listener from ViewHolder */
     @Override

@@ -39,19 +39,9 @@ import com.sweetcompany.sweetie.utils.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionsFragment extends Fragment implements ActionsContract.View,
-                                                         ResultCallback<Status>,
-                                                         GoogleApiClient.ConnectionCallbacks,
-                                                         GoogleApiClient.OnConnectionFailedListener {
+public class ActionsFragment extends Fragment implements ActionsContract.View{
 
     private static final String TAG = "ActionsFragment";
-
-    private static final long GEO_DURATION = 10 * 60 * 1000;
-    private static final String GEOFENCE_REQ_ID = "My Geofence";
-    private static final float GEOFENCE_RADIUS = 100.0f; // in meters
-    private static final int GEOFENCE_REQ_CODE = 4005;
-    private int REQ_PERMISSION_UPDATE = 202;
-    private static final int DWELL = 1000;
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
@@ -63,18 +53,11 @@ public class ActionsFragment extends Fragment implements ActionsContract.View,
     private FloatingActionButton mFabNewGeogiftAction;
     private Animation fab_small_open,fab_small_close, fab_open, fab_close, rotate_forward,rotate_backward;
     private boolean mIsFabOpen = false;
-
     private FrameLayout mFrameBackground;
-
-    private Location lastLocation;
-    private static GoogleApiClient googleApiClient;
-    private static PendingIntent geoFencePendingIntent;
-    public ArrayList<String> mGeogiftKeyToRegister;
 
     private ActionsContract.Presenter mPresenter;
 
     private Context mContext;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -270,19 +253,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View,
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        buildGoogleApiClient();
-        googleApiClient.connect();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        googleApiClient.disconnect();
-    }
-
-    @Override
     public void updateActionsList(List<ActionVM> actionsVM) {
         Log.d(TAG, "updateActionsList");
         for(ActionVM actionVM : actionsVM) {
@@ -291,127 +261,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View,
         }
 
         mActionAdapter.updateActionsList(actionsVM);
-    }
-
-    @Override
-    public void updateGeogiftList(ArrayList<String> geogiftNotVisitedKeys) {
-        Log.d(TAG, "updateGeogiftList");
-        mGeogiftKeyToRegister = new ArrayList<>();
-        //check if not registered in shared pref
-        ArrayList<String> geofenceListPref;
-        geofenceListPref = Utility.getGeofenceKeyList(mContext);
-
-        for(String geoKeyUpdated : geogiftNotVisitedKeys){
-            //TODO improve complex
-            boolean isInPref = false;
-            for (String geofenceKeyRegistred : geofenceListPref)
-            {
-                if (geofenceKeyRegistred!=null && geofenceKeyRegistred.equals(geoKeyUpdated)){
-                    isInPref = true;
-                }
-            }
-            if(!isInPref){
-                mGeogiftKeyToRegister.add(geoKeyUpdated);
-            }
-        }
-
-        if(mGeogiftKeyToRegister.size()>0){
-            for(String geoKey : mGeogiftKeyToRegister){
-                if(!geoKey.equals("empty")){
-                    mPresenter.retrieveGeogift(geoKey);
-                }
-            }
-        }
-
-    }
-
-    @Override
-    public void registerGeofence(GeoItem geoItem){
-
-        Log.d(TAG, "registerGeofence" + String.valueOf(geoItem.getKey()));
-        geoFencePendingIntent = null;
-
-        Geofence geofence = new Geofence.Builder()
-                .setRequestId(geoItem.getAddress())
-                .setCircularRegion(Double.parseDouble(geoItem.getLat()),
-                        Double.parseDouble(geoItem.getLon()),
-                        GEOFENCE_RADIUS
-                )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setLoiteringDelay(DWELL)
-                .setTransitionTypes( Geofence.GEOFENCE_TRANSITION_ENTER
-                        | Geofence.GEOFENCE_TRANSITION_EXIT  | Geofence.GEOFENCE_TRANSITION_DWELL)
-                .build();
-
-        Utility.addGeofenceToSharedPreference(mContext, geoItem.getKey());
-
-        if(googleApiClient!= null && googleApiClient.isConnected()){
-                addGeofencesOnLoad(geofence);
-        }
-    }
-
-    private void buildGoogleApiClient() {
-        Log.d(TAG, "createGoogleApi()");
-        if ( googleApiClient == null ) {
-            googleApiClient = new GoogleApiClient.Builder(mContext)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-    }
-
-    private GeofencingRequest getGeofencingRequest(Geofence geofence) {
-        Log.d(TAG, "createGeofencingRequest");
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        builder.addGeofence(geofence);
-        return builder.build();
-    }
-
-    public void addGeofencesOnLoad(Geofence geofence) {
-        if (!googleApiClient.isConnected()) {
-            Log.w(TAG, "googleApiclient not connected");
-            return;
-        }
-
-        try {
-            LocationServices.GeofencingApi.addGeofences(
-                    googleApiClient,
-                    getGeofencingRequest(geofence),
-                    getGeofencePendingIntent()
-            ).setResultCallback(this); // Result processed in onResult().
-        } catch (SecurityException securityException) {
-            //logSecurityException(securityException);
-        }
-    }
-
-    private PendingIntent getGeofencePendingIntent() {
-        Log.d(TAG, "createGeofencePendingIntent");
-        if ( geoFencePendingIntent != null )
-            return geoFencePendingIntent;
-
-        Intent intent = new Intent( mContext, GeofenceTrasitionService.class);
-        return PendingIntent.getService(
-                mContext, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-    }
-
-    // Check for permission to access Location
-    private boolean checkPermission() {
-        Log.d(TAG, "checkPermission()");
-        // Ask for permission if it wasn't granted yet
-        return (ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED );
-    }
-
-    // Asks for permission
-    private void askPermission() {
-        Log.d(TAG, "askPermission()");
-        ActivityCompat.requestPermissions(
-                getActivity(),
-                new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION },
-                REQ_PERMISSION_UPDATE
-        );
     }
 
     // Verify user's response of the permission requested
@@ -435,41 +284,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View,
         }
     }
 
-    // Get last known location
-    private void getLastKnownLocation() {
-        Log.d(TAG, "getLastKnownLocation()");
 
-        if ( checkPermission() ) {
-            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if ( lastLocation != null ) {
-                //writeLastLocation();
-                //startLocationUpdates();
-            } else {
-                Log.w(TAG, "No location retrieved yet");
-            }
-        }
-        else askPermission();
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "googleApi connected");
-        getLastKnownLocation();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.i(TAG, "googleApi connection suspended");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.i(TAG, "googleApi connection failed");
-    }
-
-    @Override
-    public void onResult(@NonNull Status status) {
-        Log.i(TAG, "geofence onResult: " + status);
-    }
 
 }

@@ -50,4 +50,10 @@ public class CoupleDetailsActivity extends BaseActivity {
         super.onPause();
         mController.detachCoupleListener();
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
 }

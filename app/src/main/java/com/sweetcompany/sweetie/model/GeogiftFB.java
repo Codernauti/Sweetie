@@ -12,9 +12,10 @@ public class GeogiftFB {
     public final static int PHOTO_GEOGIFT = 1;
     public final static int HEART_GEOGIFT = 2;
 
-    //@Exclude
+    @Exclude
     private String key;
 
+    private String actionKey;
     private String userCreatorUID;
     private int type;
     private String message;
@@ -25,22 +26,28 @@ public class GeogiftFB {
     private boolean bookmarked;
     private String datetimeCreation;
     private String datetimeVisited;
-    private boolean isVisited;
-
+    private boolean isTriggered;
 
     // For firebase
     public GeogiftFB() {
     }
 
 
-    //Exclude
+    @Exclude
     public String getKey() {
         return key;
     }
-
-    //@Exclude
+    @Exclude
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getActionKey() {
+        return actionKey;
+    }
+
+    public void setActionKey(String actionKey) {
+        this.actionKey = actionKey;
     }
 
     public String getUserCreatorUID() {
@@ -123,12 +130,11 @@ public class GeogiftFB {
         this.datetimeVisited = datetimeVisited;
     }
 
-    public boolean isVisited() {
-        return isVisited;
+    public boolean getIsTriggered() {
+        return isTriggered;
     }
 
-    public void setVisited(boolean visited) {
-        isVisited = visited;
+    public void setIsTriggered(boolean triggered) {
+        this.isTriggered = triggered;
     }
-
 }

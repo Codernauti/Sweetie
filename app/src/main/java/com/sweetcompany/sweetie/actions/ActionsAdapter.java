@@ -25,9 +25,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
     private static String TAG = "ActionsAdapter";
     private static int VIEW_HOLDER_COUNT = 0;
 
-    private int mNumberItems;
     private List<ActionVM> mActionsList = new ArrayList<>();
-
 
     @Override
     public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -46,7 +44,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
     @Override
     public void onBindViewHolder(ActionViewHolder holder, int position) {
         ActionVM actionVM = mActionsList.get(position);
-        holder.title.setText(actionVM.getTitle() + " " + position);
+        holder.title.setText(actionVM.getTitle());
         holder.description.setText(actionVM.getDescription());
         //holder.date.setText(DataMaker.get_dd_MM_Local(actionVM.getDataTime()));
         try {

@@ -11,12 +11,16 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.DataMaker;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
+import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +34,25 @@ public class GeofenceTrasitionService extends IntentService {
     private static final String TAG = "GeofenceTrasitionServ";
 
     public static final int GEOFENCE_NOTIFICATION_ID = 0;
+    public static final String GEOGIFT_ACTION_KEY = "ACTION_KEY";
+    public static final String GEOGIFT_KEY = "GEOGIFT_KEY";
+
+    private DatabaseReference mActionsDbReference;
+    private DatabaseReference mGeogiftDbReference;
 
     public GeofenceTrasitionService() {
         super(TAG);
+
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate");
+
+        //TODO add controller
+        mActionsDbReference = FirebaseDatabase.getInstance().getReference("actions" + "/" + Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID));
+        mGeogiftDbReference = FirebaseDatabase.getInstance().getReference("geogifts" + "/" + Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID));
     }
 
     @Override
@@ -47,8 +67,7 @@ public class GeofenceTrasitionService extends IntentService {
 
         int geoFenceTransition = geofencingEvent.getGeofenceTransition();
         // Check if the transition type is of interest
-        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                geoFenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT  || geoFenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
+        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ) {
 
             Log.d(TAG, "geofence triggered!");
             // Get the geofence that were triggered
@@ -58,9 +77,16 @@ public class GeofenceTrasitionService extends IntentService {
 
             // Send notification details as a String
             sendNotification( geofenceTransitionDetails );
+
+            //Set geogift triggered
+            String actionKey = intent.getStringExtra(GEOGIFT_ACTION_KEY);
+            mActionsDbReference.child(actionKey + "/" + "isTriggered").setValue(true);
+
+            String geogiftKey = intent.getStringExtra(GEOGIFT_KEY);
+            mGeogiftDbReference.child(geogiftKey + "/" + "isTriggered").setValue(true);
+            mGeogiftDbReference.child(geogiftKey + "/" + "datetimeVisited").setValue(DataMaker.get_UTC_DateTime());
         }
     }
-
 
     private String getGeofenceTrasitionDetails(int geoFenceTransition, List<Geofence> triggeringGeofences) {
         // get the ID of each geofence triggered
@@ -70,12 +96,10 @@ public class GeofenceTrasitionService extends IntentService {
         }
 
         String status = null;
-        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER )
+        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ) {
             status = "Entering ";
-        else if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT )
-            status = "Exiting ";
-        else if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL )
-            status = "Dwell ";
+        }
+
         return status + TextUtils.join( ", ", triggeringGeofencesList);
     }
 
@@ -102,7 +126,7 @@ public class GeofenceTrasitionService extends IntentService {
 
     }
 
-    // Create notification
+       // Create notification
     private Notification createNotification(String msg, PendingIntent notificationPendingIntent) {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
         notificationBuilder
@@ -116,7 +140,6 @@ public class GeofenceTrasitionService extends IntentService {
         return notificationBuilder.build();
     }
 
-
     private static String getErrorString(int errorCode) {
         switch (errorCode) {
             case GeofenceStatusCodes.GEOFENCE_NOT_AVAILABLE:
@@ -129,4 +152,6 @@ public class GeofenceTrasitionService extends IntentService {
                 return "Unknown error.";
         }
     }
+
+
 }

@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -128,11 +129,15 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         // initialize toolbar
         mToolBar = (Toolbar) root.findViewById(R.id.chat_toolbar);
+        //mToolBar.setTitle(titleChat);
+
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(mToolBar);
-        parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        parentActivity.getSupportActionBar().setTitle(titleChat);
-
+        ActionBar actionBar = parentActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         // initialize message's list
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
@@ -277,9 +282,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             mImagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
             createMessageFromImageAndSend(mImagesPicked);
-            return;
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void createMessageFromImageAndSend(List<Image> images) {

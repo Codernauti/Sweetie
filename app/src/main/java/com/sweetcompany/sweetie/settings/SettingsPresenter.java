@@ -24,7 +24,8 @@ public class SettingsPresenter implements SettingsContract.Presenter,
     @Override
     public void onUserChanged(UserFB user) {
         // TODO: convert UserFB to UserVM
-        mView.updateUserInfo(user.getImageUrl(), user.getUsername(), user.getEmail(), user.getGender());
+        mView.updateUserInfo(user.getImageUrl(), user.getUsername(), user.getEmail(),
+                user.getPhone(), user.getGender());
     }
 
     @Override

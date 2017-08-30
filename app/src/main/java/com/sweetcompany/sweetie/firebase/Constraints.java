@@ -13,6 +13,10 @@ interface Constraints {
             String ARCHIVED_COUPLES = "archivedCouples";
         String FUTURE_PARTNER = "futurePartner";
 
+    interface Users {
+        String IMAGE_URL = "imageUrl";
+    }
+
     String COUPLES = "couples";
         String ACTIVE = "active";
         String BREAK_TIME = "brokenTime";

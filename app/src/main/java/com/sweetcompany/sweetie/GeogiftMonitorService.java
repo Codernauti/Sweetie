@@ -88,30 +88,29 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
         geoFencePendingIntent = null;
 
         Geofence geofence = new Geofence.Builder()
-                .setRequestId(geogiftFB.getAddress())
+                .setRequestId(geogiftFB.getKey())
                 .setCircularRegion(Double.parseDouble(geogiftFB.getLat()),
                         Double.parseDouble(geogiftFB.getLon()),
                         GEOFENCE_RADIUS
                 )
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setLoiteringDelay(DWELL)
-                .setTransitionTypes( Geofence.GEOFENCE_TRANSITION_ENTER
-                        | Geofence.GEOFENCE_TRANSITION_EXIT  | Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setExpirationDuration( Geofence.NEVER_EXPIRE )
+                .setTransitionTypes( Geofence.GEOFENCE_TRANSITION_ENTER )
                 .build();
 
+        //Debug pourpose
         Utility.addGeofenceToSharedPreference(this, geogiftFB.getKey());
 
         if(googleApiClient!= null && googleApiClient.isConnected()){
-            addGeofencesOnLoad(geofence);
+            addGeofencesOnLoad(geofence, geogiftFB.getActionKey());
         }
     }
 
-    public void addGeofencesOnLoad(Geofence geofence) {
+    public void addGeofencesOnLoad(Geofence geofence, String actionKey) {
         try {
             LocationServices.GeofencingApi.addGeofences(
                     googleApiClient,
                     getGeofencingRequest(geofence),
-                    getGeofencePendingIntent()
+                    getGeofencePendingIntent(actionKey)
             ).setResultCallback(this); // Result processed in onResult().
         } catch (SecurityException securityException) {
             //logSecurityException(securityException);
@@ -126,12 +125,13 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
         return builder.build();
     }
 
-    private PendingIntent getGeofencePendingIntent() {
+    private PendingIntent getGeofencePendingIntent(String actionKey) {
         Log.d(TAG, "createGeofencePendingIntent");
         if ( geoFencePendingIntent != null )
             return geoFencePendingIntent;
 
         Intent intent = new Intent( this, GeofenceTrasitionService.class);
+        intent.putExtra(GeofenceTrasitionService.GEOGIFT_ACTION_KEY, actionKey);
         return PendingIntent.getService(
                 this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT );
     }

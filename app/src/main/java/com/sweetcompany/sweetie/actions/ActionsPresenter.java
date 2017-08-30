@@ -2,10 +2,8 @@ package com.sweetcompany.sweetie.actions;
 
 import android.util.Log;
 
-import com.sweetcompany.sweetie.geogift.GeoItem;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
-import com.sweetcompany.sweetie.model.GeogiftFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.ArrayList;
@@ -111,9 +109,9 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     break;
                 case ActionFB.GEOGIFT:
                     Log.d(TAG, "geogift finded!");
-                        if(action.getUserCreator().equals(mUserID) || action.isVisited()) {
+                        if(action.getUserCreator().equals(mUserID) || action.getIsTriggered()) {
                             newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
-                                    action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.isVisited());
+                                    action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.getIsTriggered());
                             mActionsList.add(newActionVM);
                         }
                     break;

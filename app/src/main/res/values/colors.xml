@@ -13,6 +13,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="grey">#E0E0E0</color>
+    <color name="grey_black">#8c8c8c</color>
     <color name="grey_alpha_50">#80E0E0E0</color>
     <color name="grey_alpha_5">#0DE0E0E0</color>
     <color name="pink_light">#FFCCCC</color>

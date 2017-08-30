@@ -10,7 +10,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
-import com.sweetcompany.sweetie.model.GeogiftFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
 
 import java.util.ArrayList;

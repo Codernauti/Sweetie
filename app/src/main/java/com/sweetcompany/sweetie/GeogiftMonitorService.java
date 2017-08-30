@@ -101,16 +101,16 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
         Utility.addGeofenceToSharedPreference(this, geogiftFB.getKey());
 
         if(googleApiClient!= null && googleApiClient.isConnected()){
-            addGeofencesOnLoad(geofence, geogiftFB.getActionKey());
+            addGeofencesOnLoad(geofence, geogiftFB.getActionKey(), geogiftFB.getKey());
         }
     }
 
-    public void addGeofencesOnLoad(Geofence geofence, String actionKey) {
+    public void addGeofencesOnLoad(Geofence geofence, String actionKey, String geogiftKey) {
         try {
             LocationServices.GeofencingApi.addGeofences(
                     googleApiClient,
                     getGeofencingRequest(geofence),
-                    getGeofencePendingIntent(actionKey)
+                    getGeofencePendingIntent(actionKey, geogiftKey)
             ).setResultCallback(this); // Result processed in onResult().
         } catch (SecurityException securityException) {
             //logSecurityException(securityException);
@@ -125,13 +125,14 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
         return builder.build();
     }
 
-    private PendingIntent getGeofencePendingIntent(String actionKey) {
+    private PendingIntent getGeofencePendingIntent(String actionKey, String geogiftKey) {
         Log.d(TAG, "createGeofencePendingIntent");
         if ( geoFencePendingIntent != null )
             return geoFencePendingIntent;
 
         Intent intent = new Intent( this, GeofenceTrasitionService.class);
         intent.putExtra(GeofenceTrasitionService.GEOGIFT_ACTION_KEY, actionKey);
+        intent.putExtra(GeofenceTrasitionService.GEOGIFT_KEY, geogiftKey);
         return PendingIntent.getService(
                 this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT );
     }

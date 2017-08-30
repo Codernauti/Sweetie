@@ -47,6 +47,7 @@ public class GeogiftDonePresenter implements GeogiftDoneContract.Presenter, Fire
         geoItemNew.setBookmarked(geoItemFB.isBookmarked());
         geoItemNew.setDatetimeCreation(geoItemFB.getDatetimeCreation());
         geoItemNew.setDatetimeVisited(geoItemFB.getDatetimeVisited());
+        geoItemNew.setIsTriggered(geoItemFB.getIsTriggered());
 
         return geoItemNew;
     }

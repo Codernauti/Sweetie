@@ -231,7 +231,7 @@ public class GeogiftDoneFragment extends Fragment implements
         //mToolBar.setTitle(geoitem.getTytle);
         addressText.setText(getResources().getString(R.string.address_geogift)+" "+geoitem.getAddress());
         datetimePositionedText.setText(getResources().getString(R.string.datetime_positioned_geogift)+" "+ DataMaker.get_dd_MM_Local(geoitem.getDatetimeCreation()));
-        if(geoitem.isVisited()){
+        if(geoitem.getIsTriggered()){
             isVisitedText.setText(getResources().getString(R.string.isvisited_yes_geogifty));
             isVisitedText.setTextColor(Color.GREEN);
         }

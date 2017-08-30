@@ -34,8 +34,10 @@ public class GeofenceTrasitionService extends IntentService {
 
     public static final int GEOFENCE_NOTIFICATION_ID = 0;
     public static final String GEOGIFT_ACTION_KEY = "ACTION_KEY";
+    public static final String GEOGIFT_KEY = "GEOGIFT_KEY";
 
     private DatabaseReference mActionsDbReference;
+    private DatabaseReference mGeogiftDbReference;
 
     public GeofenceTrasitionService() {
         super(TAG);
@@ -49,6 +51,7 @@ public class GeofenceTrasitionService extends IntentService {
 
         //TODO add controller
         mActionsDbReference = FirebaseDatabase.getInstance().getReference("actions" + "/" + Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID));
+        mGeogiftDbReference = FirebaseDatabase.getInstance().getReference("geogifts" + "/" + Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID));
     }
 
     @Override
@@ -77,6 +80,9 @@ public class GeofenceTrasitionService extends IntentService {
             //Set geogift triggered
             String actionKey = intent.getStringExtra(GEOGIFT_ACTION_KEY);
             mActionsDbReference.child(actionKey + "/" + "isTriggered").setValue(true);
+
+            String geogiftKey = intent.getStringExtra(GEOGIFT_KEY);
+            mGeogiftDbReference.child(geogiftKey + "/" + "isTriggered").setValue(true);
         }
     }
 

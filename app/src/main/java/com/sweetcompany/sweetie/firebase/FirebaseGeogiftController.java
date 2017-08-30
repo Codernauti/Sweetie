@@ -68,7 +68,7 @@ public class FirebaseGeogiftController {
                     GeogiftFB geogiftFB = dataSnapshot.getValue(GeogiftFB.class);
                     geogiftFB.setKey(dataSnapshot.getKey());
 
-                    if (!geogiftFB.getUserCreatorUID().equals(userUid)) {
+                    if (!geogiftFB.getUserCreatorUID().equals(userUid) && !geogiftFB.getIsTriggered()) {
                         Log.d(TAG, "onGeogiftAdded");
 
                         if (mListener != null) {

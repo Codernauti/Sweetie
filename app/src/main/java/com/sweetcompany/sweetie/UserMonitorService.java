@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.sweetcompany.sweetie.firebase.FirebaseUserController;
 import com.sweetcompany.sweetie.model.CoupleInfoFB;
 import com.sweetcompany.sweetie.model.UserFB;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
@@ -19,7 +15,7 @@ import com.sweetcompany.sweetie.utils.Utility;
  * Created by Eduard on 15-Jul-17.
  */
 
-public class UserMonitorService extends Service {
+public class UserMonitorService extends Service implements FirebaseUserController.UserControllerListener {
 
     private static final String TAG = "UserMonitorService";
 
@@ -28,75 +24,14 @@ public class UserMonitorService extends Service {
     public static final int COUPLED = 1;
     public static final int BREAK_SINGLE = 2;
 
-    private DatabaseReference mUserNode;
-    private ValueEventListener mUserListener;
+    private FirebaseUserController mController;
 
-    // Data we need to monitor (use a UserFB maybe?)
-    private String mCoupleUid;
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
-
-        mUserNode = FirebaseDatabase.getInstance().getReference("users/" + userUid);
-
-        mUserListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mCoupleUid = Utility.getStringPreference(UserMonitorService.this, SharedPrefKeys.COUPLE_UID);
-                UserFB newUserData = dataSnapshot.getValue(UserFB.class);
-
-                if (newUserData != null && newUserData.getCoupleInfo() != null) {
-                    CoupleInfoFB newCoupleInfo = newUserData.getCoupleInfo();
-                    String newCoupleUidData = newCoupleInfo.getActiveCouple();
-
-                    if (newCoupleUidData != null) {
-                        if (!newCoupleUidData.equals(mCoupleUid)) {
-                            Log.d(TAG, "couple_uid is changed!");
-
-                            Utility.saveStringPreference(UserMonitorService.this,
-                                    SharedPrefKeys.PARTNER_USERNAME, newCoupleInfo.getPartnerUsername());
-
-                            Utility.saveStringPreference(UserMonitorService.this,
-                                    SharedPrefKeys.PARTNER_UID, newUserData.getFuturePartner());
-
-                            Utility.saveBooleanPreference(UserMonitorService.this,
-                                    SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED, true);
-
-                            Utility.saveStringPreference(UserMonitorService.this,
-                                    SharedPrefKeys.COUPLE_UID, newCoupleUidData);
-                            Utility.saveIntPreference(UserMonitorService.this,
-                                    SharedPrefKeys.USER_RELATIONSHIP_STATUS, COUPLED);
-                        }
-                        // else coupleUid remains the same
-                    }
-                    else {
-                        if (!mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
-                            Log.d(TAG, "couple break!");
-
-                            Utility.saveBooleanPreference(UserMonitorService.this,
-                                    SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED, true);
-
-                            Utility.saveStringPreference(UserMonitorService.this,
-                                    SharedPrefKeys.COUPLE_UID, SharedPrefKeys.DEFAULT_VALUE);
-                            Utility.saveIntPreference(UserMonitorService.this,
-                                    SharedPrefKeys.USER_RELATIONSHIP_STATUS, BREAK_SINGLE);
-                        }
-                        // else mCouple == DEFAULT.VALUE -> the user is single
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) { }
-        };
-        mUserNode.addValueEventListener(mUserListener);
+        mController = new FirebaseUserController(userUid, this);
+        mController.attachListener();
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -109,6 +44,54 @@ public class UserMonitorService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mUserNode.removeEventListener(mUserListener);
+        mController.detachListener();
+    }
+
+
+    // controller callback
+
+    @Override
+    public void onUserChange(UserFB newUserData) {
+        String oldCoupleUid = Utility.getStringPreference(UserMonitorService.this, SharedPrefKeys.COUPLE_UID);
+
+        if (newUserData.getCoupleInfo() != null) {
+            CoupleInfoFB newCoupleInfo = newUserData.getCoupleInfo();
+            String newCoupleUid = newCoupleInfo.getActiveCouple();
+
+            if (newCoupleUid != null) {
+                if (!newCoupleUid.equals(oldCoupleUid)) {
+                    Log.d(TAG, "couple_uid is changed!");
+
+                    Utility.saveStringPreference(UserMonitorService.this,
+                            SharedPrefKeys.PARTNER_USERNAME, newCoupleInfo.getPartnerUsername());
+
+                    Utility.saveStringPreference(UserMonitorService.this,
+                            SharedPrefKeys.PARTNER_UID, newUserData.getFuturePartner());
+
+                    Utility.saveBooleanPreference(UserMonitorService.this,
+                            SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED, true);
+
+                    Utility.saveStringPreference(UserMonitorService.this,
+                            SharedPrefKeys.COUPLE_UID, newCoupleUid);
+                    Utility.saveIntPreference(UserMonitorService.this,
+                            SharedPrefKeys.USER_RELATIONSHIP_STATUS, COUPLED);
+                }
+                // else coupleUid remains the same
+            }
+            else {
+                if (!oldCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
+                    Log.d(TAG, "couple break!");
+
+                    Utility.saveBooleanPreference(UserMonitorService.this,
+                            SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED, true);
+
+                    Utility.saveStringPreference(UserMonitorService.this,
+                            SharedPrefKeys.COUPLE_UID, SharedPrefKeys.DEFAULT_VALUE);
+                    Utility.saveIntPreference(UserMonitorService.this,
+                            SharedPrefKeys.USER_RELATIONSHIP_STATUS, BREAK_SINGLE);
+                }
+                // else mCouple == DEFAULT.VALUE -> the user is single
+            }
+        }
     }
 }

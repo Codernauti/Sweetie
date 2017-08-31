@@ -2,11 +2,12 @@
 <RelativeLayout
     android:id="@+id/gallery_fragment_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/gallery_background">
+
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/gallery_toolbar"
@@ -14,7 +15,7 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
         android:background="?attr/colorPrimary"
-        app2:theme="@style/ToolBarStyle"
+        app:theme="@style/ToolBarStyle"
         />
 
 
@@ -35,7 +36,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/plus_icon"
-        app2:backgroundTint="@color/green_sweetie"
+        app:backgroundTint="@color/green_sweetie"
         />
 
 

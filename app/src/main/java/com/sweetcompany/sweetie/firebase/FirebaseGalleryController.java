@@ -39,6 +39,7 @@ public class FirebaseGalleryController {
 
     private final DatabaseReference mGallery;
     private final DatabaseReference mGalleryPhotos;
+    private final StorageReference mMediaGallery;
 
     private final String mGalleryUrl;           // galleries/<couple_uid>/<gallery_uid>
     private final String mGalleryPhotosUrl;     // gallery-photos/<couple_uid>/<gallery_uid>
@@ -71,6 +72,9 @@ public class FirebaseGalleryController {
 
         mGallery = mDatabaseRef.child(mGalleryUrl);
         mGalleryPhotos = mDatabaseRef.child(mGalleryPhotosUrl);
+
+        String mMediaGalleryUrl = Constraints.GALLERY_PHOTOS_DIRECTORY + "/" + mCoupleUid;
+        mMediaGallery = mStorageRef.child(mMediaGalleryUrl);
     }
 
     public void addListener(GalleryControllerListener listener) {
@@ -175,9 +179,8 @@ public class FirebaseGalleryController {
 
         final String newMediaUID = mGalleryPhotos.push().getKey();
 
-        Uri uriLocal;
-        uriLocal = Uri.parse(media.getUriLocal());
-        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_PHOTOS_DIREECTORY + mCoupleUid + "/" + uriLocal.getLastPathSegment());
+        Uri uriLocal = Uri.parse(media.getUriLocal());
+        StorageReference photoRef = mMediaGallery.child(uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails
@@ -226,14 +229,17 @@ public class FirebaseGalleryController {
         return newMediaUID;
     }
 
-    /*private void updateActionLastMessage(String actionKey, MessageFB msg){
-        DatabaseReference mActionReference = FirebaseDatabase.getInstance()
-                .getReference().child("actions").child(actionKey).child("description");
-        mActionReference.setValue(msg.getText());
-        mActionReference = FirebaseDatabase.getInstance()
-                .getReference().child("actions").child(actionKey).child("dataTime");
-        mActionReference.setValue(msg.getDateTime());
-    }*/
+    public void removeMedia(final String mediaUid, String uriStorage) {
+        Log.d(TAG, "remove media:" + uriStorage);
+
+        StorageReference mMediaRef = FirebaseStorage.getInstance().getReferenceFromUrl(uriStorage);
+        mMediaRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                mGalleryPhotos.child(mediaUid).removeValue();
+            }
+        });
+    }
 
 
 }

@@ -20,7 +20,12 @@
     <color name="azzurro_pastello">#66B2FF</color>
 
     <color name="chat_background">#e6e6e6</color>
+
+    <!-- Gallery colors -->
     <color name="gallery_background">#e6e6e6</color>
+    <color name="gallery_photo_selected">#8c8c8c</color>
+
+
     <color name="geogift_background">#e6e6e6</color>
 
     <color name="textHighlight">#FFFFFF</color>

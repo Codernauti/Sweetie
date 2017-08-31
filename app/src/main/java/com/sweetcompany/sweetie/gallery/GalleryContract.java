@@ -22,5 +22,6 @@ interface GalleryContract {
     
     interface Presenter {
         void sendMedia(MediaVM media);
+        void removeMedia(MediaVM media);
     }
 }

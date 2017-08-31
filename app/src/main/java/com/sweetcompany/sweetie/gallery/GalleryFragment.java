@@ -7,20 +7,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.sweetcompany.sweetie.R;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import com.esafirm.imagepicker.model.Image;
@@ -33,23 +35,23 @@ import static android.app.Activity.RESULT_OK;
  */
 
 public class GalleryFragment extends Fragment implements GalleryContract.View, View.OnClickListener,
-        GalleryAdapter.GalleryAdapterListener{
+        GalleryAdapter.GalleryAdapterListener, ActionMode.Callback {
 
-    private static final String TAG = "ChatFragment";
-    int PICK_IMAGE_REQUEST = 111;
+    private static final String TAG = "GalleryFragment";
+
     private static final int RC_CODE_PICKER = 2000;
     private static final int RC_CAMERA = 3000;
 
     private ArrayList<Image> imagesPicked = new ArrayList<>();
-    private List<MediaVM> medias = new ArrayList<>();
 
     private Toolbar mToolBar;
     private RecyclerView mGalleryListView;
+    private FloatingActionButton mFabAddPhoto;
+
+    private ActionMode mActionMode;
 
     private GalleryAdapter mGalleryAdapter;
     private GalleryContract.Presenter mPresenter;
-
-    private FloatingActionButton mFabAddPhoto;
 
     public static GalleryFragment newInstance(Bundle bundle) {
         GalleryFragment newGalleryFragment = new GalleryFragment();
@@ -93,12 +95,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         mFabAddPhoto = (FloatingActionButton) root.findViewById(R.id.fab_add_photo);
         mFabAddPhoto.setClickable(false);
 
-        mFabAddPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                takePictures();
-            }
-        });
+        mFabAddPhoto.setOnClickListener(this);
 
         return root;
     }
@@ -106,11 +103,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     @Override
     public void setPresenter(GalleryContract.Presenter presenter) {
         mPresenter = presenter;
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 
     @Override
@@ -138,69 +130,111 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         mGalleryAdapter.updatePercentUpload(mediaUid, perc);
     }
 
-    public void takePictures() {
-
-        ImagePicker imagePicker = ImagePicker.create(this)
-                .theme(R.style.ImagePickerTheme)
-                .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
-                .folderMode(true) // set folder mode (false by default)
-                .folderTitle("Folder") // folder selection title
-                .imageTitle(String.valueOf(R.string.image_picker_select)); // image selection title
-
-        //imagePicker.multi(); // multi mode (default mode)
-        imagePicker.single();
-
-        imagePicker.limit(10) // max images can be selected (99 by default)
-                .showCamera(true) // show camera or not (true by default)
-                .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
-                .origin(imagesPicked) // original selected images, used in multi mode
-                .start(RC_CODE_PICKER); // start image picker activity with request code
-    }
-
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
             sendImages(imagesPicked);
-            return;
         }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     private void sendImages(List<Image> images) {
         if (images == null) return;
 
         for (int i = 0, l = images.size(); i < l; i++) {
-            MediaVM newMedia = null;
-
             Uri file = Uri.fromFile(new File(images.get(i).getPath()));
-            String stringUriLocal;
-            stringUriLocal = file.toString();
 
-            newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", null, stringUriLocal, "", 0);
+            MediaVM newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", null, file.toString(), "", 0);
             mPresenter.sendMedia(newMedia);
         }
     }
 
-    //TODO implement gesture single and long click
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_add_photo: {
+                takePictures();
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    private void takePictures() {
+        ImagePicker.create(this)
+                .theme(R.style.ImagePickerTheme)
+                .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
+                .folderMode(true) // set folder mode (false by default)
+                .folderTitle("Folder") // folder selection title
+                .imageTitle(String.valueOf(R.string.image_picker_select)) // image selection title
+                .limit(10)
+                .multi()
+                .imageDirectory("Camera")
+                .origin(imagesPicked)   // original selected images, used in multi mode
+                .start(RC_CODE_PICKER);
+    }
+
+
+    // adapter callbacks
 
     @Override
     public void onPhotoClicked(int position, List<MediaVM> mediasVM) {
-        medias = mediasVM;
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("images", (Serializable) medias);
-        bundle.putInt("position", position);
+        SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance(mediasVM, position);
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
-        newFragment.setArguments(bundle);
-        newFragment.show(ft, "slideshow");
+        newFragment.show(ft, SlideshowDialogFragment.TAG);
     }
 
     @Override
-    public void onPhotoLongClicked(int position, List<MediaVM> mediasVM) {
+    public void onPhotoLongClicked(int position) {
+        mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(this);
+    }
 
+    @Override
+    public void onPhotoSelectionFinished() {
+        if (mActionMode != null) {
+            mActionMode.finish();
+        }
+    }
+
+    // ActionMode callbacks
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.gallery_cab_menu, menu);
+        mFabAddPhoto.setVisibility(View.GONE);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.gallery_menu_remove: {
+                List<MediaVM> selectedItems = mGalleryAdapter.getSelectedItems();
+                for (int i = selectedItems.size() - 1; i >= 0; i--) {
+                    MediaVM media = selectedItems.get(i);
+                    Log.d(TAG, "gallery item position: " + media.getKey());
+                    mPresenter.removeMedia(media);
+                }
+                mode.finish();
+                return true;
+            }
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        mActionMode = null;
+        mGalleryAdapter.clearSelections();
+        mFabAddPhoto.setVisibility(View.VISIBLE);
     }
 }

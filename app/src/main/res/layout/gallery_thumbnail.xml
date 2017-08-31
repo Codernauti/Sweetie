@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sweetcompany.sweetie.gallery.SquareLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sweetcompany.sweetie.gallery.SquareLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gallery_list_item_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -21,12 +23,12 @@
          android:layout_centerVertical="true" />
 
      <ImageView
-        android:id="@+id/thumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:padding="1dp"
-        android:scaleType="centerCrop" />
+         android:id="@+id/thumbnail"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:adjustViewBounds="true"
+         android:padding="1dp"
+         android:scaleType="centerCrop"/>
 
 
 </com.sweetcompany.sweetie.gallery.SquareLayout>

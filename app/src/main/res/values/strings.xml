@@ -11,6 +11,9 @@
     <string name="menu_couple_details">Couples</string>
     <string name="menu_settings">Settings</string>
 
+    <!-- Gallery -->
+    <string name="gallery_cab_menu_remove">Remove</string>
+
     <!-- ActionNewChatFragment dialog -->
     <string name="action_new_chat_title_dialog">Insert new chat title</string>
     <!-- ActionNewGalleryFragment dialog -->

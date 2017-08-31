@@ -7,8 +7,14 @@
         <item name="colorPrimaryDark">@color/rosa_sweetie_dark</item>
         <item name="android:actionMenuTextColor">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name = "android:windowActionBar">false</item>
-        <item name = "android:windowNoTitle">true</item>
+
+        <!-- background toolbar in support ActionMode -->
+        <item name="android:actionModeBackground">@color/rosa_sweetie</item>
+        <item name="actionModeBackground">@color/rosa_sweetie</item>
+
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="EmojiconGridView">

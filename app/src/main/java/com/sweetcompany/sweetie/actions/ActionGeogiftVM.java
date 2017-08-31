@@ -51,4 +51,9 @@ public class ActionGeogiftVM extends ActionVM {
     public int getIconId() {
         return R.drawable.action_gift_icon;
     }
+
+    @Override
+    public int getAvatarTextIdColor() {
+        return R.color.geogiftItem;
+    }
 }

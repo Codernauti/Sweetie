@@ -48,4 +48,9 @@ class ActionGalleryVM extends ActionVM {
     public int getIconId() {
         return R.drawable.action_photo_icon;
     }
+
+    @Override
+    public int getAvatarTextIdColor() {
+        return R.color.green_sweetie;
+    }
 }

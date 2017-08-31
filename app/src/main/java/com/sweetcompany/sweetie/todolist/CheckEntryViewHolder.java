@@ -1,9 +1,11 @@
 package com.sweetcompany.sweetie.todolist;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -22,8 +24,6 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
     EditText mEditText;
     ImageButton mDeleteButton;
     OnViewHolderClickListener mListener;
-
-
 
     public CheckEntryViewHolder(View itemView) {
         super(itemView);

@@ -28,11 +28,14 @@
     <color name="chat_emoticons_grid">#f2f2f2</color>
     <color name="chat_date_list_back">#26000000</color>
 
-    <color name="titleAction">#000000</color>
-    <color name="separatorAction">#E0E0E0</color>
+    <color name="action_title">#000000</color>
+    <color name="action_separator">#E0E0E0</color>
+    <color name="action_avatar_background">#d9d9d9</color>
+
     <color name="fragmentSeparator">#E0E0E0</color>
     <color name="geogiftItem">#708090</color>
     <color name="background_uploading_geogift">#E67973D6</color>
+
 
 
 </resources>

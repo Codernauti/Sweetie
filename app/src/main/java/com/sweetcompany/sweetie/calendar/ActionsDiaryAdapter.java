@@ -36,11 +36,11 @@ public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
             convertView = inflater.inflate(R.layout.action_list_item, parent, false);
 
             viewHolder = new ActionDiaryViewHolder();
-            viewHolder.title = (TextView) convertView.findViewById(R.id.title_action_list_item);
-            viewHolder.description = (TextView) convertView.findViewById(R.id.subtitle_action_list_item);
+            viewHolder.title = (TextView) convertView.findViewById(R.id.action_item_title);
+            viewHolder.description = (TextView) convertView.findViewById(R.id.action_item_subtitle);
             viewHolder.type = (ImageView) convertView.findViewById(R.id.type_action_list_item);
 
-            convertView.findViewById(R.id.date_action_list_item).setVisibility(View.GONE);
+            convertView.findViewById(R.id.action_item_date).setVisibility(View.GONE);
             convertView.findViewById(R.id.image_action_list_item).setVisibility(View.GONE);
 
             convertView.setTag(viewHolder);

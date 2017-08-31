@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.actions;
 
 
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.utils.DataMaker;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
     private static int VIEW_HOLDER_COUNT = 0;
 
     private List<ActionVM> mActionsList = new ArrayList<>();
+    private final Fragment mFragment;
 
     private ActionsAdapterListener mListener;
 
@@ -35,6 +37,10 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
 
     void setListener(ActionsAdapterListener listener) {
         mListener = listener;
+    }
+
+    ActionsAdapter(Fragment fragment) {
+        mFragment = fragment;
     }
 
     @Override
@@ -52,14 +58,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
     @Override
     public void onBindViewHolder(ActionViewHolder holder, int position) {
         ActionVM actionVM = mActionsList.get(position);
-        holder.title.setText(actionVM.getTitle());
-        holder.description.setText(actionVM.getDescription());
-        //holder.date.setText(DataMaker.get_dd_MM_Local(actionVM.getDataTime()));
-        try {
-            holder.date.setText(DataMaker.get_Date_4_Action(actionVM.getDataTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        actionVM.configViewHolder(holder);
 
         holder.type.setImageResource(actionVM.getIconId());
     }
@@ -79,8 +78,15 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
 
     class ActionViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener{
-        TextView title, description, date;
-        ImageView avatar, type;
+
+        private final TextView mNoImageTextView;
+        private TextView mTitleTextView,
+                        mDescriptionTextView,
+                        mDateTextView;
+        private ImageView mAvatarImageView,
+                        type;
+
+        private String mTitleText;
 
         ActionViewHolder(View itemView) {
             super(itemView);
@@ -88,11 +94,49 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
-            title = (TextView) itemView.findViewById(R.id.title_action_list_item);
-            description = (TextView) itemView.findViewById(R.id.subtitle_action_list_item);
-            date = (TextView) itemView.findViewById(R.id.date_action_list_item);
-            avatar = (ImageView) itemView.findViewById(R.id.image_action_list_item);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.action_item_title);
+            mDescriptionTextView = (TextView) itemView.findViewById(R.id.action_item_subtitle);
+            mDateTextView = (TextView) itemView.findViewById(R.id.action_item_date);
+
+            mAvatarImageView = (ImageView) itemView.findViewById(R.id.image_action_list_item);
+            mNoImageTextView = (TextView) itemView.findViewById(R.id.action_no_image_text);
+
             type = (ImageView) itemView.findViewById(R.id.type_action_list_item);
+        }
+
+        void setTitle(String title) {
+            mTitleText = title;
+            mTitleTextView.setText(title);
+        }
+
+        void setDescription(String description) {
+            mDescriptionTextView.setText(description);
+        }
+
+        void setDateTime(String dateTime) {
+            mDateTextView.setText(dateTime);
+        }
+
+        void setAvatar(String uri) {
+            Glide.with(mFragment)
+                    .load(uri)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.color.action_avatar_background)
+                    .dontAnimate()
+                    .into(mAvatarImageView);
+
+            if (uri == null) {
+                for (int index = 4; index > 0; index--) {
+                    if (mTitleText.length() > index) {
+                        mNoImageTextView.setText(mTitleText.substring(0, index) + ".");
+                        index = 0;
+                    } else if (mTitleText.length() == index) {
+                        mNoImageTextView.setText(mTitleText.substring(0, index));
+                        index = 0;
+                    }
+                }
+                mNoImageTextView.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override

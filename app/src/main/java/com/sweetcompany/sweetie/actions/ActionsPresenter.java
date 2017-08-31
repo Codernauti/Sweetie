@@ -35,7 +35,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
 
     @Override
     public List<String> addAction(String actionTitle, String username, int actionType) {
-        // TODO: add description and fix username variable, what username???
+        // TODO: add mDescriptionTextView and fix username variable, what username???
         ActionFB action = new ActionFB(actionTitle, mUserUid, username, "", DataMaker.get_UTC_DateTime(), actionType);
         return mController.pushAction(action);
     }
@@ -60,6 +60,8 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                 case ActionFB.CHAT:
                     newActionVM = new ActionChatVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
+                    // TODO: test
+                    newActionVM.setImageUrl(action.getImageUrl());
                     mActionsList.add(newActionVM);
                     break;
 

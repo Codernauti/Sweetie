@@ -74,6 +74,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
     }
 
     void addCheckEntry(CheckEntryVM checkEntryVM) {
+        checkEntryVM.setFocus(false);
         mCheckEntryList.add(mCheckEntryList.size(),checkEntryVM);
         notifyItemInserted(mCheckEntryList.size()-1);
     }

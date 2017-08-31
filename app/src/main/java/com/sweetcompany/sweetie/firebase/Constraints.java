@@ -27,18 +27,24 @@ interface Constraints {
     String PAIRING_REQUESTS = "pairing-requests";
 
     String ACTIONS = "actions";
+
+    interface Actions {
+        String IMAGE_URL = "imageUrl";
         String DESCRIPTION = "description";
         String DATE_TIME = "dataTime";
+    }
 
     String ACTIONS_DIARY = "actionsDiary";
 
     String CHATS = "chats";
-        String CHAT_MESSAGES = "chat-messages";
+    String CHAT_MESSAGES = "chat-messages";
 
     String BOOKMARK = "bookmarked";
 
     String GALLERIES = "galleries";
-        String GALLERY_PHOTOS = "gallery-photos";
+        String URI_COVER = "uriCover";
+
+    String GALLERY_PHOTOS = "gallery-photos";
 
     String CALENDAR = "calendar";
 

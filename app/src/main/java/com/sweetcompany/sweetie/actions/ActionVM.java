@@ -116,6 +116,7 @@ abstract class ActionVM {
         viewHolder.setTitle(mTitle);
         viewHolder.setDescription(mDescription);
         viewHolder.setAvatar(mImageUrl);
+        viewHolder.setTypeIcon(getIconId());
 
         try {
             viewHolder.setDateTime(DataMaker.get_Date_4_Action(mDataTime));

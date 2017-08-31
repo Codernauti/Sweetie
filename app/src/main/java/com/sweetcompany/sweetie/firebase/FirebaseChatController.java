@@ -220,8 +220,8 @@ public class FirebaseChatController {
         updates.put(mChatMessagesUrl + "/" + newMessageUid, msg);
 
         // update description and dataTime of action of this associated Chat
-        updates.put(mActionUrl + "/" + Constraints.DESCRIPTION, msg.getText());
-        updates.put(mActionUrl + "/" + Constraints.DATE_TIME, msg.getDateTime());
+        updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, msg.getText());
+        updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, msg.getDateTime());
 
         mDatabase.updateChildren(updates);
         return newMessageUid;

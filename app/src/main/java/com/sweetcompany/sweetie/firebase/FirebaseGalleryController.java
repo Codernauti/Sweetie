@@ -32,13 +32,17 @@ public class FirebaseGalleryController {
 
     private static final String TAG = "FbGalleryController";
 
+    private final String mCoupleUid;
+
+    private final DatabaseReference mDatabaseRef;
+    private final StorageReference mStorageRef;
+
     private final DatabaseReference mGallery;
     private final DatabaseReference mGalleryPhotos;
-    private final DatabaseReference mAction;
-    private final StorageReference mStorageRef;
-    private final FirebaseStorage mStorage;
 
-    private final String coupleID;
+    private final String mGalleryUrl;           // galleries/<couple_uid>/<gallery_uid>
+    private final String mGalleryPhotosUrl;     // gallery-photos/<couple_uid>/<gallery_uid>
+    private final String mActionUrl;           // actions/<couple_uid>/<action_uid>
 
     private ValueEventListener mGalleryListener;
     private ChildEventListener mGalleryPhotosListener;
@@ -56,15 +60,17 @@ public class FirebaseGalleryController {
 
 
     public FirebaseGalleryController(String coupleUid, String galleryKey, String actionKey) {
-        mGallery = FirebaseDatabase.getInstance()
-                .getReference(Constraints.GALLERIES + "/" + coupleUid + "/" + galleryKey);
-        mGalleryPhotos = FirebaseDatabase.getInstance()
-                .getReference(Constraints.GALLERY_PHOTOS + "/" + coupleUid + "/" + galleryKey);
-        mAction = FirebaseDatabase.getInstance()
-                .getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
-        mStorage = FirebaseStorage.getInstance();
-        mStorageRef = mStorage.getReference();
-        coupleID = coupleUid;
+        mCoupleUid = coupleUid;
+
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+
+        mGalleryUrl = Constraints.GALLERIES + "/" + coupleUid + "/" + galleryKey;
+        mGalleryPhotosUrl = Constraints.GALLERY_PHOTOS + "/" + coupleUid + "/" + galleryKey;
+        mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey;
+
+        mGallery = mDatabaseRef.child(mGalleryUrl);
+        mGalleryPhotos = mDatabaseRef.child(mGalleryPhotosUrl);
     }
 
     public void addListener(GalleryControllerListener listener) {
@@ -149,11 +155,10 @@ public class FirebaseGalleryController {
         }
         mGalleryListener = null;
 
-        // TODO ??
-        /*if (mGalleryPhotosListener != null) {
-            mGalleryPhotosListener.removeEventListener(mGalleryPhotosListener);
+        if (mGalleryPhotosListener != null) {
+            mGalleryPhotos.removeEventListener(mGalleryPhotosListener);
         }
-        mGalleryPhotosListener = null;*/
+        mGalleryPhotosListener = null;
     }
 
 
@@ -172,7 +177,7 @@ public class FirebaseGalleryController {
 
         Uri uriLocal;
         uriLocal = Uri.parse(media.getUriLocal());
-        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_PHOTOS_DIREECTORY + coupleID + "/" + uriLocal.getLastPathSegment());
+        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_PHOTOS_DIREECTORY + mCoupleUid + "/" + uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails
@@ -185,40 +190,32 @@ public class FirebaseGalleryController {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                final String stringUriStorage;
-                stringUriStorage = downloadUrl.toString();
+                final String stringUriStorage = downloadUrl.toString();
                 media.setUriStorage(stringUriStorage);
 
-                // push a message into mGalleryPhotos reference
-                mGalleryPhotos.push().setValue(media);
+                Map<String, Object> updates = new HashMap<>();
 
-                // TODO: not an atomic operation
+                // push media
+                String newMediaUid = mGalleryPhotos.push().getKey();
+                updates.put(mGalleryPhotosUrl + "/" + newMediaUid, media);
 
-                // update description and dataTime of action of this associated Gallery
-                Map<String, Object> actionUpdates = new HashMap<>();
-                //actionUpdates.put("description", photo.getText());
-                actionUpdates.put(Constraints.DATE_TIME, media.getDateTime());
-                mAction.updateChildren(actionUpdates);
+                // update parent action dateTime & imageUrl
+                updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, media.getDateTime());
+                updates.put(mActionUrl + "/" + Constraints.Actions.IMAGE_URL, media.getUriStorage());
 
-                //TODO is not like action, cover is selected once or in settings gallery
                 // update photo cover gallery
-                Map<String, Object> galleryUpdates = new HashMap<>();
-                galleryUpdates.put("uriCover", media.getUriStorage());
-                mGallery.updateChildren(galleryUpdates);
+                updates.put(mGalleryUrl + "/" + Constraints.URI_COVER, media.getUriStorage());
 
-
+                mDatabaseRef.updateChildren(updates);
             }
         }).addOnProgressListener(
                 new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        //calculating progress percentage
                         double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                        //displaying percentage in progress dialog
-                        //progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
 
                         for (GalleryControllerListener listener : mListeners) {
                             listener.onUploadPercent(media, ((int) progress));

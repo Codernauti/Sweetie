@@ -68,12 +68,14 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                 case ActionFB.GALLERY:
                     newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
+                    newActionVM.setImageUrl(action.getImageUrl());
                     mActionsList.add(newActionVM);
                     break;
 
                 case ActionFB.TODOLIST:
                     newActionVM = new ActionToDoListVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
+                    newActionVM.setImageUrl(action.getImageUrl());
                     mActionsList.add(newActionVM);
                     break;
 
@@ -81,7 +83,9 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     Log.d(TAG, "geogift finded!");
                     if(action.getUserCreator().equals(mUserUid) || action.getIsTriggered()) {
                         newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
-                                action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.getIsTriggered());
+                                action.getDataTime(), action.getType(), action.getChildKey(),
+                                action.getKey(), action.getIsTriggered());
+                        newActionVM.setImageUrl(action.getImageUrl());
                         mActionsList.add(newActionVM);
                     }
                     break;

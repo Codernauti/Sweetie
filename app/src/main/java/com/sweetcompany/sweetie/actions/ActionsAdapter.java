@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
 
 import java.util.ArrayList;
@@ -59,8 +58,6 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
     public void onBindViewHolder(ActionViewHolder holder, int position) {
         ActionVM actionVM = mActionsList.get(position);
         actionVM.configViewHolder(holder);
-
-        holder.type.setImageResource(actionVM.getIconId());
     }
 
     @Override
@@ -84,7 +81,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
                         mDescriptionTextView,
                         mDateTextView;
         private ImageView mAvatarImageView,
-                        type;
+                        mTypeIcon;
 
         private String mTitleText;
 
@@ -101,7 +98,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             mAvatarImageView = (ImageView) itemView.findViewById(R.id.image_action_list_item);
             mNoImageTextView = (TextView) itemView.findViewById(R.id.action_no_image_text);
 
-            type = (ImageView) itemView.findViewById(R.id.type_action_list_item);
+            mTypeIcon = (ImageView) itemView.findViewById(R.id.type_action_list_item);
         }
 
         void setTitle(String title) {
@@ -120,7 +117,6 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
         void setAvatar(String uri) {
             Glide.with(mFragment)
                     .load(uri)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .placeholder(R.color.action_avatar_background)
                     .dontAnimate()
                     .into(mAvatarImageView);
@@ -137,6 +133,10 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
                 }
                 mNoImageTextView.setVisibility(View.VISIBLE);
             }
+        }
+
+        void setTypeIcon(int typeIcon) {
+            mTypeIcon.setImageResource(typeIcon);
         }
 
         @Override

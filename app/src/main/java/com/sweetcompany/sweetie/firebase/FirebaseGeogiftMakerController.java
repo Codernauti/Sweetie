@@ -67,7 +67,7 @@ public class FirebaseGeogiftMakerController {
         String newActionKey = newActionPush.getKey();
         newKeys.add(newActionKey);
 
-        // Set Action
+        // Set Actions
         actionFB.setChildKey(newGeogiftKey);
 
         // Create Gallery and set Gallery

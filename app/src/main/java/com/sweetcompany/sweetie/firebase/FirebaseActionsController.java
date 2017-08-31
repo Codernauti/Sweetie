@@ -7,11 +7,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
-import com.sweetcompany.sweetie.model.GeogiftFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
 
 import java.util.ArrayList;
@@ -45,7 +43,7 @@ public class FirebaseActionsController {
     private ValueEventListener mActionsEventListener;
 
     public interface OnFirebaseActionsDataChange {
-        void updateActionsList(List<ActionFB> actions);
+        void onActionsListChanged(List<ActionFB> actions);
     }
 
 
@@ -96,7 +94,7 @@ public class FirebaseActionsController {
                     }
 
                     for (OnFirebaseActionsDataChange listener : mListeners) {
-                        listener.updateActionsList(actions);
+                        listener.onActionsListChanged(actions);
                     }
                 }
 

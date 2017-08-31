@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:background="@drawable/selector_action_item">
 
-    <!-- TODO add default icon -->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_action_list_item"
         android:layout_width="60dp"

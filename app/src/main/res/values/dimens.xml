@@ -6,5 +6,6 @@
     <!-- Settings dimens -->
     <dimen name="settings_label_width">96dp</dimen>
     <dimen name="settings_general_padding">6dp</dimen>
+    <dimen name="app_bar_height">64dp</dimen>
 
 </resources>

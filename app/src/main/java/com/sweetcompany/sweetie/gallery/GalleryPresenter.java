@@ -45,6 +45,13 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
+    public void removeMedia(MediaVM media) {
+        mController.removeMedia(media.getKey(), media.getUriStorage());
+    }
+
+    // controller callbacks
+
+    @Override
     public void onGalleryChanged(GalleryFB gallery) {
         GalleryVM galleryVM = new GalleryVM(gallery.getKey(), gallery.getTitle());
         mView.updateGalleryInfo(galleryVM);

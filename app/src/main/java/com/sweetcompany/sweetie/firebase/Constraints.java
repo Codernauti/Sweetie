@@ -62,7 +62,7 @@ interface Constraints {
     String COUPLES_DETAILS = "couples_details";
 
     // TODO: never put slash into constraints
-    String GALLERY_PHOTOS_DIREECTORY = "gallery_photos/";
+    String GALLERY_PHOTOS_DIRECTORY = "gallery_photos";
     String GALLERY_GEOGIFTS = "gallery_geogifts/";
 
 }

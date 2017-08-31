@@ -2,12 +2,13 @@ package com.sweetcompany.sweetie.gallery;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,14 +20,18 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
 
     private static final String TAG = "GalleryAdapter";
 
-    public List<MediaVM> mMediasList = new ArrayList<>();
+    private List<MediaVM> mMediasList = new ArrayList<>();
+
+    private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
+    private boolean mMultipleSelectionEnable = false;
+
+    private GalleryAdapterListener mListener;
 
     interface GalleryAdapterListener {
         void onPhotoClicked(int position, List<MediaVM> mediasVM);
-        void onPhotoLongClicked(int position, List<MediaVM> mediasVM);
+        void onPhotoLongClicked(int position);
+        void onPhotoSelectionFinished();
     }
-
-    private GalleryAdapterListener mListener;
 
     /**
      * Call when create GalleryAdapter
@@ -36,23 +41,13 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         mListener = listener;
     }
 
-    /**
-     *  Call when destroy GalleryAdapterListener
-     */
-    void removeGalleryAdapterListener() {
-        mListener = null;
-    }
-
     @Override
     public int getItemViewType(int position) {
-        //TODO: this break the recycler of the viewHolder, the RecyclerView doesn't know the type
-        //return position;
         return mMediasList.get(position).getIdView();
     }
 
     @Override
     public MediaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         View viewToInflate = inflater.inflate(viewType, parent, false);
@@ -70,6 +65,9 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     public void onBindViewHolder(MediaViewHolder holder, int position) {
         MediaVM mediaVM = mMediasList.get(position);
         mediaVM.configViewHolder(holder);
+
+        // if viewHolder is into selectedItems change UI
+        holder.setViewHolderSelected(mSelectedItems.get(position, false));
 
         Log.d(TAG, "onBindViewHolder(): " + mediaVM.getKey());
     }
@@ -89,7 +87,6 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         //TODO not clear
         mMediasList.add(0, media); //add in head
         notifyItemInserted(0);
-        updateMediaList();
     }
 
     void removeMedia(MediaVM mediaVM) {
@@ -119,11 +116,6 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         return -1;
     }
 
-    void updateMediaList() {
-        //Collections.reverse(mMediasList);
-        this.notifyDataSetChanged();
-    }
-
     void updatePercentUpload(String mediaUid, int perc){
         for (int indexMediaOf = 0; indexMediaOf < mMediasList.size(); indexMediaOf++) {
 
@@ -137,15 +129,60 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         }
     }
 
-    /* Listener from ViewHolder */
+    // selecting of items
+
+    void clearSelections() {
+        mMultipleSelectionEnable = false;
+        mSelectedItems.clear();
+        notifyDataSetChanged();
+    }
+
+    List<MediaVM> getSelectedItems() {
+        List<Integer> indexes = new ArrayList<>(mSelectedItems.size());
+        for (int i = 0; i < mSelectedItems.size(); i++) {
+            indexes.add(mSelectedItems.keyAt(i));
+        }
+
+        List<MediaVM> mediasSelected = new ArrayList<>();
+        for (Integer index : indexes) {
+            mediasSelected.add(mMediasList.get(index));
+        }
+        return mediasSelected;
+    }
+
+
+    // ViewHolder callback
+
     @Override
     public void onPhotoClicked(int adapterPosition) {
-        mListener.onPhotoClicked(adapterPosition, mMediasList);
+        if (mMultipleSelectionEnable) {
+            toggleSelection(adapterPosition);
+        } else {
+            mListener.onPhotoClicked(adapterPosition, mMediasList);
+        }
+
+        if (mMultipleSelectionEnable && mSelectedItems.size() <= 0) {
+            mListener.onPhotoSelectionFinished();
+        }
+    }
+
+    private void toggleSelection(int pos) {
+        if (mSelectedItems.get(pos, false)) {
+            mSelectedItems.delete(pos);
+        } else {
+            mSelectedItems.put(pos, true);
+        }
+        notifyItemChanged(pos);
     }
 
     @Override
     public void onPhotoLongClicked(int adapterPosition) {
+        // tell to fragment to enable ActionMode
+        mListener.onPhotoLongClicked(adapterPosition);
+        mMultipleSelectionEnable = true;
 
+        // first element selected
+        toggleSelection(adapterPosition);
     }
 
 

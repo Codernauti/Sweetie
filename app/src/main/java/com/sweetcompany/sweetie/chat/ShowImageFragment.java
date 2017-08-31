@@ -14,12 +14,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.gallery.PhotoVM;
 import com.sweetcompany.sweetie.gallery.SlideshowDialogFragment;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
-
-import java.util.ArrayList;
 
 /**
  * Created by ghiro on 05/08/2017.
@@ -43,10 +40,10 @@ public class ShowImageFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_image_slider, container, false);
-        viewPager = (ViewPager) v.findViewById(R.id.viewpager);
-        lblCount = (TextView) v.findViewById(R.id.lbl_count);
-        lblTitle = (TextView) v.findViewById(R.id.title);
-        lblDate = (TextView) v.findViewById(R.id.date);
+        viewPager = (ViewPager) v.findViewById(R.id.slideshow_viewpager);
+        lblCount = (TextView) v.findViewById(R.id.slideshow_counter);
+        lblTitle = (TextView) v.findViewById(R.id.slideshow_title);
+        lblDate = (TextView) v.findViewById(R.id.slideshow_date);
 
         image = (TextPhotoMessageVM) getArguments().getSerializable("image");
 

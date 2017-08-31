@@ -258,8 +258,9 @@ public class FirebaseChatController {
 
                 // update description and dataTime of action of this associated Gallery
                 Map<String, Object> actionUpdates = new HashMap<>();
-                actionUpdates.put("description","\uD83D\uDCF7"); //camera emoji
-                actionUpdates.put("dataTime", media.getDateTime());
+                //TODO camera emoji description ti review
+                actionUpdates.put(Constraints.Actions.DESCRIPTION, "\uD83D\uDCF7"); //camera emoji
+                actionUpdates.put(Constraints.Actions.DATE_TIME, media.getDateTime());
                 mAction.updateChildren(actionUpdates);
             }
         }).addOnProgressListener(

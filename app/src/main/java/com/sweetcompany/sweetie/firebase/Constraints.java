@@ -27,7 +27,6 @@ interface Constraints {
     String PAIRING_REQUESTS = "pairing-requests";
 
     String ACTIONS = "actions";
-
     interface Actions {
         String IMAGE_URL = "imageUrl";
         String DESCRIPTION = "description";
@@ -49,21 +48,24 @@ interface Constraints {
     String CALENDAR = "calendar";
 
     String TODOLIST = "todolists";
+
         String TODOLIST_CHECKENTRY = "todolist-checkentry";
         String CHECKED = "checked";
         String TEXT = "text";
 
-    String GEOGIFTS = "geogifts";
-        String GEOGIFT_ITEMS = "geogift-items";
 
+    String GEOGIFTS = "geogifts";
+    interface Geogifts {
+        String IS_TRIGGERED = "isTriggered";
+        String DATE_TIME_VISITED = "datetimeVisited";
+    }
 
     // STORAGE CONSTRAINT
 
     String COUPLES_DETAILS = "couples_details";
 
-    // TODO: never put slash into constraints
     String GALLERY_PHOTOS_DIRECTORY = "gallery_photos";
-    String GALLERY_GEOGIFTS = "gallery_geogifts/";
+    String GALLERY_GEOGIFTS = "gallery_geogifts";
 
 }
 

@@ -1,12 +1,10 @@
 package com.sweetcompany.sweetie.gallery;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -24,46 +25,18 @@ import com.sweetcompany.sweetie.utils.Utility;
 
 public class SlideshowDialogFragment extends DialogFragment {
 
-    private String TAG = SlideshowDialogFragment.class.getSimpleName();
+    static final String TAG = SlideshowDialogFragment.class.getSimpleName();
+
+    private static final String IMAGES_KEY = "images";
+    private static final String POSITION_KEY = "position";
+
     private ArrayList<PhotoVM> images;
     private ViewPager viewPager;
     private MyViewPagerAdapter myViewPagerAdapter;
     private TextView lblCount, lblTitle, lblDate;
     private int selectedPosition = 0;
 
-    static SlideshowDialogFragment newInstance() {
-        SlideshowDialogFragment f = new SlideshowDialogFragment();
-        return f;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_image_slider, container, false);
-        viewPager = (ViewPager) v.findViewById(R.id.viewpager);
-        lblCount = (TextView) v.findViewById(R.id.lbl_count);
-        lblTitle = (TextView) v.findViewById(R.id.title);
-        lblDate = (TextView) v.findViewById(R.id.date);
-
-        images = (ArrayList<PhotoVM>) getArguments().getSerializable("images");
-        selectedPosition = getArguments().getInt("position");
-
-        myViewPagerAdapter = new MyViewPagerAdapter();
-        viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
-
-        setCurrentItem(selectedPosition);
-
-        return v;
-    }
-
-    private void setCurrentItem(int position) {
-        viewPager.setCurrentItem(position, false);
-        displayMetaInfo(selectedPosition);
-    }
-
-    //	page change listener
-    ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+    private ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
 
         @Override
         public void onPageSelected(int position) {
@@ -81,6 +54,49 @@ public class SlideshowDialogFragment extends DialogFragment {
         }
     };
 
+    static SlideshowDialogFragment newInstance(List<MediaVM> medias, int position) {
+        SlideshowDialogFragment f = new SlideshowDialogFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(IMAGES_KEY, (Serializable) medias);
+        bundle.putInt(POSITION_KEY, position);
+
+        f.setArguments(bundle);
+        return f;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_image_slider, container, false);
+        viewPager = (ViewPager) v.findViewById(R.id.slideshow_viewpager);
+        lblCount = (TextView) v.findViewById(R.id.slideshow_counter);
+        lblTitle = (TextView) v.findViewById(R.id.slideshow_title);
+        lblDate = (TextView) v.findViewById(R.id.slideshow_date);
+
+        images = (ArrayList<PhotoVM>) getArguments().getSerializable(IMAGES_KEY);
+        selectedPosition = getArguments().getInt("position");
+
+        myViewPagerAdapter = new MyViewPagerAdapter();
+        viewPager.setAdapter(myViewPagerAdapter);
+        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
+
+        setCurrentItem(selectedPosition);
+
+        return v;
+    }
+
+    private void setCurrentItem(int position) {
+        viewPager.setCurrentItem(position, false);
+        displayMetaInfo(selectedPosition);
+    }
+
     private void displayMetaInfo(int position) {
         lblCount.setText((position + 1) + " of " + images.size());
 
@@ -89,11 +105,6 @@ public class SlideshowDialogFragment extends DialogFragment {
         lblDate.setText(DataMaker.get_dd_MM_yy_Local(image.getTime()));
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-    }
 
     //	adapter
     public class MyViewPagerAdapter extends PagerAdapter {

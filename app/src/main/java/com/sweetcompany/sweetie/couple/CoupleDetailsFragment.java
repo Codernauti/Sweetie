@@ -28,6 +28,7 @@ import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -109,6 +110,7 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
 
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        // deprecated
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             mImagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
             if (mImagesPicked != null) {
@@ -116,6 +118,21 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
                 mPresenter.sendCoupleImage(fileUri);
                 mCoupleImage.setImageDrawable(null);
                 showUploadProgress();
+            }
+        }
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                mPresenter.sendCoupleImage(resultUri);
+                mCoupleImage.setImageDrawable(null);
+                showUploadProgress();
+            }
+            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.d(TAG, error.toString());
             }
         }
     }
@@ -195,19 +212,9 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
     }
 
     private void initAndStartImagePicker() {
-        ImagePicker imagePicker = ImagePicker.create(this)
-                .theme(R.style.ImagePickerTheme)
-                .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
-                .folderMode(true) // set folder mode (false by default)
-                .folderTitle("Folder") // folder selection title
-                .imageTitle(String.valueOf(R.string.image_picker_select)) // image selection title
-                .single()
-                .limit(1) // max images can be selected (99 by default)
-                .showCamera(true) // show camera or not (true by default)
-                .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
-                .origin(mImagesPicked); // original selected images, used in multi mode
-
-        imagePicker.start(RC_CODE_PICKER); // start image picker activity with request code
+        CropImage.activity()
+                .setAspectRatio(20,13)
+                .start(getContext(), this);
         // go to onActivityResult
     }
 

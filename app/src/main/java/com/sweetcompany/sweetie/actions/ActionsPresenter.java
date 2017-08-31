@@ -49,7 +49,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
 
     // Clear actions, retrieve all actions on server
     @Override
-    public void updateActionsList(List<ActionFB> actionsFB) {
+    public void onActionsListChanged(List<ActionFB> actionsFB) {
         ActionVM newActionVM;
         mActionsList.clear();
 

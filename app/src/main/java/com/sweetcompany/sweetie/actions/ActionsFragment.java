@@ -235,7 +235,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
 
     @Override
     public void updateActionsList(List<ActionVM> actionsVM) {
-        Log.d(TAG, "updateActionsList");
+        Log.d(TAG, "onActionsListChanged");
         for(ActionVM actionVM : actionsVM) {
             // actionVM.setPageChanger((IPageChanger)getActivity());
             actionVM.setContext(getContext());

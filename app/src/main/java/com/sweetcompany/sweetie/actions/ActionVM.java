@@ -2,8 +2,6 @@ package com.sweetcompany.sweetie.actions;
 
 import android.content.Context;
 
-import com.sweetcompany.sweetie.IPageChanger;
-import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ActionFB;
 
 /**
@@ -24,7 +22,7 @@ abstract class ActionVM {
     private String mTitle;
     private String mLastUser;
     private String mDescription;
-    private String mDdata; // TODO change format
+    private String mDataTime; // TODO change format
     private int mType;
     private String mChildUid;
 
@@ -37,7 +35,7 @@ abstract class ActionVM {
         mTitle = title;
         mLastUser = lastUser;
         mDescription = description;
-        mDdata = date;
+        mDataTime = date;
         mType = type;
         mChildUid = childKey;
     }
@@ -72,11 +70,11 @@ abstract class ActionVM {
     }
 
     String getDataTime(){
-        return mDdata;
+        return mDataTime;
     }
 
     void setDataTime(String data){
-        this.mDdata = data;
+        this.mDataTime = data;
     }
 
     int getType() { return mType; }

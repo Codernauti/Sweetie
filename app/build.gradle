@@ -81,6 +81,9 @@ dependencies {
     // imageCrop
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.7'
 
+    // ImageView
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+
     //calendar
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
 

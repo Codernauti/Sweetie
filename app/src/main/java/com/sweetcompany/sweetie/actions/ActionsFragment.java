@@ -43,7 +43,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActionAdapter = new ActionsAdapter();
+        mActionAdapter = new ActionsAdapter(this);
         mActionAdapter.setListener(this);
         Context context = getContext();
 

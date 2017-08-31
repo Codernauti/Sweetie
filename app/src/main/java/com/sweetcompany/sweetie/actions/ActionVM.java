@@ -3,6 +3,9 @@ package com.sweetcompany.sweetie.actions;
 import android.content.Context;
 
 import com.sweetcompany.sweetie.model.ActionFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
+
+import java.text.ParseException;
 
 /**
  * Created by ghiro on 08/05/2017.
@@ -25,12 +28,14 @@ abstract class ActionVM {
     private String mDataTime; // TODO change format
     private int mType;
     private String mChildUid;
+    private String mImageUrl;
 
     ActionVM() {
     }
 
-    ActionVM(String key, String title, String lastUser, String description, String date, int type, String childKey) {
-        // TODO assertion function true value
+    ActionVM(String key, String title, String lastUser, String description, String date, int type,
+             String childKey, String imageUrl) {
+
         mKeyFB = key;
         mTitle = title;
         mLastUser = lastUser;
@@ -38,6 +43,7 @@ abstract class ActionVM {
         mDataTime = date;
         mType = type;
         mChildUid = childKey;
+        mImageUrl = imageUrl;
     }
 
     void setContext(Context context){
@@ -89,6 +95,13 @@ abstract class ActionVM {
         this.mChildUid = childUid;
     }
 
+    String getImageUrl() {
+        return mImageUrl;
+    }
+
+    void setImageUrl(String imageUrl) {
+        this.mImageUrl = imageUrl;
+    }
 
     /*** abstract methods ***/
 
@@ -98,4 +111,17 @@ abstract class ActionVM {
 
     public abstract int getIconId();
 
+    // TODO: think about make abstract this method
+    public void configViewHolder(ActionsAdapter.ActionViewHolder viewHolder) {
+        viewHolder.setTitle(mTitle);
+        viewHolder.setDescription(mDescription);
+        viewHolder.setAvatar(mImageUrl);
+
+        try {
+            viewHolder.setDateTime(DataMaker.get_Date_4_Action(mDataTime));
+        } catch (ParseException e) {
+            viewHolder.setDateTime("error");
+            e.printStackTrace();
+        }
+    }
 }

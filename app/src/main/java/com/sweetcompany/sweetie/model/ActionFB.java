@@ -24,6 +24,7 @@ public class ActionFB {
     private String actionKey;
     private boolean isOpened;
     private boolean isTriggered; //geogift
+    private String imageUrl;
 
     ActionFB() {}
 
@@ -104,7 +105,6 @@ public class ActionFB {
     public boolean isOpened() {
         return isOpened;
     }
-
     public void setOpened(boolean opened) {
         this.isOpened = opened;
     }
@@ -112,8 +112,14 @@ public class ActionFB {
     public boolean getIsTriggered() {
         return isTriggered;
     }
-
     public void setIsTriggered(boolean isTriggered) {
         this.isTriggered = isTriggered;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

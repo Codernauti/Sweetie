@@ -194,10 +194,12 @@ public class FirebaseGalleryController {
                 // push a message into mGalleryPhotos reference
                 mGalleryPhotos.push().setValue(media);
 
+                // TODO: not an atomic operation
+
                 // update description and dataTime of action of this associated Gallery
                 Map<String, Object> actionUpdates = new HashMap<>();
                 //actionUpdates.put("description", photo.getText());
-                actionUpdates.put("dataTime", media.getDateTime());
+                actionUpdates.put(Constraints.DATE_TIME, media.getDateTime());
                 mAction.updateChildren(actionUpdates);
 
                 //TODO is not like action, cover is selected once or in settings gallery

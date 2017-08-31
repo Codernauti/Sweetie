@@ -17,9 +17,8 @@ public interface ActionsContract {
     }
 
     interface Presenter {
-        List<String> pushChatAction(String userInputChatTitle, String username);
-        List<String> pushGalleryAction(String userInputGalleryTitle, String username);
-        List<String> pushToDoListAction(String userInputToDoListTitle, String username);
+        List<String> addAction(String actionTitle, String username, int actionType);
+        void removeAction(String actionUid, int actionChildType, String actionChildUid);
     }
 
     interface DialogView {

@@ -4,20 +4,26 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.todolist.ToDoListActivity;
 
 /**
  * Created by lucas on 04/08/2017.
  */
 
-public class ActionToDoListVM extends ActionVM{
+class ActionToDoListVM extends ActionVM{
     ActionToDoListVM(String title, String description, String date, int type, String childKey, String actionKey){
         super.setTitle(title);
         super.setDescription(description);
         super.setDataTime(date);
         super.setType(type);
-        super.setChildKey(childKey);
+        super.setChildUid(childKey);
         super.setKey(actionKey);
+    }
+
+    @Override
+    public int getChildType() {
+        return ActionFB.TODOLIST;
     }
 
     @Override
@@ -26,7 +32,7 @@ public class ActionToDoListVM extends ActionVM{
 
         Intent intent = new Intent(mContext, ToDoListActivity.class);
         intent.putExtra(ToDoListActivity.TODOLIST_TITLE, super.getTitle());
-        intent.putExtra(ToDoListActivity.TODOLIST_DATABASE_KEY, super.getChildKey());
+        intent.putExtra(ToDoListActivity.TODOLIST_DATABASE_KEY, super.getChildUid());
         intent.putExtra(ToDoListActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);

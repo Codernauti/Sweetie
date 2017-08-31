@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.geogift.GeogiftDoneActivity;
-import com.sweetcompany.sweetie.geogift.GeogiftMakerActivity;
+import com.sweetcompany.sweetie.model.ActionFB;
 
 /**
  * Created by ghiro on 07/08/2017.
@@ -21,7 +21,7 @@ public class ActionGeogiftVM extends ActionVM {
         super.setDescription(description);
         super.setDataTime(date);
         super.setType(type);
-        super.setChildKey(childKey);
+        super.setChildUid(childKey);
         super.setKey(actionKey);
         isVisited = visited;
     }
@@ -31,12 +31,17 @@ public class ActionGeogiftVM extends ActionVM {
     }
 
     @Override
+    public int getChildType() {
+        return ActionFB.GEOGIFT;
+    }
+
+    @Override
     public void showAction() {
         Log.d("ActionGeogiftVM", getTitle() + " openAction");
 
         Intent intent = new Intent(mContext, GeogiftDoneActivity.class);
         intent.putExtra(GeogiftDoneActivity.GEOGIFT_TITLE, super.getTitle());
-        intent.putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, super.getChildKey());
+        intent.putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, super.getChildUid());
         intent.putExtra(GeogiftDoneActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);

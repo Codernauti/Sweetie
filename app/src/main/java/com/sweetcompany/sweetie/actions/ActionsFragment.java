@@ -1,17 +1,11 @@
 package com.sweetcompany.sweetie.actions;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,24 +16,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationServices;
 import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.geogift.GeoItem;
-import com.sweetcompany.sweetie.geogift.GeofenceTrasitionService;
-import com.sweetcompany.sweetie.utils.Utility;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ActionsFragment extends Fragment implements ActionsContract.View{
+public class ActionsFragment extends Fragment implements ActionsContract.View, ActionsAdapter.ActionsAdapterListener {
 
     private static final String TAG = "ActionsFragment";
 
@@ -57,22 +39,21 @@ public class ActionsFragment extends Fragment implements ActionsContract.View{
 
     private ActionsContract.Presenter mPresenter;
 
-    private Context mContext;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mActionAdapter = new ActionsAdapter();
-        mContext = getContext();
+        mActionAdapter.setListener(this);
+        Context context = getContext();
 
         //set animations
-        fab_small_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_actions_open);
-        fab_small_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_actions_close);
-        fab_open = AnimationUtils.loadAnimation(mContext, R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(mContext, R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(mContext, R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(mContext ,R.anim.rotate_backward);
+        fab_small_open = AnimationUtils.loadAnimation(context, R.anim.fab_actions_open);
+        fab_small_close = AnimationUtils.loadAnimation(context, R.anim.fab_actions_close);
+        fab_open = AnimationUtils.loadAnimation(context, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(context, R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(context, R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(context ,R.anim.rotate_backward);
 
     }
 
@@ -256,7 +237,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View{
     public void updateActionsList(List<ActionVM> actionsVM) {
         Log.d(TAG, "updateActionsList");
         for(ActionVM actionVM : actionsVM) {
-            actionVM.setPageChanger((IPageChanger)getActivity());
+            // actionVM.setPageChanger((IPageChanger)getActivity());
             actionVM.setContext(getContext());
         }
 
@@ -284,6 +265,13 @@ public class ActionsFragment extends Fragment implements ActionsContract.View{
         }
     }
 
+    // Adapter callbacks
 
-
+    @Override
+    public void onViewHolderLongClicked(ActionVM action) {
+        ActionMenuDialogFragment dialog = ActionMenuDialogFragment.newInstance(action.getKey(),
+                action.getChildType(), action.getChildUid());
+        dialog.setPresenter(mPresenter);
+        dialog.show(getActivity().getFragmentManager(), ActionNewChatFragment.TAG);
+    }
 }

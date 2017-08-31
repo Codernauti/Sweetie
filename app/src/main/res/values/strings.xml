@@ -20,6 +20,9 @@
     <!-- ActionNewGeogiftFragment dialog -->
     <string name="action_new_geogift_title_dialog">Insert new geogift title</string>
 
+    <!-- ActionMenuDialogFragment -->
+    <string name="action_remove_menu_dialog_option">Remove</string>
+
     <!-- CoupleDetailsFragment -->
     <string name="couple_details_title_appbar">Couple</string>
     <string name="search_partner_button">Find Partner</string>

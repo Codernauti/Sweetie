@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.model.ActionFB;
 
 /**
  * Created by ghiro on 08/05/2017.
@@ -12,7 +13,11 @@ import com.sweetcompany.sweetie.R;
 // TODO abstract class
 abstract class ActionVM {
 
-    protected IPageChanger mPageChanger;
+    static final int CHAT = ActionFB.CHAT;
+    static final int GALLERY = ActionFB.GALLERY;
+    static final int GEOGIFT = ActionFB.GEOGIFT;
+    static final int TODOLIST= ActionFB.TODOLIST;
+
     protected Context mContext;
 
     private String mKeyFB; //FB actions references
@@ -21,7 +26,7 @@ abstract class ActionVM {
     private String mDescription;
     private String mDdata; // TODO change format
     private int mType;
-    private String mChildKey;
+    private String mChildUid;
 
     ActionVM() {
     }
@@ -34,73 +39,65 @@ abstract class ActionVM {
         mDescription = description;
         mDdata = date;
         mType = type;
-        mChildKey = childKey;
+        mChildUid = childKey;
     }
-
-
-    // Setter from Fragment injection
-    void setPageChanger(IPageChanger pageChanger) { mPageChanger = pageChanger; }
 
     void setContext(Context context){
         mContext = context;
     }
 
-    /*** SETTER ***/
 
-    public void setKey(String key){
-        this.mKeyFB = key;
-    }
-
-    public void setTitle(String title){
-        this.mTitle = title;
-    }
-
-    public void setDescription(String description){
-        this.mDescription = description;
-    }
-
-    public void setDataTime(String data){
-        //setData e getData sono keyword già occupate
-        this.mDdata = data;
-    }
-
-    public void setType(int type){
-        this.mType = type;
-    }
-
-    public void setChildKey(String childKey) {
-        this.mChildKey = childKey;
-    }
-
-    /*** GETTER ***/ //TODO crate assert null function
-
-    public String getKey(){
+    String getKey(){
         return mKeyFB;
     }
 
-    public String getTitle(){
+    void setKey(String key){
+        this.mKeyFB = key;
+    }
+
+    String getTitle(){
         return mTitle;
     }
 
-    public String getDescription(){
+    void setTitle(String title){
+        this.mTitle = title;
+    }
+
+    String getDescription(){
         return mDescription;
     }
 
-    public String getDataTime(){
+    void setDescription(String description){
+        this.mDescription = description;
+    }
+
+    String getDataTime(){
         return mDdata;
     }
 
-    public int getType() { return mType; }
+    void setDataTime(String data){
+        this.mDdata = data;
+    }
 
-    String getChildKey() { return mChildKey; }
+    int getType() { return mType; }
+
+    void setType(int type){
+        this.mType = type;
+    }
+
+    String getChildUid() { return mChildUid; }
+
+    void setChildUid(String childUid) {
+        this.mChildUid = childUid;
+    }
 
 
-    /*** override method ***/
+    /*** abstract methods ***/
+
+    public abstract int getChildType();
 
     public abstract void showAction();
 
-    // default implementation; TODO should it be abstract?
-    public int getIconId() {
-        return R.drawable.action_todo_icon;
-    }
+    public abstract int getIconId();
+
 }

@@ -28,4 +28,6 @@ abstract class MediaViewHolder extends GalleryViewHolder {
     MediaViewHolder(View itemView) {
         super(itemView);
     }
+
+    abstract void setViewHolderSelected(boolean selected);
 }

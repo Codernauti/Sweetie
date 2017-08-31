@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/black" >
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black" />
+        android:id="@+id/slideshow_viewpager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+
+        />
 
     <TextView
-        android:id="@+id/lbl_count"
+        android:id="@+id/slideshow_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+
         android:textColor="@android:color/white"
         android:textSize="16dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        />
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -35,7 +45,8 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             android:textSize="16dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:text="title"/>
 
         <TextView
             android:id="@+id/date"
@@ -43,8 +54,42 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:text="ffsd"/>
 
-    </LinearLayout>
+    </LinearLayout>-->
+
+    <TextView
+        android:id="@+id/slideshow_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="4dp"
+
+        android:layout_above="@+id/slideshow_date"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+
+        android:textColor="@android:color/white"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/slideshow_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+
+        android:textColor="@android:color/white"
+        />
 
 </RelativeLayout>

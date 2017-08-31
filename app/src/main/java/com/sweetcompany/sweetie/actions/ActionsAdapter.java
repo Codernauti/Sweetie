@@ -132,6 +132,8 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
                     }
                 }
                 mNoImageTextView.setVisibility(View.VISIBLE);
+            } else {
+                mNoImageTextView.setVisibility(View.GONE);
             }
         }
 

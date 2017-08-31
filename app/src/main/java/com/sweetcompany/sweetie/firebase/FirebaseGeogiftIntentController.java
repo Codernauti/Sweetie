@@ -3,6 +3,9 @@ package com.sweetcompany.sweetie.firebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by ghiro on 30/08/2017.
  */
@@ -25,9 +28,14 @@ public class FirebaseGeogiftIntentController {
     }
 
     public void setTriggeredGeogift(String actionKey, String geogiftKey, String dateTime) {
+
         mActionsDbReference.child(actionKey + "/" + "isTriggered").setValue(true);
-        mGeogiftDbReference.child(geogiftKey + "/" + "isTriggered").setValue(true);
-        mGeogiftDbReference.child(geogiftKey + "/" + "datetimeVisited").setValue(dateTime);
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(geogiftKey + "/" + "isTriggered", true);
+        updates.put(geogiftKey + "/" + "datetimeVisited", dateTime);
+
+        mGeogiftDbReference.updateChildren(updates);
     }
 
 }

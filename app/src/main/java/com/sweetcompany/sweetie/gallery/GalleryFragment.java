@@ -188,15 +188,10 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
     @Override
     public void onPhotoClicked(int position, List<MediaVM> mediasVM) {
-        medias = mediasVM;
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("images", (Serializable) medias);
-        bundle.putInt("position", position);
+        SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance(mediasVM, position);
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
-        newFragment.setArguments(bundle);
-        newFragment.show(ft, "slideshow");
+        newFragment.show(ft, SlideshowDialogFragment.TAG);
     }
 
     @Override

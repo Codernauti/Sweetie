@@ -19,7 +19,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
 
     private static final String TAG = "GalleryAdapter";
 
-    public List<MediaVM> mMediasList = new ArrayList<>();
+    private List<MediaVM> mMediasList = new ArrayList<>();
 
     interface GalleryAdapterListener {
         void onPhotoClicked(int position, List<MediaVM> mediasVM);
@@ -89,7 +89,6 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
         //TODO not clear
         mMediasList.add(0, media); //add in head
         notifyItemInserted(0);
-        updateMediaList();
     }
 
     void removeMedia(MediaVM mediaVM) {
@@ -117,11 +116,6 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
             }
         }
         return -1;
-    }
-
-    void updateMediaList() {
-        //Collections.reverse(mMediasList);
-        this.notifyDataSetChanged();
     }
 
     void updatePercentUpload(String mediaUid, int perc){

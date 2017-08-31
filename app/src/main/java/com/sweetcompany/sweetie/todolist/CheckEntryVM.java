@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.todolist;
 
+import android.content.Context;
 import android.widget.CheckBox;
 
 import com.sweetcompany.sweetie.R;

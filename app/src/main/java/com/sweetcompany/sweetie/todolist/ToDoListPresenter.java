@@ -1,7 +1,5 @@
 package com.sweetcompany.sweetie.todolist;
 
-import android.app.AlertDialog;
-
 import com.sweetcompany.sweetie.firebase.FirebaseToDoListController;
 import com.sweetcompany.sweetie.model.CheckEntryFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
@@ -75,7 +73,7 @@ public class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseTo
         CheckEntryVM checkEntryVM = new CheckEntryVM(who,checkEntry.getKey(),checkEntry.getText(),
                 checkEntry.getDateTime(),checkEntry.isChecked());
 
-        mView.updateCheckEntry(checkEntryVM);
+        mView.addCheckEntry(checkEntryVM);
     }
 
     @Override

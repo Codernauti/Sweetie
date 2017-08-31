@@ -119,7 +119,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     }
 
     @Override
-    public void updateCheckEntry(CheckEntryVM checkEntry) {
+    public void addCheckEntry(CheckEntryVM checkEntry) {
         toDoListAdapter.addCheckEntry(checkEntry);
     }
 

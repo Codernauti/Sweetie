@@ -29,6 +29,7 @@
         android:layout_height="30dp"
         android:layout_weight="0.97"
         android:visibility="invisible"
+        android:background="@null"
         android:src="@drawable/close_circle" />
 
 </LinearLayout>

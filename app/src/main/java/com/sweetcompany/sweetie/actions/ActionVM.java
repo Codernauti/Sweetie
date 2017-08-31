@@ -111,11 +111,13 @@ abstract class ActionVM {
 
     public abstract int getIconId();
 
+    public abstract int getAvatarTextIdColor();
+
     // TODO: think about make abstract this method
     public void configViewHolder(ActionsAdapter.ActionViewHolder viewHolder) {
         viewHolder.setTitle(mTitle);
         viewHolder.setDescription(mDescription);
-        viewHolder.setAvatar(mImageUrl);
+        viewHolder.setAvatar(mImageUrl, getAvatarTextIdColor());
         viewHolder.setTypeIcon(getIconId());
 
         try {

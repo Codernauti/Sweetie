@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie.actions;
 
 
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -114,14 +115,16 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             mDateTextView.setText(dateTime);
         }
 
-        void setAvatar(String uri) {
+        void setAvatar(String uri, int resIdColor) {
             Glide.with(mFragment)
                     .load(uri)
-                    .placeholder(R.color.action_avatar_background)
+                    .placeholder(resIdColor /*R.color.action_avatar_background*/)
                     .dontAnimate()
                     .into(mAvatarImageView);
 
             if (uri == null) {
+                //mNoImageTextView.setTextColor(ContextCompat.getColor(itemView.getContext(), resIdColor));
+
                 for (int index = 4; index > 0; index--) {
                     if (mTitleText.length() > index) {
                         mNoImageTextView.setText(mTitleText.substring(0, index) + ".");

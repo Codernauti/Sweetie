@@ -42,4 +42,9 @@ class ActionToDoListVM extends ActionVM{
     public int getIconId() {
         return R.drawable.action_todolist_icon;
     }
+
+    @Override
+    public int getAvatarTextIdColor() {
+        return R.color.azzurro_pastello;
+    }
 }

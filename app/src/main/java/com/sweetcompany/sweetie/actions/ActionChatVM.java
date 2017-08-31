@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.chat.ChatActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.model.ActionFB;
 
 /**
  * Created by Eduard on 10/05/2017.
@@ -19,8 +20,13 @@ class ActionChatVM extends ActionVM {
         super.setDescription(description);
         super.setDataTime(date);
         super.setType(type);
-        super.setChildKey(childKey);
+        super.setChildUid(childKey);
         super.setKey(actionKey);
+    }
+
+    @Override
+    public int getChildType() {
+        return ActionFB.CHAT;
     }
 
     @Override
@@ -29,7 +35,7 @@ class ActionChatVM extends ActionVM {
 
         Intent intent = new Intent(mContext, ChatActivity.class);
         intent.putExtra(ChatActivity.CHAT_TITLE, super.getTitle());
-        intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, super.getChildKey());
+        intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, super.getChildUid());
         intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);

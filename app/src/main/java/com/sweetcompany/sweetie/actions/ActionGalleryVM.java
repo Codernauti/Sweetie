@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.model.ActionFB;
 
 /**
  * Created by Federico Allegro on 24/05/2017.
@@ -19,8 +20,13 @@ class ActionGalleryVM extends ActionVM {
         super.setDescription(description);
         super.setDataTime(date);
         super.setType(type);
-        super.setChildKey(childKey);
+        super.setChildUid(childKey);
         super.setKey(actionKey);
+    }
+
+    @Override
+    public int getChildType() {
+        return ActionFB.GALLERY;
     }
 
     @Override
@@ -29,7 +35,7 @@ class ActionGalleryVM extends ActionVM {
 
         Intent intent = new Intent(mContext, GalleryActivity.class);
         intent.putExtra(GalleryActivity.GALLERY_TITLE, super.getTitle());
-        intent.putExtra(GalleryActivity.GALLERY_DATABASE_KEY, super.getChildKey());
+        intent.putExtra(GalleryActivity.GALLERY_DATABASE_KEY, super.getChildUid());
         intent.putExtra(GalleryActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);

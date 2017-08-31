@@ -63,7 +63,7 @@ public class ActionNewChatFragment extends DialogFragment implements ActionsCont
                                 if (!userInputChatTitle.isEmpty()) {
                                     // [0] : chatKey, [1] : actionKey
                                     String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);
-                                    List<String> keys = mPresenter.pushChatAction(userInputChatTitle, userName);
+                                    List<String> keys = mPresenter.addAction(userInputChatTitle, userName, ActionVM.CHAT);
 
                                     if (keys != null) {
                                         Intent intent = new Intent(getActivity(), ChatActivity.class);

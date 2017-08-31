@@ -7,12 +7,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
+import com.sweetcompany.sweetie.model.GeogiftFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,10 +26,20 @@ public class FirebaseActionsController {
 
     private static final String TAG = "FbActionsController";
 
-    private final DatabaseReference mActionsDbReference;
-    private final DatabaseReference mChatsDbReference;
-    private final DatabaseReference mGalleriesDbReference;
-    private final DatabaseReference mToDoListsDbReference;
+    private final DatabaseReference mDatabaseRef;
+    private final DatabaseReference mActionsRef;
+    private final DatabaseReference mChatsRef;
+    private final DatabaseReference mGalleriesRef;
+    private final DatabaseReference mToDoListsRef;
+
+    private final String mActionsUrl;
+    private final String mChatsUrl;
+    private final String mChatMessagesUrl;
+    private final String mGalleriesUrl;
+    private final String mGalleryPhotosUrl;
+    private final String mGeogiftsUrl;
+    private final String mToDoListsUrl;
+    private final String mToDoListCheckEntries;
 
     private List<OnFirebaseActionsDataChange> mListeners = new ArrayList<>();
     private ValueEventListener mActionsEventListener;
@@ -37,10 +50,25 @@ public class FirebaseActionsController {
 
 
     public FirebaseActionsController(String coupleUid, String userUid) {
-        mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS + "/" + coupleUid);
-        mChatsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.CHATS + "/" + coupleUid);
-        mGalleriesDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GALLERIES + "/" + coupleUid);
-        mToDoListsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.TODOLIST + "/" + coupleUid);
+        mActionsUrl = Constraints.ACTIONS + "/" + coupleUid;
+
+        mChatsUrl = Constraints.CHATS + "/" + coupleUid;
+        mChatMessagesUrl = Constraints.CHAT_MESSAGES + "/" + coupleUid;
+
+        mGalleriesUrl = Constraints.GALLERIES + "/" + coupleUid;
+        mGalleryPhotosUrl = Constraints.GALLERY_PHOTOS + "/" + coupleUid;
+
+        mGeogiftsUrl = Constraints.GEOGIFTS + "/" + coupleUid;
+
+        mToDoListsUrl = Constraints.TODOLIST + "/" + coupleUid;
+        mToDoListCheckEntries = Constraints.TODOLIST_CHECKENTRY + "/" + coupleUid;
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+
+        mActionsRef = mDatabaseRef.child(mActionsUrl);
+        mChatsRef = mDatabaseRef.child(mChatsUrl);
+        mGalleriesRef = mDatabaseRef.child(mGalleriesUrl);
+        mToDoListsRef = mDatabaseRef.child(mToDoListsUrl);
     }
 
     public void addListener(OnFirebaseActionsDataChange listener) {
@@ -79,96 +107,112 @@ public class FirebaseActionsController {
             };
 
             // TODO test much more sorting
-            mActionsDbReference.orderByChild("dataTime").addValueEventListener(mActionsEventListener);
+            mActionsRef.orderByChild("dataTime").addValueEventListener(mActionsEventListener);
         }
     }
 
     public void detachNetworkDatabase() {
         if (mActionsEventListener != null) {
-            mActionsDbReference.removeEventListener(mActionsEventListener);
+            mActionsRef.removeEventListener(mActionsEventListener);
         }
         mActionsEventListener = null;
     }
 
-    public void pushAction(ActionFB act) {
-        DatabaseReference newActionPush = mActionsDbReference.push();
-        newActionPush.setValue(act);
-    }
+    public List<String> pushAction(ActionFB action) {
+        List<String> newKeys = new ArrayList<>();
+        String childActionUid = "";
+        String childTitle = action.getTitle();
 
-    public List<String> pushChatAction(ActionFB actionFB, String chatTitle) {
-        List<String> newKeys =  new ArrayList<String>();
+        HashMap<String, Object> updates = new HashMap<>();
 
-        DatabaseReference newChatPush = mChatsDbReference.push();
-        String newChatKey = newChatPush.getKey();
-        newKeys.add(newChatKey);
-        DatabaseReference newActionPush = mActionsDbReference.push();
-        String newActionKey = newActionPush.getKey();
-        newKeys.add(newActionKey);
+        // init child action
+        switch (action.getType()) {
+            case ActionFB.CHAT: {
+                ChatFB chat = new ChatFB();
+                chat.setTitle(childTitle);
+                DatabaseReference childActionPush = mChatsRef.push();
+                childActionUid = childActionPush.getKey();
 
-        // Set Action
-        actionFB.setChildKey(newChatKey);
+                updates.put(mChatsUrl + "/" + childActionUid, chat);
+                break;
+            }
+            case ActionFB.GALLERY: {
+                GalleryFB gallery = new GalleryFB();
+                gallery.setTitle(childTitle);
+                // TODO
+                gallery.setLatitude("null");
+                gallery.setLongitude("null");
+                gallery.setUriCover("null");
 
-        // Create Chat and set Chat
-        ChatFB chat = new ChatFB();
-        chat.setTitle(chatTitle);
+                DatabaseReference childActionPush = mGalleriesRef.push();
+                childActionUid = childActionPush.getKey();
+                updates.put(mGalleriesUrl + "/" + childActionUid, gallery);
+                break;
+            }
+            case ActionFB.TODOLIST: {
+                ToDoListFB toDoList = new ToDoListFB();
+                toDoList.setTitle(childTitle);
 
-        // put into queue for network
-        newChatPush.setValue(chat);
-        newActionPush.setValue(actionFB);
+                DatabaseReference childActionPush = mToDoListsRef.push();
+                childActionUid = childActionPush.getKey();
+                updates.put(mToDoListsUrl + "/" + childActionUid, toDoList);
+                break;
+            }
+            case ActionFB.GEOGIFT:
+            default:
+                break;
+        }
 
-        return newKeys;
-    }
+        DatabaseReference actionPush = mActionsRef.push();
+        String actionUid = actionPush.getKey();
 
-    public List<String> pushGalleryAction(ActionFB actionFB, String galleryTitle) {
-        List<String> newKeys =  new ArrayList<String>();
+        // init action
+        action.setChildKey(childActionUid);
+        updates.put(mActionsUrl + "/" + actionUid, action);
 
-        DatabaseReference newGalleryPush = mGalleriesDbReference.push();
-        String newGalleryKey = newGalleryPush.getKey();
-        newKeys.add(newGalleryKey);
-        DatabaseReference newActionPush = mActionsDbReference.push();
-        String newActionKey = newActionPush.getKey();
-        newKeys.add(newActionKey);
+        // update database
+        mDatabaseRef.updateChildren(updates);
 
-        // Set Action
-        actionFB.setChildKey(newGalleryKey);
-
-        // Create Gallery and set Gallery
-        GalleryFB gallery = new GalleryFB();
-        gallery.setTitle(galleryTitle);
-        //TODO
-        gallery.setLatitude("null");
-        gallery.setLongitude("null");
-        gallery.setUriCover("null");
-
-        // put into queue for network
-        newGalleryPush.setValue(gallery);
-        newActionPush.setValue(actionFB);
-
-        return newKeys;
-    }
-
-    public List<String> pushToDoListAction(ActionFB actionFB, String todolistTitle) {
-        List<String> newKeys =  new ArrayList<String>();
-
-        DatabaseReference newToDoListPush = mToDoListsDbReference.push();
-        String newToDoListKey = newToDoListPush.getKey();
-        newKeys.add(newToDoListKey);
-        DatabaseReference newActionPush = mActionsDbReference.push();
-        String newActionKey = newActionPush.getKey();
-        newKeys.add(newActionKey);
-
-        // Set Action
-        actionFB.setChildKey(newToDoListKey);
-
-        // Create ToDoList and set ToDoList
-        ToDoListFB toDoList = new ToDoListFB();
-        toDoList.setTitle(todolistTitle);
-
-        // put into queue for network
-        newToDoListPush.setValue(toDoList);
-        newActionPush.setValue(actionFB);
+        // keep the uid to return
+        newKeys.add(childActionUid);
+        newKeys.add(actionUid);
 
         return newKeys;
+    }
+
+    public void removeAction(String actionUid, int childType, String childUid) {
+        HashMap<String, Object> updates = new HashMap<>();
+
+        // Remove action
+        updates.put(mActionsUrl + "/" + actionUid, null);
+
+        // Remove childAction (chat, galleries etc.)
+        switch (childType) {
+            case ActionFB.CHAT: {
+                updates.put(mChatsUrl + "/" + childUid, null);
+                updates.put(mChatMessagesUrl + "/" + childUid, null);
+                break;
+            }
+            case ActionFB.GALLERY: {
+                updates.put(mGalleriesUrl + "/" + childUid, null);
+                updates.put(mGalleryPhotosUrl + "/" + childUid, null);
+                break;
+            }
+            case ActionFB.GEOGIFT: {
+                updates.put(mGeogiftsUrl + "/" + childUid, null);
+                break;
+            }
+            case ActionFB.TODOLIST: {
+                updates.put(mToDoListsUrl + "/" + childUid, null);
+                updates.put(mToDoListCheckEntries + "/" + childUid, null);
+                break;
+            }
+            default:
+                Log.d(TAG, "Cannot remove action, removing of this type is not supported " + childType);
+                break;
+        }
+
+        mDatabaseRef.updateChildren(updates);
     }
 
 }

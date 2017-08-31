@@ -60,7 +60,7 @@ public class ActionNewToDoListFragment extends DialogFragment implements DialogV
 
                         if (!userInputChatTitle.isEmpty()) {
                             String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);
-                            List<String> keys = mPresenter.pushToDoListAction(userInputChatTitle, userName);
+                            List<String> keys = mPresenter.addAction(userInputChatTitle, userName, ActionVM.TODOLIST);
 
                             if (keys != null) {
                                 Intent intent = new Intent(getActivity(), ToDoListActivity.class);

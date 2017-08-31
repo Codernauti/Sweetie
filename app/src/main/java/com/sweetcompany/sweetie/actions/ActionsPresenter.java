@@ -16,68 +16,33 @@ import java.util.List;
 public class ActionsPresenter implements ActionsContract.Presenter,
                                          FirebaseActionsController.OnFirebaseActionsDataChange {
 
-    public static final String TAG = "Action.presenter" ;
+    public static final String TAG = "ActionsPresenter" ;
 
     private final ActionsContract.View mView;
     private final FirebaseActionsController mController;
 
     private List<ActionVM> mActionsList = new ArrayList<>();
-    private String mUserID;
+    private String mUserUid;
 
-    public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userID) {
+    public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userUid) {
         mView = view;
         mView.setPresenter(this);
         mController = controller;
         mController.addListener(this);
 
-        mUserID = userID;
+        mUserUid = userUid;
     }
 
     @Override
-    public List<String> pushChatAction(String userInputChatTitle, String username) {
-        ActionFB action = null;
+    public List<String> addAction(String actionTitle, String username, int actionType) {
         // TODO: add description and fix username variable, what username???
-        action = new ActionFB(userInputChatTitle, mUserID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.CHAT);
-
-        if (action != null) {
-            return mController.pushChatAction(action, userInputChatTitle);
-        }
-        else {
-            Log.d(TAG, "An error in the creation of a new ChatAction occurs!");
-            return null;
-        }
+        ActionFB action = new ActionFB(actionTitle, mUserUid, username, "", DataMaker.get_UTC_DateTime(), actionType);
+        return mController.pushAction(action);
     }
 
     @Override
-    public List<String> pushGalleryAction(String userInputGalleryTitle, String username) {
-        ActionFB action = null;
-        // TODO: add description and fix username variable, what username???
-        action = new ActionFB(userInputGalleryTitle, mUserID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GALLERY);
-
-        if (action != null) {
-            return mController.pushGalleryAction(action, userInputGalleryTitle);
-        }
-        else {
-            Log.d(TAG, "An error in the creation of a new GalleryAction occurs!");
-            return null;
-        }
-    }
-
-    @Override
-    public List<String> pushToDoListAction(String userInputToDoListTitle, String username) {
-        ActionFB action = null;
-        // TODO: add description and fix username variable, what username???
-
-            action = new ActionFB(userInputToDoListTitle, mUserID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.TODOLIST);
-
-
-        if (action != null) {
-            return mController.pushToDoListAction(action, userInputToDoListTitle);
-        }
-        else {
-            Log.d(TAG, "An error in the creation of a new ToDoListAction occurs!");
-            return null;
-        }
+    public void removeAction(String actionUid, int actionChildType, String actionChildUid) {
+        mController.removeAction(actionUid, actionChildType, actionChildUid);
     }
 
     // Controller callbacks
@@ -97,23 +62,26 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
+
                 case ActionFB.GALLERY:
                     newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
+
                 case ActionFB.TODOLIST:
                     newActionVM = new ActionToDoListVM(action.getTitle(), action.getDescription(),
                             action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
                     mActionsList.add(newActionVM);
                     break;
+
                 case ActionFB.GEOGIFT:
                     Log.d(TAG, "geogift finded!");
-                        if(action.getUserCreator().equals(mUserID) || action.getIsTriggered()) {
-                            newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
-                                    action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.getIsTriggered());
-                            mActionsList.add(newActionVM);
-                        }
+                    if(action.getUserCreator().equals(mUserUid) || action.getIsTriggered()) {
+                        newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
+                                action.getDataTime(), action.getType(), action.getChildKey(), action.getKey(), action.getIsTriggered());
+                        mActionsList.add(newActionVM);
+                    }
                     break;
             }
         }

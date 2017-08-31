@@ -27,14 +27,22 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
 
     private List<ActionVM> mActionsList = new ArrayList<>();
 
+    private ActionsAdapterListener mListener;
+
+    interface ActionsAdapterListener {
+        void onViewHolderLongClicked(ActionVM action);
+    }
+
+    void setListener(ActionsAdapterListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         View view = inflater.inflate(R.layout.action_list_item, parent, false);
         ActionViewHolder viewHolder = new ActionViewHolder(view);
-
-        //viewHolder.viewHolderIndex.setText("ViewHolder index: " + VIEW_HOLDER_COUNT);
 
         VIEW_HOLDER_COUNT++;
         Log.d(TAG, "onCreateViewHolder: number of ViewHolders created: " + VIEW_HOLDER_COUNT);
@@ -61,14 +69,16 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
         return mActionsList.size();
     }
 
-    public void updateActionsList(List<ActionVM> actionsVM) {
+    @Deprecated
+    void updateActionsList(List<ActionVM> actionsVM) {
         mActionsList.clear();
         mActionsList.addAll(actionsVM);
         this.notifyDataSetChanged();
     }
 
 
-    class ActionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ActionViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener{
         TextView title, description, date;
         ImageView avatar, type;
 
@@ -76,6 +86,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             super(itemView);
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
 
             title = (TextView) itemView.findViewById(R.id.title_action_list_item);
             description = (TextView) itemView.findViewById(R.id.subtitle_action_list_item);
@@ -86,9 +97,16 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
 
         @Override
         public void onClick(View v) {
-            // TODO test method
             int position = this.getAdapterPosition();
             mActionsList.get(position).showAction();
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (mListener != null) {
+                mListener.onViewHolderLongClicked(mActionsList.get(getAdapterPosition()));
+            }
+            return true;
         }
     }
 

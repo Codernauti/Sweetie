@@ -2,7 +2,6 @@ package com.sweetcompany.sweetie.actions;
 
 
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -99,7 +98,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             mAvatarImageView = (ImageView) itemView.findViewById(R.id.image_action_list_item);
             mNoImageTextView = (TextView) itemView.findViewById(R.id.action_no_image_text);
 
-            mTypeIcon = (ImageView) itemView.findViewById(R.id.type_action_list_item);
+            mTypeIcon = (ImageView) itemView.findViewById(R.id.action_item_type);
         }
 
         void setTitle(String title) {

@@ -141,7 +141,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
 
 
     @Override
-    public void onCheckEntryUnfocus(CheckEntryVM checkEntry) {
+    public void onCheckEntryUnfocused(CheckEntryVM checkEntry) {
         mPresenter.changeCheckEntry(checkEntry);
     }
 

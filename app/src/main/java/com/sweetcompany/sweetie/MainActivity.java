@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.sweetcompany.sweetie.chat.MessagesMonitorService;
 import com.sweetcompany.sweetie.registration.RegisterActivity;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity{
                 startService(new Intent(this, GeogiftMonitorService.class));
             }
 
+            startService(new Intent(this, MessagesMonitorService.class));
             startService(new Intent(this, UserMonitorService.class));
             startActivity(new Intent(this, DashboardActivity.class));
         }

@@ -33,15 +33,28 @@
         </activity>
 
         <activity android:name=".DashboardActivity"
-                  android:theme="@style/AppTheme"/>
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
 
-        <activity android:name=".registration.RegisterActivity" android:theme="@style/AppTheme" />
-        <activity android:name=".pairing.PairingActivity" android:theme="@style/AppTheme" />
+        <activity android:name=".registration.RegisterActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity android:name=".pairing.PairingActivity"
+            android:theme="@style/AppTheme" />
 
         <!--android:windowSoftInputMode="adjustNothing"-->
         <activity android:name=".chat.ChatActivity"
+            android:parentActivityName=".DashboardActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity"/>
+        </activity>
 
         <activity android:name=".chatDiary.ChatDiaryActivity"
             android:theme="@style/AppTheme" />
@@ -84,6 +97,9 @@
             android:enabled="true"/>
 
         <service android:name=".geogift.GeofenceTrasitionService"/>
+
+        <service android:name=".chat.MessagesMonitorService"
+            android:enabled="true" />
 
 
         <!-- meta-data -->

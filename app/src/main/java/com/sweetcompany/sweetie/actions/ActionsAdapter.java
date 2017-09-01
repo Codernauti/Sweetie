@@ -98,7 +98,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             mAvatarImageView = (ImageView) itemView.findViewById(R.id.image_action_list_item);
             mNoImageTextView = (TextView) itemView.findViewById(R.id.action_no_image_text);
 
-            mTypeIcon = (ImageView) itemView.findViewById(R.id.type_action_list_item);
+            mTypeIcon = (ImageView) itemView.findViewById(R.id.action_item_type);
         }
 
         void setTitle(String title) {
@@ -114,14 +114,16 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             mDateTextView.setText(dateTime);
         }
 
-        void setAvatar(String uri) {
+        void setAvatar(String uri, int resIdColor) {
             Glide.with(mFragment)
                     .load(uri)
-                    .placeholder(R.color.action_avatar_background)
+                    .placeholder(resIdColor /*R.color.action_avatar_background*/)
                     .dontAnimate()
                     .into(mAvatarImageView);
 
             if (uri == null) {
+                //mNoImageTextView.setTextColor(ContextCompat.getColor(itemView.getContext(), resIdColor));
+
                 for (int index = 4; index > 0; index--) {
                     if (mTitleText.length() > index) {
                         mNoImageTextView.setText(mTitleText.substring(0, index) + ".");

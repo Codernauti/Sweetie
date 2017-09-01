@@ -113,6 +113,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     @Override
     public void updateMedia(MediaVM mediaVM) {
         mGalleryAdapter.addMedia(mediaVM);
+        mGalleryListView.scrollToPosition(0);
     }
 
     @Override
@@ -144,7 +145,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         for (int i = 0, l = images.size(); i < l; i++) {
             Uri file = Uri.fromFile(new File(images.get(i).getPath()));
 
-            MediaVM newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", null, file.toString(), "", 0);
+            MediaVM newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", file.toString(), "", 0, null);
             mPresenter.sendMedia(newMedia);
         }
     }

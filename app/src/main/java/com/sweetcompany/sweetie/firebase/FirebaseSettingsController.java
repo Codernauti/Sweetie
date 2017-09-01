@@ -20,10 +20,7 @@ import com.sweetcompany.sweetie.model.UserFB;
 
 public class FirebaseSettingsController {
 
-    private static final String TAG = "SettingsControler";
-
-    private final String mUserUid;
-    private final String mUserUrl;
+    private static final String TAG = "SettingsController";
 
     private final DatabaseReference mUserRef;
     private ValueEventListener mUserRefListener;
@@ -37,8 +34,7 @@ public class FirebaseSettingsController {
     }
 
     public FirebaseSettingsController(String userUid) {
-        mUserUid = userUid;
-        mUserUrl = Constraints.USERS + "/" + mUserUid;
+        String mUserUrl = Constraints.USERS + "/" + userUid;
 
         mUserStorage = FirebaseStorage.getInstance().getReference(Constraints.USERS);
 

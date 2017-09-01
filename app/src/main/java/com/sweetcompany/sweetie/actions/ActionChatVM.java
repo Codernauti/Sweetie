@@ -48,4 +48,9 @@ class ActionChatVM extends ActionVM {
     public int getIconId() {
         return R.drawable.action_chat_icon;
     }
+
+    @Override
+    public int getAvatarTextIdColor() {
+        return R.color.rosa_sweetie;
+    }
 }

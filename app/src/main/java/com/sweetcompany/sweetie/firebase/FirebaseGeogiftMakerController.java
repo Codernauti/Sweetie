@@ -17,6 +17,7 @@ import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GeogiftFB;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,10 +28,14 @@ public class FirebaseGeogiftMakerController {
 
     private static final String TAG = "FbGeogiftMakerController";
 
-    private final DatabaseReference mActionsDbReference;
-    private final DatabaseReference mGeogiftDbReference;
+    private final DatabaseReference mDatabaseRef;
+    private final DatabaseReference mActionsRef;
+    private final DatabaseReference mGeogiftsRef;
     private final StorageReference mStorageRef;
     private final FirebaseStorage mStorage;
+
+    private final String mActionsUrl;
+    private final String mGeogiftsUrl;
 
     private final String coupleID;
     private final String userID;
@@ -44,9 +49,17 @@ public class FirebaseGeogiftMakerController {
 
 
     public FirebaseGeogiftMakerController(String coupleUid, String userUID) {
-        mActionsDbReference = FirebaseDatabase.getInstance().getReference(Constraints.ACTIONS + "/" + coupleUid);
-        mGeogiftDbReference = FirebaseDatabase.getInstance().getReference(Constraints.GEOGIFTS + "/" + coupleUid);
+
         mStorage = FirebaseStorage.getInstance();
+
+        mActionsUrl = Constraints.ACTIONS + "/" + coupleUid;
+        mGeogiftsUrl = Constraints.GEOGIFTS + "/" + coupleUid;
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+
+        mActionsRef = mDatabaseRef.child(mActionsUrl);
+        mGeogiftsRef = mDatabaseRef.child(mGeogiftsUrl);
+
         mStorageRef = mStorage.getReference();
         coupleID = coupleUid;
         userID = userUID;
@@ -58,14 +71,15 @@ public class FirebaseGeogiftMakerController {
 
 
     public List<String> pushGeogiftAction(ActionFB actionFB, String geogiftTitle, GeoItem geoItem) {
-        List<String> newKeys =  new ArrayList<String>();
+        List<String> newKeys =  new ArrayList<>();
 
-        DatabaseReference newGeogiftPush = mGeogiftDbReference.push();
+        HashMap<String, Object> updates = new HashMap<>();
+
+        DatabaseReference newGeogiftPush = mGeogiftsRef.push();
         String newGeogiftKey = newGeogiftPush.getKey();
-        newKeys.add(newGeogiftKey);
-        DatabaseReference newActionPush = mActionsDbReference.push();
+
+        DatabaseReference newActionPush = mActionsRef.push();
         String newActionKey = newActionPush.getKey();
-        newKeys.add(newActionKey);
 
         // Set Actions
         actionFB.setChildKey(newGeogiftKey);
@@ -84,9 +98,15 @@ public class FirebaseGeogiftMakerController {
         geogift.setDatetimeCreation(actionFB.getDataTime());
         geogift.setIsTriggered(false);
 
-        // put into queue for network
-        newGeogiftPush.setValue(geogift);
-        newActionPush.setValue(actionFB);
+        updates.put(mActionsUrl + "/" + newActionKey, actionFB);
+        updates.put(mGeogiftsUrl + "/" + newGeogiftKey, geogift);
+
+        // update database
+        mDatabaseRef.updateChildren(updates);
+
+
+        newKeys.add(newGeogiftKey);
+        newKeys.add(newActionKey);
 
         return newKeys;
     }
@@ -98,7 +118,7 @@ public class FirebaseGeogiftMakerController {
         Uri uriLocal;
         uriLocal = Uri.parse(uriImage);
 
-        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_GEOGIFTS+coupleID+"/"+uriLocal.getLastPathSegment());
+        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_GEOGIFTS + "/" + coupleID+"/"+uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

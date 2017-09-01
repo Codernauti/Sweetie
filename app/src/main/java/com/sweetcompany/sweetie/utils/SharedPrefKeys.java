@@ -11,11 +11,16 @@ public interface SharedPrefKeys {
     String MAIL = "mail";
     String USERNAME = "username";
     String PHONE_NUMBER = "phone_number";
+    String USER_IMAGE_URI = "user_image_uri";
     String GENDER = "gender";
-    String PARTNER_UID = "partner_uid";
+
     String COUPLE_UID = "couple_uid";
+
+    String PARTNER_UID = "partner_uid";
     String FUTURE_PARTNER_PAIRING_REQUEST = "future_partner";
     String PARTNER_USERNAME = "partner_username";
+    String PARTNER_IMAGE_URI = "partner_image_uri";
+
     String USER_RELATIONSHIP_STATUS = "user_relationship_status";
     String USER_RELATIONSHIP_STATUS_CHANGED = "user_relationship_status_changed";
 

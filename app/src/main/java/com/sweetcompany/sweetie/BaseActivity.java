@@ -5,12 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -115,16 +111,17 @@ public class BaseActivity extends AppCompatActivity implements
         int userRelationshipStatus = Utility.getUserRelationshipStatus(this,
                 SharedPrefKeys.USER_RELATIONSHIP_STATUS);
         String partnerUsername = Utility.getStringPreference(this, SharedPrefKeys.PARTNER_USERNAME);
+        String partnerImageUri = Utility.getStringPreference(this, SharedPrefKeys.PARTNER_IMAGE_URI);
         mCoupleUid = Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID);
 
         Log.d(BASE_TAG, "onSharedPreferenceChanged() - USER_RELATIONSHIP_STATUS = " + userRelationshipStatus);
 
         if (userRelationshipStatus == UserMonitorService.BREAK_SINGLE) {
             removePartnerPreferenceValues();
-            startCoupleActivity(getString(R.string.break_up_notification) + partnerUsername);
+            startCoupleActivity(getString(R.string.break_up_notification) + partnerUsername, partnerImageUri, true);
         }
         else if (userRelationshipStatus == UserMonitorService.COUPLED) {
-            startCoupleActivity(getString(R.string.couple_notification) + partnerUsername);
+            startCoupleActivity(getString(R.string.couple_notification) + partnerUsername, partnerImageUri, false);
         }
     }
 
@@ -134,10 +131,12 @@ public class BaseActivity extends AppCompatActivity implements
         Utility.removePreference(this, SharedPrefKeys.FUTURE_PARTNER_PAIRING_REQUEST);
     }
 
-    private void startCoupleActivity(String messageToShow) {
+    private void startCoupleActivity(String messageToShow, String uriImage, boolean coupleBreak) {
         // start activity and clean the Task (back stack of activity)
         Intent intent = new Intent(this, CoupleActivity.class);
-        intent.putExtra(CoupleActivity.MESSAGE_TO_SHOW_KEY, messageToShow);
+        intent.putExtra(CoupleActivity.FIRST_MESSAGE_KEY, messageToShow);
+        intent.putExtra(CoupleActivity.IMAGE_PARTNER_KEY, uriImage);
+        intent.putExtra(CoupleActivity.BREAK_KEY, coupleBreak);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         startActivity(intent);

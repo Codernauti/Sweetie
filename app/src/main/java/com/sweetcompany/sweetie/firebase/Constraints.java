@@ -9,11 +9,12 @@ interface Constraints {
     String USERS = "users";
         String COUPLE_INFO = "coupleInfo";
             String PARTNER_USERNAME = "partnerUsername";
+            String PARTNER_IMAGE_URI = "partnerImageUri";
             String ACTIVE_COUPLE = "activeCouple";
-            String ARCHIVED_COUPLES = "archivedCouples";
+    String ARCHIVED_COUPLES = "archivedCouples";
+
+
         String FUTURE_PARTNER = "futurePartner";
-
-
     String MSG_NOTIFICATION_ROOMS = "msg-notification-rooms";
 
     interface Users {

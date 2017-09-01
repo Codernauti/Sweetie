@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/couple_partner_image"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:elevation="1dp"
+
+        android:src="@drawable/test_female_user_icon_192x192"
+        />
+
+    <TextView
+        android:id="@+id/couple_first_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginBottom="20dp"
+
+        android:layout_gravity="center"
+
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:text="You are couple with Mary"
+        />
+
+    <ImageButton
+        android:id="@+id/couple_ok"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="25dp"
+
+        android:layout_gravity="center"
+        android:background="@drawable/shape_circle"
+        android:src="@drawable/heart_full"
+        android:elevation="2dp"
+        />
+
+    <TextView
+        android:id="@+id/couple_first_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="14dp"
+
+        android:background="@color/white"
+        android:text="Press the heart button and share everything with Sweetie!"
+        android:elevation="-1dp"
+        />
+
+</LinearLayout>

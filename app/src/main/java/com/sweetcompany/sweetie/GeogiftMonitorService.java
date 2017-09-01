@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -27,6 +26,7 @@ import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ghiro on 29/08/2017.
@@ -42,13 +42,10 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
     private static final String GEOFENCE_REQ_ID = "My Geofence";
     private static final float GEOFENCE_RADIUS = 100.0f; // in meters
     private static final int GEOFENCE_REQ_CODE = 4005;
-    private int REQ_PERMISSION_UPDATE = 202;
-    private static final int DWELL = 1000;
 
     private Location lastLocation;
     private static GoogleApiClient googleApiClient;
     private static PendingIntent geoFencePendingIntent;
-    public ArrayList<String> mGeogiftKeyToRegister;
 
     private FirebaseGeogiftController mController = null;
 
@@ -107,15 +104,26 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
     }
 
     public void addGeofencesOnLoad(Geofence geofence, String actionKey, String geogiftKey) {
-        try {
-            LocationServices.GeofencingApi.addGeofences(
-                    googleApiClient,
-                    getGeofencingRequest(geofence),
-                    getGeofencePendingIntent(actionKey, geogiftKey)
-            ).setResultCallback(this); // Result processed in onResult().
-        } catch (SecurityException securityException) {
-            //logSecurityException(securityException);
+        LocationServices.GeofencingApi.addGeofences(
+                googleApiClient,
+                getGeofencingRequest(geofence),
+                getGeofencePendingIntent(actionKey, geogiftKey)
+        ).setResultCallback(this); // Result processed in onResult().
+    }
+
+    @Override
+    public void onRemovedGeogift(String geogiftKey) {
+        if(googleApiClient!= null && googleApiClient.isConnected()){
+            unregisterGeofence(geogiftKey);
         }
+    }
+
+    public void unregisterGeofence(String geogiftKey){
+        List<String> geofenceList = new ArrayList<>();
+        geofenceList.add(geogiftKey);
+             LocationServices.GeofencingApi.removeGeofences(
+                    googleApiClient,
+                     geofenceList).setResultCallback(this);
     }
 
     private GeofencingRequest getGeofencingRequest(Geofence geofence) {
@@ -136,11 +144,6 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
         intent.putExtra(GeofenceTrasitionService.GEOGIFT_KEY, geogiftKey);
         return PendingIntent.getService(
                 this, GEOFENCE_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-    }
-
-    @Override
-    public void onRemovedGeogift(String geogiftKey) {
-
     }
 
     //ResultCallback
@@ -180,7 +183,6 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
                 == PackageManager.PERMISSION_GRANTED );
     }
 
-
     @Override
     public void onConnectionSuspended(int i) {
         Log.i(TAG, "googleApi connection suspended");
@@ -189,7 +191,6 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.i(TAG, "googleApi connection failed");
     }
-
 
     @Override
     public IBinder onBind(Intent intent) {

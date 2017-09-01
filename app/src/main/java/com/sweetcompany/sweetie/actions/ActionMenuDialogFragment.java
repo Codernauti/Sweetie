@@ -20,7 +20,7 @@ public class ActionMenuDialogFragment extends DialogFragment implements ActionsC
 
     private static final String TAG = "ActionMenuDialogFrag";
 
-    private static final String[] mItems = new String[1];
+    private static final String[] mItems = new String[2];
     private static final int REMOVE_OPT = 0;
     private static final int CHANGE_IMG_OPT = 1;
 

@@ -307,7 +307,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
             public void onChangeActionImageSelected() {
                 CropImage.activity()
                         .setAspectRatio(1,1)
-                        .setMaxCropResultSize(128, 128)
+                        .setMaxCropResultSize(1024, 1024)
                         .start(getContext(), ActionsFragment.this);
             }
         });

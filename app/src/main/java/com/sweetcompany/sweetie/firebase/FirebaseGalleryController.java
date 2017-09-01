@@ -173,6 +173,22 @@ public class FirebaseGalleryController {
         //ref.setValue(photo.isBookmarked());
     }
 
+    private void addMedia(String mediaUid, MediaFB media){
+        Map<String, Object> updates = new HashMap<>();
+
+        // push media
+        updates.put(mGalleryPhotosUrl + "/" + mediaUid, media);
+
+        // update parent action dateTime & imageUrl
+        updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, media.getDateTime());
+        updates.put(mActionUrl + "/" + Constraints.Actions.IMAGE_URL, media.getUriStorage());
+
+        // update photo cover gallery
+        updates.put(mGalleryUrl + "/" + Constraints.URI_COVER, media.getUriStorage());
+
+        mDatabaseRef.updateChildren(updates);
+    }
+
     // push message to db and update action of this gallery
     public String sendMedia(final MediaFB media) {
         Log.d(TAG, "Send MediaFB: " + media);
@@ -194,25 +210,10 @@ public class FirebaseGalleryController {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                final String stringUriStorage = downloadUrl.toString();
-                media.setUriStorage(stringUriStorage);
+                media.setUriStorage(downloadUrl.toString());
 
-                Map<String, Object> updates = new HashMap<>();
-
-                // push media
-                String newMediaUid = mGalleryPhotos.push().getKey();
-                updates.put(mGalleryPhotosUrl + "/" + newMediaUid, media);
-
-                // update parent action dateTime & imageUrl
-                updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, media.getDateTime());
-                updates.put(mActionUrl + "/" + Constraints.Actions.IMAGE_URL, media.getUriStorage());
-
-                // update photo cover gallery
-                updates.put(mGalleryUrl + "/" + Constraints.URI_COVER, media.getUriStorage());
-
-                mDatabaseRef.updateChildren(updates);
+                addMedia(newMediaUID, media);
             }
         }).addOnProgressListener(
                 new OnProgressListener<UploadTask.TaskSnapshot>() {

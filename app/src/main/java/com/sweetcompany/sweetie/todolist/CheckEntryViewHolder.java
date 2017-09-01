@@ -46,7 +46,7 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
             case R.id.todolist_editText:
                 if(!hasFocus) {
                     if(getAdapterPosition() != -1) {
-                        mListener.onCheckEntryUnfocus(getAdapterPosition(), mEditText.getText().toString());
+                        mListener.onCheckEntryUnfocused(getAdapterPosition(), mEditText.getText().toString());
                     }
                     mDeleteButton.setVisibility(View.INVISIBLE);
                 } else {
@@ -59,7 +59,7 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
 
     interface OnViewHolderClickListener {
         void onCheckBoxClicked(int adapterPosition, boolean isChecked);
-        void onCheckEntryUnfocus(int adapterPosition,String text);
+        void onCheckEntryUnfocused(int adapterPosition,String text);
         void onCheckEntryRemove(int adapterPosition);
     }
 

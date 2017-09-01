@@ -59,19 +59,22 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
 
     @Override
     public void onMediaAdded(MediaFB media) {
-        MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
+        //MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
+        MediaVM mediaVM = createPhotoVM(media);
         mView.updateMedia(mediaVM);
     }
 
     @Override
     public void onMediaRemoved(MediaFB media) {
-        MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
+        //MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
+        MediaVM mediaVM = createPhotoVM(media);
         mView.removeMedia(mediaVM);
     }
 
     @Override
     public void onMediaChanged(MediaFB media) {
-        MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
+        //MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
+        MediaVM mediaVM = createPhotoVM(media);
         mView.changeMedia(mediaVM);
     }
 
@@ -79,4 +82,24 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     public void onUploadPercent(MediaFB media, int perc){
         mView.updatePercentUpload(media.getKey(), perc);
     }
+
+    /**
+     * Convert MediaFB to PhotoVM
+     * @param media
+     * @return
+     */
+
+    private MediaVM createPhotoVM(MediaFB media) {
+        // Understand if the message is of Main User
+        boolean who = MediaVM.THE_PARTNER;
+        if (media.getEmail() != null) {   // TODO remove check in future
+            if (media.getEmail().equals(mUserMail)) {
+                who = MediaVM.THE_MAIN_USER;
+            }
+        }
+
+        // Create respective ViewModel
+        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getUriLocal(), media.getUriStorage(), 0, media.getKey());
+    }
+
 }

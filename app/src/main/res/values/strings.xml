@@ -44,6 +44,7 @@
 
     <!-- ChatFragment -->
     <string name="hint_chat_message">\tWrite a new message</string>
+    <string name="camera_emoticons">📷📷</string>
 
     <!-- CoupleDetailsFragment placeholder -->
     <string name="couples_name_text">John and Mary</string>

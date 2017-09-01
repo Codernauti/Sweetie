@@ -20,6 +20,7 @@ import com.sweetcompany.sweetie.model.ActionDiaryFB;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.MessageFB;
+import com.sweetcompany.sweetie.model.MsgNotification;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,22 +39,27 @@ public class FirebaseChatController {
     private final String mChatTitle;
     private final String mCoupleUid;
 
+    // database
     private final String mChatMessagesUrl;          // chat-message/<couple_uid>/<chat_uid>
     private final String mCoupleCalendarUrl;        // calendar/<couple_uid>
     private final String mCoupleActionsDiaryUrl;    // actionsDiary/<couple_uid>/<action_uid>
-
     private final String mActionUrl;                // actions/<couple_uid>/<action_uid>
-    private final DatabaseReference mDatabase;
+    private final String mNotificationRoomUrl;      // msg-notification-rooms/<user_uid>
+
+    // storage
+    private final String mGalleryPhotoUrl;          // gallery_photos/<couple_uid>
+
+    private final DatabaseReference mDatabaseRef;
     private final DatabaseReference mChat;
     private final DatabaseReference mChatMessages;
 
-    private final DatabaseReference mAction;
     private final StorageReference mStorageRef;
-
-    private final FirebaseStorage mStorage;
 
     private ValueEventListener mChatListener;
     private ChildEventListener mChatMessagesListener;
+
+    // Start object for notification new message to partner
+    private final MsgNotification mMsgDefaultNotification;
 
 
     private List<ChatControllerListener> mListeners = new ArrayList<>();
@@ -68,25 +74,27 @@ public class FirebaseChatController {
     }
 
 
-    public FirebaseChatController(String coupleUid, String chatKey, String chatTitle, String actionKey) {
+    public FirebaseChatController(String coupleUid, String chatKey, String chatTitle, String actionKey, String partnerUid) {
+        mCoupleUid = coupleUid;
         mActionUid = actionKey;
         mChatTitle = chatTitle;
+
+        mMsgDefaultNotification = new MsgNotification(chatKey, actionKey, chatTitle);
 
         mChatMessagesUrl = Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey;
         mCoupleCalendarUrl = Constraints.CALENDAR + "/" + coupleUid;
         mCoupleActionsDiaryUrl = Constraints.ACTIONS_DIARY + "/" + coupleUid;
         mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey;
+        mNotificationRoomUrl = Constraints.MSG_NOTIFICATION_ROOMS + "/" + partnerUid;
 
-        FirebaseDatabase firebaseDb = FirebaseDatabase.getInstance();
-        mDatabase = firebaseDb.getReference();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
-        mChat = firebaseDb.getReference(Constraints.CHATS + "/" + coupleUid + "/" + chatKey);
-        mChatMessages = firebaseDb.getReference(Constraints.CHAT_MESSAGES + "/" + coupleUid + "/" + chatKey);
-        mAction = firebaseDb.getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
+        mChat = mDatabaseRef.child(Constraints.CHATS + "/" + coupleUid + "/" + chatKey);
+        mChatMessages = mDatabaseRef.child(mChatMessagesUrl);
 
-        mStorage = FirebaseStorage.getInstance();
-        mStorageRef = mStorage.getReference();
-        mCoupleUid = coupleUid;
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        mGalleryPhotoUrl = Constraints.GALLERY_PHOTOS_DIRECTORY + "/" + mCoupleUid;
     }
 
     public void addListener(ChatControllerListener listener) {
@@ -195,91 +203,84 @@ public class FirebaseChatController {
         else {
             updates.put(actionDiaryDataUrl + "/" + msg.getKey(), null);
 
-            mDatabase.child(actionDiaryDataUrl)
+            mDatabaseRef.child(actionDiaryDataUrl)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getChildrenCount() <= 0) {
                                 // user remove all messages associated with this ActionDiary
-                                mDatabase.child(actionDiaryUrl).removeValue();
+                                mDatabaseRef.child(actionDiaryUrl).removeValue();
                             }
                         }
                         public void onCancelled(DatabaseError databaseError) { }
             });
         }
-        mDatabase.updateChildren(updates);
+        mDatabaseRef.updateChildren(updates);
     }
 
 
     public String sendMessage(MessageFB msg) {
-        Log.d(TAG, "Send text MessageFB: " + msg);
+        final String newMessageUid = mChatMessages.push().getKey();
+        addMessage(newMessageUid, msg);
+
+        return newMessageUid;
+    }
+
+    private void addMessage(String msgUid, MessageFB msg) {
+        Log.d(TAG, "Send MessageFB: " + msg + " of type: " + msg.getType());
 
         Map<String, Object> updates = new HashMap<>();
-        final String newMessageUid = mChatMessages.push().getKey();
 
         // push a message into mChatMessages reference
-        updates.put(mChatMessagesUrl + "/" + newMessageUid, msg);
+        updates.put(mChatMessagesUrl + "/" + msgUid, msg);
 
         // update description and dataTime of action of this associated Chat
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, msg.getText());
         updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, msg.getDateTime());
 
-        mDatabase.updateChildren(updates);
-        return newMessageUid;
+        // update msg-notification-room
+        mMsgDefaultNotification.setText(msg.getText());
+        updates.put(mNotificationRoomUrl + "/" + msgUid, mMsgDefaultNotification);
+
+        mDatabaseRef.updateChildren(updates);
     }
 
-    public String sendMedia(final MessageFB media) {
-        Log.d(TAG, "Send photoText MessageFB: " + media);
+    public String sendMedia(final MessageFB mediaMessage) {
+        final String newMessageUid = mChatMessages.push().getKey();
 
-        final String newMessageUID = mChatMessages.push().getKey();
-
-        Uri uriLocal;
-        uriLocal = Uri.parse(media.getUriLocal());
-        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_PHOTOS_DIRECTORY + "/" + mCoupleUid + "/" + uriLocal.getLastPathSegment());
+        Uri uriLocal = Uri.parse(mediaMessage.getUriLocal());
+        StorageReference photoRef = mStorageRef.child(mGalleryPhotoUrl + "/" + uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails
         uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                final String stringUriStorage;
-                stringUriStorage = downloadUrl.toString();
-                media.setUriStorage(stringUriStorage);
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                            mediaMessage.setUriStorage(downloadUrl.toString());
+                            //mediaMessage.setText("\uD83D\uDCF7");   //camera emoji
 
-                // push a message into mGalleryPhotos reference
-                mChatMessages.child(newMessageUID).setValue(media);
-
-                // update description and dataTime of action of this associated Gallery
-                Map<String, Object> actionUpdates = new HashMap<>();
-                //TODO camera emoji description ti review
-                actionUpdates.put(Constraints.Actions.DESCRIPTION, "\uD83D\uDCF7"); //camera emoji
-                actionUpdates.put(Constraints.Actions.DATE_TIME, media.getDateTime());
-                mAction.updateChildren(actionUpdates);
-            }
-        }).addOnProgressListener(
+                            addMessage(newMessageUid, mediaMessage);
+                    }
+                })
+                .addOnProgressListener(
                 new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        //calculating progress percentage
                         double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
-                        //displaying percentage in progress dialog
-                        //progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
-
                         for (FirebaseChatController.ChatControllerListener listener : mListeners) {
-                            listener.onUploadPercent(media, ((int) progress));
+                            listener.onUploadPercent(mediaMessage, ((int) progress));
                         }
                     }
                 });
 
-        return newMessageUID;
+        return newMessageUid;
     }
 
 }

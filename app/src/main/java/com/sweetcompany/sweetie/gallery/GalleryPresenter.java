@@ -1,15 +1,9 @@
 package com.sweetcompany.sweetie.gallery;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
-
 import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 /**
  * Created by ghiro on 22/07/2017.

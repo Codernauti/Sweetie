@@ -34,6 +34,7 @@ public class FirebasePairingController {
 
     private final String mUserUid;
     private final String mUserUsername;
+    private final String mUserImageUri;
 
     private final DatabaseReference mUserPairingRequests;
     private final DatabaseReference mUsers;
@@ -54,9 +55,10 @@ public class FirebasePairingController {
     }
 
 
-    public FirebasePairingController(String userUid, String userUsername) {
+    public FirebasePairingController(String userUid, String userUsername, String userImageUri) {
         mUserUid = userUid;
         mUserUsername = userUsername;
+        mUserImageUri = userImageUri;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference();
@@ -118,6 +120,7 @@ public class FirebasePairingController {
         String now = DataMaker.get_UTC_DateTime();
         String partnerUid = partnerPairingRequest.getKey();
         String partnerUsername = partnerPairingRequest.getUsername();
+        String partnerImageUri = partnerPairingRequest.getImageUri();
         CoupleFB newCouple = new CoupleFB(mUserUid, partnerUid, mUserUsername, partnerUsername, now);
 
         DatabaseReference newCoupleRef = mDatabase.child(Constraints.COUPLES).push();
@@ -129,7 +132,7 @@ public class FirebasePairingController {
 
         addNewCouple(updates, newCouple, newCoupleKey);
 
-        updateUsersCoupleInfo(updates, newCoupleKey, partnerUid, partnerUsername);
+        updateUsersCoupleInfo(updates, newCoupleKey, partnerUid, partnerUsername, partnerImageUri);
 
         updateUserFuturePartner(updates, partnerUid);
 
@@ -159,7 +162,7 @@ public class FirebasePairingController {
     }
 
     private void updateUsersCoupleInfo(Map<String, Object> updates, String newCoupleKey,
-                                       String partnerUid, String partnerUsername) {
+                                       String partnerUid, String partnerUsername, String partnerImageUri) {
 
         // users/<userUid>/coupleInfo
         String userCoupleInfoUrl = Constraints.USERS + "/" +
@@ -168,6 +171,7 @@ public class FirebasePairingController {
 
         updates.put(userCoupleInfoUrl + "/" + Constraints.ACTIVE_COUPLE, newCoupleKey);
         updates.put(userCoupleInfoUrl + "/" + Constraints.PARTNER_USERNAME, partnerUsername);
+        updates.put(userCoupleInfoUrl + "/" + Constraints.PARTNER_IMAGE_URI, partnerImageUri);
 
         // users/<partnerUid>/coupleInfo
         String partnerCoupleInfoUrl = Constraints.USERS + "/" +
@@ -176,6 +180,7 @@ public class FirebasePairingController {
 
         updates.put(partnerCoupleInfoUrl + "/" + Constraints.ACTIVE_COUPLE, newCoupleKey);
         updates.put(partnerCoupleInfoUrl + "/" + Constraints.PARTNER_USERNAME, mUserUsername);
+        updates.put(partnerCoupleInfoUrl + "/" + Constraints.PARTNER_IMAGE_URI, mUserImageUri);
     }
 
     private void updateUserFuturePartner(Map<String, Object> updates, String partnerUid) {
@@ -220,9 +225,9 @@ public class FirebasePairingController {
         }
     }
 
-    public void createNewPairingRequest(final UserFB futurePartner, String userUsername,
+    public void createNewPairingRequest(final UserFB futurePartner, String userUsername, String userImageUri,
                                         String userPhoneNumber, String oldPairingRequestedUserUid) {
-        PairingRequestFB newRequest = new PairingRequestFB(userUsername, userPhoneNumber);
+        PairingRequestFB newRequest = new PairingRequestFB(userUsername, userPhoneNumber, userImageUri);
 
         Map<String, Object> updates = new HashMap<>();
 

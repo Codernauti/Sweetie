@@ -43,10 +43,12 @@ public class PairingActivity extends BaseActivity
         String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
         String userUsername = Utility.getStringPreference(this, SharedPrefKeys.USERNAME);
         String userPhoneNumber = Utility.getStringPreference(this, SharedPrefKeys.PHONE_NUMBER);
+        String userImageUri = Utility.getStringPreference(this, SharedPrefKeys.USER_IMAGE_URI);
         String userPairingRequestSent = Utility.getStringPreference(this, SharedPrefKeys.FUTURE_PARTNER_PAIRING_REQUEST);
 
-        mController = new FirebasePairingController(userUid, userUsername);
-        mPresenter = new PairingPresenter(mView, mController, userUsername, userPhoneNumber, userPairingRequestSent);
+        mController = new FirebasePairingController(userUid, userUsername, userImageUri);
+        mPresenter = new PairingPresenter(mView, mController, userUsername, userPhoneNumber, userImageUri,
+                userPairingRequestSent);
 
         mController.addListener(mPresenter);
         mController.setPairingListener(this);

@@ -80,7 +80,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
 
     void addMedia(MediaVM media) {
         //is already in VM exchange VM
-        if(searchIndexMediaOf(media)!=-1)
+        if(searchIndexMediaOf(media) != -1)
         {
             removeMedia(media);
         }

@@ -14,19 +14,20 @@ abstract class MediaVM implements GalleryItemVM{
 
     private final boolean mWho;
     private String mTime;
-    private String description;// Format HH:mm
-    private String uriLocal;
-    private String uriStorage;
-    private int percent;
+    private String mDescription;// Format HH:mm
+    private String mUriLocal;
+    private String mUriStorage;
+    private int mPercent;
 
-    MediaVM(boolean who, String date, String desc, String key, String uriL, String uriS, int perc) {
+    MediaVM(boolean who, String date, String desc,String uriL, String uriS, int perc,  String key) {
         mWho = who;
         mTime = date;
-        description = desc;
+        mDescription = desc;
+        mUriLocal = uriL;
+        mUriStorage = uriS;
+        mPercent = perc;
+
         mKey = key;
-        uriLocal = uriL;
-        uriStorage = uriS;
-        percent = perc;
     }
 
     boolean isTheMainUser() {
@@ -40,34 +41,34 @@ abstract class MediaVM implements GalleryItemVM{
         mTime = time;
     }
 
-    String getDescription(){ return description;}
-    void setDescription(String desc){ description = desc;}
+    String getDescription(){ return mDescription;}
+    void setDescription(String desc){ mDescription = desc;}
 
     @Override
     public String getKey() { return mKey; }
     void setKey(String key){
-        mKey = key;
+        this.mKey = key;
     }
 
     String getUriLocal(){
-        return uriLocal;
+        return mUriLocal;
     }
     void setUriLocal(String uriL){
-        uriLocal = uriL;
+        mUriLocal = uriL;
     }
 
     String getUriStorage(){
-        return uriStorage;
+        return mUriStorage;
     }
     void setUriStorage(String uriS){
-        uriStorage = uriS;
+        mUriStorage = uriS;
     }
 
     int getPercent(){
-        return percent;
+        return mPercent;
     }
     void setPercent(int perc){
-        percent = perc;
+        mPercent = perc;
     }
 
     abstract void configViewHolder(MediaViewHolder viewHolder);

@@ -149,8 +149,6 @@ public class FirebaseToDoListController {
 
         // push a CheckEntry into mToDoListCheckEntry reference
         mToDoListCheckEntry.push().setValue(chk);
-
-
     }
 
     public void removeCheckEntry(String key){

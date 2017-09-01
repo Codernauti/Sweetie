@@ -13,6 +13,9 @@ interface Constraints {
             String ARCHIVED_COUPLES = "archivedCouples";
         String FUTURE_PARTNER = "futurePartner";
 
+
+    String MSG_NOTIFICATION_ROOMS = "msg-notification-rooms";
+
     interface Users {
         String IMAGE_URL = "imageUrl";
     }

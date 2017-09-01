@@ -292,11 +292,10 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         for (int i = 0, l = images.size(); i < l; i++) {
             Uri file = Uri.fromFile(new File(images.get(i).getPath()));
             String stringUriLocal = file.toString();
-            // TODO: remove this hard coded empty string
-            String inputText = "";
 
-            MessageVM newMessage = new TextPhotoMessageVM(inputText, mUserMail, MessageVM.THE_MAIN_USER,
-                    DataMaker.get_UTC_DateTime(), false, null, stringUriLocal, "");
+            MessageVM newMessage = new TextPhotoMessageVM(getString(R.string.camera_emoticons),
+                    mUserMail, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(),
+                    false, null, stringUriLocal, "");
 
             mPresenter.sendPhotoMessage(newMessage);
         }

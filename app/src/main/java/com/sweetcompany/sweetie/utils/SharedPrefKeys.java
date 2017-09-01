@@ -24,7 +24,9 @@ public interface SharedPrefKeys {
     int DEFAULT_INT_VALUE = 0;
     boolean DEFAULT_BOOLEAN_VALUE = false;
 
+    // Utility values
     String KB_HEIGHT = "keyboard_height";
+    String CHAT_FOREGROUND_UID = "chat_foreground_uid";
 
     String KEY_GEOFENCE_LAT = "GEOFENCE LATITUDE";
     String KEY_GEOFENCE_LON = "GEOFENCE LONGITUDE";

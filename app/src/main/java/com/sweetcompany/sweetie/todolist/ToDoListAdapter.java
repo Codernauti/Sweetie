@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.sweetcompany.sweetie.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
 
     interface ToDoListAdapterListener {
         void onCheckEntryClicked(CheckEntryVM checkEntry);
-        void onCheckEntryUnfocus(CheckEntryVM checkEntry);
+        void onCheckEntryUnfocused(CheckEntryVM checkEntry);
         void onCheckEntryRemove(String key, int vhPositionToFocus);
     }
 
@@ -74,7 +73,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
     }
 
     void addCheckEntry(CheckEntryVM checkEntryVM) {
-        checkEntryVM.setFocus(false);
         mCheckEntryList.add(mCheckEntryList.size(),checkEntryVM);
         notifyItemInserted(mCheckEntryList.size()-1);
     }
@@ -114,10 +112,10 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
 
 
     @Override
-    public void onCheckEntryUnfocus(int adapterPosition, String text) {
+    public void onCheckEntryUnfocused(int adapterPosition, String text) {
         CheckEntryVM checkEntryVM = mCheckEntryList.get(adapterPosition);
         checkEntryVM.setText(text);
-        mListener.onCheckEntryUnfocus(checkEntryVM);
+        mListener.onCheckEntryUnfocused(checkEntryVM);
     }
 
     @Override

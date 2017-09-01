@@ -11,7 +11,7 @@ import com.sweetcompany.sweetie.model.ToDoListFB;
 public class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListController.ToDoListControllerListener {
 
 
-    private static final String TAG = "ChatPresenter";
+    private static final String TAG = "ToDoListPresenter";
 
     private ToDoListContract.View mView;
     private FirebaseToDoListController mController;

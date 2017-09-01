@@ -1,7 +1,10 @@
 package com.sweetcompany.sweetie.actions;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -18,12 +21,15 @@ import android.widget.FrameLayout;
 
 import com.sweetcompany.sweetie.IPageChanger;
 import com.sweetcompany.sweetie.R;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.List;
 
 public class ActionsFragment extends Fragment implements ActionsContract.View, ActionsAdapter.ActionsAdapterListener {
 
     private static final String TAG = "ActionsFragment";
+
+    private static final int RC_CODE_PICKER = 2000;
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
@@ -265,6 +271,28 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+            if (resultCode == Activity.RESULT_OK) {
+                Uri resultUri = result.getUri();
+                // TODO: send to presenter
+                //mPresenter.(resultUri);
+
+                // TODO: give feedback to user
+                /*mCoupleImage.setImageDrawable(null);
+                showUploadProgress()*/;
+            }
+            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Log.d(TAG, error.toString());
+            }
+        }
+    }
+
     // Adapter callbacks
 
     @Override
@@ -273,5 +301,15 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
                 action.getChildType(), action.getChildUid());
         dialog.setPresenter(mPresenter);
         dialog.show(getActivity().getFragmentManager(), ActionNewChatFragment.TAG);
+
+        dialog.setListener(new ActionMenuDialogFragment.ActionMenuDialogListener() {
+            @Override
+            public void onChangeActionImageSelected() {
+                CropImage.activity()
+                        .setAspectRatio(1,1)
+                        .setMaxCropResultSize(128, 128)
+                        .start(getContext(), ActionsFragment.this);
+            }
+        });
     }
 }

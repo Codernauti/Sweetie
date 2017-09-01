@@ -138,8 +138,8 @@ public class FirebaseToDoListController {
         mDatabase.updateChildren(updates);
         // update description and dataTime of action of this associated ToDoList
         Map<String, Object> actionUpdates = new HashMap<>();
-        actionUpdates.put("description", chk.getText());
-        actionUpdates.put("dataTime", chk.getDateTime());
+        actionUpdates.put(Constraints.Actions.DESCRIPTION, chk.getText());
+        actionUpdates.put(Constraints.Actions.DATE_TIME, chk.getDateTime());
         mAction.updateChildren(actionUpdates);
     }
 

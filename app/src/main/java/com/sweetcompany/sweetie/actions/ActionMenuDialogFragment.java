@@ -4,9 +4,13 @@ package com.sweetcompany.sweetie.actions;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.theartofdev.edmodo.cropper.CropImage;
 
 /**
  * Created by Eduard on 30-Aug-17.
@@ -17,9 +21,12 @@ public class ActionMenuDialogFragment extends DialogFragment implements ActionsC
     private static final String TAG = "ActionMenuDialogFrag";
 
     private static final String[] mItems = new String[1];
+    private static final int REMOVE_OPT = 0;
+    private static final int CHANGE_IMG_OPT = 1;
 
     static {
-        mItems[0] = "Remove";
+        mItems[REMOVE_OPT] = "Remove";
+        mItems[CHANGE_IMG_OPT] = "Change image";
     }
 
     private static final String ACTION_UID_KEY = "actionUidKey";
@@ -32,6 +39,13 @@ public class ActionMenuDialogFragment extends DialogFragment implements ActionsC
 
     private ActionsContract.Presenter mPresenter;
 
+    private ActionMenuDialogListener mListener;
+
+    interface ActionMenuDialogListener {
+        void onChangeActionImageSelected();
+    }
+
+    void setListener(ActionMenuDialogListener listener) { mListener = listener; }
 
     public static ActionMenuDialogFragment newInstance(String actionUid, int actionChildType,
                                                        String actionChildUid) {
@@ -76,9 +90,19 @@ public class ActionMenuDialogFragment extends DialogFragment implements ActionsC
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
-                            case 0:
+                            case REMOVE_OPT:
                                 mPresenter.removeAction(mActionUid, mActionChildType, mActionChildUid);
                                 break;
+
+                            case CHANGE_IMG_OPT:
+                                if (mActionChildType == ActionVM.CHAT) {
+                                    mListener.onChangeActionImageSelected();
+                                } else {
+                                    Toast.makeText(getActivity(), "Feature not yet implemented", Toast.LENGTH_SHORT).show();
+                                }
+                                //mPresenter.addImageToAction(mActionUid, mActionChildType, mActionChildUid);
+                                break;
+
                             default:
                                 break;
                         }

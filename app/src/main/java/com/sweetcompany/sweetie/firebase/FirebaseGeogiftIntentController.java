@@ -32,8 +32,8 @@ public class FirebaseGeogiftIntentController {
         mActionsDbReference.child(actionKey + "/" + "isTriggered").setValue(true);
 
         Map<String, Object> updates = new HashMap<>();
-        updates.put(geogiftKey + "/" + "isTriggered", true);
-        updates.put(geogiftKey + "/" + "datetimeVisited", dateTime);
+        updates.put(geogiftKey + "/" + Constraints.Geogifts.IS_TRIGGERED, true);
+        updates.put(geogiftKey + "/" + Constraints.Geogifts.DATE_TIME_VISITED, dateTime);
 
         mGeogiftDbReference.updateChildren(updates);
     }

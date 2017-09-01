@@ -1,6 +1,11 @@
 package com.sweetcompany.sweetie.chat;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -8,6 +13,8 @@ import android.util.Log;
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
+import com.sweetcompany.sweetie.utils.Utility;
 
 /**
  * Created by ghiro on 11/05/2017.
@@ -26,10 +33,32 @@ public class ChatActivity extends BaseActivity {
     private String mChatTitle;
     private String mActionKey;
 
+    private boolean mBound;
 
     private ChatContract.Presenter mPresenter;
     private FirebaseChatController mController;
     private ChatContract.View mView;
+    private MessagesMonitorService mService;
+
+    /// Defines callbacks for service binding, passed to bindService()
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            MessagesMonitorService.LocalBinder binder = (MessagesMonitorService.LocalBinder) service;
+            mService = binder.getServiceInstance();
+
+            mService.cancelNotification();
+            mService.resetCacheFor(mChatKey);
+
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            mBound = false;
+        }
+    };
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +96,8 @@ public class ChatActivity extends BaseActivity {
         }
 
         if (mChatKey != null) {
-            mController = new FirebaseChatController(super.mCoupleUid, mChatKey, mChatTitle, mActionKey);
+            mController = new FirebaseChatController(super.mCoupleUid, mChatKey, mChatTitle,
+                    mActionKey, super.mPartnerUid);
             mPresenter = new ChatPresenter(mView, mController, super.mUserEmail);
         } else {
             Log.w(TAG, "Impossible to create ChatController and ChatPresenter because chatKey is NULL");
@@ -77,13 +107,22 @@ public class ChatActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
+        Utility.saveStringPreference(this, SharedPrefKeys.CHAT_FOREGROUND_UID, mChatKey);
+        bindService(new Intent(this, MessagesMonitorService.class), mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
+
+        Utility.removePreference(this, SharedPrefKeys.CHAT_FOREGROUND_UID);
+
+        if (mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
     }
 
     @Override

@@ -24,12 +24,12 @@ import com.sweetcompany.sweetie.map.MapsFragment;
 
 public class DashboardPagerAdapter extends FragmentPagerAdapter {
 
-    private final static int NUM_TAB = 4;
+    private final static int NUM_TAB = 3;
 
     final static int CALENDAR_TAB = 0;
     final static int HOME_TAB = 1;
-    private final static int FOLDERS_TAB = 2;
-    private final static int MAP_TAB = 3;
+    //final static int FOLDERS_TAB = 2;
+    final static int MAP_TAB = 2;
 
     // For getString From Resource
     private final Context mContext;
@@ -66,8 +66,8 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
                 return new CalendarFragment();
             case HOME_TAB:
                 return new ActionsFragment();
-            case FOLDERS_TAB:
-                return new FoldersFragment();
+            //case FOLDERS_TAB:
+              //  return new FoldersFragment();
             case MAP_TAB:
                 return new MapsFragment();
         }
@@ -89,8 +89,8 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
                 mActionsPresenter = new ActionsPresenter(view, mActionsController, mUserID);
                 Log.d("ActionsFragment", "instantiate Presenter");
                 break;
-            case FOLDERS_TAB:
-                break;
+            //case FOLDERS_TAB:
+              //  break;
             case MAP_TAB:
                 MapContract.View mapView = (MapContract.View) createdFragment;
                 mMapPresenter = new MapPresenter(mapView, mMapController);
@@ -115,8 +115,8 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
                 return mContext.getString(R.string.calendar_tab_name);
             case HOME_TAB:
                 return mContext.getString(R.string.home_tab_name);
-            case FOLDERS_TAB:
-                return mContext.getString(R.string.folders_tab_name);
+            //case FOLDERS_TAB:
+              //  return mContext.getString(R.string.folders_tab_name);
             //case MAP_TAB:
                 //return context.getString(R.string.map_tab_name);
         }

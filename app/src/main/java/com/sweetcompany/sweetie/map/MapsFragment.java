@@ -59,6 +59,11 @@ public class MapsFragment extends Fragment implements MapContract.View,
     }
 
     @Override
+    public void setPresenter(MapContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -66,48 +71,9 @@ public class MapsFragment extends Fragment implements MapContract.View,
             rootView = inflater.inflate(R.layout.maps_fragment, container, false);
             // Initialise your layout here
         } else {
-            ((ViewGroup) rootView.getParent()).removeView(rootView);
+            container.removeView(rootView);
         }
         return rootView;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.d(TAG, "onAttach()");
-        if (mPresenter == null) {
-            Log.d(TAG, "mPresenter is null");
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (mPresenter != null) {
-            mPresenter.DownloadGalleries();
-        }
-        Log.d(TAG, "onStart()");
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop()");
-    }
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d(TAG, "onDetach()");
-    }
-
-    @Override
-    public void setPresenter(MapContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public void updateGalleryList(List<GalleryMapVM> galleriesVM) {
-        galleriesList = galleriesVM;
-        markerLocations();
     }
 
     private void buildGoogleApiClient() {
@@ -166,13 +132,37 @@ public class MapsFragment extends Fragment implements MapContract.View,
         // initialize GoogleMaps
         initGMaps();
     }
-
     @Override
     public void onConnectionSuspended(int i) {
     }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    }
+
+
+    @Override
+    public void addGallery(GalleryMapVM gallery) {
+
+    }
+
+    @Override
+    public void removeGallery(GalleryMapVM gallery) {
+
+    }
+
+    @Override
+    public void changeGallery(GalleryMapVM gallery) {
+
+    }
+
+    @Override
+    public void addGeogift(GeogiftMapVM geogift) {
+
+    }
+
+    @Override
+    public void removeGeogift(GeogiftMapVM geogift) {
+
     }
 
     @Override

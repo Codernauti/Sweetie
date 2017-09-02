@@ -34,6 +34,8 @@ public class MapsFragment extends Fragment implements MapContract.View,
 
     private static final String TAG = "MapFragment";
 
+    private View rootView;
+
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private Marker locationMarker;
@@ -59,9 +61,14 @@ public class MapsFragment extends Fragment implements MapContract.View,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.maps_fragment, container, false);
 
-        return root;
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.maps_fragment, container, false);
+            // Initialise your layout here
+        } else {
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
+        }
+        return rootView;
     }
 
     @Override

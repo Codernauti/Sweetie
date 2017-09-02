@@ -46,19 +46,6 @@
 
         </LinearLayout>
     </ScrollView>
-    <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="0px"
-        android:layout_height="0px"/>
-
-    <!-- :nextFocusUp and :nextFocusLeft have been set to the id of this component
-    to prevent the dummy from receiving focus again -->
-    <AutoCompleteTextView android:id="@+id/autotext"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:nextFocusUp="@id/autotext"
-        android:nextFocusLeft="@id/autotext"/>
 
 
 </RelativeLayout>

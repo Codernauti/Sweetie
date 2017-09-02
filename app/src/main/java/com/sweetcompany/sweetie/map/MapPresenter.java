@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie.map;
 
 import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 import com.sweetcompany.sweetie.model.GalleryFB;
+import com.sweetcompany.sweetie.model.GeogiftFB;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,42 +11,43 @@ import java.util.List;
  * Created by ghiro on 24/08/2017.
  */
 
-public class MapPresenter implements MapContract.Presenter, FirebaseMapController.MapControllerListener {
+public class MapPresenter implements MapContract.Presenter, FirebaseMapController.MapGalleryControllerListener, FirebaseMapController.MapGeogiftControllerListener {
 
     private static final String TAG = "MapPresenter";
 
     private MapContract.View mView;
     private FirebaseMapController mController;
 
-    private ArrayList<GalleryMapVM> mGalleryList = new ArrayList<>();
-
     public MapPresenter(MapContract.View view, FirebaseMapController controller){
         mView = view;
         mView.setPresenter(this);
         mController = controller;
-        mController.addListener(this);
+        mController.addGalleryListener(this);
+        mController.addGeogiftListener(this);
     }
 
-    // Clear actions, retrieve all actions on server
+
+    //TODO
     @Override
-    public void updateGalleryList(List<GalleryFB> galleriesFB) {
-        GalleryMapVM newActionVM;
-        mGalleryList.clear();
+    public void onGalleryAdded(GalleryFB gallery) {
 
-        for(GalleryFB galleryFB : galleriesFB){
-          newActionVM = new GalleryMapVM(galleryFB.getKey(), galleryFB.getTitle());
-          newActionVM.setmLat(galleryFB.getLatitude());
-          newActionVM.setmLon(galleryFB.getLongitude());
-          newActionVM.setmUriCover(galleryFB.getUriCover());
+    }
+    @Override
+    public void onGalleryRemoved(GalleryFB gallery) {
 
-          mGalleryList.add(newActionVM);
-        }
+    }
+    @Override
+    public void onGalleryChanged(GalleryFB gallery) {
 
-        mView.updateGalleryList(mGalleryList);
     }
 
+
     @Override
-    public void DownloadGalleries() {
-        mController.attachNetworkDatabase();
+    public void onGeogiftAdded(GeogiftFB geogift) {
+
+    }
+    @Override
+    public void onGeogiftRemoved(GeogiftFB geogift) {
+
     }
 }

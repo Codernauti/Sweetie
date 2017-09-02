@@ -85,6 +85,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
     protected void onResume() {
         super.onResume();
         mActionsController.attachNetworkDatabase();
+        mMapController.attachNetworkDatabase();
     }
 
     @Override
@@ -93,6 +94,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         // TODO: clean up adapter?
         mActionsController.detachNetworkDatabase();
         mCalendarController.detachListener();
+        mMapController.detachNetworkDatabase();
     }
 
     @Override

@@ -65,8 +65,9 @@
 
         <FrameLayout
             android:id="@+id/message_geogift_layout"
-            android:layout_width="80dp"
-            android:layout_height="match_parent">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
             <ImageView
                 android:id="@+id/item_message_geogift_button"
                 android:layout_width="40dp"
@@ -93,8 +94,9 @@
 
         <FrameLayout
             android:id="@+id/photo_geogift_layout"
-            android:layout_width="80dp"
-            android:layout_height="match_parent">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
             <ImageView
                 android:id="@+id/item_photo_geogift_button"
                 android:layout_width="40dp"
@@ -122,8 +124,9 @@
 
         <FrameLayout
             android:id="@+id/heart_geogift_layout"
-            android:layout_width="80dp"
-            android:layout_height="match_parent">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
             <ImageView
                 android:id="@+id/item_heart_geogift_button"
                 android:layout_width="40dp"
@@ -144,12 +147,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp">
+        android:layout_height="180dp"
+        android:gravity="center">
         <ImageView
             android:id="@+id/image_thumb_geogift"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginTop="15dp"
             android:layout_marginLeft="15dp"
             android:src="@drawable/image_geogift_placeholder"
             />
@@ -157,10 +160,11 @@
             android:id="@+id/clear_image_geogift_button"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/clear_icon"
-            android:tint="@color/colorAccent"
+            android:layout_gravity="top"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="12dp"
+            android:src="@drawable/clear_icon"
+            android:tint="@color/rosa_sweetie"
             />
     </LinearLayout>
 
@@ -169,7 +173,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/chat_background">
@@ -180,13 +183,16 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:hint="@string/text_hint_geogift"
-            android:textSize="15dp"
-            android:maxLines="2"
-            android:maxLength="30"/>
+            android:textSize="15sp"
+            android:maxLines="1"
+            android:maxLength="45"
+            android:layout_gravity="center"
+            android:inputType="textNoSuggestions"
+            android:imeOptions="actionDone"/>
     </FrameLayout>
 
 
-    <View
+    <!--<View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
@@ -214,7 +220,7 @@
             android:layout_width="220dp"
             android:layout_height="match_parent"
             android:entries="@array/geogift_expiration_time"/>
-    </LinearLayout>
+    </LinearLayout>-->
 
 
 </LinearLayout>

@@ -25,6 +25,7 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
     EditText mEditText;
     ImageButton mDeleteButton;
     OnViewHolderClickListener mListener;
+    String oldText;
 
     public CheckEntryViewHolder(View itemView) {
         super(itemView);
@@ -47,12 +48,13 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
             case R.id.todolist_editText:
                 if(!hasFocus) {
                     String text = mEditText.getText().toString().trim();
-                    if(getAdapterPosition() != -1 && text.length() != 0) {
+                    if(getAdapterPosition() != -1 && !oldText.equals(text) && text.length() != 0) {
                         mListener.onCheckEntryUnfocused(getAdapterPosition(), text);
                     }
                     mEditText.setText(text);
                     mDeleteButton.setVisibility(View.INVISIBLE);
                 } else {
+                    oldText = mEditText.getText().toString();
                     mDeleteButton.setVisibility(View.VISIBLE);
                 }
                 break;

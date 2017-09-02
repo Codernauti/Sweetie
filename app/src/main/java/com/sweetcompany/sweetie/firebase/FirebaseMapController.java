@@ -1,21 +1,13 @@
 package com.sweetcompany.sweetie.firebase;
 
-import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.GeogiftFB;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ghiro on 24/08/2017.

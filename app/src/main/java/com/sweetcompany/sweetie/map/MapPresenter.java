@@ -4,9 +4,6 @@ import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.GeogiftFB;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by ghiro on 24/08/2017.
  */
@@ -44,10 +41,15 @@ public class MapPresenter implements MapContract.Presenter, FirebaseMapControlle
 
     @Override
     public void onGeogiftAdded(GeogiftFB geogift) {
-
+        GeogiftMapVM newGeogiftMapVM = new GeogiftMapVM(geogift.getKey(), geogift.getLat(), geogift.getLon());
+        newGeogiftMapVM.setType(geogift.getType());
+        mView.addGeogift(newGeogiftMapVM);
     }
     @Override
     public void onGeogiftRemoved(GeogiftFB geogift) {
-
+        //TODO only key is needed?
+        GeogiftMapVM removedGeogiftMapVM = new GeogiftMapVM(geogift.getKey(), geogift.getLat(), geogift.getLon());
+        removedGeogiftMapVM.setType(geogift.getType());
+        mView.removeGeogift(removedGeogiftMapVM);
     }
 }

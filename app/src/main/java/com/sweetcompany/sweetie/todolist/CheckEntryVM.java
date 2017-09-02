@@ -28,7 +28,7 @@ public class CheckEntryVM {
         this.mText = text;
         this.mTime = time;
         this.mChecked = checked;
-        this.mFocus = true;
+        this.mFocus = false;
     }
 
 

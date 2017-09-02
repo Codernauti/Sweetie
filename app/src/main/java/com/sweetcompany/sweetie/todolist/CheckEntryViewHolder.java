@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie.todolist;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -45,9 +46,12 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
         switch (v.getId()) {
             case R.id.todolist_editText:
                 if(!hasFocus) {
-                    if(getAdapterPosition() != -1) {
-                        mListener.onCheckEntryUnfocused(getAdapterPosition(), mEditText.getText().toString());
+                    String text = mEditText.getText().toString().trim();
+                    Log.d("Prova:", text);
+                    if(getAdapterPosition() != -1 && text.length() != 0) {
+                        mListener.onCheckEntryUnfocused(getAdapterPosition(), text);
                     }
+                    mEditText.setText(text);
                     mDeleteButton.setVisibility(View.INVISIBLE);
                 } else {
                     mDeleteButton.setVisibility(View.VISIBLE);
@@ -85,6 +89,9 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
 
     public void setFocus(){
         mEditText.requestFocus();
+        InputMethodManager inputMethodManager =(InputMethodManager) mEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
+    public void isFocused() { mEditText.isFocused();}
 }

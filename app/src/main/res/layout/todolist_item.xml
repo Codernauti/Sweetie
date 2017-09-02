@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="25"
         android:padding="1dp"
+        android:focusableInTouchMode="true"
         android:background="@android:color/transparent"
         android:text=""
         android:visibility="visible" />

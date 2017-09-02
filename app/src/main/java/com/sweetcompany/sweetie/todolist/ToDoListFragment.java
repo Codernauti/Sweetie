@@ -44,6 +44,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     private LinearLayoutManager mLinearLayoutManager;
     private Button mInputButton;
     InputMethodManager inputMethodManager;
+    boolean entryAddedFromButton;
 
 
     private ToDoListContract.Presenter mPresenter;
@@ -82,6 +83,8 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
 
         mInputButton = (Button) root.findViewById(R.id.todolist_add_button);
 
+        entryAddedFromButton = false;
+
         // initialize message's list
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setStackFromEnd(true);
@@ -91,8 +94,6 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         mToDoListListView.setAdapter(toDoListAdapter);
         mInputButton.setOnClickListener(this);
 
-        inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-
         return root;
     }
 
@@ -100,6 +101,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.todolist_add_button:
+                entryAddedFromButton = true;
                 CheckEntryVM checkEntryVM = new CheckEntryVM(CheckEntryVM.THE_MAIN_USER, null, "",
                             DataMaker.get_UTC_DateTime(),false);
                 mPresenter.addCheckEntry(checkEntryVM);
@@ -120,6 +122,10 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
 
     @Override
     public void addCheckEntry(CheckEntryVM checkEntry) {
+        if(entryAddedFromButton) {
+            checkEntry.setFocus(true);
+            entryAddedFromButton = false;
+        }
         toDoListAdapter.addCheckEntry(checkEntry);
     }
 

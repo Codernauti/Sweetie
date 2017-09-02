@@ -1,11 +1,13 @@
 package com.sweetcompany.sweetie.todolist;
 
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.sweetcompany.sweetie.R;
 
@@ -84,7 +86,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<CheckEntryViewHolder> 
     }
 
     void changeCheckEntry(CheckEntryVM checkEntryVM) {
-        checkEntryVM.setFocus(false);
         int indexOldCheckEntry = searchIndexCheckEntryOf(checkEntryVM);
         if (indexOldCheckEntry != -1) {
             mCheckEntryList.set(indexOldCheckEntry, checkEntryVM);

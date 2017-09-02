@@ -43,10 +43,10 @@
         <item name="textAllCaps">true</item>
     </style>
 
-    <style name="ImagePickerTheme" parent="ef_BaseTheme">
-        <item name="colorPrimary">#607D8B</item>
-        <item name="colorPrimaryDark">#455A64</item>
-        <item name="colorAccent">@color/ef_colorAccent</item>
+    <style name="ImagePickerTheme">
+        <item name="colorPrimary">@color/rosa_sweetie</item>
+        <item name="colorPrimaryDark">@color/rosa_sweetie_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="Bookmarker_chat">

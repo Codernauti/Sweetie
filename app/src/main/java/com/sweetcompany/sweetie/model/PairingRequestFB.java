@@ -12,17 +12,21 @@ public class PairingRequestFB {
     private String key;
     private String username;
     private String phoneNumber;
+    private String imageUri;
 
     public PairingRequestFB() {}
 
-    public PairingRequestFB(String username, String phoneNumber) {
+    public PairingRequestFB(String username, String phoneNumber, String imageUri) {
         this.username = username;
         this.phoneNumber = phoneNumber;
+        this.imageUri = imageUri;
     }
 
+    @Exclude
     public String getKey() {
         return this.key;
     }
+    @Exclude
     public void setKey(String key) {
         this.key = key;
     }
@@ -39,5 +43,12 @@ public class PairingRequestFB {
     }
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 }

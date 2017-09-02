@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -60,11 +61,18 @@ public class GeogiftMakerFragment extends Fragment implements
     private static final int PLACE_PICKER_REQUEST = 4002;
     private static final int RC_CODE_PICKER = 2001;
 
+    // key for Intent extras
+    public static final String GEOGIFT_ADDESS_PICKED = "GeogiftAdressPicked";
+    public static final String GEOGIFT_LAT_PICKED = "GeogiftLatPicked";
+    public static final String GEOGIFT_LON_PICKED = "GeogiftLonPicked";
+    public static final String GEOGIFT_ITEM_SELECTION = "GeogiftAdressSelection";
+    public static final String GEOGIT_PHOTO_PICKED = "GeogiftPhotoPicked";
+
     private static final int MESSAGE_SELECTION = 0;
     private static final int PHOTO_SELECTION = 1;
     private static final int HEART_SELECTION = 2;
     private static final int MIN_MESSAGE_LENGHT = 0;
-    private int currentSelection;
+    private int currentSelection = 1;
 
     private ArrayList<Image> imagesPicked = new ArrayList<>();
     private boolean isImageTaken = false;
@@ -85,8 +93,8 @@ public class GeogiftMakerFragment extends Fragment implements
     private ImageView clearImageButton;
     // editText
     private EditText messageEditText;
-   //spinner
-    private Spinner timeExpirationSpinner;
+    //spinner
+    //private Spinner timeExpirationSpinner;
     //fabButton
     private FloatingActionButton mFabAddGeogift;
     //uploading fragment
@@ -95,7 +103,9 @@ public class GeogiftMakerFragment extends Fragment implements
 
     private String messageGeogift = "";
     private LatLng positionGeogift = null;
-    private String addressGeogift = "";
+    private String addressGeogift;
+    private Double latGeogift = 0d;
+    private Double lonGeogift = 0d;
     private String stringUriLocal;
     private String uriStorage;
 
@@ -175,11 +185,11 @@ public class GeogiftMakerFragment extends Fragment implements
             }
         });
 
-        timeExpirationSpinner = (Spinner) root.findViewById(R.id.expiration_geogift_spinner);
+        /*timeExpirationSpinner = (Spinner) root.findViewById(R.id.expiration_geogift_spinner);
         ArrayAdapter<CharSequence> adapterExpiration = ArrayAdapter.createFromResource(getContext(),
                 R.array.geogift_expiration_time, android.R.layout.simple_spinner_item);
         adapterExpiration.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timeExpirationSpinner.setAdapter(adapterExpiration);
+        timeExpirationSpinner.setAdapter(adapterExpiration);*/
 
         sendingFragment = (View) root.findViewById(R.id.included_uploading_geogift);
         uploadingPercent = (TextView) sendingFragment.findViewById(R.id.uploading_percent_geogift_text);
@@ -288,26 +298,27 @@ public class GeogiftMakerFragment extends Fragment implements
     }
 
     public void checkGeogiftFields(){
-        if(currentSelection == MESSAGE_SELECTION){
-            if(messageGeogift.length()>MIN_MESSAGE_LENGHT){
+        switch (currentSelection){
+            case MESSAGE_SELECTION:
+                if(messageGeogift.length()>MIN_MESSAGE_LENGHT){
+                    isGeogiftComplete = true;
+                }
+                else
+                {
+                    isGeogiftComplete = false;
+                }
+                break;
+            case PHOTO_SELECTION:
+                if (isImageTaken){
+                    isGeogiftComplete = true;
+                }
+                else{
+                    isGeogiftComplete = false;
+                }
+                break;
+            case HEART_SELECTION:
                 isGeogiftComplete = true;
-            }
-            else
-            {
-                isGeogiftComplete = false;
-            }
-        }
-        else if(currentSelection == PHOTO_SELECTION){
-            if (isImageTaken){
-                isGeogiftComplete = true;
-            }
-            else{
-                isGeogiftComplete = false;
-            }
-        }
-        else if(currentSelection == HEART_SELECTION)
-        {
-            isGeogiftComplete = true;
+                break;
         }
 
         if(positionGeogift == null){
@@ -404,10 +415,12 @@ public class GeogiftMakerFragment extends Fragment implements
 
      public void drawImage(){
          if(imagesPicked.size()>0) {
-             //TODO upload on cloud every time ?
-             Uri file = Uri.fromFile(new File(imagesPicked.get(0).getPath()));
-             stringUriLocal = file.toString();
-             Glide.with(this).load(stringUriLocal)
+             stringUriLocal = imagesPicked.get(0).getPath();
+         }
+
+         Uri uriFile = Uri.fromFile(new File(stringUriLocal));
+
+             Glide.with(this).load(uriFile.toString())
                      .thumbnail(0.5f)
                      .crossFade()
                      .placeholder(R.drawable.image_placeholder)
@@ -416,7 +429,7 @@ public class GeogiftMakerFragment extends Fragment implements
              isImageTaken = true;
              clearImageButton.setVisibility(View.VISIBLE);
              checkGeogiftFields();
-         }
+
      }
 
      public void clearImage(){
@@ -541,6 +554,42 @@ public class GeogiftMakerFragment extends Fragment implements
            // TODO ?????
            getActivity().finish();
        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString(GEOGIFT_ADDESS_PICKED, addressGeogift);
+        savedInstanceState.putDouble(GEOGIFT_LAT_PICKED, latGeogift);
+        savedInstanceState.putDouble(GEOGIFT_LON_PICKED, lonGeogift);
+        savedInstanceState.putInt(GEOGIFT_ITEM_SELECTION, currentSelection);
+        savedInstanceState.putString(GEOGIT_PHOTO_PICKED, stringUriLocal);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            addressGeogift = savedInstanceState.getString(GEOGIFT_ADDESS_PICKED);
+            if(addressGeogift != null) locationPickerText.setText(addressGeogift);
+
+            latGeogift = savedInstanceState.getDouble(GEOGIFT_LAT_PICKED);
+            lonGeogift = savedInstanceState.getDouble(GEOGIFT_LON_PICKED);
+            if(latGeogift!= 0d && lonGeogift != 0d){
+                positionGeogift = new LatLng(latGeogift, lonGeogift);
+            }
+
+            stringUriLocal = savedInstanceState.getString(GEOGIT_PHOTO_PICKED);
+            if(stringUriLocal != null) {
+                isImageTaken = true;
+                drawImage();
+            }
+
+            int selectionItem = savedInstanceState.getInt(GEOGIFT_ITEM_SELECTION);
+            switchContainerGift(selectionItem);
+
+        }
+
     }
 
 }

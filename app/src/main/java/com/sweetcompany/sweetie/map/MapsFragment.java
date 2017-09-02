@@ -1,6 +1,9 @@
 package com.sweetcompany.sweetie.map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,14 +20,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseMapController;
+import com.sweetcompany.sweetie.model.GeogiftFB;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MapsFragment extends Fragment implements MapContract.View,
                                                       OnMapReadyCallback,
@@ -34,10 +39,13 @@ public class MapsFragment extends Fragment implements MapContract.View,
 
     private static final String TAG = "MapFragment";
 
+    private View rootView;
+
     private SupportMapFragment mapFragment;
     private GoogleMap map;
     private Marker locationMarker;
-    List<GalleryMapVM> galleriesList;
+    List<GalleryMapVM> mGalleriesList = new ArrayList<>();
+    List<GeogiftMapVM> mGeogiftsList = new ArrayList<>();
 
     private MapContract.Presenter mPresenter;
     private FirebaseMapController mMapController;
@@ -57,50 +65,21 @@ public class MapsFragment extends Fragment implements MapContract.View,
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.maps_fragment, container, false);
-
-        return root;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.d(TAG, "onAttach()");
-        if (mPresenter == null) {
-            Log.d(TAG, "mPresenter is null");
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (mPresenter != null) {
-            mPresenter.DownloadGalleries();
-        }
-        Log.d(TAG, "onStart()");
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, "onStop()");
-    }
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d(TAG, "onDetach()");
-    }
-
-    @Override
     public void setPresenter(MapContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
     @Override
-    public void updateGalleryList(List<GalleryMapVM> galleriesVM) {
-        galleriesList = galleriesVM;
-        markerLocations();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.maps_fragment, container, false);
+            // Initialise your layout here
+        } else {
+            container.removeView(rootView);
+        }
+        return rootView;
     }
 
     private void buildGoogleApiClient() {
@@ -137,21 +116,31 @@ public class MapsFragment extends Fragment implements MapContract.View,
     }
 
     // Create a Location Marker
-    private void markerLocations() {
-        for(GalleryMapVM gallery : galleriesList){
-            //TODO add icon and true location
-            Random r = new Random();
-            LatLng latLng = new LatLng((r.nextDouble() * -180.0) + 90.0,
-                    (r.nextDouble() * -360.0) + 180.0);
-            //LatLng latLng = new LatLng(Double.parseDouble(gallery.getmLat()) , Double.parseDouble(gallery.getmLon()));
-            String title = gallery.getTitle();
+    private void markerGeogift(GeogiftMapVM geogift) {
+
+            LatLng latLng = new LatLng(Double.parseDouble(geogift.getLat()) , Double.parseDouble(geogift.getLon()));
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
-                    .title(title);
+                    .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_gift_icon",72,72)));
             if ( map!=null ) {
                 locationMarker = map.addMarker(markerOptions);
             }
-        }
+    }
+
+    public int getIconDrawable(int type){
+        int idDrawable = R.drawable.action_gift_icon;
+        // TODO
+        /*switch (type){
+            case GeogiftFB.MESSAGE_GEOGIFT:
+                idDrawable =  R.drawable.action_gift_icon;
+        }*/
+
+        return idDrawable;
+    }
+
+    public Bitmap resizeBitmap(String drawableName, int width, int height){
+        Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),getResources().getIdentifier(drawableName, "drawable", mContext.getPackageName()));
+        return Bitmap.createScaledBitmap(imageBitmap, width, height, false);
     }
 
     @Override
@@ -159,13 +148,38 @@ public class MapsFragment extends Fragment implements MapContract.View,
         // initialize GoogleMaps
         initGMaps();
     }
-
     @Override
     public void onConnectionSuspended(int i) {
     }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    }
+
+
+    // TODO
+    @Override
+    public void addGallery(GalleryMapVM gallery) {
+
+    }
+    @Override
+    public void removeGallery(GalleryMapVM gallery) {
+
+    }
+    @Override
+    public void changeGallery(GalleryMapVM gallery) {
+
+    }
+
+
+    @Override
+    public void addGeogift(GeogiftMapVM geogift) {
+        mGeogiftsList.add(geogift);
+        markerGeogift(geogift);
+    }
+
+    @Override
+    public void removeGeogift(GeogiftMapVM geogift) {
+
     }
 
     @Override

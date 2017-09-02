@@ -1,19 +1,13 @@
 package com.sweetcompany.sweetie.firebase;
 
-import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.sweetcompany.sweetie.model.GeogiftFB;
 
 /**
  * Created by ghiro on 24/08/2017.
@@ -23,65 +17,142 @@ public class FirebaseMapController {
 
     private static final String TAG = "FbMapController";
 
+    private final DatabaseReference mDatabaseRef;
     private final DatabaseReference mGalleriesDbReference;
-    private final StorageReference mStorageRef;
-    private final FirebaseStorage mStorage;
+    private final DatabaseReference mGeogiftsDbReference;
 
-    private final String coupleID;
+    private final String coupleUid = null;
 
-    private ValueEventListener mGalleryListener;
-    private MapControllerListener mListener;
+    private ChildEventListener mGalleriesEventListener;
+    private ChildEventListener mGeogiftsEventListener;
 
-    public interface MapControllerListener {
-        void updateGalleryList(List<GalleryFB> actions);
+    private MapGeogiftControllerListener mGeogiftListener = null;
+    private MapGalleryControllerListener mGalleryListener = null;
+
+    public interface MapGeogiftControllerListener {
+        void onGeogiftAdded(GeogiftFB geogift);
+        void onGeogiftRemoved(GeogiftFB geogift);
+    }
+
+    public interface MapGalleryControllerListener {
+        void onGalleryAdded(GalleryFB gallery);
+        void onGalleryRemoved(GalleryFB gallery);
+        void onGalleryChanged(GalleryFB gallery);
     }
 
 
     public FirebaseMapController(String coupleUid) {
-        mGalleriesDbReference = FirebaseDatabase.getInstance()
-                .getReference(Constraints.GALLERIES + "/" + coupleUid);
-        mStorage = FirebaseStorage.getInstance();
-        mStorageRef = mStorage.getReference();
-        coupleID = coupleUid;
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+
+        mGalleriesDbReference = mDatabaseRef.child(Constraints.GALLERIES + "/" + coupleUid);
+        mGeogiftsDbReference = mDatabaseRef.child(Constraints.GEOGIFTS + "/" + coupleUid);
+
+        coupleUid = coupleUid;
     }
 
-    public void addListener(FirebaseMapController.MapControllerListener listener) {
-        mListener = listener;
+    public void addGeogiftListener(MapGeogiftControllerListener listener) {
+        mGeogiftListener = listener;
+    }
+
+    public void addGalleryListener(MapGalleryControllerListener listener){
+        mGalleryListener = listener;
     }
 
     public void attachNetworkDatabase() {
-        if (mGalleryListener == null) {
-            mGalleryListener = new ValueEventListener() {
+
+        // Galleries
+
+        if (mGalleriesEventListener == null) {
+            mGalleriesEventListener = new ChildEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot actionsSnapshot) {
-                    List<GalleryFB> galleries = new ArrayList<>();
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
+                    newGallery.setKey(dataSnapshot.getKey());
 
-                    for (DataSnapshot actionSnapshot : actionsSnapshot.getChildren()) {
-                        GalleryFB action = actionSnapshot.getValue(GalleryFB.class);
-                        galleries.add(action);
-                    }
-
-                    if (mListener != null) {
-                        mListener.updateGalleryList(galleries);
+                    if (mGalleryListener != null) {
+                        mGalleryListener.onGalleryAdded(newGallery);
                     }
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.d(TAG, databaseError.getMessage());
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
+                    newGallery.setKey(dataSnapshot.getKey());
+
+                    if (mGalleryListener != null) {
+                        mGalleryListener.onGalleryChanged(newGallery);
+                    }
                 }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
+                    newGallery.setKey(dataSnapshot.getKey());
+
+                    if (mGalleryListener != null) {
+                        mGalleryListener.onGalleryRemoved(newGallery);
+                    }
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
             };
+            mGalleriesDbReference.addChildEventListener(mGalleriesEventListener);
+        }
 
-            // TODO test much more sorting
-            mGalleriesDbReference.addValueEventListener(mGalleryListener);
+        // Geogifts
+
+        // TODO filter geogifts -----------------
+
+        if (mGeogiftsEventListener == null) {
+            mGeogiftsEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    GeogiftFB newGeogift = dataSnapshot.getValue(GeogiftFB.class);
+                    newGeogift.setKey(dataSnapshot.getKey());
+
+                    if (mGeogiftListener != null) {
+                        mGeogiftListener.onGeogiftAdded(newGeogift);
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    GeogiftFB removedGeogift = dataSnapshot.getValue(GeogiftFB.class);
+
+                    if (mGeogiftListener != null) {
+                        mGeogiftListener.onGeogiftRemoved(removedGeogift);
+                    }
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {}
+            };
+            mGeogiftsDbReference.addChildEventListener(mGeogiftsEventListener);
         }
     }
 
     public void detachNetworkDatabase() {
-        if (mGalleryListener != null) {
-            mGalleriesDbReference.removeEventListener(mGalleryListener);
+        if (mGeogiftsEventListener != null) {
+            mGeogiftsDbReference.removeEventListener(mGeogiftsEventListener);
         }
-        mGalleryListener = null;
+        mGeogiftsEventListener = null;
+
+        if (mGalleriesEventListener != null) {
+            mGalleriesDbReference.removeEventListener(mGalleriesEventListener);
+        }
+        mGalleriesEventListener = null;
     }
 
 }

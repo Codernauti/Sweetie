@@ -52,6 +52,10 @@ public class UserMonitorService extends Service implements FirebaseUserControlle
 
     @Override
     public void onUserChange(UserFB newUserData) {
+        // save user data
+        Utility.saveStringPreference(UserMonitorService.this, SharedPrefKeys.USER_IMAGE_URI, newUserData.getImageUrl());
+
+        // manage couple status
         String oldCoupleUid = Utility.getStringPreference(UserMonitorService.this, SharedPrefKeys.COUPLE_UID);
 
         if (newUserData.getCoupleInfo() != null) {
@@ -64,6 +68,9 @@ public class UserMonitorService extends Service implements FirebaseUserControlle
 
                     Utility.saveStringPreference(UserMonitorService.this,
                             SharedPrefKeys.PARTNER_USERNAME, newCoupleInfo.getPartnerUsername());
+
+                    Utility.saveStringPreference(UserMonitorService.this,
+                            SharedPrefKeys.PARTNER_IMAGE_URI, newCoupleInfo.getPartnerImageUri());
 
                     Utility.saveStringPreference(UserMonitorService.this,
                             SharedPrefKeys.PARTNER_UID, newUserData.getFuturePartner());

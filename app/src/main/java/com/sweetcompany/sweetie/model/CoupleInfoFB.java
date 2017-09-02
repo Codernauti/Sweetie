@@ -9,6 +9,7 @@ import java.util.Map;
 public class CoupleInfoFB {
 
     private String partnerUsername;
+    private String partnerImageUri;
     private String activeCouple;
     private String creationTime;
 
@@ -22,6 +23,14 @@ public class CoupleInfoFB {
 
     public void setPartnerUsername(String partnerUsername) {
         this.partnerUsername = partnerUsername;
+    }
+
+    public String getPartnerImageUri() {
+        return partnerImageUri;
+    }
+
+    public void setPartnerImageUri(String partnerImageUri) {
+        this.partnerImageUri = partnerImageUri;
     }
 
     public String getActiveCouple() {

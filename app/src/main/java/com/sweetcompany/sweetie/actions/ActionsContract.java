@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.actions;
 
+import android.net.Uri;
+
 import com.sweetcompany.sweetie.geogift.GeoItem;
 
 import java.util.ArrayList;
@@ -19,6 +21,7 @@ public interface ActionsContract {
     interface Presenter {
         List<String> addAction(String actionTitle, String username, int actionType);
         void removeAction(String actionUid, int actionChildType, String actionChildUid);
+        void uploadActionImage(String actionUid, Uri imageUri);
     }
 
     interface DialogView {

@@ -124,7 +124,10 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             if (uri == null) {
                 //mNoImageTextView.setTextColor(ContextCompat.getColor(itemView.getContext(), resIdColor));
 
-                for (int index = 4; index > 0; index--) {
+                if (mTitleText.length() >= 1) {
+                    mNoImageTextView.setText(mTitleText.substring(0,1)); // first character
+                }
+                /*for (int index = 4; index > 0; index--) {
                     if (mTitleText.length() > index) {
                         mNoImageTextView.setText(mTitleText.substring(0, index) + ".");
                         index = 0;
@@ -132,7 +135,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
                         mNoImageTextView.setText(mTitleText.substring(0, index));
                         index = 0;
                     }
-                }
+                }*/
                 mNoImageTextView.setVisibility(View.VISIBLE);
             } else {
                 mNoImageTextView.setVisibility(View.GONE);

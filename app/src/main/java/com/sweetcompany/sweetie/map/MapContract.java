@@ -10,11 +10,15 @@ public interface MapContract {
 
     interface View {
         void setPresenter(MapContract.Presenter presenter);
-        void updateGalleryList(List<GalleryMapVM> galleriesVM);
+        void addGallery(GalleryMapVM gallery);
+        void removeGallery(GalleryMapVM gallery);
+        void changeGallery(GalleryMapVM gallery);
+
+        void addGeogift(GeogiftMapVM geogift);
+        void removeGeogift(GeogiftMapVM geogift);
     }
 
     interface Presenter {
-        void DownloadGalleries();
     }
 
 }

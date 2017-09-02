@@ -19,6 +19,7 @@ class PairingPresenter implements PairingContract.Presenter,
 
     private final String mUserUsername;
     private final String mUserPhoneNumber;
+    private final String mUserImageUri;
     private final String mUserPairingRequestSent;   // It keep trace of previous pairing request
     private final PairingContract.View mView;
 
@@ -27,9 +28,11 @@ class PairingPresenter implements PairingContract.Presenter,
     private String mParterPhone;
 
     PairingPresenter(PairingContract.View view, FirebasePairingController controller,
-                     String userUsername, String userPhoneNumber, String userPairingRequestSent) {
+                     String userUsername, String userPhoneNumber, String userImageUri,
+                     String userPairingRequestSent) {
         mUserUsername = userUsername;
         mUserPhoneNumber = userPhoneNumber;
+        mUserImageUri = userImageUri;
         mUserPairingRequestSent = userPairingRequestSent;
 
         mView = view;
@@ -97,7 +100,7 @@ class PairingPresenter implements PairingContract.Presenter,
     @Override
     public void onSearchUserWithPhoneNumberFinished(UserFB user) {
         if (user != null) {
-            mController.createNewPairingRequest(user, mUserUsername, mUserPhoneNumber, mUserPairingRequestSent);
+            mController.createNewPairingRequest(user, mUserUsername, mUserImageUri, mUserPhoneNumber, mUserPairingRequestSent);
         } else {
             mView.hideLoadingProgress();
             // TODO: tell to the user no phone number found, send an invite to Sweetie

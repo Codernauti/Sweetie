@@ -71,5 +71,7 @@ interface Constraints {
     String GALLERY_PHOTOS_DIRECTORY = "gallery_photos";
     String GALLERY_GEOGIFTS = "gallery_geogifts";
 
+    String ACTIONS_IMAGES = "action_images";
+
 }
 

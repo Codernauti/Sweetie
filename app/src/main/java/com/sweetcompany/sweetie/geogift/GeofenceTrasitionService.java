@@ -62,6 +62,9 @@ public class GeofenceTrasitionService extends IntentService {
         }
 
         int geoFenceTransition = geofencingEvent.getGeofenceTransition();
+
+        //TODO check if geogift is still alive
+
         // Check if the transition type is of interest
         if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ) {
 

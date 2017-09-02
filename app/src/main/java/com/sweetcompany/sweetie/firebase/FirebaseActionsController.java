@@ -1,12 +1,20 @@
 package com.sweetcompany.sweetie.firebase;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
@@ -15,6 +23,7 @@ import com.sweetcompany.sweetie.model.ToDoListFB;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ghiro on 22/05/2017.
@@ -39,8 +48,10 @@ public class FirebaseActionsController {
     private final String mToDoListsUrl;
     private final String mToDoListCheckEntries;
 
-    private List<OnFirebaseActionsDataChange> mListeners = new ArrayList<>();
     private ValueEventListener mActionsEventListener;
+
+    private List<OnFirebaseActionsDataChange> mListeners = new ArrayList<>();
+    private StorageReference mCoupleStorage;
 
     public interface OnFirebaseActionsDataChange {
         void onActionsListChanged(List<ActionFB> actions);
@@ -67,6 +78,9 @@ public class FirebaseActionsController {
         mChatsRef = mDatabaseRef.child(mChatsUrl);
         mGalleriesRef = mDatabaseRef.child(mGalleriesUrl);
         mToDoListsRef = mDatabaseRef.child(mToDoListsUrl);
+
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+        mCoupleStorage = mStorageRef.child(Constraints.ACTIONS_IMAGES + "/" + coupleUid);
     }
 
     public void addListener(OnFirebaseActionsDataChange listener) {
@@ -211,6 +225,43 @@ public class FirebaseActionsController {
         }
 
         mDatabaseRef.updateChildren(updates);
+    }
+
+    public void uploadImage(final String actionUid, Uri imgLocalUri) {
+        // set name of file
+        StorageReference fileRef = mCoupleStorage.child(imgLocalUri.getLastPathSegment());
+        // upload image
+        UploadTask uploadTask = fileRef.putFile(imgLocalUri);
+        // set listeners
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.d(TAG, "onSuccess sendImage(): " + taskSnapshot.getDownloadUrl() + "\n" +
+                        "update into uri: " + mActionsRef);
+
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                mActionsRef.child(actionUid + "/" + Constraints.Actions.IMAGE_URL)
+                        .setValue(downloadUrl.toString());
+
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                Log.d(TAG, "Upload image progress: " + progress);
+
+                /*if (mListener != null) {
+                    mListener.onImageUploadProgress((int) progress);
+                }*/
+            }
+        });
     }
 
 }

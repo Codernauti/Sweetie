@@ -53,6 +53,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
                 mActionsController, mCalendarController, mMapController, super.mUserUid);
 
         mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
+        mViewPager.setOffscreenPageLimit(4);
         mViewPager.setAdapter(mAdapter);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.dashboard_toolbar);

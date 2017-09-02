@@ -47,7 +47,6 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
             case R.id.todolist_editText:
                 if(!hasFocus) {
                     String text = mEditText.getText().toString().trim();
-                    Log.d("Prova:", text);
                     if(getAdapterPosition() != -1 && text.length() != 0) {
                         mListener.onCheckEntryUnfocused(getAdapterPosition(), text);
                     }
@@ -90,7 +89,7 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
     public void setFocus(){
         mEditText.requestFocus();
         InputMethodManager inputMethodManager =(InputMethodManager) mEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 
     public void isFocused() { mEditText.isFocused();}

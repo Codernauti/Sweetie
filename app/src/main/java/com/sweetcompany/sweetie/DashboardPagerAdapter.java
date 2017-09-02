@@ -87,7 +87,7 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
             case HOME_TAB:
                 ActionsContract.View view = (ActionsContract.View) createdFragment;
                 mActionsPresenter = new ActionsPresenter(view, mActionsController, mUserID);
-                Log.d("ActionFragment", "instantiate Presenter");
+                Log.d("ActionsFragment", "instantiate Presenter");
                 break;
             case FOLDERS_TAB:
                 break;

@@ -66,7 +66,7 @@ public class MapsFragment extends Fragment implements MapContract.View,
             rootView = inflater.inflate(R.layout.maps_fragment, container, false);
             // Initialise your layout here
         } else {
-            ((ViewGroup) rootView.getParent()).removeView(rootView);
+            container.removeView(rootView);
         }
         return rootView;
     }

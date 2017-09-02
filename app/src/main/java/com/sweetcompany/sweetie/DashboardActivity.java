@@ -28,6 +28,8 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
 
     private static final String TAG = "DashboardActivity";
 
+    private final int NUM_TAB = 3;
+
     private ViewPager mViewPager;
     private DashboardPagerAdapter mAdapter;
     private Context mContext;
@@ -53,7 +55,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
                 mActionsController, mCalendarController, mMapController, super.mUserUid);
 
         mViewPager = (ViewPager) findViewById(R.id.dashboard_pager);
-        mViewPager.setOffscreenPageLimit(4);
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(mAdapter);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.dashboard_toolbar);
@@ -67,13 +69,13 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(mViewPager);
         //Set map tab icon
-        tabLayout.getTabAt(3).setIcon(R.drawable.mapicon_white);
+        tabLayout.getTabAt(DashboardPagerAdapter.MAP_TAB).setIcon(R.drawable.mapicon_white);
         // Show HomePage first
         mViewPager.setCurrentItem(DashboardPagerAdapter.HOME_TAB);
         //SlidingTabStrip in TabLayout
         ViewGroup slidingTabStrip = (ViewGroup) tabLayout.getChildAt(0);
         //Last tab (map) in SlidingTabStrip
-        View tab1 = slidingTabStrip.getChildAt(3);
+        View tab1 = slidingTabStrip.getChildAt(DashboardPagerAdapter.MAP_TAB);
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) tab1.getLayoutParams();
         layoutParams.weight = 0.5f;
         tab1.setLayoutParams(layoutParams);

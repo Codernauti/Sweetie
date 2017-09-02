@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/action_item_title"
-        android:layout_width="240dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
 
         app:layout_constraintTop_toTopOf="parent"
@@ -63,7 +63,7 @@
 
     <TextView
         android:id="@+id/action_item_subtitle"
-        android:layout_width="240dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingStart="6dp"
 

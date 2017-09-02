@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.actions;
 
+import android.net.Uri;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.model.ActionFB;
@@ -25,10 +26,11 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     private String mUserUid;
 
     public ActionsPresenter(ActionsContract.View view, FirebaseActionsController controller, String userUid) {
-        mView = view;
-        mView.setPresenter(this);
         mController = controller;
         mController.addListener(this);
+
+        mView = view;
+        mView.setPresenter(this);
 
         mUserUid = userUid;
     }
@@ -43,6 +45,11 @@ public class ActionsPresenter implements ActionsContract.Presenter,
     @Override
     public void removeAction(String actionUid, int actionChildType, String actionChildUid) {
         mController.removeAction(actionUid, actionChildType, actionChildUid);
+    }
+
+    @Override
+    public void uploadActionImage(String actionUid, Uri imageUri) {
+        mController.uploadImage(actionUid, imageUri);
     }
 
     // Controller callbacks

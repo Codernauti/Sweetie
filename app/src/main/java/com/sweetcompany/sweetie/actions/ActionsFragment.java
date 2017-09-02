@@ -18,8 +18,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
-import com.sweetcompany.sweetie.IPageChanger;
+import com.sweetcompany.sweetie.DashboardActivity;
 import com.sweetcompany.sweetie.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -29,7 +30,12 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
 
     private static final String TAG = "ActionsFragment";
 
-    private static final int RC_CODE_PICKER = 2000;
+    private static final String TEMP_ACTION_UID_KEY = "tempActionUid";
+
+    // dirty bit, we need this because the opening of ImageCrop destroy the fragment
+    // and when it is recreate the onActivityResult() is called before setPresenter()
+    private String mTempActionUidSelected;
+    private Uri mTempActionImageUri;
 
     private ActionsAdapter mActionAdapter;
     private RecyclerView mActionsListView;
@@ -61,16 +67,16 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
         rotate_forward = AnimationUtils.loadAnimation(context, R.anim.rotate_forward);
         rotate_backward = AnimationUtils.loadAnimation(context ,R.anim.rotate_backward);
 
-    }
-
-    @Override
-    public void setPresenter(ActionsContract.Presenter presenter) {
-        mPresenter = presenter;
+        if (savedInstanceState != null) {
+            mTempActionUidSelected = savedInstanceState.getString(TEMP_ACTION_UID_KEY);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView()");
+
         View root = inflater.inflate(R.layout.actions_fragment, container, false);
 
         mActionsListView = (RecyclerView) root.findViewById(R.id.actions_list);
@@ -187,6 +193,22 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
         return root;
     }
 
+    @Override
+    public void setPresenter(ActionsContract.Presenter presenter) {
+        Log.d(TAG, "setPresenter()");
+        mPresenter = presenter;
+
+        // code smell here, but i don't find any smart solution
+        if (mTempActionUidSelected != null && !mTempActionUidSelected.isEmpty()
+                && mTempActionImageUri != null) {
+            // do scheduled works
+            mPresenter.uploadActionImage(mTempActionUidSelected, mTempActionImageUri);
+            // consume the temps variables
+            mTempActionImageUri = null;
+            mTempActionUidSelected = null;
+        }
+    }
+
     public void onScrolledDown(){
         if(!mIsFabOpen){
             mFabNewAction.startAnimation(fab_close);
@@ -250,7 +272,7 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
         mActionAdapter.updateActionsList(actionsVM);
     }
 
-    // Verify user's response of the permission requested
+    /*// Verify user's response of the permission requested
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult()");
@@ -269,20 +291,22 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
                 break;
             }
         }
-    }
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult()");
 
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
             if (resultCode == Activity.RESULT_OK) {
                 Uri resultUri = result.getUri();
-                // TODO: send to presenter
-                //mPresenter.(resultUri);
 
-                // TODO: give feedback to user
+                mTempActionImageUri = resultUri;
+                Toast.makeText(getContext(), "Upload image...", Toast.LENGTH_SHORT).show();
+
+                // TODO: give more feedback to user
                 /*mCoupleImage.setImageDrawable(null);
                 showUploadProgress()*/;
             }
@@ -296,20 +320,20 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
     // Adapter callbacks
 
     @Override
-    public void onViewHolderLongClicked(ActionVM action) {
+    public void onViewHolderLongClicked(final ActionVM action) {
+        mTempActionUidSelected = action.getKey();
+
         ActionMenuDialogFragment dialog = ActionMenuDialogFragment.newInstance(action.getKey(),
                 action.getChildType(), action.getChildUid());
         dialog.setPresenter(mPresenter);
         dialog.show(getActivity().getFragmentManager(), ActionNewChatFragment.TAG);
 
-        dialog.setListener(new ActionMenuDialogFragment.ActionMenuDialogListener() {
-            @Override
-            public void onChangeActionImageSelected() {
-                CropImage.activity()
-                        .setAspectRatio(1,1)
-                        .setMaxCropResultSize(128, 128)
-                        .start(getContext(), ActionsFragment.this);
-            }
-        });
+        // this fragment will go destroy if user select "change image"
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(TEMP_ACTION_UID_KEY, mTempActionUidSelected);
     }
 }

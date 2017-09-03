@@ -87,6 +87,7 @@
 
     <!-- Map -->
     <string name="geogift_toptab">GEOGIFTS</string>
+    <string name="galleries_toptab">GALLERIES</string>
 
     <!-- Location Picker -->
     <string name="google_locate_picker_key">AIzaSyDtJP5SOBfQ4EJ67KcX7ughd4_DXxQEIv8</string>

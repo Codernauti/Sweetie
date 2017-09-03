@@ -21,27 +21,27 @@ public class GalleryMapVM {
         return mTitle;
     }
 
-    public String getmLat() {
+    public String getLat() {
         return mLat;
     }
 
-    public void setmLat(String mLat) {
+    public void setLat(String mLat) {
         this.mLat = mLat;
     }
 
-    public String getmLon() {
+    public String getLon() {
         return mLon;
     }
 
-    public void setmLon(String mLon) {
+    public void setLon(String mLon) {
         this.mLon = mLon;
     }
 
-    public String getmUriCover() {
+    public String getUriCover() {
         return mUriCover;
     }
 
-    public void setmUriCover(String mUriCover) {
+    public void setUriCover(String mUriCover) {
         this.mUriCover = mUriCover;
     }
 

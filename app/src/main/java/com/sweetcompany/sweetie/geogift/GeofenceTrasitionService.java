@@ -40,7 +40,6 @@ public class GeofenceTrasitionService extends IntentService {
 
     public GeofenceTrasitionService() {
         super(TAG);
-
     }
 
     @Override

@@ -31,6 +31,14 @@ class ChatDiaryPresenter implements ChatDiaryContract.Presenter,
 
 
     @Override
+    public void removeBookmarkedMessage(MessageVM message) {
+        mController.removeBookmarkedMessage(message.getKey());
+    }
+
+
+    // Controller callbacks
+
+    @Override
     public void onMessageAdded(MessageFB message) {
         MessageVM messageVM = MessageConverter.createMessageVM(message, mUserMail);
         mView.updateMessage(messageVM);

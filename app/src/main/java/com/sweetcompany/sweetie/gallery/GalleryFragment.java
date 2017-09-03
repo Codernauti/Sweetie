@@ -188,7 +188,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     }
 
     @Override
-    public void onPhotoLongClicked(int position) {
+    public void onPhotoLongClicked() {
         mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(this);
     }
 

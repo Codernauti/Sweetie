@@ -19,7 +19,9 @@
     <color name="pink_light">#FFCCCC</color>
     <color name="azzurro_pastello">#66B2FF</color>
 
+    <!-- Chat colors -->
     <color name="chat_background">#e6e6e6</color>
+    <color name="chat_message_selected">#F4F6F6</color>
 
     <!-- Gallery colors -->
     <color name="gallery_background">#e6e6e6</color>

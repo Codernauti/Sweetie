@@ -18,13 +18,18 @@ import com.sweetcompany.sweetie.gallery.SlideshowDialogFragment;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.Utility;
 
+import java.io.Serializable;
+
 /**
  * Created by ghiro on 05/08/2017.
  */
 
 public class ShowImageFragment extends DialogFragment {
 
-    private String TAG = SlideshowDialogFragment.class.getSimpleName();
+    public static final String TAG = SlideshowDialogFragment.class.getSimpleName();
+
+    private static final String IMAGE_KEY = "image";
+
     private TextPhotoMessageVM image;
     private ViewPager viewPager;
     private ShowImageFragment.MyViewPagerAdapter myViewPagerAdapter;
@@ -34,6 +39,16 @@ public class ShowImageFragment extends DialogFragment {
     static ShowImageFragment newInstance() {
         ShowImageFragment f = new ShowImageFragment();
         return f;
+    }
+
+    public static ShowImageFragment newInstance(TextPhotoMessageVM photoMessage) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(IMAGE_KEY, (Serializable) photoMessage);
+
+        ShowImageFragment fragment = new ShowImageFragment();
+        fragment.setArguments(bundle);
+
+        return fragment;
     }
 
     @Override

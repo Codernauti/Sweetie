@@ -35,7 +35,7 @@ public class FirebaseChatController {
 
     private static final String TAG = "FbChatController";
 
-    private final String mActionUid;
+    private final String mChatUid;
     private final String mChatTitle;
     private final String mCoupleUid;
 
@@ -76,7 +76,7 @@ public class FirebaseChatController {
 
     public FirebaseChatController(String coupleUid, String chatKey, String chatTitle, String actionKey, String partnerUid) {
         mCoupleUid = coupleUid;
-        mActionUid = actionKey;
+        mChatUid = chatKey;
         mChatTitle = chatTitle;
 
         mMsgDefaultNotification = new MsgNotification(chatKey, actionKey, chatTitle);
@@ -190,9 +190,9 @@ public class FirebaseChatController {
         HashMap<String, Object> updates = new HashMap<>();
         updates.put(mChatMessagesUrl + "/" + msg.getKey() + "/" + Constraints.BOOKMARK, msg.isBookmarked());
 
-        String actionDiaryDataUrl = mCoupleActionsDiaryUrl + "/" + msg.getDate() + "/" + mActionUid;
+        String actionDiaryDataUrl = mCoupleActionsDiaryUrl + "/" + msg.getDate() + "/" + mChatUid;
         final String actionDiaryUrl = mCoupleCalendarUrl + "/" + msg.getYearAndMonth() + "/"
-                                + msg.getDay() + "/" + mActionUid;
+                                + msg.getDay() + "/" + mChatUid;
 
         if (msg.isBookmarked()) {
             ActionDiaryFB action = new ActionDiaryFB(ActionFB.CHAT, msg.getDate(), mChatTitle, msg.getText());

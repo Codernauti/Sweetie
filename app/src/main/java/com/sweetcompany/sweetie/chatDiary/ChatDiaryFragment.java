@@ -2,30 +2,43 @@ package com.sweetcompany.sweetie.chatDiary;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.chat.ChatAdapter;
 import com.sweetcompany.sweetie.chat.MessageVM;
+import com.sweetcompany.sweetie.chat.ShowImageFragment;
 import com.sweetcompany.sweetie.chat.TextPhotoMessageVM;
+
+import java.util.List;
 
 /**
  * Created by Eduard on 22-Aug-17.
  */
 
 public class ChatDiaryFragment extends Fragment implements ChatDiaryContract.View,
-    ChatAdapter.ChatAdapterListener {
+    ChatAdapter.ChatAdapterListener, ActionMode.Callback {
+
+    private static final String TAG = "ChatDiaryFragment";
 
     private ChatAdapter mChatAdapter;
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerView mChatListView;
     private Toolbar mToolBar;
+
+    private ActionMode mActionMode;
 
     private ChatDiaryContract.Presenter mPresenter;
 
@@ -95,6 +108,59 @@ public class ChatDiaryFragment extends Fragment implements ChatDiaryContract.Vie
 
     @Override
     public void onPhotoClicked(TextPhotoMessageVM photoMessage) {
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ShowImageFragment.newInstance(photoMessage)
+                .show(ft, ShowImageFragment.TAG);
+    }
 
+    @Override
+    public void onMessageLongClicked() {
+        mActionMode = ((AppCompatActivity)getActivity()).startSupportActionMode(this);
+    }
+
+    @Override
+    public void onMessageSelectionFinished() {
+        if (mActionMode != null) {
+            mActionMode.finish();
+        }
+    }
+
+
+    // ActionMode callbacks
+
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.chat_cab_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.chat_menu_remove: {
+                List<MessageVM> selectedItems = mChatAdapter.getSelectedItems();
+                for (int i = selectedItems.size() - 1; i >= 0; i--) {
+                    MessageVM message = selectedItems.get(i);
+                    Log.d(TAG, "Remove bookmarked item: " + message.getKey());
+                    mPresenter.removeBookmarkedMessage(message);
+                }
+                mode.finish();
+                return true;
+            }
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        mActionMode = null;
+        mChatAdapter.clearSelections();
     }
 }

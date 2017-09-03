@@ -55,7 +55,8 @@ public class ChatDiaryActivity extends BaseActivity {
         }
 
         if (mActionDiaryDate != null && mActionDiaryUid != null) {
-            mController = new FirebaseChatDiaryController(super.mCoupleUid, mActionDiaryDate, mActionDiaryUid);
+            mController = new FirebaseChatDiaryController(super.mCoupleUid, mActionDiaryDate,
+                    mActionDiaryUid);
             mPresenter = new ChatDiaryPresenter(mView, mController, super.mUserEmail);
         }
         else {

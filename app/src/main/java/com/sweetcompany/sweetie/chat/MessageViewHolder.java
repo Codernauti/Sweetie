@@ -1,6 +1,8 @@
 package com.sweetcompany.sweetie.chat;
 
-import android.support.v7.widget.RecyclerView;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -12,7 +14,8 @@ import com.sweetcompany.sweetie.R;
  * Created by Eduard on 21-May-17.
  */
 
-abstract class MessageViewHolder extends ChatViewHolder implements View.OnClickListener {
+abstract class MessageViewHolder extends ChatViewHolder implements View.OnClickListener,
+        View.OnLongClickListener {
 
     private final ImageView mMsgStatus;
     private final ImageButton mBookmarkButton;
@@ -22,6 +25,8 @@ abstract class MessageViewHolder extends ChatViewHolder implements View.OnClickL
     interface OnViewHolderClickListener {
         void onBookmarkClicked(int adapterPosition, boolean isBookmarked, int type);
         void onPhotoClicked(int adapterPosition);
+        void onMessageLongClicked(int adapterPosition);
+        void onMessageClicked(int adapterPosition);
     }
 
     MessageViewHolder(View itemView) {
@@ -31,6 +36,8 @@ abstract class MessageViewHolder extends ChatViewHolder implements View.OnClickL
         mBookmarkButton = (ImageButton) itemView.findViewById(R.id.chat_item_bookmark_button);
 
         mBookmarkButton.setOnClickListener(this);
+        itemView.setOnClickListener(this);
+        itemView.setOnLongClickListener(this);
     }
 
     void setViewHolderClickListener(OnViewHolderClickListener listener) {
@@ -62,16 +69,37 @@ abstract class MessageViewHolder extends ChatViewHolder implements View.OnClickL
         mListener.onPhotoClicked(getAdapterPosition());
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.chat_item_bookmark_button) {
-            boolean wasBookmarked = mBookmarkButton.isSelected();
-            mBookmarkButton.setSelected(!wasBookmarked);
-            mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, getType());
-        }
-        else {
-            Log.d("MessageViewHolder", "onClick() event lost");
+    void setViewHolderSelected(boolean selected) {
+        if (selected) {
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.chat_message_selected));
+        } else {
+            itemView.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.chat_item_bookmark_button: {
+                boolean wasBookmarked = mBookmarkButton.isSelected();
+                mBookmarkButton.setSelected(!wasBookmarked);
+                mListener.onBookmarkClicked(getAdapterPosition(), !wasBookmarked, getType());
+                break;
+            }
+            case R.id.chat_list_item_root: {
+                mListener.onMessageClicked(getAdapterPosition());
+                break;
+            }
+            default: {
+                Log.d("MessageViewHolder", "onClick() event lost");
+                break;
+            }
+        }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        mListener.onMessageLongClicked(getAdapterPosition());
+        return true;
+    }
 }

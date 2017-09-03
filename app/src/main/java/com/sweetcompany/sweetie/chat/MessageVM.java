@@ -34,7 +34,7 @@ public abstract class MessageVM implements ChatItemVM {
         return mCreatorEmail;
     }
 
-    String getTime() {
+    public String getTime() {
         return mTime;
     }
 

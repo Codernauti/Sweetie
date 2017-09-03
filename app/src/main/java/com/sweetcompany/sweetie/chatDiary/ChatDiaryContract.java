@@ -16,6 +16,6 @@ interface ChatDiaryContract {
     }
 
     interface Presenter {
-
+        void removeBookmarkedMessage(MessageVM message);
     }
 }

@@ -29,7 +29,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
 
     interface GalleryAdapterListener {
         void onPhotoClicked(int position, List<MediaVM> mediasVM);
-        void onPhotoLongClicked(int position);
+        void onPhotoLongClicked();
         void onPhotoSelectionFinished();
     }
 
@@ -178,7 +178,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     @Override
     public void onPhotoLongClicked(int adapterPosition) {
         // tell to fragment to enable ActionMode
-        mListener.onPhotoLongClicked(adapterPosition);
+        mListener.onPhotoLongClicked();
         mMultipleSelectionEnable = true;
 
         // first element selected

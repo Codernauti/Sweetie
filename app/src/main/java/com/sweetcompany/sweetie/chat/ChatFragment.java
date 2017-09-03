@@ -446,7 +446,9 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         return false;
     }
 
+
     // ChatAdapter callback
+
     @Override
     public void onBookmarkClicked(MessageVM messageVM, int type) {
         mPresenter.bookmarkMessage(messageVM, type);
@@ -454,16 +456,24 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     @Override
     public void onPhotoClicked(TextPhotoMessageVM photoMessage) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("image", (Serializable) photoMessage);
-
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ShowImageFragment newFragment = ShowImageFragment.newInstance();
-        newFragment.setArguments(bundle);
-        newFragment.show(ft, "slideshow");
+        ShowImageFragment.newInstance(photoMessage)
+                .show(ft, ShowImageFragment.TAG);
     }
 
+    @Override
+    public void onMessageLongClicked() {
+        // TODO: implements actionMode
+    }
+
+    @Override
+    public void onMessageSelectionFinished() {
+        // TODO: implements actionMode
+    }
+
+
     // EmoticonsAdapter callback
+
     @Override
     public void onEmoticonsClicked(Emojicon emojicon) {
         int start = mTextMessageInput.getSelectionStart();

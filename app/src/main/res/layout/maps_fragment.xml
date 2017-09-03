@@ -11,12 +11,14 @@
         android:layout_height="35dp"
         android:weightSum="0">
 
-        <!--<LinearLayout
+        <LinearLayout
+            android:id="@+id/gallery_map_top_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_weight="0.5">
+            <!-- TODO refactor button -->
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -24,13 +26,15 @@
                 android:layout_marginEnd="5dp"
                 />
             <TextView
+                android:id="@+id/gallery_map_top_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="PICTURES"
+                android:text="@string/galleries_toptab"
                 />
-        </LinearLayout>-->
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/geogift_map_top_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -44,6 +48,7 @@
                 android:tint="@color/purple_sweetie"
                 />
             <TextView
+                android:id="@+id/geogift_map_top_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/geogift_toptab"

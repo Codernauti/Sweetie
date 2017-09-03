@@ -3,7 +3,7 @@ package com.sweetcompany.sweetie.map;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -26,24 +29,36 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseMapController;
-import com.sweetcompany.sweetie.model.GeogiftFB;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-public class MapsFragment extends Fragment implements MapContract.View,
+public class MapsFragment extends Fragment implements View.OnClickListener,
+                                                      MapContract.View,
                                                       OnMapReadyCallback,
                                                       GoogleApiClient.ConnectionCallbacks,
                                                       GoogleApiClient.OnConnectionFailedListener{
 
 
     private static final String TAG = "MapFragment";
+    private static final int GALLERY_MAP = 0;
+    private static final int GEOGIFT_MAP = 1;
 
     private View rootView;
+    private LinearLayout galleryButton;
+    private LinearLayout geogiftButton;
+    private TextView galleryButtonText;
+    private TextView geogiftButtonText;
+
+    private int currentSelectionMap = 1;
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
-    private Marker locationMarker;
+
+    private List<Marker> locationGeogiftMarkers = new ArrayList<>();
+    private List<Marker> locationGalleryMarkers = new ArrayList<>();
+
     List<GalleryMapVM> mGalleriesList = new ArrayList<>();
     List<GeogiftMapVM> mGeogiftsList = new ArrayList<>();
 
@@ -73,6 +88,24 @@ public class MapsFragment extends Fragment implements MapContract.View,
         if (rootView == null) {
             Log.d(TAG, "inflate rootView");
             rootView = inflater.inflate(R.layout.maps_fragment, container, false);
+
+            galleryButton = (LinearLayout) rootView.findViewById(R.id.gallery_map_top_button);
+            galleryButton.setClickable(true);
+            galleryButton.setOnClickListener(this);
+            geogiftButton = (LinearLayout) rootView.findViewById(R.id.geogift_map_top_button);
+            geogiftButton.setClickable(true);
+            geogiftButton.setOnClickListener(this);
+
+            galleryButtonText = (TextView) rootView.findViewById(R.id.gallery_map_top_text);
+            geogiftButtonText = (TextView) rootView.findViewById(R.id.geogift_map_top_text);
+
+            //TODO refactor
+            if(currentSelectionMap == GALLERY_MAP) {
+                selectGalleryMap();
+            }
+            else{
+                selectGeogiftMap();
+            }
 
             buildGoogleApiClient();
             googleApiClient.connect();
@@ -130,14 +163,45 @@ public class MapsFragment extends Fragment implements MapContract.View,
                     .title(geogift.getTitle())
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_gift_icon",72,72)));
             if ( map!=null ) {
-                locationMarker = map.addMarker(markerOptions);
+                Marker geoMarker = map.addMarker(markerOptions);
+                locationGeogiftMarkers.add(geoMarker);
                 Log.d(TAG, "addMarker " + markerOptions.getTitle());
             }
     }
 
+    private void markerGallery(GalleryMapVM gallery){
+        Bitmap coverBmp = null;
+        if(gallery.getUriCover() != null){
+            try {
+                coverBmp = Glide.
+                        with(mContext).
+                        load(gallery.getUriCover()).
+                        asBitmap().
+                        into(72, 72). // Width and height
+                        get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        if(coverBmp != null){
+
+            Bitmap markerIcon = Bitmap.createScaledBitmap(coverBmp, 72, 72, false);
+
+            LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(latLng)
+                    .title(gallery.getTitle())
+                    .icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
+            if ( map!=null ) {
+                locationGalleryMarkers.add(map.addMarker(markerOptions));
+                Log.d(TAG, "addMarker " + markerOptions.getTitle());
+            }
+        }
+    }
+
     public int getIconDrawable(int type){
         int idDrawable = R.drawable.action_gift_icon;
-        // TODO
+        // TODO differentiate geogift types
         /*switch (type){
             case GeogiftFB.MESSAGE_GEOGIFT:
                 idDrawable =  R.drawable.action_gift_icon;
@@ -195,6 +259,16 @@ public class MapsFragment extends Fragment implements MapContract.View,
         super.onResume();
         if(map!=null){
             map.clear();
+            mGeogiftsList.clear();
+            mGalleriesList.clear();
+
+            //TODO refactor
+            if(currentSelectionMap == GALLERY_MAP) {
+                selectGalleryMap();
+            }
+            else{
+                selectGeogiftMap();
+            }
         }
     }
 
@@ -209,4 +283,35 @@ public class MapsFragment extends Fragment implements MapContract.View,
         }
     }
 
+    public void selectGalleryMap(){
+        currentSelectionMap = GALLERY_MAP;
+        galleryButtonText.setTextColor(Color.YELLOW);
+        geogiftButtonText.setTextColor(Color.GRAY);
+        for(Marker markerGeo : locationGeogiftMarkers) markerGeo.setVisible(false);
+        for(Marker markerGall : locationGalleryMarkers) markerGall.setVisible(true);
+    }
+
+    public void selectGeogiftMap(){
+        currentSelectionMap = GEOGIFT_MAP;
+        geogiftButtonText.setTextColor(Color.YELLOW);
+        galleryButtonText.setTextColor(Color.GRAY);
+        for(Marker markerGall : locationGalleryMarkers) markerGall.setVisible(false);
+        for(Marker markerGeo : locationGeogiftMarkers) markerGeo.setVisible(true);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.gallery_map_top_button: {
+                selectGalleryMap();
+                break;
+            }
+            case R.id.geogift_map_top_button: {
+                selectGeogiftMap();
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }

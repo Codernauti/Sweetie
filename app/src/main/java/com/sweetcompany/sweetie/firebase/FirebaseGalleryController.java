@@ -4,8 +4,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -234,9 +236,10 @@ public class FirebaseGalleryController {
         Log.d(TAG, "remove media:" + uriStorage);
 
         StorageReference mMediaRef = FirebaseStorage.getInstance().getReferenceFromUrl(uriStorage);
-        mMediaRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        mMediaRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onSuccess(Void aVoid) {
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d(TAG, "media is deleted");
                 mGalleryPhotos.child(mediaUid).removeValue();
             }
         });

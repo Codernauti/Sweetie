@@ -118,6 +118,7 @@ public class MapsFragment extends Fragment implements MapContract.View,
             //map.setBuildingsEnabled(true);
             //map.getUiSettings().setZoomControlsEnabled(true);
         }
+        //TODO set smart bounds (have more marker on map)
     }
 
     // Create a Location Marker
@@ -187,6 +188,14 @@ public class MapsFragment extends Fragment implements MapContract.View,
     @Override
     public void removeGeogift(GeogiftMapVM geogift) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(map!=null){
+            map.clear();
+        }
     }
 
     @Override

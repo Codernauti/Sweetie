@@ -43,6 +43,7 @@ public class MapPresenter implements MapContract.Presenter, FirebaseMapControlle
     public void onGeogiftAdded(GeogiftFB geogift) {
         GeogiftMapVM newGeogiftMapVM = new GeogiftMapVM(geogift.getKey(), geogift.getLat(), geogift.getLon());
         newGeogiftMapVM.setType(geogift.getType());
+        newGeogiftMapVM.setTitle(geogift.getTitle());
         mView.addGeogift(newGeogiftMapVM);
     }
     @Override

@@ -85,21 +85,22 @@ public class FirebaseGeogiftMakerController {
         actionFB.setChildKey(newGeogiftKey);
 
         // Create Gallery and set Gallery
-        GeogiftFB geogift = new GeogiftFB();
-        geogift.setActionKey(newActionKey);
-        geogift.setUserCreatorUID(geoItem.getUserCreatorUID());
-        geogift.setType(geoItem.getType());
-        geogift.setMessage(geoItem.getMessage());
-        geogift.setAddress(geoItem.getAddress());
-        geogift.setUriS(geoItem.getUriS());
-        geogift.setLat(geoItem.getLat());
-        geogift.setLon(geoItem.getLon());
-        geogift.setBookmarked(geoItem.isBookmarked());
-        geogift.setDatetimeCreation(actionFB.getDataTime());
-        geogift.setIsTriggered(false);
+        GeogiftFB geogiftFB = new GeogiftFB();
+        geogiftFB.setActionKey(newActionKey);
+        geogiftFB.setUserCreatorUID(geoItem.getUserCreatorUID());
+        geogiftFB.setType(geoItem.getType());
+        geogiftFB.setTitle(geogiftTitle);
+        geogiftFB.setMessage(geoItem.getMessage());
+        geogiftFB.setAddress(geoItem.getAddress());
+        geogiftFB.setUriS(geoItem.getUriS());
+        geogiftFB.setLat(geoItem.getLat());
+        geogiftFB.setLon(geoItem.getLon());
+        geogiftFB.setBookmarked(geoItem.isBookmarked());
+        geogiftFB.setDatetimeCreation(actionFB.getDataTime());
+        geogiftFB.setIsTriggered(false);
 
         updates.put(mActionsUrl + "/" + newActionKey, actionFB);
-        updates.put(mGeogiftsUrl + "/" + newGeogiftKey, geogift);
+        updates.put(mGeogiftsUrl + "/" + newGeogiftKey, geogiftFB);
 
         // update database
         mDatabaseRef.updateChildren(updates);

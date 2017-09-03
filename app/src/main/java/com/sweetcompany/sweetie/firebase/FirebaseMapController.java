@@ -21,7 +21,8 @@ public class FirebaseMapController {
     private final DatabaseReference mGalleriesDbReference;
     private final DatabaseReference mGeogiftsDbReference;
 
-    private final String coupleUid = null;
+    private String mCoupleUid = null;
+    private String mUserUid = null;
 
     private ChildEventListener mGalleriesEventListener;
     private ChildEventListener mGeogiftsEventListener;
@@ -41,14 +42,15 @@ public class FirebaseMapController {
     }
 
 
-    public FirebaseMapController(String coupleUid) {
+    public FirebaseMapController(String coupleUid, String userUid) {
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
         mGalleriesDbReference = mDatabaseRef.child(Constraints.GALLERIES + "/" + coupleUid);
         mGeogiftsDbReference = mDatabaseRef.child(Constraints.GEOGIFTS + "/" + coupleUid);
 
-        coupleUid = coupleUid;
+        mCoupleUid = coupleUid;
+        mUserUid = userUid;
     }
 
     public void addGeogiftListener(MapGeogiftControllerListener listener) {
@@ -115,8 +117,10 @@ public class FirebaseMapController {
                     GeogiftFB newGeogift = dataSnapshot.getValue(GeogiftFB.class);
                     newGeogift.setKey(dataSnapshot.getKey());
 
-                    if (mGeogiftListener != null) {
-                        mGeogiftListener.onGeogiftAdded(newGeogift);
+                    if(newGeogift.getUserCreatorUID().equals(mUserUid) || newGeogift.getIsTriggered() == true) {
+                        if (mGeogiftListener != null) {
+                            mGeogiftListener.onGeogiftAdded(newGeogift);
+                        }
                     }
                 }
 

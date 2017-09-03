@@ -27,13 +27,12 @@ import java.util.ArrayList;
 public class MessagesMonitorService extends Service implements FirebaseMsgNotificationController.MsgNotificationControllerListener {
 
     private static final String TAG = "MessageMonitorService";
+
     private static final int NOTIFICATION_ID = 100;
 
-    public static final String CHAT_UID_KEY = "chatUidKey";
-
     private FirebaseMsgNotificationController mController;
-    private NotificationManager mNotificationManager;
 
+    private NotificationManager mNotificationManager;
     private ArrayList<String> mChatsNotified = new ArrayList<>();
     private ArrayList<MsgNotification> mMessagesNotified = new ArrayList<>();
 
@@ -108,7 +107,7 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
 
         if (chatInForeground(msg.getChatUid())) {
             return;
-        } else if (chatIsDisable(msg.getChatUid())) {
+        } else if (chatIsSilenced(msg.getChatUid())) {
             return;
         }
 
@@ -184,7 +183,7 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
         mNotificationManager.notify(NOTIFICATION_ID, notification);
     }
 
-    private boolean chatIsDisable(String chatUid) {
+    private boolean chatIsSilenced(String chatUid) {
         // TODO: implements it
         return false;
     }

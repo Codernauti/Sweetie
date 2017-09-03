@@ -29,7 +29,6 @@ import com.sweetcompany.sweetie.utils.Utility;
  *  - Manage the user relationship status
  *      if app in foreground onSharedPreferenceChange() is trigger
  *      if app in background onStart() check if couple_uid changed
- *  - TODO: Manage the Geogift trigger
  */
 public class BaseActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,

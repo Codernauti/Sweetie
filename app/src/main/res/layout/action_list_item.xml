@@ -123,7 +123,6 @@
         android:layout_height="0.5dp"
         android:background="@color/action_separator"
 
-        app:layout_constraintTop_toBottomOf="@+id/image_action_list_item"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

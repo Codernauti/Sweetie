@@ -59,9 +59,6 @@ public class MapsFragment extends Fragment implements MapContract.View,
 
         //mActionAdapter = new ActionsAdapter();
         mContext = getContext();
-
-        buildGoogleApiClient();
-        googleApiClient.connect();
     }
 
     @Override
@@ -74,9 +71,14 @@ public class MapsFragment extends Fragment implements MapContract.View,
                              Bundle savedInstanceState) {
 
         if (rootView == null) {
+            Log.d(TAG, "inflate rootView");
             rootView = inflater.inflate(R.layout.maps_fragment, container, false);
-            // Initialise your layout here
+
+            buildGoogleApiClient();
+            googleApiClient.connect();
+
         } else {
+            Log.d(TAG, "remove rootView");
             container.removeView(rootView);
         }
         return rootView;
@@ -95,6 +97,7 @@ public class MapsFragment extends Fragment implements MapContract.View,
 
     // Initialize GoogleMaps
     private void initGMaps(){
+        Log.d(TAG, "initGMaps");
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_gallery_fragment);
 
         if(mapFragment != null) {
@@ -105,14 +108,16 @@ public class MapsFragment extends Fragment implements MapContract.View,
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady()");
-        map = googleMap;
-        //map.setOnMapClickListener(this);
-        //map.setOnMarkerClickListener(this);
-        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        //map.setMyLocationEnabled(true);
-        //map.setIndoorEnabled(true);
-        //map.setBuildingsEnabled(true);
-        //map.getUiSettings().setZoomControlsEnabled(true);
+        if(map == null) {
+            map = googleMap;
+            //map.setOnMapClickListener(this);
+            //map.setOnMarkerClickListener(this);
+            map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            //map.setMyLocationEnabled(true);
+            //map.setIndoorEnabled(true);
+            //map.setBuildingsEnabled(true);
+            //map.getUiSettings().setZoomControlsEnabled(true);
+        }
     }
 
     // Create a Location Marker
@@ -121,9 +126,11 @@ public class MapsFragment extends Fragment implements MapContract.View,
             LatLng latLng = new LatLng(Double.parseDouble(geogift.getLat()) , Double.parseDouble(geogift.getLon()));
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
+                    .title(geogift.getTitle())
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_gift_icon",72,72)));
             if ( map!=null ) {
                 locationMarker = map.addMarker(markerOptions);
+                Log.d(TAG, "addMarker " + markerOptions.getTitle());
             }
     }
 
@@ -185,6 +192,7 @@ public class MapsFragment extends Fragment implements MapContract.View,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.d(TAG, "onDestroyView");
         SupportMapFragment mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map_gallery_fragment));
         if(mapFragment != null) {
             FragmentManager fM = getFragmentManager();

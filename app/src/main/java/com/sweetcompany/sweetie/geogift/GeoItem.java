@@ -13,6 +13,7 @@ public class GeoItem {
     private String key;
     private String userCreatorUID;
     private int type;
+    private String title;
     private String message;
     private String address;
     private String lat;
@@ -48,6 +49,13 @@ public class GeoItem {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getMessage() {
@@ -121,4 +129,5 @@ public class GeoItem {
     public void setIsTriggered(boolean triggered) {
         this.isTriggered = triggered;
     }
+
 }

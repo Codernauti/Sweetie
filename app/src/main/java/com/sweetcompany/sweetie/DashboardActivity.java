@@ -49,7 +49,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         // init the Controllers for fragments
         mActionsController = new FirebaseActionsController(super.mCoupleUid, super.mUserUid);
         mCalendarController = new FirebaseCalendarController(super.mCoupleUid);
-        mMapController = new FirebaseMapController(super.mCoupleUid);
+        mMapController = new FirebaseMapController(super.mCoupleUid, super.mUserUid);
 
         mAdapter = new DashboardPagerAdapter(getSupportFragmentManager(), mContext,
                 mActionsController, mCalendarController, mMapController, super.mUserUid);

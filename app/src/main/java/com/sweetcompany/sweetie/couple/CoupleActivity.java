@@ -38,7 +38,7 @@ public class CoupleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.couple_activity);
 
-        String buttonMessage = "Default message, you are coupled or your couple break";
+        String firstMessage = "Default message, you are coupled or your couple break";
         String imageUri = null;
         boolean coupleBreak = false;
 
@@ -46,7 +46,7 @@ public class CoupleActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
-                buttonMessage = bundle.getString(FIRST_MESSAGE_KEY);;
+                firstMessage = bundle.getString(FIRST_MESSAGE_KEY);;
                 imageUri = bundle.getString(IMAGE_PARTNER_KEY);
                 coupleBreak = bundle.getBoolean(BREAK_KEY);
             }
@@ -74,17 +74,16 @@ public class CoupleActivity extends AppCompatActivity {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .dontAnimate()
                     .into(mPartnerImage);
-
-            mCoupleMessage.setText(buttonMessage);
-
-            mOkButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(CoupleActivity.this, DashboardActivity.class);
-                    startActivity(intent);
-                }
-            });
         }
 
+        mCoupleMessage.setText(firstMessage);
+
+        mOkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CoupleActivity.this, DashboardActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

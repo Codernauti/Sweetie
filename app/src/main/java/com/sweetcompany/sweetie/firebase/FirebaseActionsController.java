@@ -151,10 +151,6 @@ public class FirebaseActionsController {
             case ActionFB.GALLERY: {
                 GalleryFB gallery = new GalleryFB();
                 gallery.setTitle(childTitle);
-                // TODO
-                gallery.setLatitude("null");
-                gallery.setLongitude("null");
-                gallery.setUriCover("null");
 
                 DatabaseReference childActionPush = mGalleriesRef.push();
                 childActionUid = childActionPush.getKey();

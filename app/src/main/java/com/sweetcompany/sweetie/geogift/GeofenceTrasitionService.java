@@ -14,6 +14,7 @@ import android.util.Log;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.android.gms.location.LocationServices;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftIntentController;
@@ -81,13 +82,15 @@ public class GeofenceTrasitionService extends IntentService {
 
             // Send notification details as a String
             //sendNotification( geofenceTransitionDetails );
-            sendNotification( GEOGIFT_KEY );
-
-
+            //TODO
+            String msg = "Geogift finded!";
+            sendNotification( msg, geogiftKey );
 
             mController.setTriggeredGeogift(actionKey, geogiftKey, dateTime);
+
         }
     }
+
 
     private String getGeofenceTrasitionDetails(int geoFenceTransition, List<Geofence> triggeringGeofences) {
         // get the ID of each geofence triggered
@@ -104,12 +107,13 @@ public class GeofenceTrasitionService extends IntentService {
         return status + TextUtils.join( ", ", triggeringGeofencesList);
     }
 
-    private void sendNotification( String msg ) {
-        Log.i(TAG, "sendNotification: " + msg );
+    private void sendNotification( String msg, String geogiftKey ) {
+        Log.i(TAG, "sendNotification: " + geogiftKey );
 
         // Intent to start the main Activity
+        //TODO add title
         Intent notificationIntent = MainActivity.makeNotificationIntent(
-                getApplicationContext(), msg, "title", msg
+                getApplicationContext(), "title", geogiftKey
         );
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);

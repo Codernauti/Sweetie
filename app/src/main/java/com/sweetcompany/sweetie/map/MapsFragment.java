@@ -199,10 +199,9 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     }
 
     public void drawMarker(Bitmap res, GalleryMapVM gallery){
-
         if(res != null){
 
-            Bitmap markerIcon = Bitmap.createScaledBitmap(res, 72, 72, false);
+            Bitmap markerIcon = Bitmap.createScaledBitmap(res, 96, 72, false);
 
             LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
             MarkerOptions markerOptions = new MarkerOptions()
@@ -210,7 +209,9 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
                     .title(gallery.getTitle())
                     .icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
             if ( map!=null ) {
-                locationGalleryMarkers.add(map.addMarker(markerOptions));
+                Marker galleryMarker = map.addMarker(markerOptions);
+                if(currentSelectionMap == GEOGIFT_MAP) galleryMarker.setVisible(false);
+                locationGalleryMarkers.add(galleryMarker);
                 Log.d(TAG, "addMarker " + markerOptions.getTitle());
             }
         }

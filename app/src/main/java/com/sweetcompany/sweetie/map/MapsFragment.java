@@ -164,25 +164,24 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_gift_icon",72,72)));
             if ( map!=null ) {
                 Marker geoMarker = map.addMarker(markerOptions);
+                if(currentSelectionMap == GALLERY_MAP) geoMarker.setVisible(false);
                 locationGeogiftMarkers.add(geoMarker);
                 Log.d(TAG, "addMarker " + markerOptions.getTitle());
             }
     }
 
     private void markerGallery(GalleryMapVM gallery){
-        Bitmap coverBmp = null;
-        if(gallery.getUriCover() != null){
+        /*Bitmap coverBmp = null;
             try {
                 coverBmp = Glide.
                         with(mContext).
                         load(gallery.getUriCover()).
                         asBitmap().
                         into(72, 72). // Width and height
-                        get();
+                        get();          //TODO async thread !! must not call on main
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
-        }
         if(coverBmp != null){
 
             Bitmap markerIcon = Bitmap.createScaledBitmap(coverBmp, 72, 72, false);
@@ -196,6 +195,18 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
                 locationGalleryMarkers.add(map.addMarker(markerOptions));
                 Log.d(TAG, "addMarker " + markerOptions.getTitle());
             }
+        }*/
+
+        LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .title(gallery.getTitle())
+                .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_photo_icon",72,72)));
+        if ( map!=null ) {
+            Marker galleryMarker = map.addMarker(markerOptions);
+            if(currentSelectionMap == GEOGIFT_MAP) galleryMarker.setVisible(false);
+            locationGalleryMarkers.add(galleryMarker);
+            Log.d(TAG, "addMarker " + markerOptions.getTitle());
         }
     }
 
@@ -231,7 +242,8 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     // TODO
     @Override
     public void addGallery(GalleryMapVM gallery) {
-
+        mGalleriesList.add(gallery);
+        markerGallery(gallery);
     }
     @Override
     public void removeGallery(GalleryMapVM gallery) {
@@ -251,7 +263,8 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void removeGeogift(GeogiftMapVM geogift) {
-
+        // TODO
+        //locationGeogiftMarkers.remove(indexOfGeogift())
     }
 
     @Override

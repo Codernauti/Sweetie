@@ -72,8 +72,11 @@ public class FirebaseMapController {
                     GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
                     newGallery.setKey(dataSnapshot.getKey());
 
-                    if (mGalleryListener != null) {
-                        mGalleryListener.onGalleryAdded(newGallery);
+                    if(!newGallery.getLatitude().equals("null") && !newGallery.getLongitude().equals("null")
+                       && !newGallery.getUriCover().equals("null")) {
+                        if (mGalleryListener != null) {
+                            mGalleryListener.onGalleryAdded(newGallery);
+                        }
                     }
                 }
 
@@ -82,9 +85,10 @@ public class FirebaseMapController {
                     GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
                     newGallery.setKey(dataSnapshot.getKey());
 
-                    if (mGalleryListener != null) {
+                    // TODO
+                    /*if (mGalleryListener != null) {
                         mGalleryListener.onGalleryChanged(newGallery);
-                    }
+                    }*/
                 }
 
                 @Override
@@ -92,9 +96,10 @@ public class FirebaseMapController {
                     GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
                     newGallery.setKey(dataSnapshot.getKey());
 
-                    if (mGalleryListener != null) {
+                    //TODO
+                    /*if (mGalleryListener != null) {
                         mGalleryListener.onGalleryRemoved(newGallery);
-                    }
+                    }*/
                 }
 
                 @Override

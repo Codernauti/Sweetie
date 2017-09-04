@@ -113,8 +113,6 @@ public class FirebaseMapController {
 
         // Geogifts
 
-        // TODO filter geogifts -----------------
-
         if (mGeogiftsEventListener == null) {
             mGeogiftsEventListener = new ChildEventListener() {
                 @Override

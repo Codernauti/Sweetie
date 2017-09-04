@@ -169,7 +169,8 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
                     .position(latLng)
                     .title(geogift.getTitle())
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_gift_icon",72,72)));
-            if ( map!=null ) {
+
+            if ( map != null ) {
                 Marker geoMarker = map.addMarker(markerOptions);
                 if(currentSelectionMap == GALLERY_MAP) geoMarker.setVisible(false);
                 locationGeogiftMarkers.add(geoMarker);
@@ -200,7 +201,8 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
                     .position(latLng)
                     .title(gallery.getTitle())
                     .icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
-            if ( map!=null ) {
+
+            if ( map != null ) {
                 Marker galleryMarker = map.addMarker(markerOptions);
                 if(currentSelectionMap == GEOGIFT_MAP) galleryMarker.setVisible(false);
                 locationGalleryMarkers.add(galleryMarker);
@@ -280,9 +282,9 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         markerGeogift(geogift);
     }
 
+    // TODO
     @Override
     public void removeGeogift(GeogiftMapVM geogift) {
-        // TODO
         //locationGeogiftMarkers.remove(indexOfGeogift())
     }
 

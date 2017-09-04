@@ -53,6 +53,9 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     private GalleryAdapter mGalleryAdapter;
     private GalleryContract.Presenter mPresenter;
 
+    private String mGalleryUid;
+    private String mParentActionUid;
+
     public static GalleryFragment newInstance(Bundle bundle) {
         GalleryFragment newGalleryFragment = new GalleryFragment();
         newGalleryFragment.setArguments(bundle);
@@ -63,6 +66,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         mGalleryAdapter = new GalleryAdapter();
         mGalleryAdapter.setGalleryAdapterListener(this);
@@ -74,10 +78,8 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         View root = inflater.inflate(R.layout.gallery_fragment, container, false);
 
         String titleGallery = getArguments().getString(GalleryActivity.GALLERY_TITLE);
-        Log.d(TAG, "from Intent GALLERY_TITLE: " +
-                getArguments().getString(GalleryActivity.GALLERY_TITLE));
-        Log.d(TAG, "from Intent GALLERY_DATABASE_KEY: " +
-                getArguments().getString(GalleryActivity.GALLERY_DATABASE_KEY));
+        mGalleryUid = getArguments().getString(GalleryActivity.GALLERY_DATABASE_KEY);
+        mParentActionUid = getArguments().getString(GalleryActivity.ACTION_DATABASE_KEY);
 
         mGalleryListView = (RecyclerView) root.findViewById(R.id.gallery_list);
 
@@ -148,6 +150,28 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
             MediaVM newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", file.toString(), "", 0, null);
             mPresenter.sendMedia(newMedia);
         }
+    }
+
+    // Menu management
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.action_info_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_info: {
+                Intent intent = GalleryInfoActivity.getStartActivityIntent(
+                        getContext(), mGalleryUid, mParentActionUid);
+                startActivity(intent);
+                break;
+            }
+            default:
+                break;
+        }
+        return false;
     }
 
     @Override

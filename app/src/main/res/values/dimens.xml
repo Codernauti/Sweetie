@@ -8,4 +8,7 @@
     <dimen name="settings_general_padding">6dp</dimen>
     <dimen name="app_bar_height">64dp</dimen>
 
+    <!-- ActionInfo -->
+    <dimen name="action_info_label_width">100dp</dimen>
+
 </resources>

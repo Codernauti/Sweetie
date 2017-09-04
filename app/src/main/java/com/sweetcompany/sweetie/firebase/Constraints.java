@@ -32,6 +32,7 @@ interface Constraints {
 
     String ACTIONS = "actions";
     interface Actions {
+        String TITLE = "title";
         String IMAGE_URL = "imageUrl";
         String DESCRIPTION = "description";
         String DATE_TIME = "dataTime";
@@ -39,13 +40,23 @@ interface Constraints {
 
     String ACTIONS_DIARY = "actionsDiary";
 
-    String CHATS = "chats";
-    String CHAT_MESSAGES = "chat-messages";
+    interface ChildAction {
+        String TITLE = "title";
+        String URI_COVER = "uriCover";
+    }
 
-    String BOOKMARK = "bookmarked";
+    String CHATS = "chats";
+    interface Chats extends ChildAction {}
+
+    String CHAT_MESSAGES = "chat-messages";
+        String BOOKMARK = "bookmarked";
+
 
     String GALLERIES = "galleries";
-        String URI_COVER = "uriCover";
+    interface Galleries extends ChildAction{
+        String LATITUDE = "latitude";
+        String LONGITUDE = "longitude";
+    }
 
     String GALLERY_PHOTOS = "gallery-photos";
 

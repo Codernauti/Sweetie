@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by ghiro on 11/05/2017.
  */
 
-class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.ChatControllerListener {
+class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Listener {
 
     private static final String TAG = "ChatPresenter";
 
@@ -30,7 +30,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Ch
         mView = view;
         mView.setPresenter(this);
         mController = controller;
-        mController.addListener(this);
+        mController.setListener(this);
 
         mUserMail = userMail;
     }

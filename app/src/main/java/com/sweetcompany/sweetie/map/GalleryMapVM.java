@@ -12,9 +12,11 @@ public class GalleryMapVM {
     private String mLon;
     private String mUriCover;
 
-    GalleryMapVM(String key, String title) {
+    GalleryMapVM(String key, String lat, String lon, String uriCover) {
         mKey = key;
-        mTitle = title;
+        mLat = lat;
+        mLon = lon;
+        mUriCover = uriCover;
     }
 
     String getTitle() {

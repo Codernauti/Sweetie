@@ -2,7 +2,7 @@
 <RelativeLayout
     android:id="@+id/geogift_maker_fragment_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -17,8 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
-        android:background="?attr/colorPrimary"
-        app2:theme="@style/ToolBarStyle"
+        android:background="@color/colorPrimary"
+        app:theme="@style/SweetieThemeToolbar"
+        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
         />
 
 
@@ -237,7 +238,7 @@
         android:layout_gravity="right"
         android:src="@drawable/check_icon"
         android:tint="@color/white"
-        app2:backgroundTint="@color/purple_sweetie"
+        app:backgroundTint="@color/purple_sweetie"
         android:alpha="0.5"
         />
 

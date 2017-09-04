@@ -15,7 +15,7 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
         android:background="?attr/colorPrimary"
-        app:theme="@style/ToolBarStyle"
+        app:theme="@style/SweetieThemeToolbar"
         />
 
 

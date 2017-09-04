@@ -14,7 +14,7 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
         android:background="?attr/colorPrimary"
-        app2:theme="@style/ToolBarStyle"
+        app2:theme="@style/SweetieThemeToolbar"
         />
 
     <ScrollView

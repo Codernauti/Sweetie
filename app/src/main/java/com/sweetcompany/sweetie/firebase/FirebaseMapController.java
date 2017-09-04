@@ -72,8 +72,8 @@ public class FirebaseMapController {
                     GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
                     newGallery.setKey(dataSnapshot.getKey());
 
-                    if(!newGallery.getLatitude().equals("null") && !newGallery.getLongitude().equals("null")
-                       && !newGallery.getUriCover().equals("null")) {
+                    if(newGallery.getLatitude() != null && newGallery.getLongitude() != null
+                       && newGallery.getUriCover() != null) {
                         if (mGalleryListener != null) {
                             mGalleryListener.onGalleryAdded(newGallery);
                         }

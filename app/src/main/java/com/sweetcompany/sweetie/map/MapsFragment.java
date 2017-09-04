@@ -158,6 +158,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
             //map.setIndoorEnabled(true);
             //map.setBuildingsEnabled(true);
             //map.getUiSettings().setZoomControlsEnabled(true);
+            map.setTrafficEnabled(false);
         }
         //TODO set smart bounds (have more marker on map)
     }

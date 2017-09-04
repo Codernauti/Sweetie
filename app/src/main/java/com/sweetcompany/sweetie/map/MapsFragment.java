@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +59,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     private TextView galleryButtonText;
     private TextView geogiftButtonText;
 
-    private int currentSelectionMap = 1;
+    private int currentSelectionMap = GALLERY_MAP;
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -319,16 +320,20 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
 
     public void selectGalleryMap(){
         currentSelectionMap = GALLERY_MAP;
-        galleryButtonText.setTextColor(Color.YELLOW);
+        galleryButtonText.setTextColor(ContextCompat.getColor(mContext, R.color.rosa_sweetie));
         geogiftButtonText.setTextColor(Color.GRAY);
+        galleryButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_alpha_50));
+        geogiftButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
         for(Marker markerGeo : locationGeogiftMarkers) markerGeo.setVisible(false);
         for(Marker markerGall : locationGalleryMarkers) markerGall.setVisible(true);
     }
 
     public void selectGeogiftMap(){
         currentSelectionMap = GEOGIFT_MAP;
-        geogiftButtonText.setTextColor(Color.YELLOW);
+        geogiftButtonText.setTextColor(ContextCompat.getColor(mContext, R.color.rosa_sweetie));
         galleryButtonText.setTextColor(Color.GRAY);
+        geogiftButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_alpha_50));
+        galleryButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
         for(Marker markerGall : locationGalleryMarkers) markerGall.setVisible(false);
         for(Marker markerGeo : locationGeogiftMarkers) markerGeo.setVisible(true);
     }

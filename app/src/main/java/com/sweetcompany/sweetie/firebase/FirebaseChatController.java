@@ -2,7 +2,6 @@ package com.sweetcompany.sweetie.firebase;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,7 +22,6 @@ import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.MessageFB;
 import com.sweetcompany.sweetie.model.MsgNotification;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -196,12 +194,12 @@ public class FirebaseChatController {
                     ActionFB action = dataSnapshot.getValue(ActionFB.class);
 
                     // TODO: exclude error partner
-                    if (action != null && action.getNotification() != null) {
+                    if (action != null && action.getNotificationCounters() != null) {
 
-                        if (action.getNotification().containsKey(mPartnerUid)) {
-                            mPartnerCounter = action.getNotification().get(mPartnerUid).getCounter();
+                        if (action.getNotificationCounters().containsKey(mPartnerUid)) {
+                            mPartnerCounter = action.getNotificationCounters().get(mPartnerUid).getCounter();
                         }
-                        else if (action.getNotification().containsKey(mUserUid)) {
+                        else if (action.getNotificationCounters().containsKey(mUserUid)) {
                             mActionRef.child(mUserNotificationCounterUrl).setValue(0);
                         }
                     }

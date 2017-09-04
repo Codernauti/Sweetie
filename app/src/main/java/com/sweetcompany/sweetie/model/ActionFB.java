@@ -28,7 +28,7 @@ public class ActionFB {
     private boolean isOpened;
     private boolean isTriggered; //geogift
     private String imageUrl;
-    private HashMap<String, ActionNotification> notification;
+    private HashMap<String, ActionNotification> notificationCounters;
 
     ActionFB() {}
 
@@ -40,7 +40,7 @@ public class ActionFB {
         this.dataTime = date;
         this.type = type;
 
-        this.notification = new HashMap<>();
+        this.notificationCounters = new HashMap<>();
     }
 
     @Exclude
@@ -129,11 +129,11 @@ public class ActionFB {
         this.imageUrl = imageUrl;
     }
 
-    public HashMap<String, ActionNotification> getNotification() {
-        return notification;
+    public HashMap<String, ActionNotification> getNotificationCounters() {
+        return notificationCounters;
     }
 
-    public void setNotification(HashMap<String, ActionNotification> notification) {
-        this.notification = notification;
+    public void setNotificationCounters(HashMap<String, ActionNotification> notificationCounters) {
+        this.notificationCounters = notificationCounters;
     }
 }

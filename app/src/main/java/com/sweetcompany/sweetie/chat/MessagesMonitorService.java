@@ -53,8 +53,7 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mController.attachListener();
-
-        return super.onStartCommand(intent, flags, startId);
+        return START_NOT_STICKY;
     }
 
     @Override

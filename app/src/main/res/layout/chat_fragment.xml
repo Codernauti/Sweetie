@@ -9,12 +9,13 @@
     >
 
     <android.support.v7.widget.Toolbar
-            android:id="@+id/chat_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:elevation="4dp"
-            android:background="?attr/colorPrimary"
-            app:theme="@style/ToolBarStyle"
+        android:id="@+id/chat_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:background="@color/colorPrimary"
+        app:theme="@style/SweetieThemeToolbar"
+        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
         />
 
 

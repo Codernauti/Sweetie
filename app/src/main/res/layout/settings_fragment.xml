@@ -18,9 +18,9 @@
         app:layout_constraintVertical_chainStyle="spread"
 
         android:elevation="4dp"
-        android:background="?attr/colorPrimary"
-
-        app:theme="@style/ToolBarStyle"
+        android:background="@color/colorPrimary"
+        app:theme="@style/SweetieThemeToolbar"
+        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
         app:title="@string/settings_title_appbar"
         />
 

@@ -288,7 +288,7 @@ public class FirebaseChatController {
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, msg.getText());
         updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, msg.getDateTime());
         // TODO: set counter with ++
-        updates.put(mPartnerNotificationCounterUrl, mPartnerCounter);
+        updates.put(mPartnerNotificationCounterUrl, ++mPartnerCounter);
 
         // update msg-notification-room
         mMsgDefaultNotification.setText(msg.getText());

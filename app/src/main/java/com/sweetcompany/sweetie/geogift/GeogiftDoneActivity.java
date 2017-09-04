@@ -19,7 +19,6 @@ public class GeogiftDoneActivity extends BaseActivity {
     // key for Intent extras
     public static final String GEOGIFT_DATABASE_KEY = "GeogiftDatabaseKey";
     public static final String GEOGIFT_TITLE = "GeogiftTitle";    // For offline user
-    public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
     private String mGeogiftKey;
     private String mActionKey;
@@ -40,14 +39,11 @@ public class GeogiftDoneActivity extends BaseActivity {
 
         if (savedInstanceState != null) {
             mGeogiftKey = savedInstanceState.getString(GEOGIFT_DATABASE_KEY);
-            mActionKey = savedInstanceState.getString(ACTION_DATABASE_KEY);
 
             Log.d(TAG, "from Intent GEOGIFT_TITLE: " +
                     savedInstanceState.getString(GEOGIFT_TITLE));
             Log.d(TAG, "from Intent GEOGIFT_TITLE_DATABASE_KEY: " +
                     savedInstanceState.getString(GEOGIFT_DATABASE_KEY));
-            Log.d(TAG, "from Intent GEOGIFT_TITLE_ACTION_KEY: " +
-                    savedInstanceState.getString(ACTION_DATABASE_KEY));
         }
         else {
             Log.w(TAG, "No savedInstanceState or intentArgs!");
@@ -65,7 +61,7 @@ public class GeogiftDoneActivity extends BaseActivity {
         }
 
         if (mGeogiftKey != null) {
-            mController = new FirebaseGeogiftDoneController(super.mCoupleUid, mGeogiftKey, mActionKey);
+            mController = new FirebaseGeogiftDoneController(super.mCoupleUid, mGeogiftKey);
             mPresenter = new GeogiftDonePresenter(mView, mController, super.mUserUid);
         }
         else {
@@ -101,6 +97,5 @@ public class GeogiftDoneActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(GEOGIFT_DATABASE_KEY, mGeogiftKey);
-        outState.putString(ACTION_DATABASE_KEY, mActionKey);
     }
 }

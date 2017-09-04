@@ -18,6 +18,7 @@
     <color name="grey_alpha_5">#0DE0E0E0</color>
     <color name="pink_light">#FFCCCC</color>
     <color name="azzurro_pastello">#66B2FF</color>
+    <color name="ic_heart">#FF879E</color>
 
     <!-- Chat colors -->
     <color name="chat_background">#e6e6e6</color>

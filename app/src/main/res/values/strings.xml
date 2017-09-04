@@ -97,4 +97,9 @@
     <!-- Firebase IDs -->
     <string name="server_client_ID">237232205216-hup7d485gvs7cjmj91avi6cpupuimsvj.apps.googleusercontent.com</string>
 
+    <!-- action info -->
+    <string name="date_creation_label">Date creation:</string>
+    <string name="position_label">Map position</string>
+    <string name="menu_open_info">Open info</string>
+
 </resources>

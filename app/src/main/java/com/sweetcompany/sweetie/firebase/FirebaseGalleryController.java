@@ -186,7 +186,7 @@ public class FirebaseGalleryController {
         updates.put(mActionUrl + "/" + Constraints.Actions.IMAGE_URL, media.getUriStorage());
 
         // update photo cover gallery
-        updates.put(mGalleryUrl + "/" + Constraints.URI_COVER, media.getUriStorage());
+        updates.put(mGalleryUrl + "/" + Constraints.Galleries.URI_COVER, media.getUriStorage());
 
         mDatabaseRef.updateChildren(updates);
     }

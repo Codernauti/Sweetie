@@ -68,18 +68,22 @@ public class GeofenceTrasitionService extends IntentService {
         if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ) {
 
             Log.d(TAG, "geofence triggered!");
+
+            //Set geogift triggered
+            String actionKey = intent.getStringExtra(GEOGIFT_ACTION_KEY);
+            String geogiftKey = intent.getStringExtra(GEOGIFT_KEY);
+            String dateTime = DataMaker.get_UTC_DateTime();
+
             // Get the geofence that were triggered
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
             String geofenceTransitionDetails = getGeofenceTrasitionDetails(geoFenceTransition, triggeringGeofences );
 
             // Send notification details as a String
-            sendNotification( geofenceTransitionDetails );
+            //sendNotification( geofenceTransitionDetails );
+            sendNotification( GEOGIFT_KEY );
 
-            //Set geogift triggered
-            String actionKey = intent.getStringExtra(GEOGIFT_ACTION_KEY);
-            String geogiftKey = intent.getStringExtra(GEOGIFT_KEY);
-            String dateTime = DataMaker.get_UTC_DateTime();
+
 
             mController.setTriggeredGeogift(actionKey, geogiftKey, dateTime);
         }
@@ -105,7 +109,7 @@ public class GeofenceTrasitionService extends IntentService {
 
         // Intent to start the main Activity
         Intent notificationIntent = MainActivity.makeNotificationIntent(
-                getApplicationContext(), msg
+                getApplicationContext(), msg, "title", msg
         );
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);

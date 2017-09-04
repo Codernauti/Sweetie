@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.sweetcompany.sweetie.chat.MessagesMonitorService;
+import com.sweetcompany.sweetie.geogift.GeogiftDoneActivity;
 import com.sweetcompany.sweetie.registration.RegisterActivity;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -21,9 +22,11 @@ public class MainActivity extends AppCompatActivity{
     private static final String NOTIFICATION_MSG = "NOTIFICATION MSG";
 
     // Create a Intent send by the notification
-    public static Intent makeNotificationIntent(Context context, String msg) {
-        Intent intent = new Intent( context, MainActivity.class );
+    public static Intent makeNotificationIntent(Context context, String msg, String title, String geogiftKey) {
+        Intent intent = new Intent( context, GeogiftDoneActivity.class );
         intent.putExtra( NOTIFICATION_MSG, msg );
+        intent.putExtra(GeogiftDoneActivity.GEOGIFT_TITLE, title);
+        intent.putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, geogiftKey);
         return intent;
     }
 

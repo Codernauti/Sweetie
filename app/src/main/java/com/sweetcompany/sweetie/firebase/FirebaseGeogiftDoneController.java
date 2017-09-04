@@ -18,7 +18,6 @@ public class FirebaseGeogiftDoneController {
 
     private static final String TAG = "FbGeogiftDoneController";
 
-    private final DatabaseReference mActionsDbReference;
     private final DatabaseReference mGeogiftDbReference;
 
     private final String coupleID;
@@ -32,11 +31,9 @@ public class FirebaseGeogiftDoneController {
     }
 
 
-    public FirebaseGeogiftDoneController(String coupleUid, String geogiftKey, String actionKey) {
+    public FirebaseGeogiftDoneController(String coupleUid, String geogiftKey) {
         mGeogiftDbReference = FirebaseDatabase.getInstance()
                 .getReference(Constraints.GEOGIFTS + "/" + coupleUid + "/" + geogiftKey);
-        mActionsDbReference = FirebaseDatabase.getInstance()
-                .getReference(Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey);
 
         coupleID = coupleUid;
     }

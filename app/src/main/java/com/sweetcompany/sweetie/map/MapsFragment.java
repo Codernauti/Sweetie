@@ -294,8 +294,8 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         super.onResume();
         if(map!=null){
             map.clear();
-            mGeogiftsList.clear();
-            mGalleriesList.clear();
+            //mGeogiftsList.clear();
+            //mGalleriesList.clear();
 
             //TODO refactor
             if(currentSelectionMap == GALLERY_MAP) {

@@ -51,6 +51,6 @@ class ActionGalleryVM extends ActionVM {
 
     @Override
     public int getAvatarTextIdColor() {
-        return R.color.green_sweetie;
+        return R.color.gallery_main_color;
     }
 }

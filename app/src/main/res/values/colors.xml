@@ -9,7 +9,6 @@
     <color name="rosa_sweetie_dark">#9E3F3F</color>
     <color name="yellow_sweetie">#FFFF8D</color>
     <color name="orange_sweetie">#FFCE48</color>
-    <color name="green_sweetie">#8CE25B</color>
     <color name="purple_sweetie">#7973D6</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
@@ -18,14 +17,19 @@
     <color name="grey_alpha_50">#80E0E0E0</color>
     <color name="grey_alpha_5">#0DE0E0E0</color>
     <color name="pink_light">#FFCCCC</color>
-    <color name="azzurro_pastello">#66B2FF</color>
+
     <color name="ic_heart">#FF879E</color>
 
+    <!-- ToDoList colors -->
+    <color name="todolist_main_color">#66B2FF</color>
+
     <!-- Chat colors -->
+    <color name="chat_main_color">#E25B5B</color>
     <color name="chat_background">#e6e6e6</color>
     <color name="chat_message_selected">#F4F6F6</color>
 
     <!-- Gallery colors -->
+    <color name="gallery_main_color">#8CE25B</color>
     <color name="gallery_background">#e6e6e6</color>
     <color name="gallery_photo_selected">#8c8c8c</color>
 

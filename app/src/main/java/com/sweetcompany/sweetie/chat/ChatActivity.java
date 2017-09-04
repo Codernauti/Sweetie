@@ -97,7 +97,7 @@ public class ChatActivity extends BaseActivity {
 
         if (mChatKey != null) {
             mController = new FirebaseChatController(super.mCoupleUid, mChatKey, mChatTitle,
-                    mActionKey, super.mPartnerUid);
+                    mActionKey, super.mUserUid, super.mPartnerUid);
             mPresenter = new ChatPresenter(mView, mController, super.mUserEmail);
         } else {
             Log.w(TAG, "Impossible to create ChatController and ChatPresenter because chatKey is NULL");

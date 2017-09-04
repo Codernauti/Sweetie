@@ -2,6 +2,8 @@ package com.sweetcompany.sweetie.model;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.HashMap;
+
 /**
  * Created by ghiro on 18/05/2017.
  */
@@ -22,9 +24,11 @@ public class ActionFB {
     private int type;
     private String childKey;
     private String actionKey;
+    @Deprecated
     private boolean isOpened;
     private boolean isTriggered; //geogift
     private String imageUrl;
+    private HashMap<String, ActionNotification> notification;
 
     ActionFB() {}
 
@@ -35,6 +39,8 @@ public class ActionFB {
         this.description = description;
         this.dataTime = date;
         this.type = type;
+
+        this.notification = new HashMap<>();
     }
 
     @Exclude
@@ -121,5 +127,13 @@ public class ActionFB {
     }
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public HashMap<String, ActionNotification> getNotification() {
+        return notification;
+    }
+
+    public void setNotification(HashMap<String, ActionNotification> notification) {
+        this.notification = notification;
     }
 }

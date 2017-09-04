@@ -199,7 +199,8 @@ public class FirebaseChatController {
                         if (action.getNotificationCounters().containsKey(mPartnerUid)) {
                             mPartnerCounter = action.getNotificationCounters().get(mPartnerUid).getCounter();
                         }
-                        else if (action.getNotificationCounters().containsKey(mUserUid)) {
+
+                        if (action.getNotificationCounters().containsKey(mUserUid)) {
                             mActionRef.child(mUserNotificationCounterUrl).setValue(0);
                         }
                     }

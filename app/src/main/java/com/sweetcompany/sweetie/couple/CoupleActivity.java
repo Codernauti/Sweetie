@@ -59,10 +59,8 @@ public class CoupleActivity extends AppCompatActivity {
 
 
         if (coupleBreak) {
-
-            // TODO: set heart broken
             mPartnerImage.setVisibility(View.GONE);
-            mOkButton.setImageResource(R.drawable.heart_empty);
+            mOkButton.setImageResource(R.drawable.ic_heart_broken);
             mFirstInfo.setVisibility(View.GONE);
 
         } else {

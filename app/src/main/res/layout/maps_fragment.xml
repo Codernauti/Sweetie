@@ -33,7 +33,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/photo_libraries"
-                android:tint="@color/green_sweetie"
+                android:tint="@color/gallery_main_color"
                 android:layout_marginEnd="5dp"
                 />
             <TextView

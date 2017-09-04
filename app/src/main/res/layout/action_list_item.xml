@@ -4,13 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/action_item_general_padding"
+    android:paddingStart="@dimen/action_item_general_padding"
+    android:paddingEnd="@dimen/action_item_general_padding"
     android:background="@drawable/selector_action_item">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/image_action_list_item"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="2dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="@dimen/action_item_general_padding"
 
         app:civ_border_width="0.4dp"
         app:civ_border_color="@color/action_separator"
@@ -45,13 +48,15 @@
         android:id="@+id/action_item_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="2dp"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image_action_list_item"
         app:layout_constraintEnd_toStartOf="@+id/action_item_type"
         app:layout_constraintBottom_toTopOf="@+id/action_item_subtitle"
 
-        app:layout_constraintVertical_chainStyle="spread"
+        app:layout_constraintVertical_chainStyle="packed"
 
         android:text="@string/action_title"
         android:textColor="@color/action_title"
@@ -64,7 +69,8 @@
         android:id="@+id/action_item_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="6dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="@dimen/action_item_general_padding"
 
         app:layout_constraintTop_toBottomOf="@+id/action_item_title"
         app:layout_constraintStart_toEndOf="@+id/image_action_list_item"
@@ -84,6 +90,7 @@
         android:id="@+id/action_item_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
 
         app:layout_constraintStart_toEndOf="@+id/action_item_subtitle"
@@ -103,8 +110,9 @@
 
     <ImageView
         android:id="@+id/action_item_type"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
 
         app:layout_constraintTop_toBottomOf="@+id/action_item_date"
@@ -121,6 +129,7 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="0.5dp"
+        android:layout_marginStart="120dp"
         android:background="@color/action_separator"
 
         app:layout_constraintStart_toStartOf="parent"

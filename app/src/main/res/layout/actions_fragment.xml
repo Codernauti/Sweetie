@@ -26,7 +26,7 @@
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
         android:src="@drawable/action_gift_icon"
-        app2:backgroundTint="@color/azzurro_pastello"
+        app2:backgroundTint="@color/todolist_main_color"
         app2:elevation="6dp"
         app2:pressedTranslationZ="12dp" />
 
@@ -39,7 +39,7 @@
         android:layout_marginEnd="16dp"
         android:visibility="invisible"
         android:src="@drawable/action_todolist_icon"
-        app2:backgroundTint="@color/green_sweetie"
+        app2:backgroundTint="@color/gallery_main_color"
         app2:elevation="6dp"
         app2:pressedTranslationZ="12dp" />
 

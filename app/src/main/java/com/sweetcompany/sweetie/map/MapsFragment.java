@@ -3,7 +3,12 @@ package com.sweetcompany.sweetie.map;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -173,35 +178,22 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     }
 
     private void markerGallery(final GalleryMapVM gallery){
-        SimpleTarget<Bitmap> coverBmp = null;
-        coverBmp = Glide.
-                with(mContext).
-                load(gallery.getUriCover()).
-                asBitmap().
-                into(new SimpleTarget<Bitmap>(72,72) {
+        Glide.
+        with(mContext).
+        load(gallery.getUriCover()).
+        asBitmap().
+        into(new SimpleTarget<Bitmap>(96,96) {
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                drawMarker(resource, gallery);
+                drawGalleryMarker(resource, gallery);
             }
-        });     //TODO async thread !! must not call on main
-
-        /*LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(latLng)
-                .title(gallery.getTitle())
-                .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_photo_icon",72,72)));
-        if ( map!=null ) {
-            Marker galleryMarker = map.addMarker(markerOptions);
-            if(currentSelectionMap == GEOGIFT_MAP) galleryMarker.setVisible(false);
-            locationGalleryMarkers.add(galleryMarker);
-            Log.d(TAG, "addMarker " + markerOptions.getTitle());
-        }*/
+        });
     }
 
-    public void drawMarker(Bitmap res, GalleryMapVM gallery){
-        if(res != null){
-
-            Bitmap markerIcon = Bitmap.createScaledBitmap(res, 96, 72, false);
+    public void drawGalleryMarker(Bitmap res, GalleryMapVM gallery){
+        if(res != null) {
+            Bitmap circleBmp = getCroppedBitmap(res);
+            Bitmap markerIcon = Bitmap.createScaledBitmap(circleBmp, 96, 96, false);
 
             LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
             MarkerOptions markerOptions = new MarkerOptions()
@@ -215,6 +207,26 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
                 Log.d(TAG, "addMarker " + markerOptions.getTitle());
             }
         }
+    }
+
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 
     public int getIconDrawable(int type){

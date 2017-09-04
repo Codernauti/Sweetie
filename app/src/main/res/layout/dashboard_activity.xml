@@ -5,37 +5,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/dashboard_toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:title="@string/app_name"
+        android:layout_height="wrap_content"
+        android:elevation="10dp">
 
-        android:elevation="4dp"
-        android:background="@color/colorPrimary"
-        app:theme="@style/SweetieThemeToolbar"
-        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <!--<TextView
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/dashboard_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:text="@string/app_name"
-            android:textSize="28sp"
-            android:textColor="@color/white"/>-->
+            android:layout_height="?attr/actionBarSize"
+            android:title="@string/app_name"
+            android:background="@color/colorPrimary"
+            app:theme="@style/SweetieThemeToolbar"
+            app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar">
 
-    </android.support.v7.widget.Toolbar>
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:text="@string/app_name"
+                android:textSize="28sp"
+                android:textColor="@color/white"/>-->
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/sliding_tabs"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
-        style="@style/MyCustomTabLayout"
-        app:tabMode="fixed"
-        app:tabMaxWidth="0dp"
-        app:tabGravity="fill">
-    </android.support.design.widget.TabLayout>
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            style="@style/MyCustomTabLayout"
+            app:tabMode="fixed"
+            app:tabMaxWidth="0dp"
+            app:tabGravity="fill" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/dashboard_pager"

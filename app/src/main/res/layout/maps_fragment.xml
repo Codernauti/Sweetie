@@ -4,11 +4,20 @@
     android:orientation="vertical"
     android:theme="@style/AppTheme"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="bottom">
+
+    <!--GoogleMap fragment-->
+    <fragment
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map_gallery_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="65dp"
         android:weightSum="0">
 
         <LinearLayout
@@ -66,13 +75,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!--GoogleMap fragment-->
-    <fragment
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/map_gallery_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"/>
 
 
 </LinearLayout>

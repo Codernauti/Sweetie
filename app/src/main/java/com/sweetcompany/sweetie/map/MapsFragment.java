@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -170,21 +172,37 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
             }
     }
 
-    private void markerGallery(GalleryMapVM gallery){
-        /*Bitmap coverBmp = null;
-            try {
-                coverBmp = Glide.
-                        with(mContext).
-                        load(gallery.getUriCover()).
-                        asBitmap().
-                        into(72, 72). // Width and height
-                        get();          //TODO async thread !! must not call on main
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+    private void markerGallery(final GalleryMapVM gallery){
+        SimpleTarget<Bitmap> coverBmp = null;
+        coverBmp = Glide.
+                with(mContext).
+                load(gallery.getUriCover()).
+                asBitmap().
+                into(new SimpleTarget<Bitmap>(72,72) {
+            @Override
+            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                drawMarker(resource, gallery);
             }
-        if(coverBmp != null){
+        });     //TODO async thread !! must not call on main
 
-            Bitmap markerIcon = Bitmap.createScaledBitmap(coverBmp, 72, 72, false);
+        /*LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
+        MarkerOptions markerOptions = new MarkerOptions()
+                .position(latLng)
+                .title(gallery.getTitle())
+                .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_photo_icon",72,72)));
+        if ( map!=null ) {
+            Marker galleryMarker = map.addMarker(markerOptions);
+            if(currentSelectionMap == GEOGIFT_MAP) galleryMarker.setVisible(false);
+            locationGalleryMarkers.add(galleryMarker);
+            Log.d(TAG, "addMarker " + markerOptions.getTitle());
+        }*/
+    }
+
+    public void drawMarker(Bitmap res, GalleryMapVM gallery){
+
+        if(res != null){
+
+            Bitmap markerIcon = Bitmap.createScaledBitmap(res, 72, 72, false);
 
             LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
             MarkerOptions markerOptions = new MarkerOptions()
@@ -195,18 +213,6 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
                 locationGalleryMarkers.add(map.addMarker(markerOptions));
                 Log.d(TAG, "addMarker " + markerOptions.getTitle());
             }
-        }*/
-
-        LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(latLng)
-                .title(gallery.getTitle())
-                .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_photo_icon",72,72)));
-        if ( map!=null ) {
-            Marker galleryMarker = map.addMarker(markerOptions);
-            if(currentSelectionMap == GEOGIFT_MAP) galleryMarker.setVisible(false);
-            locationGalleryMarkers.add(galleryMarker);
-            Log.d(TAG, "addMarker " + markerOptions.getTitle());
         }
     }
 

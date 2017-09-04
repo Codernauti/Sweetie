@@ -12,6 +12,7 @@ public class GalleryFB {
     private String key;
 
     private String title;
+    private String date;
     private String latitude;
     private String longitude;
     private String uriCover;
@@ -33,6 +34,14 @@ public class GalleryFB {
     }
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getLatitude() {

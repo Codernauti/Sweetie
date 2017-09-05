@@ -61,27 +61,37 @@ public class ActionsPresenter implements ActionsContract.Presenter,
         mActionsList.clear();
 
         for(ActionFB action : actionsFB){
+            int counter = 0;
+            if (action.getNotificationCounters() != null && action.getNotificationCounters().containsKey(mUserUid)) {
+                counter = action.getNotificationCounters().get(mUserUid).getCounter();
+            }
+
             // TODO: use a Factory Method
             // for example use ActionConverter.convertToViewModel(action);
             switch (action.getType()) {
                 case ActionFB.CHAT:
-                    newActionVM = new ActionChatVM(action.getTitle(), action.getDescription(),
-                            action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
-                    // TODO: test
+                    newActionVM = new ActionChatVM(
+                            action.getTitle(), action.getDescription(), action.getDataTime(),
+                            action.getType(), action.getChildKey(), action.getKey(),
+                            counter);
                     newActionVM.setImageUrl(action.getImageUrl());
                     mActionsList.add(newActionVM);
                     break;
 
                 case ActionFB.GALLERY:
-                    newActionVM = new ActionGalleryVM(action.getTitle(), action.getDescription(),
-                            action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
+                    newActionVM = new ActionGalleryVM(
+                            action.getTitle(), action.getDescription(), action.getDataTime(),
+                            action.getType(), action.getChildKey(), action.getKey(),
+                            counter);
                     newActionVM.setImageUrl(action.getImageUrl());
                     mActionsList.add(newActionVM);
                     break;
 
                 case ActionFB.TODOLIST:
-                    newActionVM = new ActionToDoListVM(action.getTitle(), action.getDescription(),
-                            action.getDataTime(), action.getType(), action.getChildKey(), action.getKey());
+                    newActionVM = new ActionToDoListVM(
+                            action.getTitle(), action.getDescription(), action.getDataTime(),
+                            action.getType(), action.getChildKey(), action.getKey(),
+                            counter);
                     newActionVM.setImageUrl(action.getImageUrl());
                     mActionsList.add(newActionVM);
                     break;
@@ -89,9 +99,10 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                 case ActionFB.GEOGIFT:
                     Log.d(TAG, "geogift finded!");
                     if(action.getUserCreator().equals(mUserUid) || action.getIsTriggered()) {
-                        newActionVM = new ActionGeogiftVM(action.getTitle(), action.getDescription(),
-                                action.getDataTime(), action.getType(), action.getChildKey(),
-                                action.getKey(), action.getIsTriggered());
+                        newActionVM = new ActionGeogiftVM(
+                                action.getTitle(), action.getDescription(), action.getDataTime(),
+                                action.getType(), action.getChildKey(), action.getKey(),
+                                action.getIsTriggered(), counter);
                         newActionVM.setImageUrl(action.getImageUrl());
                         mActionsList.add(newActionVM);
                     }

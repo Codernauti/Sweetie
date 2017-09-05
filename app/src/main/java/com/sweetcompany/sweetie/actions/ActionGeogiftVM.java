@@ -15,7 +15,8 @@ public class ActionGeogiftVM extends ActionVM {
 
     boolean isVisited;
 
-    ActionGeogiftVM(String title, String description, String date, int type, String childKey, String actionKey, boolean visited) {
+    ActionGeogiftVM(String title, String description, String date, int type, String childKey,
+                    String actionKey, boolean visited, int notificationCounter) {
         // TODO: complete all fields
         super.setTitle(title);
         super.setDescription(description);
@@ -24,6 +25,7 @@ public class ActionGeogiftVM extends ActionVM {
         super.setChildUid(childKey);
         super.setKey(actionKey);
         isVisited = visited;
+        super.setNotificationCounter(notificationCounter);
     }
 
     public boolean getVisited(){

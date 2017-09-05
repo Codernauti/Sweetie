@@ -14,7 +14,8 @@ import com.sweetcompany.sweetie.model.ActionFB;
 // TODO complete class
 class ActionChatVM extends ActionVM {
 
-    ActionChatVM(String title, String description, String date, int type, String childKey, String actionKey) {
+    ActionChatVM(String title, String description, String date, int type, String childKey,
+                 String actionKey, int notificationCounter) {
         // TODO: complete all fields
         super.setTitle(title);
         super.setDescription(description);
@@ -22,6 +23,7 @@ class ActionChatVM extends ActionVM {
         super.setType(type);
         super.setChildUid(childKey);
         super.setKey(actionKey);
+        super.setNotificationCounter(notificationCounter);
     }
 
     @Override

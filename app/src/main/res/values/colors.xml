@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#ab2832</color>
     <color name="colorAccent">#FF4081</color>
 
+    <!-- for themes -->
+    <color name="theme_background">#e6e6e6</color>
+
     <color name="rosino">#FF4081</color>
     <color name="rosa_sweetie">#E25B5B</color>
     <color name="rosa_sweetie_dark">#ab2832</color>

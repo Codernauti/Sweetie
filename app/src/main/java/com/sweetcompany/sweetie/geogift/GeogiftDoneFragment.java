@@ -239,8 +239,8 @@ public class GeogiftDoneFragment extends Fragment implements
             isVisitedText.setText(getResources().getString(R.string.isvisited_no_geogifty));
             isVisitedText.setTextColor(Color.RED);
         }
-        lat = Double.parseDouble(geoitem.getLat());
-        lon = Double.parseDouble(geoitem.getLon());
+        lat = geoitem.getLat();
+        lon = geoitem.getLon();
         coord = new LatLng(lat, lon);
         //TODO
         googleApiClient.connect();

@@ -167,7 +167,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     // Create a Location Marker
     private void markerGeogift(GeogiftMapVM geogift) {
 
-            LatLng latLng = new LatLng(Double.parseDouble(geogift.getLat()) , Double.parseDouble(geogift.getLon()));
+            LatLng latLng = new LatLng(geogift.getLat() , geogift.getLon());
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
                     .title(geogift.getTitle())
@@ -199,7 +199,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
             Bitmap circleBmp = getCircleBitmap(res);
             Bitmap markerIcon = Bitmap.createScaledBitmap(circleBmp, 96, 96, false);
 
-            LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
+            LatLng latLng = new LatLng(gallery.getLat() , gallery.getLon());
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
                     .title(gallery.getTitle())

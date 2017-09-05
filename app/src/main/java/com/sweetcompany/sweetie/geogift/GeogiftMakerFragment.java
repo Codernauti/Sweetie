@@ -538,16 +538,15 @@ public class GeogiftMakerFragment extends Fragment implements
     public void createNewGeogift(){
 
         //TODO implement GeoItem with costructor not only setter
-       mGeoItem.setUserCreatorUID(Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID));
+        String mUserUid = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
+       mGeoItem.setUserCreatorUID(mUserUid);
        mGeoItem.setAddress(addressGeogift);
        mGeoItem.setMessage(messageGeogift);
        mGeoItem.setBookmarked(false); //TODO
-       mGeoItem.setLat(String.valueOf(positionGeogift.latitude));
-       mGeoItem.setLon(String.valueOf(positionGeogift.longitude));
+       mGeoItem.setLat(positionGeogift.latitude);
+       mGeoItem.setLon(positionGeogift.longitude);
 
-       // [0] : geogiftKey, [1] : actionKey
-       String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);
-       List<String> keys = mPresenter.pushGeogiftAction(mGeoItem, titleGeogift, userName);
+       List<String> keys = mPresenter.pushGeogiftAction(mGeoItem, titleGeogift, mUserUid);
 
        if (keys != null) {
            //backpress

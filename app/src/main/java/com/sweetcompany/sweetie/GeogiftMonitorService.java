@@ -87,8 +87,8 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
 
         Geofence geofence = new Geofence.Builder()
                 .setRequestId(geogiftFB.getKey())
-                .setCircularRegion(Double.parseDouble(geogiftFB.getLat()),
-                        Double.parseDouble(geogiftFB.getLon()),
+                .setCircularRegion(geogiftFB.getLat(),
+                                   geogiftFB.getLon(),
                         GEOFENCE_RADIUS
                 )
                 .setExpirationDuration( Geofence.NEVER_EXPIRE )

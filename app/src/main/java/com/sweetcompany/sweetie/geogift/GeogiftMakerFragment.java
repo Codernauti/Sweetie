@@ -107,6 +107,7 @@ public class GeogiftMakerFragment extends Fragment implements
     private Double latGeogift = 0d;
     private Double lonGeogift = 0d;
     private String stringUriLocal;
+    private String uriImageToLoad;
     private String uriStorage;
 
     private boolean isGeogiftComplete = false;
@@ -414,6 +415,7 @@ public class GeogiftMakerFragment extends Fragment implements
          }
 
          Uri uriFile = Uri.fromFile(new File(stringUriLocal));
+         uriImageToLoad = uriFile.toString();
 
              Glide.with(this).load(uriFile.toString())
                      .thumbnail(0.5f)
@@ -474,7 +476,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
     public void prepareNewGeogift(){
         if(currentSelection == PHOTO_SELECTION){
-            mPresenter.uploadMedia(stringUriLocal);
+            mPresenter.uploadMedia(uriImageToLoad);
             sendingFragment.setVisibility(View.VISIBLE);
             mGeoItem.setType(GeoItem.PHOTO_GEOGIFT);
             //createNewGeogift();

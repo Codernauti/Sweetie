@@ -112,6 +112,12 @@ public class DataMaker {
         return out;
     }
 
+    public static String getDate_d_month_yyyy(String utc) {
+        Date date = DataMaker.getDateFromIsoFormatString(utc);
+        SimpleDateFormat format = new SimpleDateFormat("d MMMM yyyy");
+        return format.format(date);
+    }
+
     public static boolean isToday(String utc) throws ParseException {
         boolean b = false;
 

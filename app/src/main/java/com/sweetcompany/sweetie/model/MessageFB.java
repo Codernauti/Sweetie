@@ -19,19 +19,17 @@ public class MessageFB {
     private String dateTime;
     private boolean bookmarked;
     private int type;
-    private String uriLocal;
     private String uriStorage;
 
     // For firebase serialization
     public MessageFB() {}
 
-    public MessageFB(String email, String text, String date, boolean bookmarked, int type, String uriL, String uriS) {
+    public MessageFB(String email, String text, String date, boolean bookmarked, int type, String uriS) {
         this.email = email;
         this.text = text;
         this.dateTime = date;
         this.bookmarked = bookmarked;
         this.type = type;
-        this.uriLocal = uriL;
         this.uriStorage = uriS;
     }
 
@@ -74,13 +72,6 @@ public class MessageFB {
     }
     public void setType(int type) {
         this.type = type;
-    }
-
-    public String getUriLocal() {
-        return uriLocal;
-    }
-    public void setUriLocal(String uriL){
-        this.uriLocal = uriL;
     }
 
     public String getUriStorage() {

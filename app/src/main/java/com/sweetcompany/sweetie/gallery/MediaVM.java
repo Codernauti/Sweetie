@@ -13,17 +13,15 @@ abstract class MediaVM implements GalleryItemVM{
     private String mKey;
 
     private final boolean mWho;
-    private String mTime;
-    private String mDescription;// Format HH:mm
-    private String mUriLocal;
+    private String mTime;           // Format HH:mm
+    private String mDescription;
     private String mUriStorage;
     private int mPercent;
 
-    MediaVM(boolean who, String date, String desc,String uriL, String uriS, int perc,  String key) {
+    MediaVM(boolean who, String date, String desc, String uriS, int perc,  String key) {
         mWho = who;
         mTime = date;
         mDescription = desc;
-        mUriLocal = uriL;
         mUriStorage = uriS;
         mPercent = perc;
 
@@ -48,13 +46,6 @@ abstract class MediaVM implements GalleryItemVM{
     public String getKey() { return mKey; }
     void setKey(String key){
         this.mKey = key;
-    }
-
-    String getUriLocal(){
-        return mUriLocal;
-    }
-    void setUriLocal(String uriL){
-        mUriLocal = uriL;
     }
 
     String getUriStorage(){

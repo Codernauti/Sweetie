@@ -300,7 +300,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
             MessageVM newMessage = new TextPhotoMessageVM(getString(R.string.camera_emoticons),
                     mUserMail, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(),
-                    false, null, stringUriLocal, "");
+                    false, null, stringUriLocal);
 
             mPresenter.sendPhotoMessage(newMessage);
         }

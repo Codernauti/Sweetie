@@ -40,7 +40,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Li
         // TODO: remove down cast -> use Factory method
         TextMessageVM messageVM = (TextMessageVM) message;
         MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(),
-                messageVM.isBookmarked(), MessageFB.TEXT_MSG, "", "");
+                messageVM.isBookmarked(), MessageFB.TEXT_MSG, null);
 
         // TODO: doesn't work, firebase trigger data also offline
         /*String newMessageUID = */mController.sendMessage(newMessage);
@@ -55,7 +55,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Li
         TextPhotoMessageVM photoMessageVM = (TextPhotoMessageVM) messageVM;
         MessageFB newMessage = new MessageFB(mUserMail, photoMessageVM.getText(),
                 photoMessageVM.getTime(), photoMessageVM.isBookmarked(), MessageFB.PHOTO_MSG,
-                photoMessageVM.getUriLocal(), "");
+                photoMessageVM.getUriStorage());
 
         String newMessageUID = mController.sendMedia(newMessage);
         newMessage.setKey(newMessageUID);
@@ -65,20 +65,19 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Li
 
     @Override
     public void bookmarkMessage(MessageVM messageVM, int type) {
-        // TODO: remove down cast -> use Factory method
         if(type == MessageVM.TEXT_MSG){
             TextMessageVM msgVM = (TextMessageVM) messageVM;
             MessageFB updateMessage = new MessageFB(msgVM.getCreatorEmail(), msgVM.getText(), msgVM.getTime(),
-                    msgVM.isBookmarked(), MessageFB.TEXT_MSG, null, null);
+                    msgVM.isBookmarked(), MessageFB.TEXT_MSG, null);
             updateMessage.setKey(msgVM.getKey());
 
             mController.updateMessage(updateMessage);
-        }
-        else if(type == MessageVM.TEXT_PHOTO_MSG)
-        {
+
+        } else if(type == MessageVM.TEXT_PHOTO_MSG) {
+
             TextPhotoMessageVM msgVM = (TextPhotoMessageVM) messageVM;
             MessageFB updateMessage = new MessageFB(msgVM.getCreatorEmail(), msgVM.getText(), msgVM.getTime(),
-                    msgVM.isBookmarked(), MessageFB.PHOTO_MSG, msgVM.getUriLocal(), msgVM.getUriStorage());
+                    msgVM.isBookmarked(), MessageFB.PHOTO_MSG, msgVM.getUriStorage());
             updateMessage.setKey(msgVM.getKey());
 
             mController.updateMessage(updateMessage);

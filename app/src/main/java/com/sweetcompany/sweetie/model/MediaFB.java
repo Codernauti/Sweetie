@@ -13,19 +13,17 @@ public class MediaFB {
     private String email;   //TODO: add a user identifier
     private String description;
     private String dateTime;
-    private String uriLocal;
     private String uriStorage;
     private boolean bookmarked;
 
     // For firebase serialization
     public MediaFB() {}
 
-    public MediaFB(String email, String desc, String date, boolean bookmarked, String uriL, String uriS) {
+    public MediaFB(String email, String desc, String date, boolean bookmarked, String uriS) {
         this.email = email;
         this.description = desc;
         this.dateTime = date;
         this.bookmarked = bookmarked;
-        this.uriLocal = uriL;
         this.uriStorage = uriS;
     }
 
@@ -65,13 +63,6 @@ public class MediaFB {
     }
     public void setBookmarked(boolean bookmarked) {
         this.bookmarked = bookmarked;
-    }
-
-    public String getUriLocal() {
-        return uriLocal;
-    }
-    public void setUriLocal(String uriL){
-        this.uriLocal = uriL;
     }
 
     public String getUriStorage() {

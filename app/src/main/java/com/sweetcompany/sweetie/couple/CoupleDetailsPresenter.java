@@ -57,7 +57,7 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
     @Override
     public void onCoupleDetailsChanged(CoupleFB couple) {
         //TODO extract this code into a CoupleVM? or into another utility class?
-        String imageUriToLoad = getCorrectImageUri(couple);
+        String imageUriToLoad = couple.getImageStorageUri();
         Log.d(TAG, "onCoupleDetailsChanged taken uri: " + imageUriToLoad);
 
         Date anniversary = null;
@@ -71,14 +71,6 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
                 getFormattedDate(couple.getAnniversary()),
                 getFormattedDate(couple.getCreationTime())
         );
-    }
-
-    private String getCorrectImageUri(CoupleFB couple) {
-        if (couple.getImageLocalUri() != null && Utility.isImageAvaibleInLocal(couple.getImageLocalUri())) {
-            return couple.getImageLocalUri();
-        } else {
-            return couple.getImageStorageUri();
-        }
     }
 
     private String getFormattedDate(String dateString) {

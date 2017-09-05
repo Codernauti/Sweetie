@@ -12,27 +12,18 @@ import java.io.Serializable;
 
 public class TextPhotoMessageVM extends MessageVM implements Serializable {
     private String mText;
-    private String mUriLocal;
     private String mUriStorage;
     private int mPercent;
 
     TextPhotoMessageVM(String text, String creatorEmail, boolean mainUser, String date,
-                       boolean bookMarked, String key, String uriL, String uriS) {
+                       boolean bookMarked, String key, String uriS) {
         super(mainUser, creatorEmail, date, bookMarked, key);
         mText = text;
-        mUriLocal = uriL;
         mUriStorage = uriS;
     }
 
     String getText() {
         return mText;
-    }
-
-    void setUriLocal(String uriL){
-        this.mUriLocal = uriL;
-    }
-    String getUriLocal() {
-        return mUriLocal;
     }
 
     void setUriStorage(String uriS){
@@ -55,20 +46,7 @@ public class TextPhotoMessageVM extends MessageVM implements Serializable {
         //view.setText(mText);
         view.setTextTime(DataMaker.getHH_ss_Local(super.getTime()));
         view.setBookmark(super.isBookmarked());
-
-        String uriToLoad;
-        // is image uploaded by me?
-        //verify if is in Local memory and has valid path
-        if(super.isTheMainUser()) {
-            if(Utility.isImageAvaibleInLocal(getUriLocal())) uriToLoad = getUriLocal();
-            else uriToLoad = getUriStorage();
-        }
-        else // uploaded by partner, take uri storage
-        {
-            uriToLoad = getUriStorage();
-        }
-
-        view.setImage(uriToLoad);
+        view.setImage(mUriStorage);
         view.setPercentUploading(mPercent);
     }
 

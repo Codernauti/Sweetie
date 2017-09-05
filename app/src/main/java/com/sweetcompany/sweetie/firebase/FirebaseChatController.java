@@ -256,7 +256,7 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
     public String sendMedia(final MessageFB mediaMessage) {
         final String newMessageUid = mChatMessagesRef.push().getKey();
 
-        Uri uriLocal = Uri.parse(mediaMessage.getUriLocal());
+        Uri uriLocal = Uri.parse(mediaMessage.getUriStorage());
         StorageReference photoRef = mGalleryPhotoRef.child(uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 

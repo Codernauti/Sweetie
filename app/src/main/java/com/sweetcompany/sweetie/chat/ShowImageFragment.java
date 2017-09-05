@@ -16,7 +16,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.gallery.SlideshowDialogFragment;
 import com.sweetcompany.sweetie.utils.DataMaker;
-import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.Serializable;
 
@@ -30,10 +29,11 @@ public class ShowImageFragment extends DialogFragment {
 
     private static final String IMAGE_KEY = "image";
 
-    private TextPhotoMessageVM image;
+    private TextPhotoMessageVM mPhotoMessage;
     private ViewPager viewPager;
     private ShowImageFragment.MyViewPagerAdapter myViewPagerAdapter;
     private TextView lblCount, lblTitle, lblDate;
+
     private int selectedPosition = 1;
 
     static ShowImageFragment newInstance() {
@@ -60,7 +60,7 @@ public class ShowImageFragment extends DialogFragment {
         lblTitle = (TextView) v.findViewById(R.id.slideshow_title);
         lblDate = (TextView) v.findViewById(R.id.slideshow_date);
 
-        image = (TextPhotoMessageVM) getArguments().getSerializable("image");
+        mPhotoMessage = (TextPhotoMessageVM) getArguments().getSerializable("image");
 
         myViewPagerAdapter = new ShowImageFragment.MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
@@ -96,8 +96,8 @@ public class ShowImageFragment extends DialogFragment {
     };
 
     private void displayMetaInfo() {
-        //lblTitle.setText(image.get());
-        lblDate.setText(DataMaker.get_dd_MM_yy_Local(image.getTime()));
+        //lblTitle.setText(mPhotoMessage.get());
+        lblDate.setText(DataMaker.get_dd_MM_yy_Local(mPhotoMessage.getTime()));
     }
 
     @Override
@@ -127,20 +127,8 @@ public class ShowImageFragment extends DialogFragment {
 
             ImageView imageViewPreview = (ImageView) view.findViewById(R.id.image_preview);
 
-            String uriToLoad;
-            // is image uploaded by me?
-            //verify if is in Local memory and has valid path
-            if(image.isTheMainUser()) {
-                if(Utility.isImageAvaibleInLocal(image.getUriLocal())) uriToLoad = image.getUriLocal();
-                else uriToLoad = image.getUriStorage();
-            }
-            else // uploaded by partner, take uri storage
-            {
-                uriToLoad = image.getUriStorage();
-            }
-
             Glide.with(getActivity())
-                    .load(uriToLoad)
+                    .load(mPhotoMessage.getUriStorage())
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)

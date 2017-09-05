@@ -96,7 +96,7 @@ public class FirebaseGeogiftMakerController {
         geogiftFB.setLat(geoItem.getLat());
         geogiftFB.setLon(geoItem.getLon());
         geogiftFB.setBookmarked(geoItem.isBookmarked());
-        geogiftFB.setDatetimeCreation(actionFB.getDataTime());
+        geogiftFB.setDatetimeCreation(actionFB.getLastUpdateDate());
         geogiftFB.setIsTriggered(false);
 
         updates.put(mActionsUrl + "/" + newActionKey, actionFB);

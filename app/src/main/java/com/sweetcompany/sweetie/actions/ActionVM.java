@@ -26,7 +26,7 @@ abstract class ActionVM {
     private String mTitle;
     private String mLastUser;
     private String mDescription;
-    private String mDataTime;
+    private String mLastUpdateDate;
     private int mType;
     private String mChildUid;
     private String mImageUrl;
@@ -35,14 +35,14 @@ abstract class ActionVM {
     ActionVM() {
     }
 
-    ActionVM(String key, String title, String lastUser, String description, String date, int type,
+    ActionVM(String key, String title, String lastUser, String description, String lastUpdateDate, int type,
              String childKey, String imageUrl, int notificCounter) {
 
         mKeyFB = key;
         mTitle = title;
         mLastUser = lastUser;
         mDescription = description;
-        mDataTime = date;
+        mLastUpdateDate = lastUpdateDate;
         mType = type;
         mChildUid = childKey;
         mImageUrl = imageUrl;
@@ -78,12 +78,12 @@ abstract class ActionVM {
         this.mDescription = description;
     }
 
-    String getDataTime(){
-        return mDataTime;
+    String getLastUpdateDate(){
+        return mLastUpdateDate;
     }
 
-    void setDataTime(String data){
-        this.mDataTime = data;
+    void setLastUpdateDate(String data){
+        this.mLastUpdateDate = data;
     }
 
     int getType() { return mType; }
@@ -128,7 +128,7 @@ abstract class ActionVM {
         viewHolder.setNotificationCount(mNotificCounter, ContextCompat.getColor(mContext, getAvatarTextIdColor()));
 
         try {
-            viewHolder.setDateTime(DataMaker.get_Date_4_Action(mDataTime));
+            viewHolder.setDateTime(DataMaker.get_Date_4_Action(mLastUpdateDate));
         } catch (ParseException e) {
             viewHolder.setDateTime("error");
             e.printStackTrace();

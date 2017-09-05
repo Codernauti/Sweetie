@@ -14,12 +14,12 @@ import com.sweetcompany.sweetie.model.ActionFB;
 // TODO complete class
 class ActionChatVM extends ActionVM {
 
-    ActionChatVM(String title, String description, String date, int type, String childKey,
+    ActionChatVM(String title, String description, String lastUpdateDate, int type, String childKey,
                  String actionKey, int notificationCounter) {
         // TODO: complete all fields
         super.setTitle(title);
         super.setDescription(description);
-        super.setDataTime(date);
+        super.setLastUpdateDate(lastUpdateDate);
         super.setType(type);
         super.setChildUid(childKey);
         super.setKey(actionKey);

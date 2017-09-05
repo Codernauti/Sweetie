@@ -47,7 +47,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
 
     @Override
     public void onGalleryChanged(GalleryFB gallery) {
-        GalleryVM galleryVM = new GalleryVM(gallery.getKey(), gallery.getTitle(), gallery.getDate(), gallery.getUriCover(), gallery.getLatitude(), gallery.getLongitude());
+        GalleryVM galleryVM = new GalleryVM(gallery.getKey(), gallery.getTitle(), gallery.getCreationDate(), gallery.getUriCover(), gallery.getLatitude(), gallery.getLongitude());
         mView.updateGalleryInfo(galleryVM);
     }
 

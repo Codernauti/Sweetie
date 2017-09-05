@@ -26,16 +26,16 @@ public class GeogiftDonePresenter implements GeogiftDoneContract.Presenter, Fire
 
     @Override
     public void onGeogiftChanged(GeogiftFB geogiftFB) {
-        GeoItem geoItem = new GeoItem();
+        GeogiftVM geoItem = new GeogiftVM();
         geoItem = createGeoItem(geogiftFB);
         mView.updateGeogift(geoItem);
     }
 
     /**
-     * Convert GeogiftFB to GeoItem
+     * Convert GeogiftFB to GeogiftVM
      */
-    private GeoItem createGeoItem(GeogiftFB geoItemFB) {
-        GeoItem geoItemNew = new GeoItem();
+    private GeogiftVM createGeoItem(GeogiftFB geoItemFB) {
+        GeogiftVM geoItemNew = new GeogiftVM();
         geoItemNew.setKey(geoItemFB.getKey());
         geoItemNew.setUserCreatorUID(geoItemFB.getUserCreatorUID());
         geoItemNew.setType(geoItemFB.getType());
@@ -43,10 +43,10 @@ public class GeogiftDonePresenter implements GeogiftDoneContract.Presenter, Fire
         geoItemNew.setAddress(geoItemFB.getAddress());
         geoItemNew.setLat(geoItemFB.getLat());
         geoItemNew.setLon(geoItemFB.getLon());
-        geoItemNew.setUriS(geoItemFB.getUriS());
+        geoItemNew.setUriStorage(geoItemFB.getUriS());
         geoItemNew.setBookmarked(geoItemFB.isBookmarked());
-        geoItemNew.setDatetimeCreation(geoItemFB.getDatetimeCreation());
-        geoItemNew.setDatetimeVisited(geoItemFB.getDatetimeVisited());
+        geoItemNew.setCreationDate(geoItemFB.getCreationDate());
+        geoItemNew.setDatetimeVisited(geoItemFB.getVisitedDate());
         geoItemNew.setIsTriggered(geoItemFB.getIsTriggered());
 
         return geoItemNew;

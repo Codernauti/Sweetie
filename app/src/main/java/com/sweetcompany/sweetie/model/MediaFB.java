@@ -1,7 +1,5 @@
 package com.sweetcompany.sweetie.model;
 
-import android.net.Uri;
-
 import com.google.firebase.database.Exclude;
 
 /**

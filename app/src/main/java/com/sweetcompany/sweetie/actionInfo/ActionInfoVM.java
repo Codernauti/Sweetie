@@ -6,6 +6,6 @@ package com.sweetcompany.sweetie.actionInfo;
 
 public interface ActionInfoVM {
     String getTitle();
-    String getDate();
+    String getCreationDate();
     String getUriCover();
 }

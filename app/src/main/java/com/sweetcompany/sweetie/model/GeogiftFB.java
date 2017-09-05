@@ -25,8 +25,8 @@ public class GeogiftFB {
     private Double lon;
     private String uriS;
     private boolean bookmarked;
-    private String datetimeCreation;
-    private String datetimeVisited;
+    private String creationDate;
+    private String visitedDate;
     private boolean isTriggered;
 
     // For firebase
@@ -46,7 +46,6 @@ public class GeogiftFB {
     public String getActionKey() {
         return actionKey;
     }
-
     public void setActionKey(String actionKey) {
         this.actionKey = actionKey;
     }
@@ -54,7 +53,6 @@ public class GeogiftFB {
     public String getUserCreatorUID() {
         return userCreatorUID;
     }
-
     public void setUserCreatorUID(String userCreatorUID) {
         this.userCreatorUID = userCreatorUID;
     }
@@ -62,7 +60,6 @@ public class GeogiftFB {
     public int getType() {
         return type;
     }
-
     public void setType(int type) {
         this.type = type;
     }
@@ -77,7 +74,6 @@ public class GeogiftFB {
     public String getMessage() {
         return message;
     }
-
     public void setMessage(String message) {
         this.message = message;
     }
@@ -85,7 +81,6 @@ public class GeogiftFB {
     public String getAddress() {
         return address;
     }
-
     public void setAddress(String address) {
         this.address = address;
     }
@@ -93,7 +88,6 @@ public class GeogiftFB {
     public Double getLat() {
         return lat;
     }
-
     public void setLat(Double lat) {
         this.lat = lat;
     }
@@ -101,7 +95,6 @@ public class GeogiftFB {
     public Double getLon() {
         return lon;
     }
-
     public void setLon(Double lon) {
         this.lon = lon;
     }
@@ -109,7 +102,6 @@ public class GeogiftFB {
     public String getUriS() {
         return uriS;
     }
-
     public void setUriS(String uriS) {
         this.uriS = uriS;
     }
@@ -117,31 +109,27 @@ public class GeogiftFB {
     public boolean isBookmarked() {
         return bookmarked;
     }
-
     public void setBookmarked(boolean bookmarked) {
         this.bookmarked = bookmarked;
     }
 
-    public String getDatetimeCreation() {
-        return datetimeCreation;
+    public String getCreationDate() {
+        return creationDate;
+    }
+    public void setCreationDate(String datetimeCreation) {
+        this.creationDate = datetimeCreation;
     }
 
-    public void setDatetimeCreation(String datetimeCreation) {
-        this.datetimeCreation = datetimeCreation;
+    public String getVisitedDate() {
+        return visitedDate;
     }
-
-    public String getDatetimeVisited() {
-        return datetimeVisited;
-    }
-
-    public void setDatetimeVisited(String datetimeVisited) {
-        this.datetimeVisited = datetimeVisited;
+    public void setVisitedDate(String datetimeVisited) {
+        this.visitedDate = datetimeVisited;
     }
 
     public boolean getIsTriggered() {
         return isTriggered;
     }
-
     public void setIsTriggered(boolean triggered) {
         this.isTriggered = triggered;
     }

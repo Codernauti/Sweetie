@@ -104,7 +104,7 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
     public void updateInfo(ActionInfoVM action) {
         mToolBar.setTitle(action.getTitle());
 
-        mDateCreationTextView.setText(DataMaker.getDate_d_month_yyyy(action.getDate()));
+        mDateCreationTextView.setText(DataMaker.getDate_d_month_yyyy(action.getCreationDate()));
 
         Glide.with(this)
                 .load(action.getUriCover())

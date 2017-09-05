@@ -7,6 +7,7 @@ package com.sweetcompany.sweetie.todolist;
 public class ToDoListVM {
     private String mKey;
     private String mTitle;
+    private String mCreationDate;
 
     ToDoListVM(String key, String title) {
         mKey = key;
@@ -15,5 +16,12 @@ public class ToDoListVM {
 
     String getTitle() {
         return mTitle;
+    }
+
+    public String getCreationDate() {
+        return mCreationDate;
+    }
+    public void setCreationDate(String mCreationDate) {
+        this.mCreationDate = mCreationDate;
     }
 }

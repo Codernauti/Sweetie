@@ -9,7 +9,7 @@ class GalleryVM {
     private String mTitle;
     private Double mLat;
     private Double mLon;
-    private String mDate;
+    private String mCreationDate;
     private String mImageUri;
 
     GalleryVM(String key, String title) {
@@ -17,10 +17,10 @@ class GalleryVM {
         mTitle = title;
     }
 
-    GalleryVM(String key, String title, String date, String imageUri, Double lat, Double lon) {
+    GalleryVM(String key, String title, String creationDate, String imageUri, Double lat, Double lon) {
         mKey = key;
         mTitle = title;
-        mDate = date;
+        mCreationDate = creationDate;
         mImageUri = imageUri;
         mLat = lat;
         mLon = lon;
@@ -30,18 +30,16 @@ class GalleryVM {
         return mTitle;
     }
 
-    public String getDate() {
-        return mDate;
+    public String getCreationDate() {
+        return mCreationDate;
     }
-
-    public void setDate(String mDate) {
-        this.mDate = mDate;
+    public void setCreationDate(String mCreationDate) {
+        this.mCreationDate = mCreationDate;
     }
 
     public Double getLat() {
         return mLat;
     }
-
     public void setLat(Double mLat) {
         this.mLat = mLat;
     }
@@ -49,7 +47,6 @@ class GalleryVM {
     public Double getLon() {
         return mLon;
     }
-
     public void setLon(Double mLon) {
         this.mLon = mLon;
     }
@@ -57,8 +54,8 @@ class GalleryVM {
     public String getImageUri() {
         return mImageUri;
     }
-
     public void setImageUri(String mImageUri) {
         this.mImageUri = mImageUri;
     }
+
 }

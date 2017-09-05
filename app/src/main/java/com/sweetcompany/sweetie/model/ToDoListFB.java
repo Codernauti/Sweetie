@@ -14,7 +14,7 @@ public class ToDoListFB implements ActionInfoVM {
 
     private String title;
     private String uriCover;
-    private String date;
+    private String creationDate;
 
     public ToDoListFB() {
     }
@@ -23,7 +23,6 @@ public class ToDoListFB implements ActionInfoVM {
     public String getKey() {
         return key;
     }
-
     @Exclude
     public void setKey(String key) {
         this.key = key;
@@ -33,7 +32,6 @@ public class ToDoListFB implements ActionInfoVM {
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -41,16 +39,14 @@ public class ToDoListFB implements ActionInfoVM {
     public String getUriCover() {
         return uriCover;
     }
-
     public void setUriCover(String uriCover) {
         this.uriCover = uriCover;
     }
 
-    public String getDate() {
-        return date;
+    public String getCreationDate() {
+        return creationDate;
     }
-
-    public void setDate(String date) {
-        this.date = date;
+    public void setCreationDate(String date) {
+        this.creationDate = date;
     }
 }

@@ -12,7 +12,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.sweetcompany.sweetie.geogift.GeoItem;
+import com.sweetcompany.sweetie.geogift.GeogiftVM;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GeogiftFB;
 
@@ -70,7 +70,7 @@ public class FirebaseGeogiftMakerController {
     }
 
 
-    public List<String> pushGeogiftAction(ActionFB actionFB, String geogiftTitle, GeoItem geoItem) {
+    public List<String> pushGeogiftAction(ActionFB actionFB, String geogiftTitle, GeogiftVM geoItem) {
         List<String> newKeys =  new ArrayList<>();
 
         HashMap<String, Object> updates = new HashMap<>();
@@ -92,11 +92,11 @@ public class FirebaseGeogiftMakerController {
         geogiftFB.setTitle(geogiftTitle);
         geogiftFB.setMessage(geoItem.getMessage());
         geogiftFB.setAddress(geoItem.getAddress());
-        geogiftFB.setUriS(geoItem.getUriS());
+        geogiftFB.setUriS(geoItem.getUriStorage());
         geogiftFB.setLat(geoItem.getLat());
         geogiftFB.setLon(geoItem.getLon());
         geogiftFB.setBookmarked(geoItem.isBookmarked());
-        geogiftFB.setDatetimeCreation(actionFB.getLastUpdateDate());
+        geogiftFB.setCreationDate(actionFB.getLastUpdateDate());
         geogiftFB.setIsTriggered(false);
 
         updates.put(mActionsUrl + "/" + newActionKey, actionFB);

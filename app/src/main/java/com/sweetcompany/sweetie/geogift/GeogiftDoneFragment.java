@@ -57,7 +57,7 @@ public class GeogiftDoneFragment extends Fragment implements
     private String titleGeogift;
     private float geofenceRadius = 100.0f; // in meters
 
-    private GeoItem geoItem = null;
+    private GeogiftVM geoItem = null;
     double lat;
     double lon;
     LatLng coord;
@@ -226,11 +226,11 @@ public class GeogiftDoneFragment extends Fragment implements
     }
 
     @Override
-    public void updateGeogift(GeoItem geoitem) {
+    public void updateGeogift(GeogiftVM geoitem) {
         Log.d(TAG, "updateGeogift");
         //sToolBar.setTitle(geoitem.getTytle);
         addressText.setText(getResources().getString(R.string.address_geogift)+" "+geoitem.getAddress());
-        datetimePositionedText.setText(getResources().getString(R.string.datetime_positioned_geogift)+" "+ DataMaker.get_dd_MM_Local(geoitem.getDatetimeCreation()));
+        datetimePositionedText.setText(getResources().getString(R.string.datetime_positioned_geogift)+" "+ DataMaker.get_dd_MM_Local(geoitem.getCreationDate()));
         if(geoitem.getIsTriggered()){
             isVisitedText.setText(getResources().getString(R.string.isvisited_yes_geogifty) + " at " + geoitem.getDatetimeVisited());
             isVisitedText.setTextColor(Color.GREEN);

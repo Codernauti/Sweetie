@@ -41,7 +41,7 @@
         </activity>
 
         <activity android:name=".registration.RegisterActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/ChatTheme" />
 
         <activity android:name=".pairing.PairingActivity"
             android:theme="@style/AppTheme" />

@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -49,6 +48,8 @@ public class MainActivity extends AppCompatActivity{
             startService(new Intent(this, UserMonitorService.class));
             startActivity(new Intent(this, DashboardActivity.class));
         }
+
+        finish();
     }
 
     // TODO: extract method

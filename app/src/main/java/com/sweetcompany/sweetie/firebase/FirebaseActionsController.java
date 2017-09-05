@@ -170,7 +170,7 @@ public class FirebaseActionsController {
         }
 
         // init action
-        action.setChildKey(actionUid);
+        // action.setKey(actionUid); //was child
         updates.put(mActionsUrl + "/" + actionUid, action);
 
         // update database

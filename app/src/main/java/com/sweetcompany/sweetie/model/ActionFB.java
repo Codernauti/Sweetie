@@ -22,8 +22,6 @@ public class ActionFB {
     private String description;
     private String lastUpdateDate;
     private int type;
-    @Deprecated
-    private String childKey;
     private boolean isTriggered; //geogift
     private String imageUrl;
     private HashMap<String, ActionNotification> notificationCounters;
@@ -84,16 +82,7 @@ public class ActionFB {
     public void setType(int type) {
         this.type = type;
     }
-
-    @Deprecated
-    public String getChildKey() {
-        return childKey;
-    }
-    @Deprecated
-    public void setChildKey(String childKey) {
-        this.childKey = childKey;
-    }
-
+    
     public boolean getIsTriggered() {
         return isTriggered;
     }

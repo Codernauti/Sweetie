@@ -30,7 +30,6 @@ public class UserFB {
     public String getUsername() {
         return username;
     }
-
     public void setUsername(String mUsername) {
         this.username = mUsername;
     }
@@ -38,7 +37,6 @@ public class UserFB {
     public boolean getGender() {
         return gender;
     }
-
     public void setGender(boolean mGender) {
         this.gender = mGender;
     }
@@ -46,7 +44,6 @@ public class UserFB {
     public String getPhone() {
         return phone;
     }
-
     public void setPhone(String mPhone) {
         this.phone = mPhone;
     }
@@ -54,7 +51,6 @@ public class UserFB {
     public String getEmail() {
         return email;
     }
-
     public void setmEmail(String mEmail) {
         this.email = mEmail;
     }
@@ -63,7 +59,6 @@ public class UserFB {
     public String getKey() {
         return key;
     }
-
     @Exclude
     public void setKey(String key) {
         this.key = key;
@@ -72,7 +67,6 @@ public class UserFB {
     public CoupleInfoFB getCoupleInfo() {
         return coupleInfo;
     }
-
     public void setCoupleInfo(CoupleInfoFB coupleInfo) {
         this.coupleInfo = coupleInfo;
     }
@@ -80,7 +74,6 @@ public class UserFB {
     public String getFuturePartner() {
         return futurePartner;
     }
-
     public void setFuturePartner(String futurePartner) {
         this.futurePartner = futurePartner;
     }
@@ -88,7 +81,6 @@ public class UserFB {
     public String getImageUrl() {
         return imageUrl;
     }
-
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }

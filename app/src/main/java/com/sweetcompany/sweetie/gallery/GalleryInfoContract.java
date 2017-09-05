@@ -19,6 +19,6 @@ interface GalleryInfoContract {
     interface Presenter {
         void changeTitle(String newTitle);
         void changeImage(Uri imageLocalUri);
-        void changePosition(String latitude, String longitude);
+        void changePosition(Double latitude, Double longitude);
     }
 }

@@ -392,7 +392,6 @@ public class GeogiftMakerFragment extends Fragment implements
              Place place = PlacePicker.getPlace(getContext(), data);
              LatLng latLng;
              String name;
-
              if (place == null) {
                  Log.i(TAG, "No place selected");
                  return;

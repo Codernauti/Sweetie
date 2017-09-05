@@ -1,6 +1,8 @@
 package com.sweetcompany.sweetie.gallery;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,11 +18,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
 import com.theartofdev.edmodo.cropper.CropImage;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -33,6 +45,8 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
 
     private static final String TAG = "GalleryInfoFragment";
 
+    private static final int PLACE_PICKER_REQUEST = 4002;
+
     private GalleryInfoContract.Presenter mPresenter;
 
     private Toolbar mToolBar;
@@ -42,6 +56,10 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
     private ImageButton mChangeImageButtom;
     private TextView mDateCreationTextView;
     private ImageButton mChangePositionButton;
+    private TextView mPositionText;
+
+    private String mAddressLocation;
+    private LatLng mLatLngLocation;
 
 
     public static GalleryInfoFragment newInstance(Bundle extras) {
@@ -76,6 +94,7 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
 
         mDateCreationTextView = (TextView) root.findViewById(R.id.date_creation);
 
+        mPositionText = (TextView) root.findViewById(R.id.map_position_text);
         mChangePositionButton = (ImageButton) root.findViewById(R.id.change_position_button);
 
 
@@ -100,16 +119,23 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mActionImageView);
 
-        /*
+
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        List<Address> addresses = geocoder.getFromLocation(action.getLatitude(), action.getLongitude(), 1);
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(action.getLat(), action.getLon(), 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
         String city = addresses.get(0).getLocality();
         String state = addresses.get(0).getAdminArea();
         String country = addresses.get(0).getCountryName();
         String postalCode = addresses.get(0).getPostalCode();
-        String knownName = addresses.get(0).getFeatureName();*/
+        String knownName = addresses.get(0).getFeatureName();
+
+        mPositionText.setText(address);
     }
 
     @Override
@@ -137,6 +163,24 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
                 Log.d(TAG, error.toString());
             }
         }
+        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            Place place = PlacePicker.getPlace(getContext(), data);
+            LatLng latLng;
+            String name;
+            if (place == null) {
+                Log.i(TAG, "No place selected");
+                return;
+            }else
+            {
+                name = place.getName().toString();
+                //mAddressLocation = place.getAddress().toString();
+                //mPositionText.setText(mAddressLocation + "\n");
+                latLng = place.getLatLng();
+                mLatLngLocation = new LatLng(latLng.latitude, latLng.longitude);
+
+                mPresenter.changePosition(latLng.latitude, latLng.longitude);
+            }
+        }
     }
 
     private void setProgressViewsVisible(boolean visible) {
@@ -162,10 +206,34 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
             }
             case R.id.change_position_button: {
                 // TODO: open MapFragment for choose an address
+                pickPosition();
                 break;
             }
             default:
                 break;
+        }
+    }
+
+    public void pickPosition(){
+        try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            // TODO set start bounds
+            //builder.setLatLngBounds(latLngBounds);
+            Intent i = builder.build(getActivity());
+            startActivityForResult(i, PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            //TODO adjust catch
+            Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
+            Toast toast = new Toast(getContext());
+            toast.setText("GooglePlayServices Not Available");
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
+        } catch (Exception e) {
+            Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
+            Toast toast = new Toast(getContext());
+            toast.setText("Error");
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 }

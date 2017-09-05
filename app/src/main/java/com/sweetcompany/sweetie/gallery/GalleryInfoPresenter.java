@@ -39,7 +39,7 @@ class GalleryInfoPresenter implements GalleryInfoContract.Presenter,
     }
 
     @Override
-    public void changePosition(String latitude, String longitude) {
+    public void changePosition(Double latitude, Double longitude) {
         mController.changePosition(latitude, longitude);
     }
 

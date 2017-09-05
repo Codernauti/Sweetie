@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,21 +52,30 @@ public class PairingFragment extends Fragment implements PairingContract.View,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.pairing_fragment, container, false);
+        View root = inflater.inflate(R.layout.pairing_fragment, container, false);
 
         // Assign fields
-        mCancelButton = (Button) view.findViewById(R.id.pairing_cancel_button);
-        mSendButton = (Button) view.findViewById(R.id.pairing_send_button);
-        mContactsButton = (Button) view.findViewById(R.id.pairing_contacts_icon);
-        mPhoneInputText = (EditText) view.findViewById(R.id.pairing_phone_request_input);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.pairing_progress_bar);
+        mCancelButton = (Button) root.findViewById(R.id.pairing_cancel_button);
+        mSendButton = (Button) root.findViewById(R.id.pairing_next_button);
+        mContactsButton = (Button) root.findViewById(R.id.pairing_contacts_icon);
+        mPhoneInputText = (EditText) root.findViewById(R.id.pairing_phone_request_input);
+        mProgressBar = (ProgressBar) root.findViewById(R.id.pairing_progress_bar);
+
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.pairing_toolbar);
+        AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
+        parentActivity.setSupportActionBar(toolbar);
+        ActionBar actionBar = parentActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         // Set click listeners
         mCancelButton.setOnClickListener(this);
         mSendButton.setOnClickListener(this);
         mContactsButton.setOnClickListener(this);
 
-        return view;
+        return root;
     }
 
     @Override
@@ -105,9 +117,13 @@ public class PairingFragment extends Fragment implements PairingContract.View,
                 mPhoneInputText.setText(null);
                 getActivity().onBackPressed();
                 break;
-            case R.id.pairing_send_button:
+            case R.id.pairing_next_button:
                 String partnerPhone = mPhoneInputText.getText().toString();
-                mPresenter.sendPairingRequest(partnerPhone);
+                if (partnerPhone.length() != 10) {
+                    mPresenter.sendPairingRequest(partnerPhone);
+                } else {
+                    Toast.makeText(getContext(), "A phone number must have 10 characters", Toast.LENGTH_LONG).show();
+                }
                 break;
             case  R.id.pairing_contacts_icon:
                 Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI);

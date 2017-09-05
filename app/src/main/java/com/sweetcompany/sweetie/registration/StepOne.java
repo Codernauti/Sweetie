@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,12 +33,12 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
-// TODO: extract firebase dependencies
+// TODO: manage the GoogleApiClient into RegisterActivity
 public class StepOne extends Fragment implements RegisterContract.LoginView,
         View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener{
 
-    private static final String TAG = "StepOne";
+    static final String TAG = "StepOne";
     private static final int RC_SIGN_IN = 9001;
 
     private Context mContext;
@@ -56,35 +59,53 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (mGoogleApiClient == null) {
+                // TODO: move this code into a Controller
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.server_client_ID))
+                        .requestEmail()
+                        .build();
+
+                mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                        .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                        .build();
+
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.register_step_one, container, false);
+        View root = inflater.inflate(R.layout.register_step_one, container, false);
         mContext = getContext();
 
         // Assign fields
-        mRegisterGoogleButton = (SignInButton) view.findViewById(R.id.register_with_google);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.register_progress_bar);
+        mRegisterGoogleButton = (SignInButton) root.findViewById(R.id.register_with_google);
+        mProgressBar = (ProgressBar) root.findViewById(R.id.register_progress_bar);
         mAuth = FirebaseAuth.getInstance();
+
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.pairing_toolbar);
+        AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
+        parentActivity.setSupportActionBar(toolbar);
+        ActionBar actionBar = parentActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         // Set click listeners
         mRegisterGoogleButton.setOnClickListener(this);
 
-        // TODO: move this code into a Controller
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_ID))
-                .requestEmail()
-                .build();
+        return root;
+    }
 
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        return view;
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
     }
 
     @Override

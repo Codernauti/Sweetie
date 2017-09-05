@@ -83,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity
                                 R.anim.slide_in_left,
                                 R.anim.slide_out_right
                         )
-                        .addToBackStack("stepOne")
+                        .addToBackStack(StepOne.TAG)
                         .replace(R.id.register_fragment_container, mViewTwo);
                 transaction.commit();
             }
@@ -102,8 +102,18 @@ public class RegisterActivity extends AppCompatActivity
         mLoginController.removeListener(mLoginPresenter);
     }
 
+    @Override
     public void onBackPressed() {
-        //  super.onBackPressed();
-        moveTaskToBack(true);
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0 ){
+            getSupportFragmentManager().popBackStack();
+        } else {
+            moveTaskToBack(true);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

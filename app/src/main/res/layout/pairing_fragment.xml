@@ -2,63 +2,55 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/pairing_progress_bar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/pairing_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:theme="@style/SweetieThemeToolbar"
+        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.33"
+        app:title="Find your partner"
         />
-
-    <TextView
-        android:id="@+id/pairing_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-
-        android:text="Find your partner!"
-        android:textSize="21sp"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/pairing_phone_request_input"
-        android:layout_width="220dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/pairing_contacts_icon"
-        app:layout_constraintTop_toBottomOf="@id/pairing_text_view"
-        app:layout_constraintHorizontal_chainStyle="packed"
-
-        android:hint="Partner's phone number"
-        android:inputType="phone" />
 
     <Button
         android:id="@+id/pairing_contacts_icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
 
-        app:layout_constraintStart_toEndOf="@+id/pairing_phone_request_input"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pairing_text_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pairing_phone_request_input"
+        app:layout_constraintTop_toBottomOf="@+id/pairing_toolbar"
+
+        app:layout_constraintHorizontal_chainStyle="packed"
 
         android:background="@drawable/account_circle" />
+
+    <EditText
+        android:id="@+id/pairing_phone_request_input"
+        android:layout_width="220dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="32dp"
+
+        app:layout_constraintStart_toEndOf="@+id/pairing_contacts_icon"
+        app:layout_constraintTop_toBottomOf="@+id/pairing_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+
+
+        android:hint="Partner's phone number"
+        android:inputType="phone">
+        <requestFocus />
+    </EditText>
 
     <Button
         android:id="@+id/pairing_cancel_button"
@@ -67,14 +59,16 @@
         android:layout_marginTop="35dp"
 
         app:layout_constraintTop_toBottomOf="@+id/pairing_phone_request_input"
-        app:layout_constraintEnd_toStartOf="@+id/pairing_send_button"
+        app:layout_constraintEnd_toStartOf="@+id/pairing_next_button"
         app:layout_constraintStart_toStartOf="parent"
+
         app:layout_constraintHorizontal_chainStyle="spread"
 
-        android:text="Cancel" />
+        android:text="Cancel"
+        />
 
     <Button
-        android:id="@+id/pairing_send_button"
+        android:id="@+id/pairing_next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
@@ -84,5 +78,18 @@
         app:layout_constraintStart_toEndOf="@+id/pairing_cancel_button"
 
         android:text="Send " />
+
+    <ProgressBar
+        android:id="@+id/pairing_progress_bar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:visibility="gone"
+
+        app:layout_constraintTop_toTopOf="@+id/pairing_next_button"
+        app:layout_constraintStart_toEndOf="@+id/pairing_next_button"
+        app:layout_constraintBottom_toBottomOf="@+id/pairing_next_button"
+        />
 
 </android.support.constraint.ConstraintLayout>

@@ -3,6 +3,9 @@ package com.sweetcompany.sweetie.registration;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +20,7 @@ import com.sweetcompany.sweetie.utils.Utility;
 
 public class StepTwo extends Fragment implements RegisterContract.RegisterView, View.OnClickListener {
 
-    private static final String TAG = "StepTwo";
+    static final String TAG = "StepTwo";
 
     private Button mForwardButton;
     private EditText mUsernameText;
@@ -36,25 +39,34 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.register_step_two, container, false);
+        View root = inflater.inflate(R.layout.register_step_two, container, false);
         mContext = getContext();
 
         // Assign fields
-        mForwardButton = (Button) view.findViewById(R.id.pairing_send_button);
-        mUsernameText = (EditText) view.findViewById(R.id.username_input);
-        mPhoneText = (EditText) view.findViewById(R.id.phone_input);
-        mRadio = (RadioButton)view.findViewById(R.id.radio_button_male);
+        mForwardButton = (Button) root.findViewById(R.id.pairing_next_button);
+        mUsernameText = (EditText) root.findViewById(R.id.username_input);
+        mPhoneText = (EditText) root.findViewById(R.id.phone_input);
+        mRadio = (RadioButton)root.findViewById(R.id.radio_button_male);
+
+        Toolbar toolbar = (Toolbar) root.findViewById(R.id.credentials_toolbar);
+        AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
+        parentActivity.setSupportActionBar(toolbar);
+        ActionBar actionBar = parentActivity.getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         // Set click listeners
         mForwardButton.setOnClickListener(this);
 
-        return view;
+        return root;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.pairing_send_button:
+            case R.id.pairing_next_button:
                 // get data of Auth
                 String userUid = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
                 String userEmail = Utility.getStringPreference(mContext, SharedPrefKeys.MAIL);

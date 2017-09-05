@@ -336,31 +336,26 @@ public class GeogiftMakerFragment extends Fragment implements
     }
 
     public void pickPosition(){
-        if( checkPermission() ){
-            //latLngBounds = new LatLngBounds(new LatLng(44.882494, 11.601847), new LatLng(44.909004, 11.613520));
-            try {
-                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-                // TODO set start bounds
-                //builder.setLatLngBounds(latLngBounds);
-                Intent i = builder.build(getActivity());
-                startActivityForResult(i, PLACE_PICKER_REQUEST);
-            } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
-                //TODO adjust catch
-                Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
-                Toast toast = new Toast(mContext);
-                toast.setText("GooglePlayServices Not Available");
-                toast.setDuration(Toast.LENGTH_SHORT);
-                toast.show();
-            } catch (Exception e) {
-                Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
-                Toast toast = new Toast(mContext);
-                toast.setText("Error");
-                toast.setDuration(Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        }
-        else{
-            askPermission();
+        //latLngBounds = new LatLngBounds(new LatLng(44.882494, 11.601847), new LatLng(44.909004, 11.613520));
+        try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+            // TODO set start bounds
+            //builder.setLatLngBounds(latLngBounds);
+            Intent i = builder.build(getActivity());
+            startActivityForResult(i, PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            //TODO adjust catch
+            Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
+            Toast toast = new Toast(mContext);
+            toast.setText("GooglePlayServices Not Available");
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
+        } catch (Exception e) {
+            Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
+            Toast toast = new Toast(mContext);
+            toast.setText("Error");
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 
@@ -391,11 +386,16 @@ public class GeogiftMakerFragment extends Fragment implements
          if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
              Place place = PlacePicker.getPlace(getContext(), data);
              LatLng latLng;
+             String name;
+
              if (place == null) {
                  Log.i(TAG, "No place selected");
                  return;
              }else
              {
+                 name = place.getName().toString();
+                 addressGeogift = place.getAddress().toString();
+                 locationPickerText.setText(addressGeogift);
                  latLng = place.getLatLng();
                  positionGeogift = new LatLng(latLng.latitude, latLng.longitude);
                  checkGeogiftFields();
@@ -442,48 +442,6 @@ public class GeogiftMakerFragment extends Fragment implements
          }
      }
 
-    // Check for permission to access Location
-    private boolean checkPermission() {
-        Log.d(TAG, "checkPermission()");
-        // Ask for permission if it wasn't granted yet
-        return (ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED );
-    }
-
-    // Asks for permission
-    private void askPermission() {
-        Log.d(TAG, "askPermission()");
-        ActivityCompat.requestPermissions(
-                getActivity(),
-                new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION },
-                REQ_PERMISSION_UPDATE
-        );
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult()");
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch ( requestCode ) {
-            case REQ_PERMISSION_UPDATE:
-            {
-                if ( grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
-                    // Permission granted
-                    pickPosition();
-                } else {
-                    // Permission denied
-                    permissionsDenied();
-                }
-                break;
-            }
-        }
-    }
-
-    private void permissionsDenied() {
-        Log.w(TAG, "permissionsDenied()");
-    }
-
     // TODO
     //Spinner expiration time
     @Override
@@ -519,6 +477,7 @@ public class GeogiftMakerFragment extends Fragment implements
             mPresenter.uploadMedia(stringUriLocal);
             sendingFragment.setVisibility(View.VISIBLE);
             mGeoItem.setType(GeoItem.PHOTO_GEOGIFT);
+            //createNewGeogift();
         }
         else if(currentSelection == MESSAGE_SELECTION){
             mGeoItem.setType(GeoItem.MESSAGE_GEOGIFT);

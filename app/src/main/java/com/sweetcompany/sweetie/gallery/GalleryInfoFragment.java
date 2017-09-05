@@ -28,6 +28,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.DataMaker;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.IOException;
@@ -109,7 +110,7 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
     @Override
     public void updateInfo(GalleryVM action) {
         mToolBar.setTitle(action.getTitle());
-        mDateCreationTextView.setText(action.getDate());
+        mDateCreationTextView.setText(DataMaker.get_dd_MM_yy_Local(action.getDate()));
 
         Glide.with(this)
                 .load(action.getImageUri())

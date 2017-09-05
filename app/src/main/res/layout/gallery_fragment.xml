@@ -8,14 +8,14 @@
     android:orientation="vertical"
     android:background="@color/gallery_background">
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/gallery_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
-        android:background="?attr/colorPrimary"
+        android:background="@color/colorPrimary"
         app:theme="@style/SweetieThemeToolbar"
+        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
         />
 
 

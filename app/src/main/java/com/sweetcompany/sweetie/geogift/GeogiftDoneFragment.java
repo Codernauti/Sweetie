@@ -228,7 +228,7 @@ public class GeogiftDoneFragment extends Fragment implements
     @Override
     public void updateGeogift(GeoItem geoitem) {
         Log.d(TAG, "updateGeogift");
-        //mToolBar.setTitle(geoitem.getTytle);
+        //sToolBar.setTitle(geoitem.getTytle);
         addressText.setText(getResources().getString(R.string.address_geogift)+" "+geoitem.getAddress());
         datetimePositionedText.setText(getResources().getString(R.string.datetime_positioned_geogift)+" "+ DataMaker.get_dd_MM_Local(geoitem.getDatetimeCreation()));
         if(geoitem.getIsTriggered()){

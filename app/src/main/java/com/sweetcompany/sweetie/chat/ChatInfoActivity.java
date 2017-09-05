@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.gallery;
+package com.sweetcompany.sweetie.chat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,29 +9,31 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.actionInfo.ActionInfoFragment;
+import com.sweetcompany.sweetie.actionInfo.ActionInfoPresenter;
 import com.sweetcompany.sweetie.firebase.FirebaseActionInfoController;
-import com.sweetcompany.sweetie.model.GalleryFB;
+import com.sweetcompany.sweetie.model.ChatFB;
 
 /**
- * Created by Eduard on 04-Sep-17.
+ * Created by Eduard on 05-Sep-17.
  */
 
-public class GalleryInfoActivity extends BaseActivity {
+public class ChatInfoActivity extends BaseActivity {
 
-    private static final String TAG = "GalleryInfoActivity";
+    private static final String TAG = "ChatInfoActivity";
 
-    private static final String GALLERY_UID_KEY = "galleryUid";
+    private static final String CHAT_UID_KEY = "chatUid";
     private static final String PARENT_ACTION_UID_KEY = "parentActionUid";
 
-    private String mGalleryUid;
+    private String mChatUid;
     private String mParentActionUid;
 
-    private FirebaseActionInfoController<GalleryFB> mController;
-    private GalleryInfoContract.Presenter mPresenter;
+    private FirebaseActionInfoController<ChatFB> mController;
+    private ActionInfoPresenter<ChatFB> mPresenter;
 
     public static Intent getStartActivityIntent(Context context, String galleryUid, String parentActionUid) {
-        Intent intent = new Intent(context, GalleryInfoActivity.class);
-        intent.putExtra(GALLERY_UID_KEY, galleryUid);
+        Intent intent = new Intent(context, ChatInfoActivity.class);
+        intent.putExtra(CHAT_UID_KEY, galleryUid);
         intent.putExtra(PARENT_ACTION_UID_KEY, parentActionUid);
         return intent;
     }
@@ -48,33 +50,33 @@ public class GalleryInfoActivity extends BaseActivity {
         }
 
         if (savedInstanceState != null) {
-            mGalleryUid = savedInstanceState.getString(GALLERY_UID_KEY);
+            mChatUid = savedInstanceState.getString(CHAT_UID_KEY);
             mParentActionUid = savedInstanceState.getString(PARENT_ACTION_UID_KEY);
 
-            Log.d(TAG, "GalleryUid = " + mGalleryUid + "\n" + "ParentActionUid = " + mParentActionUid);
+            Log.d(TAG, "GalleryUid = " + mChatUid + "\n" + "ParentActionUid = " + mParentActionUid);
         }
         else {
             Log.w(TAG, "No savedInstanceState or intentArgs!");
         }
 
 
-        GalleryInfoFragment view = (GalleryInfoFragment) getSupportFragmentManager()
+        ActionInfoFragment view = (ActionInfoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.action_info_fragment_container);
 
         if (view == null) {
-            view = GalleryInfoFragment.newInstance(getIntent().getExtras());
+            view = ActionInfoFragment.newInstance(getIntent().getExtras());
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             transaction.add(R.id.action_info_fragment_container, view);
             transaction.commit();
         }
 
-        if (mGalleryUid != null) {
+        if (mChatUid != null) {
             mController = new FirebaseActionInfoController<>(super.mCoupleUid,
-                    mParentActionUid, mGalleryUid, GalleryFB.class);
-            mPresenter = new GalleryInfoPresenter(view, mController);
+                    mParentActionUid, mChatUid, ChatFB.class);
+            mPresenter = new ActionInfoPresenter<>(view, mController);
         } else {
-            Log.w(TAG, "Gallery Uid is null, impossible to instantiate Controller and presenter");
+            Log.w(TAG, "Chat Uid is null, impossible to instantiate Controller and presenter");
         }
     }
 
@@ -93,7 +95,7 @@ public class GalleryInfoActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(GALLERY_UID_KEY, mGalleryUid);
+        outState.putString(CHAT_UID_KEY, mChatUid);
         outState.putString(PARENT_ACTION_UID_KEY, mParentActionUid);
     }
 

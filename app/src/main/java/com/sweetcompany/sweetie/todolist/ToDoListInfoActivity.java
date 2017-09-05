@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.gallery;
+package com.sweetcompany.sweetie.todolist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,29 +9,31 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.actionInfo.ActionInfoFragment;
+import com.sweetcompany.sweetie.actionInfo.ActionInfoPresenter;
 import com.sweetcompany.sweetie.firebase.FirebaseActionInfoController;
-import com.sweetcompany.sweetie.model.GalleryFB;
+import com.sweetcompany.sweetie.model.ToDoListFB;
 
 /**
- * Created by Eduard on 04-Sep-17.
+ * Created by Eduard on 05-Sep-17.
  */
 
-public class GalleryInfoActivity extends BaseActivity {
+public class ToDoListInfoActivity extends BaseActivity {
 
-    private static final String TAG = "GalleryInfoActivity";
+    private static final String TAG = "ChatInfoActivity";
 
-    private static final String GALLERY_UID_KEY = "galleryUid";
+    private static final String TODOLIST_UID_KEY = "toDoListUid";
     private static final String PARENT_ACTION_UID_KEY = "parentActionUid";
 
-    private String mGalleryUid;
+    private String mToDoListUid;
     private String mParentActionUid;
 
-    private FirebaseActionInfoController<GalleryFB> mController;
-    private GalleryInfoContract.Presenter mPresenter;
+    private FirebaseActionInfoController<ToDoListFB> mController;
+    private ActionInfoPresenter<ToDoListFB> mPresenter;
 
     public static Intent getStartActivityIntent(Context context, String galleryUid, String parentActionUid) {
-        Intent intent = new Intent(context, GalleryInfoActivity.class);
-        intent.putExtra(GALLERY_UID_KEY, galleryUid);
+        Intent intent = new Intent(context, ToDoListInfoActivity.class);
+        intent.putExtra(TODOLIST_UID_KEY, galleryUid);
         intent.putExtra(PARENT_ACTION_UID_KEY, parentActionUid);
         return intent;
     }
@@ -48,33 +50,33 @@ public class GalleryInfoActivity extends BaseActivity {
         }
 
         if (savedInstanceState != null) {
-            mGalleryUid = savedInstanceState.getString(GALLERY_UID_KEY);
+            mToDoListUid = savedInstanceState.getString(TODOLIST_UID_KEY);
             mParentActionUid = savedInstanceState.getString(PARENT_ACTION_UID_KEY);
 
-            Log.d(TAG, "GalleryUid = " + mGalleryUid + "\n" + "ParentActionUid = " + mParentActionUid);
+            Log.d(TAG, "ToDoListUid = " + mToDoListUid + "\n" + "ParentActionUid = " + mParentActionUid);
         }
         else {
             Log.w(TAG, "No savedInstanceState or intentArgs!");
         }
 
 
-        GalleryInfoFragment view = (GalleryInfoFragment) getSupportFragmentManager()
+        ActionInfoFragment view = (ActionInfoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.action_info_fragment_container);
 
         if (view == null) {
-            view = GalleryInfoFragment.newInstance(getIntent().getExtras());
+            view = ActionInfoFragment.newInstance(getIntent().getExtras());
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             transaction.add(R.id.action_info_fragment_container, view);
             transaction.commit();
         }
 
-        if (mGalleryUid != null) {
+        if (mToDoListUid != null) {
             mController = new FirebaseActionInfoController<>(super.mCoupleUid,
-                    mParentActionUid, mGalleryUid, GalleryFB.class);
-            mPresenter = new GalleryInfoPresenter(view, mController);
+                    mParentActionUid, mToDoListUid, ToDoListFB.class);
+            mPresenter = new ActionInfoPresenter<>(view, mController);
         } else {
-            Log.w(TAG, "Gallery Uid is null, impossible to instantiate Controller and presenter");
+            Log.w(TAG, "ToDOList Uid is null, impossible to instantiate Controller and presenter");
         }
     }
 
@@ -93,7 +95,7 @@ public class GalleryInfoActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(GALLERY_UID_KEY, mGalleryUid);
+        outState.putString(TODOLIST_UID_KEY, mToDoListUid);
         outState.putString(PARENT_ACTION_UID_KEY, mParentActionUid);
     }
 

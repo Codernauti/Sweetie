@@ -19,6 +19,9 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -36,6 +39,7 @@ import android.widget.RelativeLayout;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.gallery.GalleryInfoActivity;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -93,6 +97,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private ChatContract.Presenter mPresenter;
 
     private String mUserMail;
+    private String mChatUid;
+    private String mParentActionUid;
 
 
     public static ChatFragment newInstance(Bundle bundle) {
@@ -106,6 +112,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         mChatAdapter = new ChatAdapter();
         mChatAdapter.setListener(this);
@@ -123,14 +130,13 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         // TODO: is useless to set titleChat, Firebase update it also if it is offline
         String titleChat = getArguments().getString(ChatActivity.CHAT_TITLE);
-        String chatUid = getArguments().getString(ChatActivity.CHAT_DATABASE_KEY);
-        Log.d(TAG, "from Intent CHAT_TITLE: " + titleChat);
-        Log.d(TAG, "from Intent CHAT_DATABASE_KEY: " + chatUid);
+        mChatUid = getArguments().getString(ChatActivity.CHAT_DATABASE_KEY);
+        mParentActionUid = getArguments().getString(ChatActivity.ACTION_DATABASE_KEY);
+
+        Log.d(TAG, "from Intent CHAT_TITLE: " + titleChat + "\n" + "from Intent CHAT_DATABASE_KEY: " + mChatUid);
 
         // initialize toolbar
         mToolBar = (Toolbar) root.findViewById(R.id.chat_toolbar);
-        //mToolBar.setTitle(titleChat);
-
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(mToolBar);
         ActionBar actionBar = parentActivity.getSupportActionBar();
@@ -141,7 +147,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
         // initialize message's list
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        //mLinearLayoutManager.setReverseLayout(true);
         mLinearLayoutManager.setStackFromEnd(true);
 
         mChatListView = (RecyclerView) root.findViewById(R.id.chat_list);
@@ -350,6 +355,28 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         } else {
             return false;
         }
+    }
+
+
+    // Menu management
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.action_info_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_info: {
+                Intent intent = ChatInfoActivity.getStartActivityIntent(
+                        getContext(), mChatUid, mParentActionUid);
+                startActivity(intent);
+                break;
+            }
+            default:
+                break;
+        }
+        return false;
     }
 
     // Callback bottom input bar

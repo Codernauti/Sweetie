@@ -1,12 +1,13 @@
 package com.sweetcompany.sweetie.model;
 
 import com.google.firebase.database.Exclude;
+import com.sweetcompany.sweetie.actionInfo.ActionInfoVM;
 
 /**
  * Created by Eduard on 25-May-17.
  */
 
-public class ChatFB {
+public class ChatFB implements ActionInfoVM {
 
     @Exclude
     private String key;
@@ -52,4 +53,5 @@ public class ChatFB {
     public void setDate(String date) {
         this.date = date;
     }
+
 }

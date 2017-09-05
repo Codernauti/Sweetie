@@ -8,10 +8,6 @@
         <item name="actionMenuTextColor">@color/todolist_main_color</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <!-- background toolbar in support ActionMode -->
-        <item name="android:actionModeBackground">@color/rosa_sweetie</item>
-        <item name="actionModeBackground">@color/rosa_sweetie</item>
-
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
@@ -40,6 +36,10 @@
 
         <!-- color of the menu overflow icon (three vertical dots) -->
         <item name="android:textColorSecondary">@color/white</item>
+
+        <!-- color of the toolbar in actionMode -->
+        <item name="android:actionModeBackground">@color/rosa_sweetie</item>
+        <item name="actionModeBackground">@color/rosa_sweetie</item>
 
         <!-- This would set the toolbar's background color,
               but setting this also changes the popup menu's background,

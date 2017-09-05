@@ -15,20 +15,29 @@
          android:layout_centerVertical="true"/>
 
      <ProgressBar
-         android:id="@+id/progressBarUpload"
+         android:id="@+id/progress_bar_upload"
          style="?android:attr/progressBarStyleLarge"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:layout_centerHorizontal="true"
          android:layout_centerVertical="true" />
 
-     <ImageView
+
+    <ImageView
          android:id="@+id/thumbnail"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
          android:adjustViewBounds="true"
          android:padding="1dp"
          android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/photo_check_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_check_white_24dp"/>
 
 
 </com.sweetcompany.sweetie.gallery.SquareLayout>

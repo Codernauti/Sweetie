@@ -6,9 +6,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,14 +43,12 @@ import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class MapsFragment extends Fragment implements View.OnClickListener,
                                                       MapContract.View,
                                                       OnMapReadyCallback,
                                                       GoogleApiClient.ConnectionCallbacks,
                                                       GoogleApiClient.OnConnectionFailedListener{
-
 
     private static final String TAG = "MapFragment";
     private static final int GALLERY_MAP = 0;
@@ -195,7 +196,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
 
     public void drawGalleryMarker(Bitmap res, GalleryMapVM gallery){
         if(res != null) {
-            Bitmap circleBmp = getCroppedBitmap(res);
+            Bitmap circleBmp = getCircleBitmap(res);
             Bitmap markerIcon = Bitmap.createScaledBitmap(circleBmp, 96, 96, false);
 
             LatLng latLng = new LatLng(Double.parseDouble(gallery.getLat()) , Double.parseDouble(gallery.getLon()));
@@ -206,6 +207,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
 
             if ( map != null ) {
                 Marker galleryMarker = map.addMarker(markerOptions);
+                galleryMarker.setTitle(gallery.getTitle());
                 if(currentSelectionMap == GEOGIFT_MAP) galleryMarker.setVisible(false);
                 locationGalleryMarkers.add(galleryMarker);
                 Log.d(TAG, "addMarker " + markerOptions.getTitle());
@@ -213,23 +215,31 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         }
     }
 
-    public Bitmap getCroppedBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+    public static Bitmap getCircleBitmap(Bitmap bm) {
+        int sice = Math.min((bm.getWidth()), (bm.getHeight()));
+
+        Bitmap bitmap = ThumbnailUtils.extractThumbnail(bm, sice, sice);
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
 
-        final int color = 0xff424242;
+        final int color = 0xffff0000;
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
 
         paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setFilterBitmap(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
-        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
-                bitmap.getWidth() / 2, paint);
+        canvas.drawOval(rectF, paint);
+
+        paint.setColor(Color.BLUE);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth((float) 4);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
+
         return output;
     }
 

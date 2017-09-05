@@ -414,6 +414,7 @@ public class GeogiftMakerFragment extends Fragment implements
          }
 
          Uri uriFile = Uri.fromFile(new File(stringUriLocal));
+         stringUriLocal = uriFile.toString();
 
              Glide.with(this).load(uriFile.toString())
                      .thumbnail(0.5f)

@@ -49,7 +49,7 @@
         <!--android:windowSoftInputMode="adjustNothing"-->
         <activity android:name=".chat.ChatActivity"
             android:parentActivityName=".DashboardActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/ChatTheme"
             android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

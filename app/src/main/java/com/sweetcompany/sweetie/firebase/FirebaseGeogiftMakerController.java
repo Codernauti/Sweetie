@@ -32,7 +32,6 @@ public class FirebaseGeogiftMakerController {
     private final DatabaseReference mActionsRef;
     private final DatabaseReference mGeogiftsRef;
     private final StorageReference mStorageRef;
-    private final FirebaseStorage mStorage;
 
     private final String mActionsUrl;
     private final String mGeogiftsUrl;
@@ -50,7 +49,8 @@ public class FirebaseGeogiftMakerController {
 
     public FirebaseGeogiftMakerController(String coupleUid, String userUID) {
 
-        mStorage = FirebaseStorage.getInstance();
+        coupleID = coupleUid;
+        userID = userUID;
 
         mActionsUrl = Constraints.ACTIONS + "/" + coupleUid;
         mGeogiftsUrl = Constraints.GEOGIFTS + "/" + coupleUid;
@@ -60,9 +60,9 @@ public class FirebaseGeogiftMakerController {
         mActionsRef = mDatabaseRef.child(mActionsUrl);
         mGeogiftsRef = mDatabaseRef.child(mGeogiftsUrl);
 
-        mStorageRef = mStorage.getReference();
-        coupleID = coupleUid;
-        userID = userUID;
+        String mMediaGeogiftUrl = Constraints.GALLERY_GEOGIFTS + "/" + coupleUid;
+        mStorageRef = FirebaseStorage.getInstance().getReference(mMediaGeogiftUrl);
+
     }
 
     public void addListener(FirebaseGeogiftMakerController.GeogiftMakerControllerListener listener) {
@@ -116,10 +116,9 @@ public class FirebaseGeogiftMakerController {
     public void uploadMedia(String uriImage) {
         Log.d(TAG, "Uploading geogift media: " + uriImage);
 
-        Uri uriLocal;
-        uriLocal = Uri.parse(uriImage);
+        Uri uriLocal = Uri.parse(uriImage);
 
-        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_GEOGIFTS + "/" + coupleID + "/" + uriLocal.getLastPathSegment());
+        StorageReference photoRef = mStorageRef.child(uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

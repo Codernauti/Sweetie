@@ -105,11 +105,6 @@ public class Utility {
         return d;
     }
 
-    public static boolean isImageAvaibleInLocal(String uriLocal){
-        // TODO: this method remove too less complexity, redundancy remain into code base
-        return (new File(uriLocal)).isFile();
-    }
-
     public static void addGeofenceToSharedPreference(Context context, String key){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         ArrayList<String> stringList = getGeofenceKeyList(context);

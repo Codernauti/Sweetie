@@ -15,7 +15,6 @@ public class CoupleFB {
     private String partnerTwoUid;
     private String partnerOneUsername;
     private String partnerTwoUsername;
-    private String imageLocalUri;
     private String imageStorageUri;
     private String anniversary;
 
@@ -74,13 +73,6 @@ public class CoupleFB {
     }
     public void setPartnerTwoUsername(String partnerTwoUsername) {
         this.partnerTwoUsername = partnerTwoUsername;
-    }
-
-    public String getImageLocalUri() {
-        return imageLocalUri;
-    }
-    public void setImageLocalUri(String imageLocalUri) {
-        this.imageLocalUri = imageLocalUri;
     }
 
     public String getImageStorageUri() {

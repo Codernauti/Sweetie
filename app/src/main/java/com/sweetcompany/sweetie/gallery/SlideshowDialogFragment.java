@@ -124,20 +124,8 @@ public class SlideshowDialogFragment extends DialogFragment {
 
             PhotoVM image = images.get(position);
 
-            String uriToLoad;
-            // is image uploaded by me?
-            //verify if is in Local memory and has valid path
-            if(image.isTheMainUser()) {
-                if(Utility.isImageAvaibleInLocal(image.getUriLocal())) uriToLoad = image.getUriLocal();
-                else uriToLoad = image.getUriStorage();
-            }
-            else // uploaded by partner, take uri storage
-            {
-                uriToLoad = image.getUriStorage();
-            }
-
             Glide.with(getActivity())
-                    .load(uriToLoad)
+                    .load(image.getUriStorage())
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)

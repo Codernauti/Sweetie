@@ -12,28 +12,15 @@ import java.io.Serializable;
 
 public class PhotoVM extends MediaVM implements Serializable {
 
-    PhotoVM(boolean who, String date, String desc, String uriL, String uriS, int perc, String key) {
-        super(who, date, desc, uriL, uriS, perc, key);
+    PhotoVM(boolean who, String date, String desc, String uriS, int perc, String key) {
+        super(who, date, desc, uriS, perc, key);
     }
 
     @Override
     void configViewHolder(MediaViewHolder viewHolder) {
-        // TODO: This downcast is secure?
         PhotoViewHolder view = (PhotoViewHolder) viewHolder;
 
-        String uriToLoad;
-        // is image uploaded by me?
-        //verify if is in Local memory and has valid path
-        if(super.isTheMainUser()) {
-            if(Utility.isImageAvaibleInLocal(super.getUriLocal())) uriToLoad = super.getUriLocal();
-            else uriToLoad = super.getUriStorage();
-        }
-        else // uploaded by partner, take uri storage
-        {
-            uriToLoad = super.getUriStorage();
-        }
-
-        view.setImage(uriToLoad);
+        view.setImage(super.getUriStorage());
         view.setPercentUploading(super.getPercent());
     }
 

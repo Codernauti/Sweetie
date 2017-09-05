@@ -43,7 +43,6 @@ public class MessageConverter {
 
     private static MessageVM createTextPhotoMessageVM(MessageFB message, boolean who) {
         return new TextPhotoMessageVM(message.getText(), message.getEmail(), who, message.getDateTime(),
-                message.isBookmarked(), message.getKey(), message.getUriLocal(),
-                message.getUriStorage());
+                message.isBookmarked(), message.getKey(), message.getUriStorage());
     }
 }

@@ -205,7 +205,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
 
         final String newMediaUID = mGalleryPhotos.push().getKey();
 
-        Uri uriLocal = Uri.parse(media.getUriLocal());
+        Uri uriLocal = Uri.parse(media.getUriStorage());
         StorageReference photoRef = mMediaGallery.child(uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 

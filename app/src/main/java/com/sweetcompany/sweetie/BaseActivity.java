@@ -95,6 +95,7 @@ public class BaseActivity extends AppCompatActivity implements
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) { // user sign out
                     Utility.clearSharedPreferences(BaseActivity.this);
+                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                     takeUserToLoginScreenOnUnAuth();
                 }
             }

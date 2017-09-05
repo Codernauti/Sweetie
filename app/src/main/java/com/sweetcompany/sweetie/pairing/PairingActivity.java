@@ -39,14 +39,12 @@ public class PairingActivity extends BaseActivity
         }
 
         // get active user data
-        // TODO: think to store a User json object into sharedPreferences
-        String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
         String userUsername = Utility.getStringPreference(this, SharedPrefKeys.USERNAME);
         String userPhoneNumber = Utility.getStringPreference(this, SharedPrefKeys.PHONE_NUMBER);
         String userImageUri = Utility.getStringPreference(this, SharedPrefKeys.USER_IMAGE_URI);
         String userPairingRequestSent = Utility.getStringPreference(this, SharedPrefKeys.FUTURE_PARTNER_PAIRING_REQUEST);
 
-        mController = new FirebasePairingController(userUid, userUsername, userImageUri);
+        mController = new FirebasePairingController(super.mUserUid, userUsername, userImageUri);
         mPresenter = new PairingPresenter(mView, mController, userUsername, userPhoneNumber, userImageUri,
                 userPairingRequestSent);
 
@@ -63,5 +61,11 @@ public class PairingActivity extends BaseActivity
     @Override
     public void onCreateNewPairingRequestComplete(String futurePartnerUid) {
         Utility.saveStringPreference(this, SharedPrefKeys.FUTURE_PARTNER_PAIRING_REQUEST, futurePartnerUid);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
     }
 }

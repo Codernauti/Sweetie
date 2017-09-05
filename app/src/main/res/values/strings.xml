@@ -105,6 +105,6 @@
 
     <!-- Register -->
     <string name="register_title">Login</string>
-    <string name="register_welcome_msg">Welcome on Sweetie! Sing in to start</string>
+    <string name="register_welcome_msg">Welcome on Sweetie! Sign in to start</string>
 
 </resources>

@@ -35,9 +35,9 @@ public class FirebaseActionsController {
 
     private final DatabaseReference mDatabaseRef;
     private final DatabaseReference mActionsRef;
-    private final DatabaseReference mChatsRef;
+    /*private final DatabaseReference mChatsRef;
     private final DatabaseReference mGalleriesRef;
-    private final DatabaseReference mToDoListsRef;
+    private final DatabaseReference mToDoListsRef;*/
 
     private final String mActionsUrl;
     private final String mChatsUrl;
@@ -75,9 +75,9 @@ public class FirebaseActionsController {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
         mActionsRef = mDatabaseRef.child(mActionsUrl);
-        mChatsRef = mDatabaseRef.child(mChatsUrl);
+        /*mChatsRef = mDatabaseRef.child(mChatsUrl);
         mGalleriesRef = mDatabaseRef.child(mGalleriesUrl);
-        mToDoListsRef = mDatabaseRef.child(mToDoListsUrl);
+        mToDoListsRef = mDatabaseRef.child(mToDoListsUrl);*/
 
         StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         mCoupleStorage = mStorageRef.child(Constraints.ACTIONS_IMAGES + "/" + coupleUid);
@@ -132,8 +132,10 @@ public class FirebaseActionsController {
 
     public List<String> pushAction(ActionFB action) {
         List<String> newKeys = new ArrayList<>();
-        String childActionUid = "";
-        String childTitle = action.getTitle();
+
+        // info share between parentAction and childAction
+        String actionUid = mActionsRef.push().getKey();
+        String actionTitle = action.getTitle();
 
         HashMap<String, Object> updates = new HashMap<>();
 
@@ -141,29 +143,23 @@ public class FirebaseActionsController {
         switch (action.getType()) {
             case ActionFB.CHAT: {
                 ChatFB chat = new ChatFB();
-                chat.setTitle(childTitle);
-                DatabaseReference childActionPush = mChatsRef.push();
-                childActionUid = childActionPush.getKey();
+                chat.setTitle(actionTitle);
 
-                updates.put(mChatsUrl + "/" + childActionUid, chat);
+                updates.put(mChatsUrl + "/" + actionUid, chat);
                 break;
             }
             case ActionFB.GALLERY: {
                 GalleryFB gallery = new GalleryFB();
-                gallery.setTitle(childTitle);
+                gallery.setTitle(actionTitle);
 
-                DatabaseReference childActionPush = mGalleriesRef.push();
-                childActionUid = childActionPush.getKey();
-                updates.put(mGalleriesUrl + "/" + childActionUid, gallery);
+                updates.put(mGalleriesUrl + "/" + actionUid, gallery);
                 break;
             }
             case ActionFB.TODOLIST: {
                 ToDoListFB toDoList = new ToDoListFB();
-                toDoList.setTitle(childTitle);
+                toDoList.setTitle(actionTitle);
 
-                DatabaseReference childActionPush = mToDoListsRef.push();
-                childActionUid = childActionPush.getKey();
-                updates.put(mToDoListsUrl + "/" + childActionUid, toDoList);
+                updates.put(mToDoListsUrl + "/" + actionUid, toDoList);
                 break;
             }
             case ActionFB.GEOGIFT:
@@ -171,18 +167,14 @@ public class FirebaseActionsController {
                 break;
         }
 
-        DatabaseReference actionPush = mActionsRef.push();
-        String actionUid = actionPush.getKey();
-
         // init action
-        action.setChildKey(childActionUid);
+        action.setChildKey(actionUid);
         updates.put(mActionsUrl + "/" + actionUid, action);
 
         // update database
         mDatabaseRef.updateChildren(updates);
 
         // keep the uid to return
-        newKeys.add(childActionUid);
         newKeys.add(actionUid);
 
         return newKeys;

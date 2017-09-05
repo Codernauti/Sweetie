@@ -66,6 +66,22 @@
     />
 
     <TextView
+        android:id="@+id/action_item_notification_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+
+        app:layout_constraintTop_toTopOf="@+id/action_item_type"
+        app:layout_constraintStart_toStartOf="@+id/action_item_type"
+        app:layout_constraintEnd_toEndOf="@+id/action_item_type"
+        app:layout_constraintBottom_toBottomOf="@+id/action_item_type"
+
+        android:background="@drawable/shape_circle"
+        android:textColor="@color/white"
+        android:text="10"
+        />
+
+    <TextView
         android:id="@+id/action_item_subtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -8,11 +8,11 @@ public class GalleryMapVM {
 
     private String mKey;
     private String mTitle;
-    private String mLat;
-    private String mLon;
+    private Double mLat;
+    private Double mLon;
     private String mUriCover;
 
-    GalleryMapVM(String key, String lat, String lon, String uriCover) {
+    GalleryMapVM(String key, Double lat, Double lon, String uriCover) {
         mKey = key;
         mLat = lat;
         mLon = lon;
@@ -26,19 +26,19 @@ public class GalleryMapVM {
         return mTitle;
     }
 
-    public String getLat() {
+    public Double getLat() {
         return mLat;
     }
 
-    public void setLat(String mLat) {
+    public void setLat(Double mLat) {
         this.mLat = mLat;
     }
 
-    public String getLon() {
+    public Double getLon() {
         return mLon;
     }
 
-    public void setLon(String mLon) {
+    public void setLon(Double mLon) {
         this.mLon = mLon;
     }
 

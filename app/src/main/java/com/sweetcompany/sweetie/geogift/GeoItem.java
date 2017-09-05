@@ -16,8 +16,8 @@ public class GeoItem {
     private String title;
     private String message;
     private String address;
-    private String lat;
-    private String lon;
+    private Double lat;
+    private Double lon;
     private String uriS;
     private boolean bookmarked;
     private String datetimeCreation;
@@ -74,19 +74,19 @@ public class GeoItem {
         this.address = address;
     }
 
-    public String getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(String lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public String getLon() {
+    public Double getLon() {
         return lon;
     }
 
-    public void setLon(String lon) {
+    public void setLon(Double lon) {
         this.lon = lon;
     }
 

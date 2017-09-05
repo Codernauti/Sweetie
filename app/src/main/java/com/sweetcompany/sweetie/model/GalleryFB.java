@@ -13,8 +13,8 @@ public class GalleryFB {
 
     private String title;
     private String date;
-    private String latitude;
-    private String longitude;
+    private Double latitude;
+    private Double longitude;
     private String uriCover;
 
     // For firebase
@@ -44,19 +44,19 @@ public class GalleryFB {
         this.date = date;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 

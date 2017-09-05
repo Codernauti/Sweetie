@@ -10,12 +10,12 @@ public class GeogiftMapVM {
     private String mKey;
 
     private String mTitle;
-    private String mLat;
-    private String mLon;
+    private Double mLat;
+    private Double mLon;
     private int mType;
     private String mUriStorage;
 
-    GeogiftMapVM(String key, String lat, String lon) {
+    GeogiftMapVM(String key, Double lat, Double lon) {
         mKey = key;
         mLat = lat;
         mLon = lon;
@@ -28,17 +28,17 @@ public class GeogiftMapVM {
         this.mTitle = title;
     }
 
-    public String getLat() {
+    public Double getLat() {
         return mLat;
     }
-    public void setLat(String mLat) {
+    public void setLat(Double mLat) {
         this.mLat = mLat;
     }
 
-    public String getLon() {
+    public Double getLon() {
         return mLon;
     }
-    public void setLon(String mLon) {
+    public void setLon(Double mLon) {
         this.mLon = mLon;
     }
 

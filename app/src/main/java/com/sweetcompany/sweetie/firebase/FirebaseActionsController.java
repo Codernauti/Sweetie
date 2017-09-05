@@ -135,7 +135,6 @@ public class FirebaseActionsController {
 
         // info share between parentAction and childAction
         String actionUid = mActionsRef.push().getKey();
-        String actionTitle = action.getTitle();
 
         HashMap<String, Object> updates = new HashMap<>();
 
@@ -143,21 +142,24 @@ public class FirebaseActionsController {
         switch (action.getType()) {
             case ActionFB.CHAT: {
                 ChatFB chat = new ChatFB();
-                chat.setTitle(actionTitle);
+                chat.setTitle(action.getTitle());
+                chat.setDate(action.getDataTime());
 
                 updates.put(mChatsUrl + "/" + actionUid, chat);
                 break;
             }
             case ActionFB.GALLERY: {
                 GalleryFB gallery = new GalleryFB();
-                gallery.setTitle(actionTitle);
+                gallery.setTitle(action.getTitle());
+                gallery.setDate(action.getDataTime());
 
                 updates.put(mGalleriesUrl + "/" + actionUid, gallery);
                 break;
             }
             case ActionFB.TODOLIST: {
                 ToDoListFB toDoList = new ToDoListFB();
-                toDoList.setTitle(actionTitle);
+                toDoList.setTitle(action.getTitle());
+                toDoList.setDate(action.getDataTime());
 
                 updates.put(mToDoListsUrl + "/" + actionUid, toDoList);
                 break;

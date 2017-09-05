@@ -28,6 +28,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.DataMaker;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.IOException;
@@ -109,7 +110,7 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
     @Override
     public void updateInfo(GalleryVM action) {
         mToolBar.setTitle(action.getTitle());
-        mDateCreationTextView.setText(action.getDate());
+        mDateCreationTextView.setText(DataMaker.getDate_d_month_yyyy(action.getDate()));
 
         Glide.with(this)
                 .load(action.getImageUri())
@@ -194,13 +195,12 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
             case R.id.change_image_button: {
 
                 CropImage.activity()
-                        .setAspectRatio(15, 10) // a rectangle
+                        .setAspectRatio(13, 10) // a rectangle
                         .start(getContext(), this);
 
                 break;
             }
             case R.id.change_position_button: {
-                // TODO: open MapFragment for choose an address
                 pickPosition();
                 break;
             }
@@ -211,24 +211,21 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
 
     public void pickPosition(){
         try {
+
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
             // TODO set start bounds
             //builder.setLatLngBounds(latLngBounds);
             Intent i = builder.build(getActivity());
             startActivityForResult(i, PLACE_PICKER_REQUEST);
+
         } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
             //TODO adjust catch
             Log.e(TAG, String.format("GooglePlayServices Not Available [%s]", e.getMessage()));
-            Toast toast = new Toast(getContext());
-            toast.setText("GooglePlayServices Not Available");
-            toast.setDuration(Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(getContext(), "GooglePlayServices Not Available", Toast.LENGTH_SHORT).show();
+
         } catch (Exception e) {
             Log.e(TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
-            Toast toast = new Toast(getContext());
-            toast.setText("Error");
-            toast.setDuration(Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
         }
     }
 }

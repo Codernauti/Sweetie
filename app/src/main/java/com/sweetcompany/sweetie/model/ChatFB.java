@@ -13,6 +13,7 @@ public class ChatFB {
 
     private String title;
     private String uriCover;
+    private String date;
 
     // For firebase
     public ChatFB() {}
@@ -42,5 +43,13 @@ public class ChatFB {
 
     public void setUriCover(String uriCover) {
         this.uriCover = uriCover;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

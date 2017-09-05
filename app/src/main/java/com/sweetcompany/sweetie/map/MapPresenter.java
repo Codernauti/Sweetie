@@ -28,6 +28,7 @@ public class MapPresenter implements MapContract.Presenter, FirebaseMapControlle
     @Override
     public void onGalleryAdded(GalleryFB gallery) {
         GalleryMapVM newGalleryVM =  new GalleryMapVM(gallery.getKey(), gallery.getLatitude(), gallery.getLongitude(), gallery.getUriCover());
+        newGalleryVM.setTitle(gallery.getTitle());
         mView.addGallery(newGalleryVM);
     }
     @Override

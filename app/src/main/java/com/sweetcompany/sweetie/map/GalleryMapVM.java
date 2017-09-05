@@ -19,6 +19,9 @@ public class GalleryMapVM {
         mUriCover = uriCover;
     }
 
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
+    }
     String getTitle() {
         return mTitle;
     }
@@ -46,5 +49,6 @@ public class GalleryMapVM {
     public void setUriCover(String mUriCover) {
         this.mUriCover = mUriCover;
     }
+
 
 }

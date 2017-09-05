@@ -19,6 +19,7 @@ import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,6 +152,7 @@ public class FirebaseActionsController {
             case ActionFB.GALLERY: {
                 GalleryFB gallery = new GalleryFB();
                 gallery.setTitle(childTitle);
+                gallery.setDate(DataMaker.get_UTC_DateTime());
 
                 DatabaseReference childActionPush = mGalleriesRef.push();
                 childActionUid = childActionPush.getKey();

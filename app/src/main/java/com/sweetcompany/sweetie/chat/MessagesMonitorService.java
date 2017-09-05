@@ -120,6 +120,7 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
 
         // init intent for open ChatActivity or DashboardActivity
         Intent intent;
+        PendingIntent pendingIntent;
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         NotificationCompat.Action replyAction;
 
@@ -145,7 +146,8 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
                     .addParentStack(ChatActivity.class)         // start DashboardActivity
                     .addNextIntent(intent);
 
-            PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT
+                    | PendingIntent.FLAG_ONE_SHOT);
 
             replyAction = new NotificationCompat.Action(R.drawable.ic_reply_black_24dp, "Reply", pendingIntent);
         }
@@ -160,7 +162,7 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
             stackBuilder.addParentStack(DashboardActivity.class)
                     .addNextIntent(intent);
 
-            PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
             replyAction = new NotificationCompat.Action(R.drawable.ic_reply_black_24dp, "Open", pendingIntent);
         }
@@ -172,12 +174,12 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
                 .setNumber(mMessagesNotified.size())
                 .setContentTitle(contentTitle)
                 .setContentText(contentText)
-                .setAutoCancel(true)
                 .setColor(ContextCompat.getColor(this, R.color.rosa_sweetie))
                 .addAction(replyAction)
+                .setContentIntent(pendingIntent)
+                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
+                .setAutoCancel(true)
                 .build();
-
-        notification.flags = Notification.DEFAULT_LIGHTS & Notification.FLAG_AUTO_CANCEL;
 
         mNotificationManager.notify(NOTIFICATION_ID, notification);
     }

@@ -94,10 +94,10 @@ public class GalleryInfoActivity extends BaseActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-        outState.putString(mGalleryUid, GALLERY_UID_KEY);
-        outState.putString(mParentActionUid, PARENT_ACTION_UID_KEY);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(GALLERY_UID_KEY, mGalleryUid);
+        outState.putString(PARENT_ACTION_UID_KEY, mParentActionUid);
     }
 
     @Override

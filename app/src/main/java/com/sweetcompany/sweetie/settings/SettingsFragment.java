@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -222,6 +223,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
                     Log.d(TAG, "permission not give");
                     setGeogiftFeature(false);
                     mGeogiftSwitch.setChecked(false);
+                    Toast.makeText(getContext(), getString(R.string.app_permission_denied), Toast.LENGTH_SHORT).show();
                 }
                 break;
             }

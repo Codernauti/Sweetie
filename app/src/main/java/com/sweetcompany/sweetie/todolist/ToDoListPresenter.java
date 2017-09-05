@@ -8,7 +8,7 @@ import com.sweetcompany.sweetie.model.ToDoListFB;
  * Created by lucas on 04/08/2017.
  */
 
-public class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListController.ToDoListControllerListener {
+class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListController.Listener {
 
 
     private static final String TAG = "ToDoListPresenter";

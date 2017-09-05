@@ -31,7 +31,7 @@
     <!-- Gallery colors -->
     <color name="gallery_main_color">#8CE25B</color>
     <color name="gallery_background">#e6e6e6</color>
-    <color name="gallery_photo_selected">#8c8c8c</color>
+    <color name="gallery_photo_selected">#333333</color>
 
 
     <color name="geogift_background">#e6e6e6</color>

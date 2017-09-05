@@ -1,7 +1,5 @@
 package com.sweetcompany.sweetie.gallery;
 
-import android.app.Application;
-import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -23,13 +21,15 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
     private final TextView mPercentUploading;
     private final ImageView mThumbnail;
     private final ProgressBar mProgressBar;
+    private final ImageView mCheckIcon;
 
     PhotoViewHolder(View itemView) {
         super(itemView);
 
         mPercentUploading = (TextView) itemView.findViewById(R.id.progress_percent);
         mThumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
-        mProgressBar = (ProgressBar) itemView.findViewById(R.id.progressBarUpload);
+        mProgressBar = (ProgressBar) itemView.findViewById(R.id.progress_bar_upload);
+        mCheckIcon = (ImageView) itemView.findViewById(R.id.photo_check_icon);
 
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
@@ -57,8 +57,10 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
     public void setViewHolderSelected(boolean selected) {
         mThumbnail.setSelected(selected);
         if (selected) {
+            mCheckIcon.setVisibility(View.VISIBLE);
             updateTintColor();
         } else {
+            mCheckIcon.setVisibility(View.GONE);
             removeTintColor();
         }
     }

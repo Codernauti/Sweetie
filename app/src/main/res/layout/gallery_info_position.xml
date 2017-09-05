@@ -30,13 +30,13 @@
 
         android:layout_alignEnd="@+id/map_position_label"
         android:layout_alignParentEnd="true"
-        android:layout_above="@+id/map_position"
+        android:layout_above="@+id/map_position_text"
         android:src="@drawable/ic_mode_edit_black_24dp"
         android:background="@null"
         />
 
     <TextView
-        android:id="@+id/map_position"
+        android:id="@+id/map_position_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="@dimen/settings_general_padding"

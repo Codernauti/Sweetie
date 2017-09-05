@@ -1,7 +1,10 @@
 package com.sweetcompany.sweetie.actions;
 
 
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import com.sweetcompany.sweetie.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Eduard on 07/05/2017.
@@ -77,11 +81,12 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             implements View.OnClickListener, View.OnLongClickListener{
 
         private final TextView mNoImageTextView;
-        private TextView mTitleTextView,
+        private final TextView mTitleTextView,
                         mDescriptionTextView,
                         mDateTextView;
-        private ImageView mAvatarImageView,
-                        mTypeIcon;
+        private final ImageView mAvatarImageView;
+        private final ImageView mTypeIcon;
+        private final TextView mNotificCounter;
 
         private String mTitleText;
 
@@ -99,6 +104,7 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
             mNoImageTextView = (TextView) itemView.findViewById(R.id.action_no_image_text);
 
             mTypeIcon = (ImageView) itemView.findViewById(R.id.action_item_type);
+            mNotificCounter = (TextView) itemView.findViewById(R.id.action_item_notification_counter);
         }
 
         void setTitle(String title) {
@@ -144,6 +150,22 @@ class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolde
 
         void setTypeIcon(int typeIcon) {
             mTypeIcon.setImageResource(typeIcon);
+        }
+
+        void setNotificationCount(int count, int color) {
+            if (count == 0) {
+                mDateTextView.setTypeface(Typeface.DEFAULT);
+                mNotificCounter.setVisibility(View.GONE);
+                mTypeIcon.setVisibility(View.VISIBLE);
+            } else {
+                mDateTextView.setTypeface(Typeface.DEFAULT_BOLD);
+
+                mNotificCounter.setText(String.valueOf(count));
+                mNotificCounter.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+                mNotificCounter.setVisibility(View.VISIBLE);
+
+                mTypeIcon.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override

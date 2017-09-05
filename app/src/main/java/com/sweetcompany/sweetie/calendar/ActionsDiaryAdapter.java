@@ -41,7 +41,7 @@ public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
             viewHolder.type = (ImageView) convertView.findViewById(R.id.action_item_type);
 
             convertView.findViewById(R.id.action_item_date).setVisibility(View.GONE);
-            convertView.findViewById(R.id.image_action_list_item).setVisibility(View.GONE);
+            //convertView.findViewById(R.id.image_action_list_item).setVisibility(View.GONE);
 
             convertView.setTag(viewHolder);
         }

@@ -114,12 +114,12 @@ public class FirebaseGeogiftMakerController {
 
     // push message to db and update action of this gallery
     public void uploadMedia(String uriImage) {
-        Log.d(TAG, "Upload geogift media: " + uriImage);
+        Log.d(TAG, "Uploading geogift media: " + uriImage);
 
         Uri uriLocal;
         uriLocal = Uri.parse(uriImage);
 
-        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_GEOGIFTS + "/" + coupleID+"/"+uriLocal.getLastPathSegment());
+        StorageReference photoRef = mStorageRef.child(Constraints.GALLERY_GEOGIFTS + "/" + coupleID + "/" + uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

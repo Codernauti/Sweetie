@@ -69,16 +69,16 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(mViewPager);
         //Set map tab icon
-        tabLayout.getTabAt(DashboardPagerAdapter.MAP_TAB).setIcon(R.drawable.mapicon_white);
+        //tabLayout.getTabAt(DashboardPagerAdapter.MAP_TAB).setIcon(R.drawable.mapicon_white);
         // Show HomePage first
         mViewPager.setCurrentItem(DashboardPagerAdapter.HOME_TAB);
         //SlidingTabStrip in TabLayout
-        ViewGroup slidingTabStrip = (ViewGroup) tabLayout.getChildAt(0);
+        /*ViewGroup slidingTabStrip = (ViewGroup) tabLayout.getChildAt(0);
         //Last tab (map) in SlidingTabStrip
         View tab1 = slidingTabStrip.getChildAt(DashboardPagerAdapter.MAP_TAB);
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) tab1.getLayoutParams();
         layoutParams.weight = 0.5f;
-        tab1.setLayoutParams(layoutParams);
+        tab1.setLayoutParams(layoutParams);*/
     }
 
     @Override

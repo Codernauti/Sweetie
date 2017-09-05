@@ -36,7 +36,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/plus_icon"
-        app:backgroundTint="@color/green_sweetie"
+        app:backgroundTint="@color/gallery_main_color"
         />
 
 

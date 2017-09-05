@@ -53,6 +53,6 @@ public class ActionGeogiftVM extends ActionVM {
 
     @Override
     public int getAvatarTextIdColor() {
-        return R.color.geogiftItem;
+        return R.color.background_uploading_geogift;
     }
 }

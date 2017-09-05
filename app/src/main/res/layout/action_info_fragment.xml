@@ -16,8 +16,7 @@
         app:layout_constraintBottom_toTopOf="@+id/action_info_image"
 
         android:elevation="4dp"
-        android:background="?attr/colorPrimary"
-
+        android:background="@color/colorPrimary"
         app:theme="@style/SweetieThemeToolbar"
         app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
         />

@@ -117,8 +117,8 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
                 return mContext.getString(R.string.home_tab_name);
             //case FOLDERS_TAB:
               //  return mContext.getString(R.string.folders_tab_name);
-            //case MAP_TAB:
-                //return context.getString(R.string.map_tab_name);
+            case MAP_TAB:
+                return mContext.getString(R.string.map_tab_name);
         }
         return null;
     }

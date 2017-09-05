@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@color/azzurro_pastello"
+        android:background="@color/todolist_main_color"
         android:text="..."
         android:textSize="12sp"
         android:textStyle="bold"

@@ -16,6 +16,7 @@ public class GalleryFB {
     private Double latitude;
     private Double longitude;
     private String uriCover;
+    private boolean imageSetByUser;
 
     // For firebase
     public GalleryFB() {}
@@ -66,5 +67,13 @@ public class GalleryFB {
 
     public void setUriCover(String uriCover) {
         this.uriCover = uriCover;
+    }
+
+    public boolean isImageSetByUser() {
+        return imageSetByUser;
+    }
+
+    public void setImageSetByUser(boolean imageSetByUser) {
+        this.imageSetByUser = imageSetByUser;
     }
 }

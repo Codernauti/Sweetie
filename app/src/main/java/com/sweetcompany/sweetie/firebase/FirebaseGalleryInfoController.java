@@ -19,10 +19,7 @@ import com.sweetcompany.sweetie.model.GalleryFB;
 
 import java.util.HashMap;
 
-/**
- * Created by Eduard on 04-Sep-17.
- */
-
+@Deprecated
 public class FirebaseGalleryInfoController {
 
     private static final String TAG = "GalleryInfoController";
@@ -45,6 +42,9 @@ public class FirebaseGalleryInfoController {
     }
 
 
+    /**
+     *  @Deprecated use FirebaseActionInfoController instead
+     */
     public FirebaseGalleryInfoController(String coupleUid, String galleryUid, String parentActionUid) {
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
@@ -110,6 +110,7 @@ public class FirebaseGalleryInfoController {
 
                         HashMap<String, Object> updates = new HashMap<>();
                         updates.put(mGalleryUrl + "/" + Constraints.Galleries.URI_COVER, imageStorageUriString);
+                        updates.put(mGalleryUrl + "/" + Constraints.Galleries.IMG_SET_BY_USER, true);
                         updates.put(mParentActionUrl + "/" + Constraints.Actions.IMAGE_URL, imageStorageUriString);
 
                         mDatabaseRef.updateChildren(updates);

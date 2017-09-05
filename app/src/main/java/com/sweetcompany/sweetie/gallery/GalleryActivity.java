@@ -59,7 +59,8 @@ public class GalleryActivity extends BaseActivity {
         }
 
         if (mGalleryKey != null) {
-            mController = new FirebaseGalleryController(super.mCoupleUid, mGalleryKey, mActionKey);
+            mController = new FirebaseGalleryController(super.mCoupleUid, mGalleryKey, mActionKey,
+                    super.mUserUid, super.mPartnerUid);
             mPresenter = new GalleryPresenter(view, mController, super.mUserEmail);
         }
         else {

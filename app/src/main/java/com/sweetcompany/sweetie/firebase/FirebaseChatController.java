@@ -283,10 +283,9 @@ public class FirebaseChatController {
         // push a message into mChatMessagesRef reference
         updates.put(mChatMessagesUrl + "/" + msgUid, msg);
 
-        // update description and dataTime of action of this associated Chat
+        // update description, dataTime and partnerNotificCounter of action of this associated Chat
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, msg.getText());
         updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, msg.getDateTime());
-        // TODO: set counter with ++
         updates.put(mPartnerNotificationCounterUrl, ++mPartnerCounter);
 
         // update msg-notification-room

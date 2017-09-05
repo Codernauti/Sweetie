@@ -79,11 +79,12 @@ public class ActionMenuDialogFragment extends DialogFragment implements ActionsC
             mActionChildUid = getArguments().getString(ACTION_CHILD_UID_KEY);
             mActionChildType = getArguments().getInt(ACTION_CHILD_TYPE_KEY);
 
-            if (mActionChildType == ActionVM.CHAT || mActionChildType == ActionVM.TODOLIST) {
+            /*if (mActionChildType == ActionVM.CHAT || mActionChildType == ActionVM.TODOLIST) {
                 mItems = mItemsComplete;
-            } else {
+            } else {*/
+            //TODO
                 mItems = mItemsMinor;
-            }
+            /*}*/
 
             Log.d(TAG, mActionUid + " - " + mActionChildUid + " - " + mActionChildType);
         } else {

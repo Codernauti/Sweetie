@@ -18,14 +18,16 @@ public class ActionDiaryFB implements ActionDiaryVM {
     private String date;
     private String title;
     private String description;
+    private String imageUri;
 
     public ActionDiaryFB() { }
 
-    public ActionDiaryFB(int type, String date, String title, String description) {
+    public ActionDiaryFB(int type, String date, String title, String description, String imageUri) {
         this.type = type;
         this.date = date;
         this.title = title;
         this.description = description;
+        this.imageUri = imageUri;
     }
 
     @Exclude
@@ -77,5 +79,13 @@ public class ActionDiaryFB implements ActionDiaryVM {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 }

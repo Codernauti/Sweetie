@@ -29,15 +29,13 @@ import java.util.Map;
  * Created by Eduard on 21-May-17.
  */
 
-public class FirebaseChatController {
+public class FirebaseChatController extends FirebaseGeneralActionController {
 
     private static final String TAG = "FbChatController";
 
     private final String mChatUid;
     private final String mChatTitle;
     private final String mCoupleUid;
-    private final String mUserUid;
-    private final String mPartnerUid;
 
     // database
     private final String mChatMessagesUrl;                  // chat-message/<couple_uid>/<chat_uid>
@@ -45,27 +43,18 @@ public class FirebaseChatController {
     private final String mCoupleActionsDiaryUrl;            // actionsDiary/<couple_uid>/<action_uid>
     private final String mActionUrl;                        // actions/<couple_uid>/<action_uid>
     private final String mNotificationRoomUrl;              // msg-notification-rooms/<user_uid>
-    private final String mUserNotificationCounterUrl;
-    private final String mPartnerNotificationCounterUrl;    // acions/<couple_uid>/<action_uid>/notificationCounters/<partner_uid>
-
-    // storage
-    private final String mGalleryPhotoUrl;          // gallery_photos/<couple_uid>
 
     private final DatabaseReference mDatabaseRef;
     private final DatabaseReference mChatRef;
     private final DatabaseReference mChatMessagesRef;
-    private final DatabaseReference mActionRef;
 
-    private final StorageReference mStorageRef;
+    private final StorageReference mGalleryPhotoRef;
 
     private ValueEventListener mChatListener;
     private ChildEventListener mChatMessagesListener;
-    private ValueEventListener mActionListener;
 
     // Start object for notification new message to partner
     private final MsgNotification mMsgDefaultNotification;
-
-    private int mPartnerCounter;
 
 
     private Listener mListener;
@@ -82,11 +71,11 @@ public class FirebaseChatController {
 
     public FirebaseChatController(String coupleUid, String chatKey, String chatTitle, String actionUid,
                                   String userUid, String partnerUid) {
+        super(coupleUid, userUid, partnerUid, actionUid);
+
         mCoupleUid = coupleUid;
         mChatUid = chatKey;
         mChatTitle = chatTitle;
-        mUserUid = userUid;
-        mPartnerUid = partnerUid;
 
         mMsgDefaultNotification = new MsgNotification(chatKey, actionUid, chatTitle);
 
@@ -96,25 +85,13 @@ public class FirebaseChatController {
         mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionUid;
         mNotificationRoomUrl = Constraints.MSG_NOTIFICATION_ROOMS + "/" + partnerUid;
 
-        mUserNotificationCounterUrl = mActionUrl + "/"
-                + Constraints.Actions.NOTIFICATION_COUNTER + "/"
-                + userUid + "/"
-                + Constraints.Actions.COUNTER;
-
-        mPartnerNotificationCounterUrl = mActionUrl + "/"
-                + Constraints.Actions.NOTIFICATION_COUNTER + "/"
-                + partnerUid + "/"
-                + Constraints.Actions.COUNTER;
-
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
         mChatRef = mDatabaseRef.child(Constraints.CHATS + "/" + coupleUid + "/" + chatKey);
         mChatMessagesRef = mDatabaseRef.child(mChatMessagesUrl);
-        mActionRef = mDatabaseRef.child(mActionUrl);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference();
-
-        mGalleryPhotoUrl = Constraints.GALLERY_PHOTOS_DIRECTORY + "/" + mCoupleUid;
+        String mGalleryPhotoUrl = Constraints.GALLERY_PHOTOS_DIRECTORY + "/" + mCoupleUid;
+        mGalleryPhotoRef = FirebaseStorage.getInstance().getReference(mGalleryPhotoUrl);
     }
 
     public void setListener(Listener listener) {
@@ -123,6 +100,8 @@ public class FirebaseChatController {
 
 
     public void attachListeners() {
+        super.attachListeners();
+
         if (mChatMessagesListener == null) {
             mChatMessagesListener = new ChildEventListener() {
                 @Override
@@ -185,38 +164,11 @@ public class FirebaseChatController {
             };
             mChatRef.addValueEventListener(mChatListener);
         }
-
-        if (mActionListener == null) {
-            mActionListener = new ValueEventListener() {
-
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    ActionFB action = dataSnapshot.getValue(ActionFB.class);
-
-                    // TODO: exclude error partner
-                    if (action != null && action.getNotificationCounters() != null) {
-
-                        if (action.getNotificationCounters().containsKey(mPartnerUid)) {
-                            mPartnerCounter = action.getNotificationCounters().get(mPartnerUid).getCounter();
-                        }
-
-                        if (action.getNotificationCounters().containsKey(mUserUid)) {
-                            mDatabaseRef.child(mUserNotificationCounterUrl).setValue(0);
-                        }
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            };
-            mActionRef.addValueEventListener(mActionListener);
-        }
     }
 
     public void detachListeners() {
+        super.detachListeners();
+
         if (mChatListener != null) {
             mChatRef.removeEventListener(mChatListener);
         }
@@ -226,11 +178,6 @@ public class FirebaseChatController {
             mChatMessagesRef.removeEventListener(mChatMessagesListener);
         }
         mChatMessagesListener = null;
-
-        if (mActionListener != null) {
-            mActionRef.removeEventListener(mActionListener);
-        }
-        mActionListener = null;
     }
 
 
@@ -286,7 +233,8 @@ public class FirebaseChatController {
         // update description, dataTime and partnerNotificCounter of action of this associated Chat
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, msg.getText());
         updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, msg.getDateTime());
-        updates.put(mPartnerNotificationCounterUrl, ++mPartnerCounter);
+
+        super.updateNotificationCounter(updates);
 
         // update msg-notification-room
         mMsgDefaultNotification.setText(msg.getText());
@@ -299,7 +247,7 @@ public class FirebaseChatController {
         final String newMessageUid = mChatMessagesRef.push().getKey();
 
         Uri uriLocal = Uri.parse(mediaMessage.getUriLocal());
-        StorageReference photoRef = mStorageRef.child(mGalleryPhotoUrl + "/" + uriLocal.getLastPathSegment());
+        StorageReference photoRef = mGalleryPhotoRef.child(uriLocal.getLastPathSegment());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails
@@ -314,7 +262,6 @@ public class FirebaseChatController {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             mediaMessage.setUriStorage(downloadUrl.toString());
-                            //mediaMessage.setText("\uD83D\uDCF7");   //camera emoji
 
                             addMessage(newMessageUid, mediaMessage);
                     }

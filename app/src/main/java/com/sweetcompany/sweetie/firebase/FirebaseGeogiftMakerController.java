@@ -82,7 +82,7 @@ public class FirebaseGeogiftMakerController {
         String newActionKey = newActionPush.getKey();
 
         // Set Actions
-        actionFB.setChildKey(newGeogiftKey);
+        //actionFB.setKey(newGeogiftKey); //was child
 
         // Create Gallery and set Gallery
         GeogiftFB geogiftFB = new GeogiftFB();

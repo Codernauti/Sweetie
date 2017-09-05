@@ -2,15 +2,11 @@ package com.sweetcompany.sweetie.geogift;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -20,10 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -116,7 +110,7 @@ public class GeogiftMakerFragment extends Fragment implements
     private GeogiftMakerContract.Presenter mPresenter;
     private String titleGeogift;
 
-    private GeoItem mGeoItem;
+    private GeogiftVM mGeoItem;
 
     public static GeogiftMakerFragment newInstance(Bundle bundle) {
         GeogiftMakerFragment newGeogiftMakerFragment = new GeogiftMakerFragment();
@@ -210,7 +204,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
         switchContainerGift(PHOTO_SELECTION);
 
-        mGeoItem = new GeoItem();
+        mGeoItem = new GeogiftVM();
 
         return root;
     }
@@ -469,7 +463,7 @@ public class GeogiftMakerFragment extends Fragment implements
         uriStorage = uriS;
         if(uriStorage!=null)
         {
-            mGeoItem.setUriS(uriStorage);
+            mGeoItem.setUriStorage(uriStorage);
             createNewGeogift();
         }
     }
@@ -478,22 +472,22 @@ public class GeogiftMakerFragment extends Fragment implements
         if(currentSelection == PHOTO_SELECTION){
             mPresenter.uploadMedia(uriImageToLoad);
             sendingFragment.setVisibility(View.VISIBLE);
-            mGeoItem.setType(GeoItem.PHOTO_GEOGIFT);
+            mGeoItem.setType(GeogiftVM.PHOTO_GEOGIFT);
             //createNewGeogift();
         }
         else if(currentSelection == MESSAGE_SELECTION){
-            mGeoItem.setType(GeoItem.MESSAGE_GEOGIFT);
+            mGeoItem.setType(GeogiftVM.MESSAGE_GEOGIFT);
             createNewGeogift();
         }
         else if(currentSelection == HEART_SELECTION){
-            mGeoItem.setType(GeoItem.HEART_GEOGIFT);
+            mGeoItem.setType(GeogiftVM.HEART_GEOGIFT);
             createNewGeogift();
         }
     }
 
     public void createNewGeogift(){
 
-        //TODO implement GeoItem with costructor not only setter
+        //TODO implement GeogiftVM with costructor not only setter
         String mUserUid = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
        mGeoItem.setUserCreatorUID(mUserUid);
        mGeoItem.setAddress(addressGeogift);

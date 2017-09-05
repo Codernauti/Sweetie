@@ -12,7 +12,7 @@ public class GalleryFB {
     private String key;
 
     private String title;
-    private String date;
+    private String creationDate;
     private Double latitude;
     private Double longitude;
     private String uriCover;
@@ -37,18 +37,16 @@ public class GalleryFB {
         this.title = title;
     }
 
-    public String getDate() {
-        return date;
+    public String getCreationDate() {
+        return creationDate;
     }
-
-    public void setDate(String date) {
-        this.date = date;
+    public void setCreationDate(String date) {
+        this.creationDate = date;
     }
 
     public Double getLatitude() {
         return latitude;
     }
-
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
@@ -56,7 +54,6 @@ public class GalleryFB {
     public Double getLongitude() {
         return longitude;
     }
-
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
@@ -64,7 +61,6 @@ public class GalleryFB {
     public String getUriCover() {
         return uriCover;
     }
-
     public void setUriCover(String uriCover) {
         this.uriCover = uriCover;
     }
@@ -72,7 +68,6 @@ public class GalleryFB {
     public boolean isImageSetByUser() {
         return imageSetByUser;
     }
-
     public void setImageSetByUser(boolean imageSetByUser) {
         this.imageSetByUser = imageSetByUser;
     }

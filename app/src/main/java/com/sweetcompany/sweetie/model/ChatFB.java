@@ -14,7 +14,7 @@ public class ChatFB implements ActionInfoVM {
 
     private String title;
     private String uriCover;
-    private String date;
+    private String creationDate;
 
     // For firebase
     public ChatFB() {}
@@ -46,12 +46,11 @@ public class ChatFB implements ActionInfoVM {
         this.uriCover = uriCover;
     }
 
-    public String getDate() {
-        return date;
+    public String getCreationDate() {
+        return creationDate;
     }
-
-    public void setDate(String date) {
-        this.date = date;
+    public void setCreationDate(String date) {
+        this.creationDate = date;
     }
 
 }

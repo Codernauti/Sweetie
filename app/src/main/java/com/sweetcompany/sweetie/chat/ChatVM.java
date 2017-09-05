@@ -7,7 +7,7 @@ package com.sweetcompany.sweetie.chat;
 class ChatVM {
     private String mKey;
     private String mTitle;
-    private String mDate;
+    private String mCreationDate;
     private String mImageUri;
 
     ChatVM(String key, String title) {
@@ -19,19 +19,18 @@ class ChatVM {
         return mTitle;
     }
 
-    String getDate() {
-        return mDate;
+    String getCreationDate() {
+        return mCreationDate;
     }
-
-    void setDate(String mDate) {
-        this.mDate = mDate;
+    void setCreationDate(String creationDate) {
+        this.mCreationDate = creationDate;
     }
 
     String getImageUri() {
         return mImageUri;
     }
-
     void setImageUri(String mImageUri) {
         this.mImageUri = mImageUri;
     }
+
 }

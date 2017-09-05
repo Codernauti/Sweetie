@@ -143,7 +143,7 @@ public class FirebaseActionsController {
             case ActionFB.CHAT: {
                 ChatFB chat = new ChatFB();
                 chat.setTitle(action.getTitle());
-                chat.setDate(action.getLastUpdateDate());
+                chat.setCreationDate(action.getLastUpdateDate());
 
                 updates.put(mChatsUrl + "/" + actionUid, chat);
                 break;
@@ -151,7 +151,7 @@ public class FirebaseActionsController {
             case ActionFB.GALLERY: {
                 GalleryFB gallery = new GalleryFB();
                 gallery.setTitle(action.getTitle());
-                gallery.setDate(action.getLastUpdateDate());
+                gallery.setCreationDate(action.getLastUpdateDate());
 
                 updates.put(mGalleriesUrl + "/" + actionUid, gallery);
                 break;
@@ -159,7 +159,7 @@ public class FirebaseActionsController {
             case ActionFB.TODOLIST: {
                 ToDoListFB toDoList = new ToDoListFB();
                 toDoList.setTitle(action.getTitle());
-                toDoList.setDate(action.getLastUpdateDate());
+                toDoList.setCreationDate(action.getLastUpdateDate());
 
                 updates.put(mToDoListsUrl + "/" + actionUid, toDoList);
                 break;

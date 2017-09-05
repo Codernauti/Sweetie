@@ -48,7 +48,7 @@ class GalleryInfoPresenter implements GalleryInfoContract.Presenter,
 
     @Override
     public void onActionInfoChanged(GalleryFB actionFB) {
-        GalleryVM gallery = new GalleryVM(actionFB.getKey(), actionFB.getTitle(), actionFB.getDate(),
+        GalleryVM gallery = new GalleryVM(actionFB.getKey(), actionFB.getTitle(), actionFB.getCreationDate(),
                 actionFB.getUriCover(), actionFB.getLatitude(), actionFB.getLongitude());
 
         mView.updateInfo(gallery);

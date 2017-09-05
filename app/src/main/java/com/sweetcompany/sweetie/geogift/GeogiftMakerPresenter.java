@@ -30,7 +30,7 @@ public class GeogiftMakerPresenter implements GeogiftMakerContract.Presenter, Fi
     }
 
     @Override
-    public List<String> pushGeogiftAction(GeoItem geoItem, String userInputGeogiftTitle, String username) {
+    public List<String> pushGeogiftAction(GeogiftVM geoItem, String userInputGeogiftTitle, String username) {
         ActionFB action = null;
         // TODO: add description and fix username variable, what username???
         action = new ActionFB(userInputGeogiftTitle, mUserUID, username, "", DataMaker.get_UTC_DateTime(), ActionFB.GEOGIFT);

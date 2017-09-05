@@ -2,9 +2,6 @@ package com.sweetcompany.sweetie.actions;
 
 import android.net.Uri;
 
-import com.sweetcompany.sweetie.geogift.GeoItem;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**

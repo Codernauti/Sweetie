@@ -9,7 +9,7 @@ interface GeogiftDoneContract {
 
     interface View {
         void setPresenter(GeogiftDoneContract.Presenter presenter);
-        void updateGeogift(GeoItem geoitem);
+        void updateGeogift(GeogiftVM geoitem);
     }
 
     interface Presenter {

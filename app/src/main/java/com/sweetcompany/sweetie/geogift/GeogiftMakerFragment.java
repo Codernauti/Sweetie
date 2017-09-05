@@ -477,7 +477,7 @@ public class GeogiftMakerFragment extends Fragment implements
             mPresenter.uploadMedia(stringUriLocal);
             sendingFragment.setVisibility(View.VISIBLE);
             mGeoItem.setType(GeoItem.PHOTO_GEOGIFT);
-            createNewGeogift();
+            //createNewGeogift();
         }
         else if(currentSelection == MESSAGE_SELECTION){
             mGeoItem.setType(GeoItem.MESSAGE_GEOGIFT);

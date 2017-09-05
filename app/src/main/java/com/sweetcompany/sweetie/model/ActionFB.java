@@ -22,10 +22,8 @@ public class ActionFB {
     private String description;
     private String dataTime;
     private int type;
-    private String childKey;
-    private String actionKey;
     @Deprecated
-    private boolean isOpened;
+    private String childKey;
     private boolean isTriggered; //geogift
     private String imageUrl;
     private HashMap<String, ActionNotification> notificationCounters;
@@ -94,25 +92,13 @@ public class ActionFB {
         this.type = type;
     }
 
+    @Deprecated
     public String getChildKey() {
         return childKey;
     }
+    @Deprecated
     public void setChildKey(String childKey) {
         this.childKey = childKey;
-    }
-
-    public String getActionKey() {
-        return actionKey;
-    }
-    public void setActionKey(String actionKey) {
-        this.actionKey = actionKey;
-    }
-
-    public boolean isOpened() {
-        return isOpened;
-    }
-    public void setOpened(boolean opened) {
-        this.isOpened = opened;
     }
 
     public boolean getIsTriggered() {

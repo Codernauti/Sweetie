@@ -69,7 +69,7 @@ public class ActionNewChatFragment extends DialogFragment implements ActionsCont
                                         Intent intent = new Intent(getActivity(), ChatActivity.class);
                                         intent.putExtra(ChatActivity.CHAT_TITLE, userInputChatTitle);
                                         intent.putExtra(ChatActivity.CHAT_DATABASE_KEY, keys.get(0));
-                                        intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, keys.get(1));
+                                        intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, keys.get(0));
                                         startActivity(intent);
                                     }
                                 }

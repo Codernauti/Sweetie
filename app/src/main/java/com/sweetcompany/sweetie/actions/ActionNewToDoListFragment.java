@@ -66,7 +66,7 @@ public class ActionNewToDoListFragment extends DialogFragment implements DialogV
                                 Intent intent = new Intent(getActivity(), ToDoListActivity.class);
                                 intent.putExtra(ToDoListActivity.TODOLIST_TITLE, userInputChatTitle);
                                 intent.putExtra(ToDoListActivity.TODOLIST_DATABASE_KEY, keys.get(0));
-                                intent.putExtra(ToDoListActivity.ACTION_DATABASE_KEY, keys.get(1));
+                                intent.putExtra(ToDoListActivity.ACTION_DATABASE_KEY, keys.get(0));
                                 startActivity(intent);
                             }
                         }

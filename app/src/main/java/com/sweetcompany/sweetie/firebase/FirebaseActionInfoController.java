@@ -125,6 +125,9 @@ public class FirebaseActionInfoController<AT> {
 
                         HashMap<String, Object> updates = new HashMap<>();
                         updates.put(mActionUrl + "/" + Constraints.ChildAction.URI_COVER, imageStorageUriString);
+                        if (mActionObjClass == GalleryFB.class) {
+                            updates.put(mActionUrl + "/" + Constraints.Galleries.IMG_SET_BY_USER, true);
+                        }
                         updates.put(mParentActionUrl + "/" + Constraints.Actions.IMAGE_URL, imageStorageUriString);
 
                         mDatabaseRef.updateChildren(updates);

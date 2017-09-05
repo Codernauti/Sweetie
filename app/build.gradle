@@ -77,7 +77,7 @@ dependencies {
     compile 'io.github.rockerhieu:emojicon:1.4.2'
 
     //imagePicker
-    compile 'com.github.esafirm.android-image-picker:imagepicker:1.7.4@aar'
+    compile 'com.github.esafirm.android-image-picker:imagepicker:1.8.0'
     // imageCrop
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.7'
 

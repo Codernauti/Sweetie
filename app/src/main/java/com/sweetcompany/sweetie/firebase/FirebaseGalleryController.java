@@ -18,6 +18,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
 
@@ -35,20 +36,28 @@ public class FirebaseGalleryController {
     private static final String TAG = "FbGalleryController";
 
     private final String mCoupleUid;
-
-    private final DatabaseReference mDatabaseRef;
-    private final StorageReference mStorageRef;
-
-    private final DatabaseReference mGallery;
-    private final DatabaseReference mGalleryPhotos;
-    private final StorageReference mMediaGallery;
+    private final String mUserUid;
+    private final String mPartnerUid;
 
     private final String mGalleryUrl;           // galleries/<couple_uid>/<gallery_uid>
     private final String mGalleryPhotosUrl;     // gallery-photos/<couple_uid>/<gallery_uid>
-    private final String mActionUrl;           // actions/<couple_uid>/<action_uid>
+    private final String mActionUrl;            // actions/<couple_uid>/<action_uid>
+    private final String mPartnerNotificationCounterUrl;
+    private final String mUserNotificationCounterUrl;
+
+    private final DatabaseReference mDatabaseRef;
+
+    private final DatabaseReference mGallery;
+    private final DatabaseReference mGalleryPhotos;
+    private final DatabaseReference mActionRef;
+    private final StorageReference mMediaGallery;
 
     private ValueEventListener mGalleryListener;
     private ChildEventListener mGalleryPhotosListener;
+    private ValueEventListener mActionListener;
+
+    private int mPartnerCounter;
+    private boolean mIsImageSetByUser;  // dirty bit
 
     private List<GalleryControllerListener> mListeners = new ArrayList<>();
 
@@ -62,18 +71,33 @@ public class FirebaseGalleryController {
     }
 
 
-    public FirebaseGalleryController(String coupleUid, String galleryKey, String actionKey) {
+    public FirebaseGalleryController(String coupleUid, String galleryKey, String actionUid,
+                                     String userUid, String partnerUid) {
         mCoupleUid = coupleUid;
+        mUserUid = userUid;
+        mPartnerUid = partnerUid;
 
-        mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
         mGalleryUrl = Constraints.GALLERIES + "/" + coupleUid + "/" + galleryKey;
         mGalleryPhotosUrl = Constraints.GALLERY_PHOTOS + "/" + coupleUid + "/" + galleryKey;
-        mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionKey;
+        mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionUid;
+
+        mUserNotificationCounterUrl = mActionUrl + "/"
+                + Constraints.Actions.NOTIFICATION_COUNTER + "/"
+                + userUid + "/"
+                + Constraints.Actions.COUNTER;
+
+        mPartnerNotificationCounterUrl = mActionUrl + "/"
+                + Constraints.Actions.NOTIFICATION_COUNTER + "/"
+                + partnerUid + "/"
+                + Constraints.Actions.COUNTER;
+
 
         mGallery = mDatabaseRef.child(mGalleryUrl);
         mGalleryPhotos = mDatabaseRef.child(mGalleryPhotosUrl);
+        mActionRef = mDatabaseRef.child(mActionUrl);
 
         String mMediaGalleryUrl = Constraints.GALLERY_PHOTOS_DIRECTORY + "/" + mCoupleUid;
         mMediaGallery = mStorageRef.child(mMediaGalleryUrl);
@@ -138,11 +162,13 @@ public class FirebaseGalleryController {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // TODO: test
-                    GalleryFB photo = dataSnapshot.getValue(GalleryFB.class);
-                    photo.setKey(dataSnapshot.getKey());
+                    GalleryFB gallery = dataSnapshot.getValue(GalleryFB.class);
+                    gallery.setKey(dataSnapshot.getKey());
+
+                    mIsImageSetByUser = gallery.isImageSetByUser();
 
                     for (GalleryControllerListener listener : mListeners) {
-                        listener.onGalleryChanged(photo);
+                        listener.onGalleryChanged(gallery);
                     }
                 }
 
@@ -152,6 +178,36 @@ public class FirebaseGalleryController {
                 }
             };
             mGallery.addValueEventListener(mGalleryListener);
+        }
+
+        if (mActionListener == null) {
+            mActionListener = new ValueEventListener() {
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    ActionFB action = dataSnapshot.getValue(ActionFB.class);
+
+                    // TODO: exclude error partner
+                    if (action != null && action.getNotificationCounters() != null) {
+
+                        // sync notification partner counter from remote database
+                        if (action.getNotificationCounters().containsKey(mPartnerUid)) {
+                            mPartnerCounter = action.getNotificationCounters().get(mPartnerUid).getCounter();
+                        }
+
+                        // consume notification from partner
+                        if (action.getNotificationCounters().containsKey(mUserUid)) {
+                            mDatabaseRef.child(mUserNotificationCounterUrl).setValue(0);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            mActionRef.addValueEventListener(mActionListener);
         }
     }
 
@@ -165,15 +221,13 @@ public class FirebaseGalleryController {
             mGalleryPhotos.removeEventListener(mGalleryPhotosListener);
         }
         mGalleryPhotosListener = null;
+
+        if (mActionListener != null) {
+            mActionRef.removeEventListener(mActionListener);
+        }
+        mActionListener = null;
     }
 
-
-    public void updateMedia(MediaFB photo) {
-        Log.d(TAG, "Update MediaFB: " + photo);
-
-        //DatabaseReference ref = mGalleryPhotos.child(photo.getKey()).child("bookmarked");
-        //ref.setValue(photo.isBookmarked());
-    }
 
     private void addMedia(String mediaUid, MediaFB media){
         Map<String, Object> updates = new HashMap<>();
@@ -181,12 +235,17 @@ public class FirebaseGalleryController {
         // push media
         updates.put(mGalleryPhotosUrl + "/" + mediaUid, media);
 
-        // update parent action dateTime & imageUrl
+        // update parent action dateTime & imageUrl & partnerNotificationCounter
         updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, media.getDateTime());
-        updates.put(mActionUrl + "/" + Constraints.Actions.IMAGE_URL, media.getUriStorage());
 
-        // update photo cover gallery
-        updates.put(mGalleryUrl + "/" + Constraints.Galleries.URI_COVER, media.getUriStorage());
+        if (!mIsImageSetByUser) {
+            // update photo cover gallery and parent action
+            updates.put(mActionUrl + "/" + Constraints.Actions.IMAGE_URL, media.getUriStorage());
+            updates.put(mGalleryUrl + "/" + Constraints.Galleries.URI_COVER, media.getUriStorage());
+        }
+
+        updates.put(mPartnerNotificationCounterUrl, ++mPartnerCounter);
+
 
         mDatabaseRef.updateChildren(updates);
     }

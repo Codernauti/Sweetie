@@ -58,6 +58,7 @@ interface Constraints {
     interface Galleries extends ChildAction{
         String LATITUDE = "latitude";
         String LONGITUDE = "longitude";
+        String IMG_SET_BY_USER = "imageSetByUser";
     }
 
     String GALLERY_PHOTOS = "gallery-photos";

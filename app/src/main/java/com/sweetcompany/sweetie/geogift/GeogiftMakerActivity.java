@@ -19,10 +19,7 @@ import com.sweetcompany.sweetie.firebase.FirebaseGeogiftMakerController;
  * Created by ghiro on 07/08/2017.
  */
 
-public class GeogiftMakerActivity extends BaseActivity implements
-                                                       GoogleApiClient.ConnectionCallbacks,
-                                                       GoogleApiClient.OnConnectionFailedListener{
-
+public class GeogiftMakerActivity extends BaseActivity {
     private static final String TAG = "GeogiftMakerActivity";
 
     // key for Intent extras
@@ -65,16 +62,11 @@ public class GeogiftMakerActivity extends BaseActivity implements
         mController = new FirebaseGeogiftMakerController(super.mCoupleUid, super.mUserUid);
         mPresenter = new GeogiftMakerPresenter(mView, mController, super.mUserUid);
 
-        //create GoogleApiClient
-        createGoogleApi();
-        // Call GoogleApiClient connection when starting the Activity
-        googleApiClient.connect();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        googleApiClient.connect();
     }
 
     @Override
@@ -85,7 +77,6 @@ public class GeogiftMakerActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        googleApiClient.disconnect();
     }
 
 
@@ -98,35 +89,6 @@ public class GeogiftMakerActivity extends BaseActivity implements
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-    }
-
-
-    // Create GoogleApiClient instance
-    private void createGoogleApi() {
-        Log.d(TAG, "createGoogleApi()");
-        if ( googleApiClient == null ) {
-            googleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-    }
-
-    //Google ApiClient Connection Listeners
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "Google ApiClient onConnected()");
-        //getLastKnownLocation();
-        // initialize GoogleMaps
-    }
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.w(TAG, "Google ApiClient onConnectionSuspended()");
-    }
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.w(TAG, "Google ApiClient onConnectionFailed()");
     }
 
     @Override

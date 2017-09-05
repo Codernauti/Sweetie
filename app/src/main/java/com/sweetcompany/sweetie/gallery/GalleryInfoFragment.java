@@ -31,6 +31,7 @@ import com.sweetcompany.sweetie.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -115,23 +116,27 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mActionImageView);
 
-
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-        List<Address> addresses = null;
-        try {
-            addresses = geocoder.getFromLocation(action.getLat(), action.getLon(), 1);
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<Address> addresses = new ArrayList<>();
+        if(action.getLat() != null && action.getLon() != null){
+            try {
+                addresses = geocoder.getFromLocation(action.getLat(), action.getLon(), 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            if(addresses.size() > 0) {
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                //String city = addresses.get(0).getLocality();
+                //String state = addresses.get(0).getAdminArea();
+                //String country = addresses.get(0).getCountryName();
+                //String postalCode = addresses.get(0).getPostalCode();
+                //String knownName = addresses.get(0).getFeatureName();
+
+                mPositionText.setText(address);
+            }
         }
-
-        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-        //String city = addresses.get(0).getLocality();
-        //String state = addresses.get(0).getAdminArea();
-        //String country = addresses.get(0).getCountryName();
-        //String postalCode = addresses.get(0).getPostalCode();
-        //String knownName = addresses.get(0).getFeatureName();
-
-        mPositionText.setText(address);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.sweetcompany.sweetie.actions;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
@@ -25,16 +26,17 @@ abstract class ActionVM {
     private String mTitle;
     private String mLastUser;
     private String mDescription;
-    private String mDataTime; // TODO change format
+    private String mDataTime;
     private int mType;
     private String mChildUid;
     private String mImageUrl;
+    private int mNotificCounter;
 
     ActionVM() {
     }
 
     ActionVM(String key, String title, String lastUser, String description, String date, int type,
-             String childKey, String imageUrl) {
+             String childKey, String imageUrl, int notificCounter) {
 
         mKeyFB = key;
         mTitle = title;
@@ -44,6 +46,7 @@ abstract class ActionVM {
         mType = type;
         mChildUid = childKey;
         mImageUrl = imageUrl;
+        mNotificCounter = notificCounter;
     }
 
     void setContext(Context context){
@@ -103,6 +106,9 @@ abstract class ActionVM {
         this.mImageUrl = imageUrl;
     }
 
+    int getNotificationCounter() { return mNotificCounter; }
+    void setNotificationCounter(int notificationCounter) { mNotificCounter = notificationCounter; }
+
     /*** abstract methods ***/
 
     public abstract int getChildType();
@@ -119,6 +125,7 @@ abstract class ActionVM {
         viewHolder.setDescription(mDescription);
         viewHolder.setAvatar(mImageUrl, getAvatarTextIdColor());
         viewHolder.setTypeIcon(getIconId());
+        viewHolder.setNotificationCount(mNotificCounter, ContextCompat.getColor(mContext, getAvatarTextIdColor()));
 
         try {
             viewHolder.setDateTime(DataMaker.get_Date_4_Action(mDataTime));

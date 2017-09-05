@@ -71,7 +71,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
             switch (action.getType()) {
                 case ActionFB.CHAT:
                     newActionVM = new ActionChatVM(
-                            action.getTitle(), action.getDescription(), action.getDataTime(),
+                            action.getTitle(), action.getDescription(), action.getLastUpdateDate(),
                             action.getType(), action.getChildKey(), action.getKey(),
                             counter);
                     newActionVM.setImageUrl(action.getImageUrl());
@@ -80,7 +80,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
 
                 case ActionFB.GALLERY:
                     newActionVM = new ActionGalleryVM(
-                            action.getTitle(), action.getDescription(), action.getDataTime(),
+                            action.getTitle(), action.getDescription(), action.getLastUpdateDate(),
                             action.getType(), action.getChildKey(), action.getKey(),
                             counter);
                     newActionVM.setImageUrl(action.getImageUrl());
@@ -89,7 +89,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
 
                 case ActionFB.TODOLIST:
                     newActionVM = new ActionToDoListVM(
-                            action.getTitle(), action.getDescription(), action.getDataTime(),
+                            action.getTitle(), action.getDescription(), action.getLastUpdateDate(),
                             action.getType(), action.getChildKey(), action.getKey(),
                             counter);
                     newActionVM.setImageUrl(action.getImageUrl());
@@ -100,7 +100,7 @@ public class ActionsPresenter implements ActionsContract.Presenter,
                     Log.d(TAG, "geogift finded!");
                     if(action.getUserCreator().equals(mUserUid) || action.getIsTriggered()) {
                         newActionVM = new ActionGeogiftVM(
-                                action.getTitle(), action.getDescription(), action.getDataTime(),
+                                action.getTitle(), action.getDescription(), action.getLastUpdateDate(),
                                 action.getType(), action.getChildKey(), action.getKey(),
                                 action.getIsTriggered(), counter);
                         newActionVM.setImageUrl(action.getImageUrl());

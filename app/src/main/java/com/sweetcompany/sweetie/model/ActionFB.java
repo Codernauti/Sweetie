@@ -20,7 +20,7 @@ public class ActionFB {
     private String title;
     private String lastUser;
     private String description;
-    private String dataTime;
+    private String lastUpdateDate;
     private int type;
     @Deprecated
     private String childKey;
@@ -30,12 +30,12 @@ public class ActionFB {
 
     ActionFB() {}
 
-    public ActionFB(String title, String usrCreator, String lastUser, String description, String date, int type) {
+    public ActionFB(String title, String usrCreator, String lastUser, String description, String lastUpdateDate, int type) {
         this.title = title;
         this.userCreator = usrCreator;
         this.lastUser = lastUser;
         this.description = description;
-        this.dataTime = date;
+        this.lastUpdateDate = lastUpdateDate;
         this.type = type;
 
         this.notificationCounters = new HashMap<>();
@@ -78,13 +78,6 @@ public class ActionFB {
         this.description = description;
     }
 
-    public String getDataTime() {
-        return dataTime;
-    }
-    public void setDataTime(String dataTime) {
-        this.dataTime = dataTime;
-    }
-
     public int getType() {
         return type;
     }
@@ -118,8 +111,14 @@ public class ActionFB {
     public HashMap<String, ActionNotification> getNotificationCounters() {
         return notificationCounters;
     }
-
     public void setNotificationCounters(HashMap<String, ActionNotification> notificationCounters) {
         this.notificationCounters = notificationCounters;
+    }
+
+    public String getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+    public void setLastUpdateDate(String lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 }

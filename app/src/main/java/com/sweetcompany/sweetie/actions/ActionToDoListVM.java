@@ -12,11 +12,11 @@ import com.sweetcompany.sweetie.todolist.ToDoListActivity;
  */
 
 class ActionToDoListVM extends ActionVM{
-    ActionToDoListVM(String title, String description, String date, int type, String childKey,
+    ActionToDoListVM(String title, String description, String lastUpdateDate, int type, String childKey,
                      String actionKey, int notificationCounter){
         super.setTitle(title);
         super.setDescription(description);
-        super.setDataTime(date);
+        super.setLastUpdateDate(lastUpdateDate);
         super.setType(type);
         super.setChildUid(childKey);
         super.setKey(actionKey);

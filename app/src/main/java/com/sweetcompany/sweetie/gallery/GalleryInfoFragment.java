@@ -58,10 +58,6 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
     private ImageButton mChangePositionButton;
     private TextView mPositionText;
 
-    private String mAddressLocation;
-    private LatLng mLatLngLocation;
-
-
     public static GalleryInfoFragment newInstance(Bundle extras) {
         GalleryInfoFragment fragment = new GalleryInfoFragment();
         fragment.setArguments(extras);
@@ -129,11 +125,11 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
         }
 
         String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-        String city = addresses.get(0).getLocality();
-        String state = addresses.get(0).getAdminArea();
-        String country = addresses.get(0).getCountryName();
-        String postalCode = addresses.get(0).getPostalCode();
-        String knownName = addresses.get(0).getFeatureName();
+        //String city = addresses.get(0).getLocality();
+        //String state = addresses.get(0).getAdminArea();
+        //String country = addresses.get(0).getCountryName();
+        //String postalCode = addresses.get(0).getPostalCode();
+        //String knownName = addresses.get(0).getFeatureName();
 
         mPositionText.setText(address);
     }
@@ -166,18 +162,12 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
         if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(getContext(), data);
             LatLng latLng;
-            String name;
             if (place == null) {
                 Log.i(TAG, "No place selected");
                 return;
             }else
             {
-                name = place.getName().toString();
-                //mAddressLocation = place.getAddress().toString();
-                //mPositionText.setText(mAddressLocation + "\n");
                 latLng = place.getLatLng();
-                mLatLngLocation = new LatLng(latLng.latitude, latLng.longitude);
-
                 mPresenter.changePosition(latLng.latitude, latLng.longitude);
             }
         }

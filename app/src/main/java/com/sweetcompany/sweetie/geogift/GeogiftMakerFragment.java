@@ -391,15 +391,11 @@ public class GeogiftMakerFragment extends Fragment implements
          if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
              Place place = PlacePicker.getPlace(getContext(), data);
              LatLng latLng;
-             String name;
              if (place == null) {
                  Log.i(TAG, "No place selected");
                  return;
              }else
              {
-                 name = place.getName().toString();
-                 addressGeogift = place.getAddress().toString();
-                 locationPickerText.setText(addressGeogift);
                  latLng = place.getLatLng();
                  positionGeogift = new LatLng(latLng.latitude, latLng.longitude);
                  checkGeogiftFields();

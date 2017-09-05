@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/rosa_sweetie</item>
         <item name="colorPrimaryDark">@color/rosa_sweetie_dark</item>
-        <item name="actionMenuTextColor">@color/azzurro_pastello</item>
+        <item name="actionMenuTextColor">@color/todolist_main_color</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <!-- background toolbar in support ActionMode -->

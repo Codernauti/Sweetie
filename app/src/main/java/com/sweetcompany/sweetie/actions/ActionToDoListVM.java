@@ -45,6 +45,6 @@ class ActionToDoListVM extends ActionVM{
 
     @Override
     public int getAvatarTextIdColor() {
-        return R.color.azzurro_pastello;
+        return R.color.todolist_main_color;
     }
 }

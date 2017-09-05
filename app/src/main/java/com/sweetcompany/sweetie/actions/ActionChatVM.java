@@ -51,6 +51,6 @@ class ActionChatVM extends ActionVM {
 
     @Override
     public int getAvatarTextIdColor() {
-        return R.color.rosa_sweetie;
+        return R.color.chat_main_color;
     }
 }

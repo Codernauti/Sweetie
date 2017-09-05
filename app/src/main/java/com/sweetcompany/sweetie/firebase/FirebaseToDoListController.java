@@ -50,7 +50,7 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
         super(coupleUid, userUid, partnerUid, actionUid);
 
         mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionUid;
-        mToDoListUrl = Constraints.TODOLIST_CHECKENTRY + "/" + coupleUid + "/" + toDoListKey;
+        mToDoListUrl = Constraints.TODOLIST + "/" + coupleUid + "/" + toDoListKey;
         mtoDoListCheckEntriesUrl = Constraints.TODOLIST_CHECKENTRY + "/" + coupleUid + "/" + toDoListKey;
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();

@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie.todolist;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +46,12 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     private RecyclerView mToDoListListView;
     private LinearLayoutManager mLinearLayoutManager;
     private Button mInputButton;
-    InputMethodManager inputMethodManager;
-    boolean entryAddedFromButton;
+
+    private InputMethodManager inputMethodManager;
+    private boolean entryAddedFromButton;
+
+    private String mToDoListUid;
+    private String mParentActionUid;
 
 
     private ToDoListContract.Presenter mPresenter;
@@ -58,6 +65,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         toDoListAdapter = new ToDoListAdapter();
         toDoListAdapter.setListener(this);
@@ -68,9 +76,10 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.todolist_fragment, container, false);
 
         String titleToDoList = getArguments().getString(ToDoListActivity.TODOLIST_TITLE);
-        String toDoListUid = getArguments().getString(ToDoListActivity.TODOLIST_DATABASE_KEY);
+        mToDoListUid = getArguments().getString(ToDoListActivity.TODOLIST_DATABASE_KEY);
+        mParentActionUid = getArguments().getString(ToDoListActivity.ACTION_DATABASE_KEY);
         Log.d(TAG, "from Intent TODOLIST_TITLE: " + titleToDoList);
-        Log.d(TAG, "from Intent TODOLIST_DATABASE_KEY: " + toDoListUid);
+        Log.d(TAG, "from Intent TODOLIST_DATABASE_KEY: " + mToDoListUid);
 
         // initialize toolbar
         mToolBar = (Toolbar) root.findViewById(R.id.todolist_toolbar);
@@ -107,6 +116,28 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
                 mPresenter.addCheckEntry(checkEntryVM);
                 break;
         }
+    }
+
+    // Menu management
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.action_info_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_info: {
+                Intent intent = ToDoListInfoActivity.getStartActivityIntent(
+                        getContext(), mToDoListUid, mParentActionUid);
+                startActivity(intent);
+                break;
+            }
+            default:
+                break;
+        }
+        return false;
     }
 
     @Override

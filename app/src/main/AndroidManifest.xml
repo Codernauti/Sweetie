@@ -85,6 +85,12 @@
         <activity android:name=".gallery.GalleryInfoActivity"
             android:theme="@style/AppTheme"/>
 
+        <activity android:name=".chat.ChatInfoActivity"
+            android:theme="@style/AppTheme"/>
+
+        <activity android:name=".todolist.ToDoListInfoActivity"
+            android:theme="@style/AppTheme"/>
+
         <!-- activity from library -->
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

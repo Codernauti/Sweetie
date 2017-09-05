@@ -159,7 +159,9 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
                     chat.setKey(dataSnapshot.getKey());
 
                     mChatTitle = chat.getTitle();
-                    mChatImageUri = chat.getImageUri();
+                    //TODO ??
+                    // mChatImageUri = chat.getImageUri(); was
+                    mChatImageUri = chat.getUriCover();
 
                     if (mListener != null) {
                         mListener.onChatChanged(chat);

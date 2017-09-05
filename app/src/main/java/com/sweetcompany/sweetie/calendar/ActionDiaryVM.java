@@ -8,11 +8,11 @@ import com.sweetcompany.sweetie.R;
  * Created by Eduard on 02-Aug-17.
  */
 
-@Deprecated
 public interface ActionDiaryVM {
     String getKey();
     int getType();
     String getDate();
     String getDescription();
     String getTitle();
+    String getImageUri();
 }

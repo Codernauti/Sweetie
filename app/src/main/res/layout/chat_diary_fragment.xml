@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@+id/chat_diary_fragment_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/chat_background"
-    >
+    android:background="@drawable/chat_background">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/chat_diary_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:elevation="4dp"
-        android:background="?attr/colorPrimary"
-        app2:theme="@style/SweetieThemeToolbar"
+        android:background="@color/colorPrimary"
+        app:theme="@style/SweetieThemeToolbar"
+        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
         />
 
     <android.support.v7.widget.RecyclerView

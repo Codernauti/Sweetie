@@ -223,6 +223,12 @@ public class FirebaseActionsController {
         mDatabaseRef.updateChildren(updates);
     }
 
+    /**
+     * Change image of an action with FirebaseActionInfoController
+     * @param actionUid
+     * @param imgLocalUri
+     */
+    @Deprecated
     public void uploadImage(final String actionUid, Uri imgLocalUri) {
         // set name of file
         StorageReference fileRef = mCoupleStorage.child(imgLocalUri.getLastPathSegment());
@@ -242,8 +248,17 @@ public class FirebaseActionsController {
 
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
-                mActionsRef.child(actionUid + "/" + Constraints.Actions.IMAGE_URL)
-                        .setValue(downloadUrl.toString());
+                mActionsRef.child(actionUid + "/" + Constraints.Actions.IMAGE_URL).setValue(downloadUrl.toString());
+
+                /*String imageStorageUriString = downloadUrl.toString();
+
+                HashMap<String, Object> updates = new HashMap<>();
+                updates.put(mActionsUrl + "/" + actionUid + "/" + Constraints.Actions.IMAGE_URL, imageStorageUriString);
+                // Here we can't have childActionUid
+                // updates.put(mChildActionUrl + "/" + Constraints.ChildAction.URI_COVER, imageStorageUriString);
+
+                mDatabaseRef.updateChildren(updates);*/
+
 
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

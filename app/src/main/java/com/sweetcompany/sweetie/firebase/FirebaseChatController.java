@@ -34,8 +34,11 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
     private static final String TAG = "FbChatController";
 
     private final String mChatUid;
-    private final String mChatTitle;
     private final String mCoupleUid;
+
+    // for actionDiary
+    private String mChatTitle;
+    private String mChatImageUri;
 
     // database
     private final String mChatMessagesUrl;                  // chat-message/<couple_uid>/<chat_uid>
@@ -75,7 +78,10 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
 
         mCoupleUid = coupleUid;
         mChatUid = chatKey;
+
+        // first init
         mChatTitle = chatTitle;
+        //mChatImageUri = imageUri;
 
         mMsgDefaultNotification = new MsgNotification(chatKey, actionUid, chatTitle);
 
@@ -152,6 +158,9 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
                     ChatFB chat = dataSnapshot.getValue(ChatFB.class);
                     chat.setKey(dataSnapshot.getKey());
 
+                    mChatTitle = chat.getTitle();
+                    mChatImageUri = chat.getImageUri();
+
                     if (mListener != null) {
                         mListener.onChatChanged(chat);
                     }
@@ -192,7 +201,8 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
                                 + msg.getDay() + "/" + mChatUid;
 
         if (msg.isBookmarked()) {
-            ActionDiaryFB action = new ActionDiaryFB(ActionFB.CHAT, msg.getDate(), mChatTitle, msg.getText());
+            ActionDiaryFB action = new ActionDiaryFB(ActionFB.CHAT, msg.getDate(), mChatTitle,
+                    msg.getText(), mChatImageUri);
 
             updates.put(actionDiaryUrl, action);
             updates.put(actionDiaryDataUrl + "/" + msg.getKey(), msg);

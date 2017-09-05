@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ActionFB;
 
@@ -18,9 +20,9 @@ import com.sweetcompany.sweetie.model.ActionFB;
  * Created by Eduard on 01-Aug-17.
  */
 
-public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
+class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
 
-    public ActionsDiaryAdapter(@NonNull Context context, @LayoutRes int resource) {
+    ActionsDiaryAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
     }
 
@@ -39,6 +41,7 @@ public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
             viewHolder.title = (TextView) convertView.findViewById(R.id.action_item_title);
             viewHolder.description = (TextView) convertView.findViewById(R.id.action_item_subtitle);
             viewHolder.type = (ImageView) convertView.findViewById(R.id.action_item_type);
+            viewHolder.image = (ImageView) convertView.findViewById(R.id.image_action_list_item);
 
             convertView.findViewById(R.id.action_item_date).setVisibility(View.GONE);
             //convertView.findViewById(R.id.image_action_list_item).setVisibility(View.GONE);
@@ -55,6 +58,10 @@ public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
         if (actionDiary.getType() == ActionFB.CHAT) {
             viewHolder.type.setImageResource(R.drawable.action_chat_icon);
         }
+        Glide.with(getContext())
+                .load(actionDiary.getImageUri())
+                .dontAnimate()
+                .into(viewHolder.image);;
 
         return convertView;
     }
@@ -62,8 +69,8 @@ public class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
     static private class ActionDiaryViewHolder {
         TextView title;
         TextView description;
-        TextView date;
-        /*ImageView avatar;*/
+        /*TextView date;*/
+        ImageView image;
         ImageView type;
 
         ActionDiaryViewHolder() {

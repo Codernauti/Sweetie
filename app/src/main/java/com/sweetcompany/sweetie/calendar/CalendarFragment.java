@@ -66,7 +66,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View,
         @Override
         public boolean shouldDecorate(CalendarDay day) {
             String dayStr = mDayFormat.format(day.getDate());
-            return mMonthActionsDiary.containsKey(dayStr);
+            if (mMonthActionsDiary != null) {
+                return mMonthActionsDiary.containsKey(dayStr);
+            } else {
+                return false;
+            }
         }
 
         @Override

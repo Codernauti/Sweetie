@@ -1,35 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/chat_background">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/register_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary"
+        app:title="@string/register_title"
+        app:theme="@style/SweetieThemeToolbar"
+        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        >
+
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:id="@+id/register_app_image"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:padding="8dp"
+        android:src="@mipmap/ic_launcher"
+        android:elevation="2dp"
+
+        app:layout_constraintTop_toBottomOf="@id/register_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/register_app_name"
+
+        app:layout_constraintVertical_chainStyle="packed"
+        />
 
     <TextView
+        android:id="@+id/register_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:text="REGISTER"/>
 
-    <ProgressBar
-        android:id="@+id/progressBar_register"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/register_app_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/register_info"
+
+        android:text="@string/app_name"
+        android:textSize="38dp"
+        android:textStyle="bold"
+        />
+
+
+    <TextView
+        android:id="@+id/register_info"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:layout_gravity="center"
-        android:visibility="invisible"/>
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="32dp"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:elevation="4dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/register_app_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/register_with_google"
+
+
+        android:text="@string/register_welcome_msg"/>
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/register_google_button"
+        android:id="@+id/register_with_google"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"/>
+        android:layout_marginBottom="16dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/register_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ProgressBar
+        android:id="@+id/register_progress_bar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:visibility="gone"
+
+        app:layout_constraintStart_toEndOf="@id/register_with_google"
+        app:layout_constraintTop_toTopOf="@+id/register_with_google"
+        app:layout_constraintBottom_toBottomOf="@id/register_with_google"
+        />
 
 
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

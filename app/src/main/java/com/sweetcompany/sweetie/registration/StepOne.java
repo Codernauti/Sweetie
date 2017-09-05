@@ -66,8 +66,8 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
         mContext = getContext();
 
         // Assign fields
-        mRegisterGoogleButton = (SignInButton) view.findViewById(R.id.register_google_button);
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar_register);
+        mRegisterGoogleButton = (SignInButton) view.findViewById(R.id.register_with_google);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.register_progress_bar);
         mAuth = FirebaseAuth.getInstance();
 
         // Set click listeners
@@ -90,12 +90,12 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.register_google_button:
+            case R.id.register_with_google:
                 setProgressBarVisible(true);
                 signIn();
                 break;
             default:
-                return;
+                break;
         }
     }
 

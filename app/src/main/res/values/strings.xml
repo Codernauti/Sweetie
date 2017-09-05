@@ -103,4 +103,8 @@
     <string name="position_label">Map position</string>
     <string name="menu_open_info">Open info</string>
 
+    <!-- Register -->
+    <string name="register_title">Login</string>
+    <string name="register_welcome_msg">Welcome on Sweetie! Sing in to start</string>
+
 </resources>

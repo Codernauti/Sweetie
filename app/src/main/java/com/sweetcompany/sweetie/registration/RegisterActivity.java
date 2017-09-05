@@ -101,4 +101,9 @@ public class RegisterActivity extends AppCompatActivity
         mLoginController.removeListener(this);
         mLoginController.removeListener(mLoginPresenter);
     }
+
+    public void onBackPressed() {
+        //  super.onBackPressed();
+        moveTaskToBack(true);
+    }
 }

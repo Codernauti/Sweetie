@@ -1,5 +1,7 @@
 <resources>
 
+    <!-- Styles N.B. style and theme are different things -->
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -11,16 +13,11 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
-
-        <item name="android:windowBackground">@color/theme_background</item>
     </style>
 
     <style name="ChatTheme" parent="AppTheme">
         <item name="android:windowBackground">@drawable/chat_background</item>
     </style>
-
-
-    <!-- Styles N.B. style and theme are different things -->
 
     <style name="EmojiconGridView">
         <item name="android:background">@android:color/transparent</item>

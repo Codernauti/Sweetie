@@ -40,6 +40,9 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
         if (progress >= 100){
             mPercentUploading.setVisibility(View.GONE);
             mProgressBar.setVisibility(View.GONE);
+        } else {
+            mPercentUploading.setVisibility(View.VISIBLE);
+            mProgressBar.setVisibility(View.VISIBLE);
         }
     }
 

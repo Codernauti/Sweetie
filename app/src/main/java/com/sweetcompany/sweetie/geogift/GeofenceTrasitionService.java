@@ -39,8 +39,6 @@ public class GeofenceTrasitionService extends IntentService {
     public static final String GEOGIFT_ACTION_KEY = "ACTION_KEY";
     public static final String GEOGIFT_KEY = "GEOGIFT_KEY";
 
-    private static final int NOTIFICATION_ID = 400;
-
     private FirebaseGeogiftIntentController mController = null;
 
     private NotificationManager mNotificationManager;
@@ -95,7 +93,6 @@ public class GeofenceTrasitionService extends IntentService {
             sendNotification( msg, geogiftKey );
 
             mController.setTriggeredGeogift(actionKey, geogiftKey, dateTime);
-
         }
     }
 

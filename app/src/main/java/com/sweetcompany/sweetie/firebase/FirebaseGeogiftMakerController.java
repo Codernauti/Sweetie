@@ -84,7 +84,6 @@ public class FirebaseGeogiftMakerController {
         // Set Actions
         //actionFB.setKey(newGeogiftKey); //was child
 
-        // Create Gallery and set Gallery
         GeogiftFB geogiftFB = new GeogiftFB();
         geogiftFB.setUserCreatorUID(geoItem.getUserCreatorUID());
         geogiftFB.setType(geoItem.getType());

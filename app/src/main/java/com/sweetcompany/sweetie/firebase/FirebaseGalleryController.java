@@ -232,6 +232,8 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
+                        Log.d(TAG, taskSnapshot.toString() + " onProgress: " + progress);
+
                         for (GalleryControllerListener listener : mListeners) {
                             listener.onUploadPercent(media, ((int) progress));
                         }

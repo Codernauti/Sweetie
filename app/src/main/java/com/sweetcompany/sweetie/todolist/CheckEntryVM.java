@@ -10,7 +10,7 @@ import com.sweetcompany.sweetie.model.CheckEntryFB;
  * Created by lucas on 04/08/2017.
  */
 
-public class CheckEntryVM {
+public class CheckEntryVM implements ToDoListItemVM{
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
     private final String mKey;
@@ -60,25 +60,24 @@ public class CheckEntryVM {
         this.mChecked = checked;
     }
 
-    public boolean isFocus() {
-        return mFocus;
-    }
-
     public void setFocus(boolean mFocus) {
         this.mFocus = mFocus;
     }
 
-    int getIdView() {
+    @Override
+    public int getIdView() {
         return R.layout.todolist_item;
     }
 
-    void configViewHolder(CheckEntryViewHolder viewHolder) {
-        viewHolder.setText(mText);
-        viewHolder.setChecked(mChecked);
+
+    @Override
+    public void configViewHolder(ToDoListViewHolder viewHolder) {
+        CheckEntryViewHolder checkEntryViewHolder = (CheckEntryViewHolder) viewHolder;
+        checkEntryViewHolder.setText(mText);
+        checkEntryViewHolder.setChecked(mChecked);
         if(mFocus) {
-            viewHolder.setFocus();
-        } else {
-            mFocus = true;
+            checkEntryViewHolder.setFocus();
+            mFocus = false;
         }
     }
 }

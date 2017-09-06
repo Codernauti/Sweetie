@@ -1,42 +1,30 @@
 package com.sweetcompany.sweetie.todolist;
 
-import android.app.DialogFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SimpleItemAnimator;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
+
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ListView;
 
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.actions.ActionNewToDoListFragment;
-import com.sweetcompany.sweetie.actions.ActionsContract;
-import com.sweetcompany.sweetie.model.CheckEntryFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
-import java.util.List;
 
 /**
  * Created by lucas on 04/08/2017.
  */
 
-public class ToDoListFragment extends Fragment implements  ToDoListContract.View, View.OnClickListener,
+public class ToDoListFragment extends Fragment implements  ToDoListContract.View,
         ToDoListAdapter.ToDoListAdapterListener {
 
     private static final String TAG = "ToDoListFragment";
@@ -45,9 +33,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     private Toolbar mToolBar;
     private RecyclerView mToDoListListView;
     private LinearLayoutManager mLinearLayoutManager;
-    private Button mInputButton;
 
-    private InputMethodManager inputMethodManager;
     private boolean entryAddedFromButton;
 
     private String mToDoListUid;
@@ -90,7 +76,6 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
 
         //initialize input widgets
 
-        mInputButton = (Button) root.findViewById(R.id.todolist_add_button);
 
         entryAddedFromButton = false;
 
@@ -101,21 +86,8 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         mToDoListListView = (RecyclerView) root.findViewById(R.id.todolist_list);
         mToDoListListView.setLayoutManager(mLinearLayoutManager);
         mToDoListListView.setAdapter(toDoListAdapter);
-        mInputButton.setOnClickListener(this);
 
         return root;
-    }
-
-    @Override
-    public void onClick(android.view.View v) {
-        switch (v.getId()) {
-            case R.id.todolist_add_button:
-                entryAddedFromButton = true;
-                CheckEntryVM checkEntryVM = new CheckEntryVM(CheckEntryVM.THE_MAIN_USER, null, "",
-                            DataMaker.get_UTC_DateTime(),false);
-                mPresenter.addCheckEntry(checkEntryVM);
-                break;
-        }
     }
 
     // Menu management
@@ -161,6 +133,11 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     }
 
     @Override
+    public void addToDoListButton(ToDoListButtonVM toDoListButton) {
+        toDoListAdapter.addToDOListButton(toDoListButton);
+    }
+
+    @Override
     public void removeCheckEntry(CheckEntryVM checkEntry) {
         toDoListAdapter.removeCheckEntry(checkEntry);
     }
@@ -188,6 +165,14 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
             ((CheckEntryViewHolder) mToDoListListView.findViewHolderForAdapterPosition(vhPositionToFocus)).setFocus();
         }
         mPresenter.removeCheckEntry(key);
+    }
+
+    @Override
+    public void onAddButtonClicked() {
+        entryAddedFromButton = true;
+        CheckEntryVM checkEntryVM = new CheckEntryVM(CheckEntryVM.THE_MAIN_USER, null, "",
+                DataMaker.get_UTC_DateTime(),false);
+        mPresenter.addCheckEntry(checkEntryVM);
     }
 
 }

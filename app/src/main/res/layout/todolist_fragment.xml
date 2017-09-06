@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/todolist_fragment_layout"
@@ -7,6 +7,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
+
+    <View
+        android:id="@+id/dummy_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/todolist_toolbar"
@@ -18,35 +26,10 @@
         app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
         />
 
-    <ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_below="@+id/todolist_toolbar"
-    >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/todolist_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/todolist_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/todolist_fragment_container"
-                />
-
-            <Button
-                android:id="@+id/todolist_add_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:text="Add Entry" />
-
-
-        </LinearLayout>
-    </ScrollView>
-
-
-</RelativeLayout>
+</LinearLayout>

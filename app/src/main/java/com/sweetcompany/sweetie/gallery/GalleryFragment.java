@@ -129,6 +129,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     }
 
     @Override
+    @Deprecated
     public void updatePercentUpload(String mediaUid, int perc){
         mGalleryAdapter.updatePercentUpload(mediaUid, perc);
     }
@@ -137,19 +138,20 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public void onActivityResult(int requestCode, final int resultCode, Intent data) {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
-            sendImages(imagesPicked);
+            sendImages();
         }
     }
 
-    private void sendImages(List<Image> images) {
-        if (images == null) return;
+    private void sendImages() {
+        if (imagesPicked == null) return;
 
-        for (int i = 0, l = images.size(); i < l; i++) {
-            Uri file = Uri.fromFile(new File(images.get(i).getPath()));
+        for (int i = 0, l = imagesPicked.size(); i < l; i++) {
+            Uri file = Uri.fromFile(new File(imagesPicked.get(i).getPath()));
 
-            MediaVM newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", file.toString(), 0, null);
+            MediaVM newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", file.toString(), null);
             mPresenter.sendMedia(newMedia);
         }
+        imagesPicked.clear();
     }
 
     // Menu management

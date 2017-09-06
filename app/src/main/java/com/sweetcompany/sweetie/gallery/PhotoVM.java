@@ -12,8 +12,8 @@ import java.io.Serializable;
 
 public class PhotoVM extends MediaVM implements Serializable {
 
-    PhotoVM(boolean who, String date, String desc, String uriS, int perc, String key) {
-        super(who, date, desc, uriS, perc, key);
+    PhotoVM(boolean who, String date, String desc, String uriS, String key) {
+        super(who, date, desc, uriS, key);
     }
 
     @Override

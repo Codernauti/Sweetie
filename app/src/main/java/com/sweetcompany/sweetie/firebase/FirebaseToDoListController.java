@@ -158,8 +158,7 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
         Log.d(TAG, "Update CheckEntryFB: " + chk);
 
         HashMap<String, Object> updates = new HashMap<>();
-        updates.put(mtoDoListCheckEntriesUrl + "/" + chk.getKey() + "/" + Constraints.CHECKED, chk.isChecked());
-        updates.put(mtoDoListCheckEntriesUrl + "/" + chk.getKey() + "/" + Constraints.TEXT, chk.getText());
+        updates.put(mtoDoListCheckEntriesUrl + "/" + chk.getKey(), chk);
 
         // update description and dataTime of action of this associated ToDoList
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, chk.getText());

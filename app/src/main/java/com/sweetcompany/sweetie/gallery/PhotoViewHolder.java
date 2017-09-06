@@ -49,7 +49,7 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
                     .thumbnail(0.5f)
                     .crossFade()
                     .placeholder(R.drawable.image_placeholder)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    /*.diskCacheStrategy(DiskCacheStrategy.ALL)*/
                     .into(mThumbnail);
         }
     }

@@ -9,12 +9,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
 import com.google.android.gms.location.LocationServices;
+import com.sweetcompany.sweetie.DashboardActivity;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftIntentController;
@@ -33,11 +35,15 @@ public class GeofenceTrasitionService extends IntentService {
 
     private static final String TAG = "GeofenceTrasitionServ";
 
-    public static final int GEOFENCE_NOTIFICATION_ID = 0;
+    public static final int GEOFENCE_NOTIFICATION_ID = 4040;
     public static final String GEOGIFT_ACTION_KEY = "ACTION_KEY";
     public static final String GEOGIFT_KEY = "GEOGIFT_KEY";
 
+    private static final int NOTIFICATION_ID = 400;
+
     private FirebaseGeogiftIntentController mController = null;
+
+    private NotificationManager mNotificationManager;
 
     public GeofenceTrasitionService() {
         super(TAG);
@@ -49,6 +55,8 @@ public class GeofenceTrasitionService extends IntentService {
         Log.d(TAG, "onCreate");
 
         mController = new FirebaseGeogiftIntentController(Utility.getStringPreference(this, SharedPrefKeys.COUPLE_UID), Utility.getStringPreference(this, SharedPrefKeys.USER_UID));
+
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -110,38 +118,39 @@ public class GeofenceTrasitionService extends IntentService {
     private void sendNotification( String msg, String geogiftKey ) {
         Log.i(TAG, "sendNotification: " + geogiftKey );
 
-        // Intent to start the main Activity
-        //TODO add title
-        Intent notificationIntent = MainActivity.makeNotificationIntent(
-                getApplicationContext(), "title", geogiftKey
-        );
-
+        // init intent for open GeogiftDoneActivity
+        Intent intent;
+        PendingIntent pendingIntent;
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(notificationIntent);
-        PendingIntent notificationPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        android.support.v7.app.NotificationCompat.Action replyAction;
+
+        // start GeogiftDoneActivity
+        intent = new Intent(this, GeogiftDoneActivity.class)
+                .putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, geogiftKey)
+                .putExtra(GeogiftDoneActivity.GEOGIFT_TITLE, "title fake");
+
+        stackBuilder.addParentStack(DashboardActivity.class)    // start MainActivity
+                .addParentStack(GeogiftDoneActivity.class)         // start DashboardActivity
+                .addNextIntent(intent);
+
+        pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT
+                | PendingIntent.FLAG_ONE_SHOT);
+
+        replyAction = new android.support.v7.app.NotificationCompat.Action(R.drawable.action_gift_icon, "Open", pendingIntent);
 
         // Creating and sending Notification
-        NotificationManager notificatioMng =
-                (NotificationManager) getSystemService( Context.NOTIFICATION_SERVICE );
-        notificatioMng.notify(
-                GEOFENCE_NOTIFICATION_ID,
-                createNotification(msg, notificationPendingIntent));
-
-    }
-
-       // Create notification
-    private Notification createNotification(String msg, PendingIntent notificationPendingIntent) {
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
-        notificationBuilder
-                .setSmallIcon(R.drawable.action_gift_icon)
-                .setColor(Color.RED)
+        Notification notification= new android.support.v7.app.NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_msg_notification)
                 .setContentTitle(msg)
-                .setContentText("Geofence Notification!")
-                .setContentIntent(notificationPendingIntent)
+                //TODO //.setContentText(contentText)
+                .setColor(ContextCompat.getColor(this, R.color.rosa_sweetie))
+                .addAction(replyAction)
+                .setContentIntent(pendingIntent)
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
-                .setAutoCancel(true);
-        return notificationBuilder.build();
+                .setAutoCancel(true)
+                .build();
+
+        mNotificationManager.notify(GEOFENCE_NOTIFICATION_ID, notification);
     }
 
     private static String getErrorString(int errorCode) {

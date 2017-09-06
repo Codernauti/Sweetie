@@ -25,7 +25,7 @@ public class MediaConverter {
     }
 
     private static MediaVM createPhotoVM(MediaFB media, boolean who) {
-        PhotoVM newPhotoVM = new PhotoVM(who, media.getDateTime(), media.getText(), media.getUriStorage(), media.getKey());
+        PhotoVM newPhotoVM = new PhotoVM(who, media.getDateTime(), media.getText(), media.getUriStorage(), media.getKey(), false);
         return newPhotoVM;
     }
 }

@@ -148,7 +148,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         for (int i = 0, l = imagesPicked.size(); i < l; i++) {
             Uri file = Uri.fromFile(new File(imagesPicked.get(i).getPath()));
 
-            MediaVM newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", file.toString(), null);
+            MediaVM newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", file.toString(), null, true);
             mPresenter.sendMedia(newMedia);
         }
         imagesPicked.clear();

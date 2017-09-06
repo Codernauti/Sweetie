@@ -6,7 +6,7 @@ import android.view.View;
  * Created by ghiro on 25/07/2017.
  */
 
-abstract class MediaVM implements GalleryItemVM{
+abstract class MediaVM implements GalleryItemVM {
     static final boolean THE_MAIN_USER = true;
     static final boolean THE_PARTNER = false;
 
@@ -17,12 +17,14 @@ abstract class MediaVM implements GalleryItemVM{
     private String mDescription;
     private String mUriStorage;
     private int mPercent = 100;
+    private final boolean mUploading;
 
-    MediaVM(boolean who, String date, String desc, String uriS, String key) {
+    MediaVM(boolean who, String date, String desc, String uriS, String key, boolean uploading) {
         mWho = who;
         mTime = date;
         mDescription = desc;
         mUriStorage = uriS;
+        mUploading = uploading;
 
         mKey = key;
     }
@@ -64,4 +66,7 @@ abstract class MediaVM implements GalleryItemVM{
     @Override
     public abstract void configViewHolder(GalleryViewHolder viewHolder);
 
+    public boolean isUploading() {
+        return mUploading;
+    }
 }

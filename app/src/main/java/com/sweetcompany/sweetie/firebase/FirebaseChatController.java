@@ -258,7 +258,7 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
         final String newMessageUid = mChatMessagesRef.push().getKey();
 
         Uri uriLocal = Uri.parse(mediaMessage.getUriStorage());
-        StorageReference photoRef = mGalleryPhotoRef.child(DataMaker.get_UTC_DateTime());
+        StorageReference photoRef = mGalleryPhotoRef.child(DataMaker.get_UTC_DateTime() + newMessageUid);
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

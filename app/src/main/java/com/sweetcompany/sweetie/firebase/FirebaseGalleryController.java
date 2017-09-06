@@ -208,9 +208,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         final String newMediaUID = mGalleryPhotos.push().getKey();
 
         Uri uriLocal = Uri.parse(media.getUriStorage());
-
-        Calendar today = Calendar.getInstance();
-        StorageReference photoRef = mMediaGallery.child( String.valueOf(today.getTimeInMillis()) );
+        StorageReference photoRef = mMediaGallery.child( DataMaker.get_UTC_DateTime() + newMediaUID );
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

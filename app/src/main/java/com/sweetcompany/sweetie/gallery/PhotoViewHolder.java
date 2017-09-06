@@ -44,14 +44,12 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
     }
 
     public void setImage(String uri){
-        if(!uri.equals("")) {
-            Glide.with(itemView.getContext()).load(uri)
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .placeholder(R.drawable.image_placeholder)
-                    /*.diskCacheStrategy(DiskCacheStrategy.ALL)*/
-                    .into(mThumbnail);
-        }
+        Glide.with(itemView.getContext()).load(uri)
+                .thumbnail(0.5f)
+                .crossFade()
+                .placeholder(R.drawable.image_placeholder)
+                /*.diskCacheStrategy(DiskCacheStrategy.ALL)*/
+                .into(mThumbnail);
     }
 
     public void setViewHolderSelected(boolean selected) {

@@ -21,6 +21,7 @@ import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.MessageFB;
 import com.sweetcompany.sweetie.model.MsgNotification;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -257,7 +258,7 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
         final String newMessageUid = mChatMessagesRef.push().getKey();
 
         Uri uriLocal = Uri.parse(mediaMessage.getUriStorage());
-        StorageReference photoRef = mGalleryPhotoRef.child(uriLocal.getLastPathSegment());
+        StorageReference photoRef = mGalleryPhotoRef.child(DataMaker.get_UTC_DateTime());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

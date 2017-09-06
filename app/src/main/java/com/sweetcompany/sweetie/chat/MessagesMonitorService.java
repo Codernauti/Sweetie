@@ -170,7 +170,7 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
         // TODO: apply style big notification
         // https://developer.android.com/guide/topics/ui/notifiers/notifications.html#ApplyStyle
         Notification notification = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_notification_app)
+                .setSmallIcon(R.drawable.ic_msg_notification)
                 .setNumber(mMessagesNotified.size())
                 .setContentTitle(contentTitle)
                 .setContentText(contentText)

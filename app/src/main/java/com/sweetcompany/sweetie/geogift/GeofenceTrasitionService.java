@@ -142,7 +142,7 @@ public class GeofenceTrasitionService extends IntentService {
         Notification notification= new android.support.v7.app.NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_msg_notification)
                 .setContentTitle(msg)
-                //TODO //.setContentText(contentText)
+                .setContentText(getString(R.string.open_geogift))
                 .setColor(ContextCompat.getColor(this, R.color.rosa_sweetie))
                 .addAction(replyAction)
                 .setContentIntent(pendingIntent)

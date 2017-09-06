@@ -85,6 +85,7 @@
     <string name="datetime_positioned_geogift">Positioned on</string>
     <string name="isvisited_no_geogifty">Not open yet</string>
     <string name="isvisited_yes_geogifty">Opened!</string>
+    <string name="open_geogift">Open the gift!</string>
 
     <!--Todolist-->
     <string name="add_entry">Add Entry</string>

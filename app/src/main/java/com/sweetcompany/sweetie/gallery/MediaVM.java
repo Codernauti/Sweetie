@@ -64,7 +64,4 @@ abstract class MediaVM implements GalleryItemVM{
 
     abstract void configViewHolder(MediaViewHolder viewHolder);
 
-    @Deprecated
-    abstract MediaViewHolder newViewHolder(View inflatedView);
-
 }

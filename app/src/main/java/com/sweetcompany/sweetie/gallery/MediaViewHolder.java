@@ -21,10 +21,6 @@ abstract class MediaViewHolder extends GalleryViewHolder {
         mListener = listener;
     }
 
-    void removeViewHolderClickListener() {
-        mListener = null;
-    }
-
     MediaViewHolder(View itemView) {
         super(itemView);
     }

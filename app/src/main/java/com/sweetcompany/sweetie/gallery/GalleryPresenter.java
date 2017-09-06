@@ -33,7 +33,6 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, photoVM.getUriStorage());
 
         String newMediaUID = mController.sendMedia(newMedia);
-        newMedia.setKey(newMediaUID);
         photoVM.setKey(newMediaUID);
         mView.updateMedia(photoVM);
     }

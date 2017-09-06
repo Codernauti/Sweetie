@@ -7,9 +7,11 @@ import android.view.View;
  * Created by ghiro on 29/08/2017.
  */
 
-public class GalleryViewHolder extends RecyclerView.ViewHolder {
+abstract class GalleryViewHolder extends RecyclerView.ViewHolder {
 
     GalleryViewHolder(View itemView) {
         super(itemView);
     }
+
+    abstract void setViewHolderSelected(boolean viewHolderSelected);
 }

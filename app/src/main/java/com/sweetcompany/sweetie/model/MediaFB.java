@@ -10,21 +10,27 @@ public class MediaFB {
     @Exclude
     private String key;
 
-    private String email;   //TODO: add a user identifier
+    private String email;   //TODO: remove in future
+
+    private String userUid;
     private String description;
     private String dateTime;
     private String uriStorage;
     private boolean bookmarked;
 
+    private boolean uploading;
+    private int progress;
+
     // For firebase serialization
     public MediaFB() {}
 
-    public MediaFB(String email, String desc, String date, boolean bookmarked, String uriS) {
+    public MediaFB(String email, String desc, String date, boolean bookmarked, String uriS, boolean uploading) {
         this.email = email;
         this.description = desc;
         this.dateTime = date;
         this.bookmarked = bookmarked;
         this.uriStorage = uriS;
+        this.uploading = uploading;
     }
 
 
@@ -70,6 +76,27 @@ public class MediaFB {
     }
     public void setUriStorage(String uriS){
         this.uriStorage = uriS;
+    }
+
+    public boolean isUploading() {
+        return uploading;
+    }
+    public void setUploading(boolean uploading) {
+        this.uploading = uploading;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    public String getUserUid() {
+        return userUid;
+    }
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
     }
 
     @Exclude

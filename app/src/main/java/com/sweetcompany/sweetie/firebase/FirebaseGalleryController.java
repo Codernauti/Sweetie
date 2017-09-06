@@ -18,13 +18,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,28 +179,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
     }
 
 
-    private void addMedia(String mediaUid, MediaFB media){
-        Map<String, Object> updates = new HashMap<>();
-
-        // push media
-        updates.put(mGalleryPhotosUrl + "/" + mediaUid, media);
-
-        // update parent action dateTime & imageUrl & partnerNotificationCounter
-        updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, "\uD83D\uDCF7");
-        updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, media.getDateTime());
-
-        if (!mIsImageSetByUser) {
-            // update photo cover gallery and parent action
-            updates.put(mActionUrl + "/" + Constraints.Actions.IMAGE_URL, media.getUriStorage());
-            updates.put(mGalleryUrl + "/" + Constraints.Galleries.URI_COVER, media.getUriStorage());
-        }
-
-        super.updateNotificationCounter(updates);
-
-        mDatabaseRef.updateChildren(updates);
-    }
-
-    // push message to db and update action of this gallery
+    @Deprecated
     public String sendMedia(final MediaFB media) {
         Log.d(TAG, "Send MediaFB: " + media);
 
@@ -226,7 +203,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 media.setUriStorage(downloadUrl.toString());
 
-                addMedia(newMediaUID, media);
+                addMediaToDatabase(newMediaUID, media);
             }
         }).addOnProgressListener(
                 new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -245,17 +222,111 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         return newMediaUID;
     }
 
+    public void uploadMedia(final MediaFB media) {
+        updateMediaData(media);
+        addMediaToDatabase(media.getKey(), media);
+        addMediaToStorage(media);
+    }
+
+    private void updateMediaData(MediaFB media) {
+        String mediaUid = mGalleryPhotos.push().getKey();
+
+        media.setKey(mediaUid);
+        media.setProgress(0);
+        media.setUploading(true);
+    }
+
+    private void addMediaToDatabase(String mediaUid, MediaFB media){
+        Map<String, Object> updates = new HashMap<>();
+
+        // push media
+        updates.put(mGalleryPhotosUrl + "/" + mediaUid, media);
+
+        // update parent action dateTime & imageUrl & partnerNotificationCounter
+        updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, "\uD83D\uDCF7");
+        updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, media.getDateTime());
+
+        super.updateNotificationCounter(updates);
+
+        mDatabaseRef.updateChildren(updates);
+    }
+
+    private void addMediaToStorage(final MediaFB media) {
+        String nameFile = DataMaker.get_UTC_DateTime() + media.getKey();
+        Uri uriLocal = Uri.parse(media.getUriStorage());
+
+        UploadTask uploadTask = mMediaGallery.child(nameFile).putFile(uriLocal);
+
+        uploadTask
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
+
+                        removeMedia(media.getKey(), null);
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        media.setUriStorage(downloadUrl.toString());
+
+                        updateCompleteMedia(media);
+                    }
+                })
+                .addOnProgressListener(
+                        new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                                Log.d(TAG, taskSnapshot.toString() + " onProgress: " + progress);
+
+                                mDatabaseRef.child(mGalleryPhotosUrl)
+                                        .child(media.getKey())
+                                        .child(Constraints.GalleryPhotos.PROGRESS)
+                                        .setValue(progress);
+                            }
+                        });
+    }
+
+    private void updateCompleteMedia(final MediaFB media) {
+        HashMap<String, Object> updates = new HashMap<>();
+
+        // update media with complete data
+        String mMediaUrl = mGalleryPhotosUrl + "/" + media.getKey();
+        updates.put(mMediaUrl + "/" + Constraints.GalleryPhotos.UPLOADING, false);
+        updates.put(mMediaUrl + "/" + Constraints.GalleryPhotos.PROGRESS, null);
+        updates.put(mMediaUrl + "/" + Constraints.GalleryPhotos.URI_STORAGE, media.getUriStorage());
+
+        if (!mIsImageSetByUser) {
+            // update photo cover gallery and parent action
+            updates.put(mActionUrl + "/" + Constraints.Actions.IMAGE_URL, media.getUriStorage());
+            updates.put(mGalleryUrl + "/" + Constraints.Galleries.URI_COVER, media.getUriStorage());
+        }
+
+        mDatabaseRef.updateChildren(updates);
+    }
+
+
     public void removeMedia(final String mediaUid, String uriStorage) {
         Log.d(TAG, "remove media:" + uriStorage);
 
-        StorageReference mMediaRef = FirebaseStorage.getInstance().getReferenceFromUrl(uriStorage);
-        mMediaRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.d(TAG, "media is deleted");
-                mGalleryPhotos.child(mediaUid).removeValue();
-            }
-        });
+        if (uriStorage == null) {
+            mGalleryPhotos.child(mediaUid).removeValue();
+        }
+        else {
+            StorageReference mMediaRef = FirebaseStorage.getInstance().getReferenceFromUrl(uriStorage);
+            mMediaRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Log.d(TAG, "media is deleted");
+                    mGalleryPhotos.child(mediaUid).removeValue();
+                }
+            });
+        }
     }
 
 

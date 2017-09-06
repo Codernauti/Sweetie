@@ -33,11 +33,11 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
         itemView.setOnLongClickListener(this);
     }
 
-    void setPercentUploading(int progress){
-        if (progress >= 100){
-            mProgressBar.setVisibility(View.GONE);
-        } else {
+    void showProgressBar(boolean show) {
+        if (show){
             mProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 

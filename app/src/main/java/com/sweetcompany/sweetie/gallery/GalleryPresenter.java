@@ -30,12 +30,15 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     public void sendMedia(MediaVM mediaVM) {
         // TODO: remove down cast -> use Factory method
         PhotoVM photoVM = (PhotoVM) mediaVM;
-        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false, photoVM.getUriStorage());
+        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false,
+                photoVM.getUriStorage(), photoVM.isUploading());
 
-        String newMediaUID = mController.sendMedia(newMedia);
+        mController.uploadMedia(newMedia);
+
+        /*String newMediaUID = mController.sendMedia(newMedia);
         photoVM.setKey(newMediaUID);
         photoVM.setPercent(0);
-        mView.updateMedia(photoVM);
+        mView.updateMedia(photoVM);*/
     }
 
     @Override
@@ -47,7 +50,8 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
 
     @Override
     public void onGalleryChanged(GalleryFB gallery) {
-        GalleryVM galleryVM = new GalleryVM(gallery.getKey(), gallery.getTitle(), gallery.getCreationDate(), gallery.getUriCover(), gallery.getLatitude(), gallery.getLongitude());
+        GalleryVM galleryVM = new GalleryVM(gallery.getKey(), gallery.getTitle(),
+                gallery.getCreationDate(), gallery.getUriCover(), gallery.getLatitude(), gallery.getLongitude());
         mView.updateGalleryInfo(galleryVM);
     }
 
@@ -93,7 +97,8 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
             }
         }
         
-        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getUriStorage(), media.getKey());
+        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getUriStorage(),
+                media.getKey(), media.isUploading());
     }
 
 }

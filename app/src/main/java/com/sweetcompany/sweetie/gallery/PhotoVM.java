@@ -1,8 +1,6 @@
 package com.sweetcompany.sweetie.gallery;
 
-import android.view.View;
 import com.sweetcompany.sweetie.R;
-import com.sweetcompany.sweetie.utils.Utility;
 
 import java.io.Serializable;
 
@@ -12,8 +10,8 @@ import java.io.Serializable;
 
 public class PhotoVM extends MediaVM implements Serializable {
 
-    PhotoVM(boolean who, String date, String desc, String uriS, String key) {
-        super(who, date, desc, uriS, key);
+    PhotoVM(boolean who, String date, String desc, String uriS, String key, boolean uploading) {
+        super(who, date, desc, uriS, key, uploading);
     }
 
     @Override
@@ -21,7 +19,7 @@ public class PhotoVM extends MediaVM implements Serializable {
         PhotoViewHolder view = (PhotoViewHolder) viewHolder;
 
         view.setImage(super.getUriStorage());
-        view.setPercentUploading(super.getPercent());
+        view.showProgressBar(isUploading());
     }
 
     @Override

@@ -123,8 +123,7 @@ public class GeofenceTrasitionService extends IntentService {
 
         // start GeogiftDoneActivity
         intent = new Intent(this, GeogiftDoneActivity.class)
-                .putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, geogiftKey)
-                .putExtra(GeogiftDoneActivity.GEOGIFT_TITLE, "title fake");
+                .putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, geogiftKey);
 
         stackBuilder.addParentStack(DashboardActivity.class)    // start MainActivity
                 .addParentStack(GeogiftDoneActivity.class)         // start DashboardActivity

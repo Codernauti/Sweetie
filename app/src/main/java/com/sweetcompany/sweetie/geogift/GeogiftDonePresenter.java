@@ -38,6 +38,7 @@ public class GeogiftDonePresenter implements GeogiftDoneContract.Presenter, Fire
         GeogiftVM geoItemNew = new GeogiftVM();
         geoItemNew.setKey(geoItemFB.getKey());
         geoItemNew.setUserCreatorUID(geoItemFB.getUserCreatorUID());
+        geoItemNew.setTitle(geoItemFB.getTitle());
         geoItemNew.setType(geoItemFB.getType());
         geoItemNew.setMessage(geoItemFB.getMessage());
         geoItemNew.setAddress(geoItemFB.getAddress());

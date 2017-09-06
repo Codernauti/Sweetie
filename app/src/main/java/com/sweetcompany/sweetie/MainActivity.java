@@ -19,14 +19,6 @@ import com.sweetcompany.sweetie.utils.Utility;
 
 public class MainActivity extends AppCompatActivity{
 
-    // Create a Intent send by the notification
-    public static Intent makeNotificationIntent(Context context, String title, String geogiftKey) {
-        Intent intent = new Intent( context, GeogiftDoneActivity.class );
-        intent.putExtra(GeogiftDoneActivity.GEOGIFT_TITLE, title);
-        intent.putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, geogiftKey);
-        return intent;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -18,10 +18,8 @@ public class GeogiftDoneActivity extends BaseActivity {
 
     // key for Intent extras
     public static final String GEOGIFT_DATABASE_KEY = "GeogiftDatabaseKey";
-    public static final String GEOGIFT_TITLE = "GeogiftTitle";    // For offline user
 
     private String mGeogiftKey;
-    private String mActionKey;
 
     private GeogiftDoneFragment mView;
 
@@ -40,8 +38,6 @@ public class GeogiftDoneActivity extends BaseActivity {
         if (savedInstanceState != null) {
             mGeogiftKey = savedInstanceState.getString(GEOGIFT_DATABASE_KEY);
 
-            Log.d(TAG, "from Intent GEOGIFT_TITLE: " +
-                    savedInstanceState.getString(GEOGIFT_TITLE));
             Log.d(TAG, "from Intent GEOGIFT_TITLE_DATABASE_KEY: " +
                     savedInstanceState.getString(GEOGIFT_DATABASE_KEY));
         }

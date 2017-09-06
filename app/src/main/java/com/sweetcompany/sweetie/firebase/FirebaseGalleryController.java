@@ -21,6 +21,7 @@ import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -206,7 +207,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         final String newMediaUID = mGalleryPhotos.push().getKey();
 
         Uri uriLocal = Uri.parse(media.getUriStorage());
-        StorageReference photoRef = mMediaGallery.child(uriLocal.getLastPathSegment());
+        StorageReference photoRef = mMediaGallery.child(DataMaker.get_UTC_DateTime());
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails

@@ -193,7 +193,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 .folderMode(true) // set folder mode (false by default)
                 .folderTitle("Folder") // folder selection title
                 .imageTitle(String.valueOf(R.string.image_picker_select)) // image selection title
-                .limit(5)
+                .limit(10)
                 .multi()
                 .imageDirectory("Camera")
                 .origin(imagesPicked)   // original selected images, used in multi mode

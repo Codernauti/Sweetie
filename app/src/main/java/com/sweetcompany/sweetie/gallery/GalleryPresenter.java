@@ -34,6 +34,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
 
         String newMediaUID = mController.sendMedia(newMedia);
         photoVM.setKey(newMediaUID);
+        photoVM.setPercent(0);
         mView.updateMedia(photoVM);
     }
 
@@ -72,6 +73,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
+    @Deprecated
     public void onUploadPercent(MediaFB media, int perc){
         mView.updatePercentUpload(media.getKey(), perc);
     }
@@ -91,7 +93,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
             }
         }
         
-        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getUriStorage(), 0, media.getKey());
+        return new PhotoVM(who, media.getDateTime(), media.getText(), media.getUriStorage(), media.getKey());
     }
 
 }

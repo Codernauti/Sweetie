@@ -122,7 +122,7 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryViewHolder>
             String mediaKey = mMediasList.get(indexMediaOf).getKey();
 
             if (mediaKey.equals(mediaUid)) {
-                ((PhotoVM) mMediasList.get(indexMediaOf)).setPercent(perc);
+                mMediasList.get(indexMediaOf).setPercent(perc);
                 notifyItemChanged(indexMediaOf);
                 return;
             }

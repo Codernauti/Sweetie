@@ -14,14 +14,6 @@
          android:padding="1dp"
          android:scaleType="centerCrop"/>
 
-    <TextView
-        android:id="@+id/progress_percent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
-
     <ProgressBar
         android:id="@+id/progress_bar_upload"
         style="?android:attr/progressBarStyleLarge"

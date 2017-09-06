@@ -62,6 +62,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         void onMediaAdded(MediaFB media);
         void onMediaRemoved(MediaFB media);
         void onMediaChanged(MediaFB media);
+        @Deprecated
         void onUploadPercent(MediaFB media, int perc);
     }
 
@@ -235,9 +236,9 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
 
                         Log.d(TAG, taskSnapshot.toString() + " onProgress: " + progress);
 
-                        for (GalleryControllerListener listener : mListeners) {
+                        /*for (GalleryControllerListener listener : mListeners) {
                             listener.onUploadPercent(media, ((int) progress));
-                        }
+                        }*/
                     }
                 });
 

@@ -62,6 +62,7 @@ abstract class MediaVM implements GalleryItemVM{
         mPercent = perc;
     }
 
-    abstract void configViewHolder(MediaViewHolder viewHolder);
+    @Override
+    public abstract void configViewHolder(GalleryViewHolder viewHolder);
 
 }

@@ -17,15 +17,6 @@ public class PhotoVM extends MediaVM implements Serializable {
     }
 
     @Override
-    void configViewHolder(MediaViewHolder viewHolder) {
-        PhotoViewHolder view = (PhotoViewHolder) viewHolder;
-
-        view.setImage(super.getUriStorage());
-        view.setPercentUploading(super.getPercent());
-    }
-
-
-    @Override
     public void configViewHolder(GalleryViewHolder viewHolder) {
         PhotoViewHolder view = (PhotoViewHolder) viewHolder;
 

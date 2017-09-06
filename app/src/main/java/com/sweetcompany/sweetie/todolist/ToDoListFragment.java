@@ -81,7 +81,6 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
 
         // initialize message's list
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mLinearLayoutManager.setStackFromEnd(true);
 
         mToDoListListView = (RecyclerView) root.findViewById(R.id.todolist_list);
         mToDoListListView.setLayoutManager(mLinearLayoutManager);

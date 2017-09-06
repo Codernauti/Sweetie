@@ -76,8 +76,15 @@
 
         <activity android:name=".geogift.GeogiftMakerActivity"
             android:theme="@style/AppTheme"/>
+
         <activity android:name=".geogift.GeogiftDoneActivity"
-            android:theme="@style/AppTheme"/>
+            android:parentActivityName=".DashboardActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity"/>
+        </activity>
+
 
         <activity android:name=".geogift.GeogiftTestActivity"
             android:theme="@style/AppTheme"/>

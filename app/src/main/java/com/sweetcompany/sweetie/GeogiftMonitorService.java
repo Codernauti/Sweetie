@@ -99,7 +99,7 @@ public class GeogiftMonitorService extends Service implements ResultCallback<Sta
         Utility.addGeofenceToSharedPreference(this, geogiftFB.getKey());
 
         if(googleApiClient!= null && googleApiClient.isConnected()){
-            addGeofencesOnLoad(geofence, geogiftFB.getActionKey(), geogiftFB.getKey());
+            addGeofencesOnLoad(geofence, geogiftFB.getKey(), geogiftFB.getKey());
         }
     }
 

@@ -16,12 +16,15 @@ class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListC
     private ToDoListContract.View mView;
     private FirebaseToDoListController mController;
     private String mUserMail;   // id of checkEntries of main user
+    private boolean mIsFirstVM;
 
     ToDoListPresenter(ToDoListContract.View view, FirebaseToDoListController controller, String userMail){
         mView = view;
         mView.setPresenter(this);
         mController = controller;
         mController.addListener(this);
+
+        mIsFirstVM = true;
 
         mUserMail = userMail;
     }
@@ -66,13 +69,17 @@ class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListC
 
     @Override
     public void onCheckEntryAdded(CheckEntryFB checkEntry) {
+        if(mIsFirstVM) {
+            mView.addToDoListButton(new ToDoListButtonVM());
+            mIsFirstVM = false;
+        }
+
         boolean who = CheckEntryVM.THE_PARTNER;
         if (checkEntry.getEmail().equals(mUserMail)) {
             who = CheckEntryVM.THE_MAIN_USER;
         }
         CheckEntryVM checkEntryVM = new CheckEntryVM(who,checkEntry.getKey(),checkEntry.getText(),
                 checkEntry.getDateTime(),checkEntry.isChecked());
-
         mView.addCheckEntry(checkEntryVM);
     }
 

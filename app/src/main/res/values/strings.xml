@@ -86,6 +86,9 @@
     <string name="isvisited_no_geogifty">Not open yet</string>
     <string name="isvisited_yes_geogifty">Opened!</string>
 
+    <!--Todolist-->
+    <string name="add_entry">Add Entry</string>
+
     <!-- Map -->
     <string name="geogift_toptab">GEOGIFTS</string>
     <string name="galleries_toptab">GALLERIES</string>

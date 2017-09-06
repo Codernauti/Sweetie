@@ -20,11 +20,11 @@ import com.sweetcompany.sweetie.R;
  * Created by lucas on 12/08/2017.
  */
 
-public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements View.OnFocusChangeListener, View.OnClickListener{
+public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnFocusChangeListener, View.OnClickListener{
     CheckBox mCheckBox;
     EditText mEditText;
     ImageButton mDeleteButton;
-    OnViewHolderClickListener mListener;
+    OnCheckEntryViewHolderClickListener mListener;
     String oldText;
 
     public CheckEntryViewHolder(View itemView) {
@@ -38,7 +38,7 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
         mDeleteButton.setOnClickListener(this);
     }
 
-    void setViewHolderClickListener(OnViewHolderClickListener listener) {
+    void setCheckEntryViewHolderClickListener(OnCheckEntryViewHolderClickListener listener) {
         mListener = listener;
     }
 
@@ -62,7 +62,7 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
 
-    interface OnViewHolderClickListener {
+    interface OnCheckEntryViewHolderClickListener {
         void onCheckBoxClicked(int adapterPosition, boolean isChecked);
         void onCheckEntryUnfocused(int adapterPosition,String text);
         void onCheckEntryRemove(int adapterPosition);
@@ -93,6 +93,4 @@ public class CheckEntryViewHolder extends RecyclerView.ViewHolder implements Vie
         InputMethodManager inputMethodManager =(InputMethodManager) mEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
-
-    public void isFocused() { mEditText.isFocused();}
 }

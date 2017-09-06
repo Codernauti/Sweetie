@@ -158,14 +158,15 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
         Log.d(TAG, "Update CheckEntryFB: " + chk);
 
         HashMap<String, Object> updates = new HashMap<>();
-        updates.put(mToDoListUrl + "/" + chk.getKey() + "/" + Constraints.CHECKED, chk.isChecked());
-        updates.put(mToDoListUrl + "/" + chk.getKey() + "/" + Constraints.TEXT, chk.getText());
+        updates.put(mtoDoListCheckEntriesUrl + "/" + chk.getKey() + "/" + Constraints.CHECKED, chk.isChecked());
+        updates.put(mtoDoListCheckEntriesUrl + "/" + chk.getKey() + "/" + Constraints.TEXT, chk.getText());
 
         // update description and dataTime of action of this associated ToDoList
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, chk.getText());
         updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, chk.getDateTime());
 
         mDatabaseRef.updateChildren(updates);
+
     }
 
     public void addCheckEntry(CheckEntryFB checkEntry) {

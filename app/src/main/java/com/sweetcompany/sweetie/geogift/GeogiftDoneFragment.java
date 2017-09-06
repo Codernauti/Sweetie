@@ -87,10 +87,6 @@ public class GeogiftDoneFragment extends Fragment implements
                              Bundle savedInstanceState) {
         final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.geogift_done_fragment, container, false);
 
-        // TODO: is useless to set titleGeogift, Firebase update it also if it is offline
-        titleGeogift = getArguments().getString(GeogiftDoneActivity.GEOGIFT_TITLE);
-        Log.d(TAG, "from Intent GEOGIFT_TITLE: " + titleGeogift);
-
         // initialize toolbar
         mToolBar = (Toolbar) root.findViewById(R.id.geogift_done_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
@@ -228,11 +224,13 @@ public class GeogiftDoneFragment extends Fragment implements
     @Override
     public void updateGeogift(GeogiftVM geoitem) {
         Log.d(TAG, "updateGeogift");
-        //sToolBar.setTitle(geoitem.getTytle);
+
+        mToolBar.setTitle(geoitem.getTitle());
+
         addressText.setText(getResources().getString(R.string.address_geogift)+" "+geoitem.getAddress());
         datetimePositionedText.setText(getResources().getString(R.string.datetime_positioned_geogift)+" "+ DataMaker.get_dd_MM_Local(geoitem.getCreationDate()));
         if(geoitem.getIsTriggered()){
-            isVisitedText.setText(getResources().getString(R.string.isvisited_yes_geogifty) + " at " + geoitem.getDatetimeVisited());
+            isVisitedText.setText(getResources().getString(R.string.is_triggered_yes_geogifty) + " at " + geoitem.getDatetimeVisited());
             isVisitedText.setTextColor(Color.GREEN);
         }
         else{

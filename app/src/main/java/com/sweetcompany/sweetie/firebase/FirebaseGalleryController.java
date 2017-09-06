@@ -21,8 +21,10 @@ import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         void onMediaAdded(MediaFB media);
         void onMediaRemoved(MediaFB media);
         void onMediaChanged(MediaFB media);
+        @Deprecated
         void onUploadPercent(MediaFB media, int perc);
     }
 
@@ -206,7 +209,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         final String newMediaUID = mGalleryPhotos.push().getKey();
 
         Uri uriLocal = Uri.parse(media.getUriStorage());
-        StorageReference photoRef = mMediaGallery.child(uriLocal.getLastPathSegment());
+        StorageReference photoRef = mMediaGallery.child( DataMaker.get_UTC_DateTime() + newMediaUID );
         UploadTask uploadTask = photoRef.putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails
@@ -231,9 +234,11 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                         double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
-                        for (GalleryControllerListener listener : mListeners) {
+                        Log.d(TAG, taskSnapshot.toString() + " onProgress: " + progress);
+
+                        /*for (GalleryControllerListener listener : mListeners) {
                             listener.onUploadPercent(media, ((int) progress));
-                        }
+                        }*/
                     }
                 });
 

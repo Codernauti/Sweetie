@@ -16,8 +16,8 @@ interface GalleryContract {
         void updateMedia(MediaVM mediaVM);
         void removeMedia(MediaVM mediaVM);
         void changeMedia(MediaVM mediaVM);
+        @Deprecated
         void updatePercentUpload(String mediaUid, int perc);
-
     }
     
     interface Presenter {

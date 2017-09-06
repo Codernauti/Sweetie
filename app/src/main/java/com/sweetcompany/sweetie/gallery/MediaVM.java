@@ -16,14 +16,13 @@ abstract class MediaVM implements GalleryItemVM{
     private String mTime;           // Format HH:mm
     private String mDescription;
     private String mUriStorage;
-    private int mPercent;
+    private int mPercent = 100;
 
-    MediaVM(boolean who, String date, String desc, String uriS, int perc,  String key) {
+    MediaVM(boolean who, String date, String desc, String uriS, String key) {
         mWho = who;
         mTime = date;
         mDescription = desc;
         mUriStorage = uriS;
-        mPercent = perc;
 
         mKey = key;
     }
@@ -62,9 +61,7 @@ abstract class MediaVM implements GalleryItemVM{
         mPercent = perc;
     }
 
-    abstract void configViewHolder(MediaViewHolder viewHolder);
-
-    @Deprecated
-    abstract MediaViewHolder newViewHolder(View inflatedView);
+    @Override
+    public abstract void configViewHolder(GalleryViewHolder viewHolder);
 
 }

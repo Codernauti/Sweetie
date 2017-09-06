@@ -15,7 +15,7 @@ import java.util.List;
  * Created by ghiro on 16/05/2017.
  */
 
-class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
+class GalleryAdapter extends RecyclerView.Adapter<GalleryViewHolder>
         implements MediaViewHolder.OnViewHolderClickListener{
 
     private static final String TAG = "GalleryAdapter";
@@ -62,7 +62,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(MediaViewHolder holder, int position) {
+    public void onBindViewHolder(GalleryViewHolder holder, int position) {
         MediaVM mediaVM = mMediasList.get(position);
         mediaVM.configViewHolder(holder);
 
@@ -122,7 +122,7 @@ class GalleryAdapter extends RecyclerView.Adapter<MediaViewHolder>
             String mediaKey = mMediasList.get(indexMediaOf).getKey();
 
             if (mediaKey.equals(mediaUid)) {
-                ((PhotoVM) mMediasList.get(indexMediaOf)).setPercent(perc);
+                mMediasList.get(indexMediaOf).setPercent(perc);
                 notifyItemChanged(indexMediaOf);
                 return;
             }

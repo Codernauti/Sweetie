@@ -75,18 +75,17 @@ public class FirebaseGeogiftMakerController {
 
         HashMap<String, Object> updates = new HashMap<>();
 
-        DatabaseReference newGeogiftPush = mGeogiftsRef.push();
-        String newGeogiftKey = newGeogiftPush.getKey();
+        //DatabaseReference newGeogiftPush = mGeogiftsRef.push();
+        //String newGeogiftKey = newGeogiftPush.getKey();
 
         DatabaseReference newActionPush = mActionsRef.push();
-        String newActionKey = newActionPush.getKey();
+        String actionUid = newActionPush.getKey();
 
         // Set Actions
         //actionFB.setKey(newGeogiftKey); //was child
 
         // Create Gallery and set Gallery
         GeogiftFB geogiftFB = new GeogiftFB();
-        geogiftFB.setActionKey(newActionKey);
         geogiftFB.setUserCreatorUID(geoItem.getUserCreatorUID());
         geogiftFB.setType(geoItem.getType());
         geogiftFB.setTitle(geogiftTitle);
@@ -99,15 +98,14 @@ public class FirebaseGeogiftMakerController {
         geogiftFB.setCreationDate(actionFB.getLastUpdateDate());
         geogiftFB.setIsTriggered(false);
 
-        updates.put(mActionsUrl + "/" + newActionKey, actionFB);
-        updates.put(mGeogiftsUrl + "/" + newGeogiftKey, geogiftFB);
+        updates.put(mActionsUrl + "/" + actionUid, actionFB);
+        updates.put(mGeogiftsUrl + "/" + actionUid, geogiftFB);
 
         // update database
         mDatabaseRef.updateChildren(updates);
 
-
-        newKeys.add(newGeogiftKey);
-        newKeys.add(newActionKey);
+        newKeys.add(actionUid);
+        //newKeys.add(newActionKey);
 
         return newKeys;
     }

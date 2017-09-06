@@ -18,7 +18,6 @@ import com.sweetcompany.sweetie.R;
 class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
         View.OnLongClickListener {
 
-    private final TextView mPercentUploading;
     private final ImageView mThumbnail;
     private final ProgressBar mProgressBar;
     private final ImageView mCheckIcon;
@@ -26,7 +25,6 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
     PhotoViewHolder(View itemView) {
         super(itemView);
 
-        mPercentUploading = (TextView) itemView.findViewById(R.id.progress_percent);
         mThumbnail = (ImageView) itemView.findViewById(R.id.thumbnail);
         mProgressBar = (ProgressBar) itemView.findViewById(R.id.progress_bar_upload);
         mCheckIcon = (ImageView) itemView.findViewById(R.id.photo_check_icon);
@@ -36,22 +34,20 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
     }
 
     void setPercentUploading(int progress){
-        mPercentUploading.setText(progress + "%");
         if (progress >= 100){
-            mPercentUploading.setVisibility(View.GONE);
             mProgressBar.setVisibility(View.GONE);
+        } else {
+            mProgressBar.setVisibility(View.VISIBLE);
         }
     }
 
     public void setImage(String uri){
-        if(!uri.equals("")) {
-            Glide.with(itemView.getContext()).load(uri)
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .placeholder(R.drawable.image_placeholder)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(mThumbnail);
-        }
+        Glide.with(itemView.getContext()).load(uri)
+                .thumbnail(0.5f)
+                .crossFade()
+                .placeholder(R.drawable.image_placeholder)
+                /*.diskCacheStrategy(DiskCacheStrategy.ALL)*/
+                .into(mThumbnail);
     }
 
     public void setViewHolderSelected(boolean selected) {

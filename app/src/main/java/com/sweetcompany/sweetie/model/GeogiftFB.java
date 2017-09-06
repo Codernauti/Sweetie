@@ -15,7 +15,6 @@ public class GeogiftFB {
     @Exclude
     private String key;
 
-    private String actionKey;
     private String userCreatorUID;
     private int type;
     private String title;
@@ -41,13 +40,6 @@ public class GeogiftFB {
     @Exclude
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public String getActionKey() {
-        return actionKey;
-    }
-    public void setActionKey(String actionKey) {
-        this.actionKey = actionKey;
     }
 
     public String getUserCreatorUID() {

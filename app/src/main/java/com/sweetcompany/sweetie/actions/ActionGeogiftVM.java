@@ -42,7 +42,6 @@ public class ActionGeogiftVM extends ActionVM {
         Log.d("ActionGeogiftVM", getTitle() + " openAction");
 
         Intent intent = new Intent(mContext, GeogiftDoneActivity.class);
-        intent.putExtra(GeogiftDoneActivity.GEOGIFT_TITLE, super.getTitle());
         intent.putExtra(GeogiftDoneActivity.GEOGIFT_DATABASE_KEY, super.getChildUid());
 
         mContext.startActivity(intent);

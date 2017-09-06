@@ -45,7 +45,7 @@ public class GeogiftVM {
     }
 
     public int getType() {
-        return type;
+        return mType;
     }
     public void setType(int type) {
         this.mType = type;

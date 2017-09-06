@@ -20,6 +20,13 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListViewHolder> im
 
     private static final String TAG = "ToDoListAdapter";
 
+    private List<ToDoListItemVM> mToDoListItemList;
+    private ToDoListAdapterListener mListener;
+
+    ToDoListAdapter(){
+        mToDoListItemList = new ArrayList<>();
+        mToDoListItemList.add(new ToDoListButtonVM());
+    }
 
     interface ToDoListAdapterListener {
         void onCheckEntryClicked(CheckEntryVM checkEntry);
@@ -27,9 +34,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListViewHolder> im
         void onCheckEntryRemove(String key, int vhPositionToFocus);
         void onAddButtonClicked();
     }
-
-    private List<ToDoListItemVM> mToDoListItemList = new ArrayList<>();
-    private ToDoListAdapterListener mListener;
 
     void setListener(ToDoListAdapterListener listener) {
         mListener = listener;

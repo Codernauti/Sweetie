@@ -10,8 +10,6 @@ public class MediaFB {
     @Exclude
     private String key;
 
-    private String email;   //TODO: remove in future
-
     private String userUid;
     private String description;
     private String dateTime;
@@ -24,8 +22,8 @@ public class MediaFB {
     // For firebase serialization
     public MediaFB() {}
 
-    public MediaFB(String email, String desc, String date, boolean bookmarked, String uriS, boolean uploading) {
-        this.email = email;
+    public MediaFB(String userUid, String desc, String date, boolean bookmarked, String uriS, boolean uploading) {
+        this.userUid = userUid;
         this.description = desc;
         this.dateTime = date;
         this.bookmarked = bookmarked;
@@ -43,8 +41,8 @@ public class MediaFB {
         this.key = key;
     }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getUserUid() { return userUid; }
+    public void setUserUid(String userUid) { this.userUid = userUid; }
 
     public String getText() {
         return description;
@@ -59,10 +57,6 @@ public class MediaFB {
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
-
-    // TODO: for firebase, remove in future
-    public String getDate() { return dateTime; }
-    public void setDate(String date) { this.dateTime = date; }
 
     public boolean isBookmarked() {
         return bookmarked;
@@ -92,19 +86,12 @@ public class MediaFB {
         this.progress = progress;
     }
 
-    public String getUserUid() {
-        return userUid;
-    }
-    public void setUserUid(String userUid) {
-        this.userUid = userUid;
-    }
-
     @Exclude
     @Override
     public String toString() {
         return "{" +
                 " key: " + key +
-                " email: " + email +
+                " userUid: " + userUid +
                 " text: " + description +
                 " dateTime: " + dateTime +
                 "}";

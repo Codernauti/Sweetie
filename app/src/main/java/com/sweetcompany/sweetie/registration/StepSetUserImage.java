@@ -78,7 +78,7 @@ public class StepSetUserImage extends Fragment implements RegisterContract.SetUs
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.pairing_next_button:
+            case R.id.step_three_next_btn:
                 showNextScreen();
                 break;
 
@@ -137,6 +137,7 @@ public class StepSetUserImage extends Fragment implements RegisterContract.SetUs
         Glide.with(this)
                 .load(imageUrl)
                 .dontAnimate()
+                .placeholder(R.drawable.user_default_photo)
                 .into(mUserImage);
     }
 }

@@ -80,6 +80,10 @@ public class BaseActivity extends AppCompatActivity implements
         super.onStart();
         Log.d(BASE_TAG, "onStart()");
 
+        if (mUserUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
+            signOutAutomatically();
+        }
+
         boolean coupleUidChanged = Utility.getBooleanPreference(this, SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED);
         if (coupleUidChanged) {
             checkUserRelationshipStatus();
@@ -102,6 +106,11 @@ public class BaseActivity extends AppCompatActivity implements
         };
         mFirebaseAuth.addAuthStateListener(mAuthListener);
         //}
+    }
+
+    private void signOutAutomatically() {
+        FirebaseAuth.getInstance().signOut();
+        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient);
     }
 
     private void checkUserRelationshipStatus() {
@@ -182,6 +191,8 @@ public class BaseActivity extends AppCompatActivity implements
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         if (key.equals(SharedPrefKeys.USER_RELATIONSHIP_STATUS)) {
             checkUserRelationshipStatus();
+        } else if (key.equals(SharedPrefKeys.USER_UID)) {
+            signOutAutomatically();
         }
     }
 

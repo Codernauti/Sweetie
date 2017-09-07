@@ -112,14 +112,19 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .into(mActionImageView);
-    }
 
-    @Override
-    public void showImageUploadProgress(int progress) {
-        if (progress < 100) {
-            mImageUploadProgressText.setText(progress + "%");
+        if (action.isUploadingImg()) {
+            setProgressViewsVisible(true);
         } else {
             setProgressViewsVisible(false);
+        }
+
+        showImageUploadProgress(action.getProgress());
+    }
+
+    private void showImageUploadProgress(int progress) {
+        if (progress < 100) {
+            mImageUploadProgressText.setText(progress + "%");
         }
     }
 
@@ -159,9 +164,11 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
         if (visible) {
             mImageUploadProgressBar.setVisibility(View.VISIBLE);
             mImageUploadProgressText.setVisibility(View.VISIBLE);
+            mChangeImageButtom.setEnabled(false);
         } else {
             mImageUploadProgressBar.setVisibility(View.GONE);
             mImageUploadProgressText.setVisibility(View.GONE);
+            mChangeImageButtom.setEnabled(true);
         }
     }
 

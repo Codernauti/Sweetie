@@ -18,6 +18,7 @@ import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.HashMap;
 
@@ -39,18 +40,19 @@ public class FirebaseActionInfoController<AT> {
     private final String mActionUrl;
 
     private final Class<AT> mActionObjClass;
+    private final String mActionUid;
 
 
     private Listener mListener;
 
     public interface Listener<AT> {
         void onActionInfoChanged(AT actionFB);
-        void onImageUploadProgress(int progress);
     }
 
 
     public FirebaseActionInfoController(String coupleUid, String actionUid, Class<AT> actionObjClass) {
         mActionObjClass = actionObjClass;
+        mActionUid = actionUid;
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mActionsImgStorageRef = FirebaseStorage.getInstance().getReference(Constraints.ACTIONS_IMAGES + "/" + coupleUid);
@@ -85,6 +87,7 @@ public class FirebaseActionInfoController<AT> {
                     AT action = dataSnapshot.getValue(mActionObjClass);
 
                     if (mListener != null && action != null) {
+                        Log.d(TAG, action.toString());
                         mListener.onActionInfoChanged(action);
                     }
                 }
@@ -107,15 +110,20 @@ public class FirebaseActionInfoController<AT> {
 
 
     public void changeImage(final Uri imageLocalUri) {
-        StorageReference photoRef = mActionsImgStorageRef.child(imageLocalUri.getLastPathSegment());
-        UploadTask uploadTask = photoRef.putFile(imageLocalUri);
 
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
-            }
-        })
+        // update database
+        mActionRef.child(Constraints.ChildAction.UPLOADING_IMG).setValue(true);
+
+        String imgName = DataMaker.get_UTC_DateTime() + mActionUid;
+        UploadTask uploadTask = mActionsImgStorageRef.child(imgName).putFile(imageLocalUri);
+
+        uploadTask
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
+                    }
+                })
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -125,6 +133,7 @@ public class FirebaseActionInfoController<AT> {
 
                         HashMap<String, Object> updates = new HashMap<>();
                         updates.put(mActionUrl + "/" + Constraints.ChildAction.URI_COVER, imageStorageUriString);
+                        updates.put(mActionUrl + "/" + Constraints.ChildAction.UPLOADING_IMG, false);
                         if (mActionObjClass == GalleryFB.class) {
                             updates.put(mActionUrl + "/" + Constraints.Galleries.IMG_SET_BY_USER, true);
                         }
@@ -140,9 +149,7 @@ public class FirebaseActionInfoController<AT> {
 
                         Log.d(TAG, "Upload image progress: " + progress);
 
-                        if (mListener != null) {
-                            mListener.onImageUploadProgress((int) progress);
-                        }
+                        mActionRef.child(Constraints.ChildAction.PROGRESS).setValue(progress);
                     }
                 });
     }

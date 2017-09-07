@@ -11,7 +11,6 @@ public interface ActionInfoContract {
     interface View {
         void setPresenter(Presenter presenter);
         void updateInfo(ActionInfoVM actionFB);
-        void showImageUploadProgress(int progress);
     }
 
     interface Presenter {

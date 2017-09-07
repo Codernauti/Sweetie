@@ -45,6 +45,8 @@ interface Constraints {
     interface ChildAction {
         String TITLE = "title";
         String URI_COVER = "uriCover";
+        String UPLOADING_IMG = "uploadingImg";
+        String PROGRESS = "progress";
     }
 
     String CHATS = "chats";

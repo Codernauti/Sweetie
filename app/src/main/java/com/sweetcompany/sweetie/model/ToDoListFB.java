@@ -1,23 +1,20 @@
 package com.sweetcompany.sweetie.model;
 
 import com.google.firebase.database.Exclude;
-import com.sweetcompany.sweetie.actionInfo.ActionInfoVM;
 
 /**
  * Created by lucas on 04/08/2017.
  */
 
-public class ToDoListFB implements ActionInfoVM {
+public class ToDoListFB extends ChildActionFB {
 
     @Exclude
     private String key;
 
-    private String title;
+    /*private String title;
     private String uriCover;
-    private String creationDate;
+    private String creationDate;*/
 
-    public ToDoListFB() {
-    }
 
     @Exclude
     public String getKey() {
@@ -29,7 +26,7 @@ public class ToDoListFB implements ActionInfoVM {
     }
 
 
-    public String getTitle() {
+/*    public String getTitle() {
         return title;
     }
     public void setTitle(String title) {
@@ -48,5 +45,5 @@ public class ToDoListFB implements ActionInfoVM {
     }
     public void setCreationDate(String date) {
         this.creationDate = date;
-    }
+    }*/
 }

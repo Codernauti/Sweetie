@@ -87,9 +87,9 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
         }
 
         mActionImageView = (ImageView) root.findViewById(R.id.action_info_image);
-        mImageUploadProgressBar = (ProgressBar) root.findViewById(R.id.progress_bar_image_upload);
-        mImageUploadProgressText = (TextView) root.findViewById(R.id.progress_image_upload);
-        mChangeImageButtom = (ImageButton) root.findViewById(R.id.change_image_button);
+        mImageUploadProgressBar = (ProgressBar) root.findViewById(R.id.step_three_progress_bar_img_upload);
+        mImageUploadProgressText = (TextView) root.findViewById(R.id.step_three_progress_img_upload);
+        mChangeImageButtom = (ImageButton) root.findViewById(R.id.step_three_change_img_btn);
 
         mDateCreationTextView = (TextView) root.findViewById(R.id.date_creation);
 
@@ -193,7 +193,7 @@ public class GalleryInfoFragment extends Fragment implements GalleryInfoContract
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.change_image_button: {
+            case R.id.step_three_change_img_btn: {
 
                 CropImage.activity()
                         .setAspectRatio(13, 10) // a rectangle

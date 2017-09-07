@@ -9,7 +9,7 @@ import com.sweetcompany.sweetie.model.UserFB;
  */
 
 public class RegisterPresenter implements RegisterContract.RegisterPresenter,
-        FirebaseRegisterController.FbRegisterControllerListener {
+        FirebaseRegisterController.Listener {
 
     public static final String TAG = "RegisterPresenter";
 
@@ -34,7 +34,7 @@ public class RegisterPresenter implements RegisterContract.RegisterPresenter,
     // TODO: move this callback to activity
     @Override
     public void onUserPushed() {
-        mView.startPairingActivity();
+        mView.showNextScreen();
         // TODO: give other feedback to the user
     }
 }

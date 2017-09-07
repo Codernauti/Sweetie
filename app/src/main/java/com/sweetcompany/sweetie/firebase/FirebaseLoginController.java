@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 public class FirebaseLoginController{
-    private static final String TAG = "FbRegistrerController";
+    private static final String TAG = "LoginController";
 
     private final DatabaseReference mRegisterDbReference;
     private List<FbLoginControllerListener> mListeners = new ArrayList<>();;

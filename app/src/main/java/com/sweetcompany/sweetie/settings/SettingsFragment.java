@@ -187,12 +187,6 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
             if (resultCode == RESULT_OK) {
                 setProgressViewsVisible(true);
                 Uri resultUri = result.getUri();
-
-                // Doesn't work
-                /*Glide.with(getActivity())
-                        .load(resultUri)
-                        .into(mImageView);*/
-
                 mPresenter.uploadImage(resultUri);
             }
             else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {

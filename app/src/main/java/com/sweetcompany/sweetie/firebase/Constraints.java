@@ -19,6 +19,7 @@ interface Constraints {
 
     interface Users {
         String IMAGE_URL = "imageUrl";
+        String UPLOADING_IMG = "uploadingImg";
     }
 
     String COUPLES = "couples";

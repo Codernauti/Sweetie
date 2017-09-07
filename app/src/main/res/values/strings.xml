@@ -111,5 +111,6 @@
     <!-- Register -->
     <string name="register_title">Login</string>
     <string name="register_welcome_msg">Welcome on Sweetie! Sign in to start</string>
+    <string name="register_info_set_user_img">Upload your profile picture or press next. \n You can do it later.</string>
 
 </resources>

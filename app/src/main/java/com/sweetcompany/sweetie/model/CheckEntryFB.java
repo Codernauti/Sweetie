@@ -10,7 +10,7 @@ public class CheckEntryFB {
     @Exclude
     private String key;
 
-    private String email;   //TODO: add a user identifier
+    private String userUid;   //TODO: add a user identifier
     private String text;
     private boolean checked;
     private String dateTime;
@@ -18,8 +18,8 @@ public class CheckEntryFB {
     public CheckEntryFB() {
     }
 
-    public CheckEntryFB(String email, String text, boolean checked, String dateTime) {
-        this.email = email;
+    public CheckEntryFB(String userUid, String text, boolean checked, String dateTime) {
+        this.userUid = userUid;
         this.text = text;
         this.checked = checked;
         this.dateTime = dateTime;
@@ -35,12 +35,12 @@ public class CheckEntryFB {
         this.key = key;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserUid() {
+        return userUid;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
     }
 
     public String getText() {
@@ -72,7 +72,7 @@ public class CheckEntryFB {
     public String toString() {
         return "{" +
                 " key: " + key +
-                " email: " + email +
+                " userUid: " + userUid +
                 " text: " + text +
                 " dateTime: " + dateTime +
                 " checked: " + checked +

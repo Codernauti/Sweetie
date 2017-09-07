@@ -10,9 +10,9 @@ public class MediaConverter {
 
     private static final String TAG = "MediaConverter";
 
-    public static MediaVM createMediaVM(MediaFB media, String userMail) {
+    public static MediaVM createMediaVM(MediaFB media, String userUid) {
 
-        boolean who = checkWho(media.getEmail(), userMail);
+        boolean who = checkWho(media.getUserUid(), userUid);
 
         MediaVM mediaVM = null;
         mediaVM = MediaConverter.createPhotoVM(media, who);
@@ -20,8 +20,8 @@ public class MediaConverter {
         return mediaVM;
     }
 
-    private static boolean checkWho(String mediaMail, String userMail) {
-        return mediaMail.equals(userMail)? MediaVM.THE_MAIN_USER : MediaVM.THE_PARTNER;
+    private static boolean checkWho(String mediaUserUid, String userUid) {
+        return mediaUserUid.equals(userUid)? MediaVM.THE_MAIN_USER : MediaVM.THE_PARTNER;
     }
 
     private static MediaVM createPhotoVM(MediaFB media, boolean who) {

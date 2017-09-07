@@ -21,7 +21,6 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Li
     private final FirebaseChatController mController;
     private final String mUserMail;   // id of messages of main user
 
-    private static final SimpleDateFormat mIsoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     private Date mLastMsgDate;
     private Calendar mLastMsgDateCalendar = Calendar.getInstance();
     private Calendar mMsgcalendar = Calendar.getInstance();
@@ -57,10 +56,11 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Li
                 photoMessageVM.getTime(), photoMessageVM.isBookmarked(), MessageFB.PHOTO_MSG,
                 photoMessageVM.getUriStorage());
 
-        String newMessageUID = mController.sendMedia(newMessage);
+        mController.uploadPhotoMessage(newMessage);
+        /*String newMessageUID = mController.sendMedia(newMessage);
         newMessage.setKey(newMessageUID);
         photoMessageVM.setKey(newMessageUID);
-        mView.updateMessage(photoMessageVM);
+        mView.updateMessage(photoMessageVM);*/
     }
 
     @Override

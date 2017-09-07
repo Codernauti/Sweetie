@@ -13,7 +13,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
@@ -195,7 +194,7 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
         Log.d(TAG, "Update MessageFB: " + msg);
 
         HashMap<String, Object> updates = new HashMap<>();
-        updates.put(mChatMessagesUrl + "/" + msg.getKey() + "/" + Constraints.BOOKMARK, msg.isBookmarked());
+        updates.put(mChatMessagesUrl + "/" + msg.getKey() + "/" + Constraints.ChatMessages.BOOKMARK, msg.isBookmarked());
 
         String actionDiaryDataUrl = mCoupleActionsDiaryUrl + "/" + msg.getDate() + "/" + mChatUid;
         final String actionDiaryUrl = mCoupleCalendarUrl + "/" + msg.getYearAndMonth() + "/"
@@ -228,12 +227,12 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
 
     public String sendMessage(MessageFB msg) {
         final String newMessageUid = mChatMessagesRef.push().getKey();
-        addMessage(newMessageUid, msg);
+        addMessageToDatabase(newMessageUid, msg);
 
         return newMessageUid;
     }
 
-    private void addMessage(String msgUid, MessageFB msg) {
+    private void addMessageToDatabase(String msgUid, MessageFB msg) {
         Log.d(TAG, "Send MessageFB: " + msg + " of type: " + msg.getType());
 
         Map<String, Object> updates = new HashMap<>();
@@ -254,15 +253,21 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
         mDatabaseRef.updateChildren(updates);
     }
 
-    public String sendMedia(final MessageFB mediaMessage) {
-        final String newMessageUid = mChatMessagesRef.push().getKey();
+    public void uploadPhotoMessage(final MessageFB message) {
+        updateMessageData(message);
+        addMessageToDatabase(message.getKey(), message);
+        addMsgPhotoToStorage(message);
+    }
 
-        Uri uriLocal = Uri.parse(mediaMessage.getUriStorage());
-        StorageReference photoRef = mGalleryPhotoRef.child(DataMaker.get_UTC_DateTime() + newMessageUid);
-        UploadTask uploadTask = photoRef.putFile(uriLocal);
+    private void addMsgPhotoToStorage(final MessageFB message) {
+        Uri uriLocal = Uri.parse(message.getUriStorage());
+        String msgPhotoName = DataMaker.get_UTC_DateTime() + message.getKey();
+
+        UploadTask uploadTask = mGalleryPhotoRef.child(msgPhotoName).putFile(uriLocal);
 
         // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+        uploadTask
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
@@ -271,25 +276,38 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                            mediaMessage.setUriStorage(downloadUrl.toString());
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        message.setUriStorage(downloadUrl.toString());
 
-                            addMessage(newMessageUid, mediaMessage);
-                    }
-                })
-                .addOnProgressListener(
-                new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                        if (mListener != null) {
-                            mListener.onUploadPercent(mediaMessage, ((int) progress));
-                        }
+                        updateCompleteMessage(message);
                     }
                 });
+                /*.addOnProgressListener(
+                        new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
-        return newMessageUid;
+                            }
+                        });*/
+    }
+
+    private void updateMessageData(MessageFB message) {
+        String msgUid = mChatMessagesRef.push().getKey();
+
+        message.setKey(msgUid);
+        message.setUploading(true);
+    }
+
+    private void updateCompleteMessage(MessageFB message) {
+        HashMap<String, Object> updates = new HashMap<>();
+
+        // update media with complete data
+        String mMediaUrl = mChatMessagesUrl + "/" + message.getKey();
+        updates.put(mMediaUrl + "/" + Constraints.ChatMessages.UPLOADING, false);
+        updates.put(mMediaUrl + "/" + Constraints.ChatMessages.URI_STORAGE, message.getUriStorage());
+
+        mDatabaseRef.updateChildren(updates);
     }
 
 }

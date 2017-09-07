@@ -51,7 +51,11 @@ interface Constraints {
     interface Chats extends ChildAction {}
 
     String CHAT_MESSAGES = "chat-messages";
+    interface ChatMessages {
+        String URI_STORAGE = "uriStorage";
         String BOOKMARK = "bookmarked";
+        String UPLOADING = "uploading";
+    }
 
 
     String GALLERIES = "galleries";

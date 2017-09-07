@@ -165,8 +165,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_info: {
-                Intent intent = GalleryInfoActivity.getStartActivityIntent(
-                        getContext(), mGalleryUid, mParentActionUid);
+                Intent intent = GalleryInfoActivity.getStartActivityIntent(getContext(), mGalleryUid);
                 startActivity(intent);
                 break;
             }

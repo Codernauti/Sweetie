@@ -14,13 +14,13 @@ public abstract class MessageVM implements ChatItemVM {
     private String mKey;
 
     private final boolean mWho;
-    private final String mCreatorEmail;
+    private final String mCreatorUid;
     private final String mTime;
     private boolean mBookMarked;
 
-    MessageVM(boolean who, String creatorEmail, String date, boolean bookMarked, String key) {
+    MessageVM(boolean who, String creatorUid, String date, boolean bookMarked, String key) {
         mWho = who;
-        mCreatorEmail = creatorEmail;
+        mCreatorUid = creatorUid;
         mTime = date;
         mBookMarked = bookMarked;
         mKey = key;
@@ -30,8 +30,8 @@ public abstract class MessageVM implements ChatItemVM {
         return mWho;
     }
 
-    String getCreatorEmail() {
-        return mCreatorEmail;
+    String getCreatorUid() {
+        return mCreatorUid;
     }
 
     public String getTime() {

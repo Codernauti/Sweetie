@@ -23,18 +23,15 @@ public class ChatInfoActivity extends BaseActivity {
     private static final String TAG = "ChatInfoActivity";
 
     private static final String CHAT_UID_KEY = "chatUid";
-    private static final String PARENT_ACTION_UID_KEY = "parentActionUid";
 
     private String mChatUid;
-    private String mParentActionUid;
 
     private FirebaseActionInfoController<ChatFB> mController;
     private ActionInfoPresenter<ChatFB> mPresenter;
 
-    public static Intent getStartActivityIntent(Context context, String galleryUid, String parentActionUid) {
+    public static Intent getStartActivityIntent(Context context, String galleryUid) {
         Intent intent = new Intent(context, ChatInfoActivity.class);
         intent.putExtra(CHAT_UID_KEY, galleryUid);
-        intent.putExtra(PARENT_ACTION_UID_KEY, parentActionUid);
         return intent;
     }
 
@@ -51,9 +48,8 @@ public class ChatInfoActivity extends BaseActivity {
 
         if (savedInstanceState != null) {
             mChatUid = savedInstanceState.getString(CHAT_UID_KEY);
-            mParentActionUid = savedInstanceState.getString(PARENT_ACTION_UID_KEY);
 
-            Log.d(TAG, "GalleryUid = " + mChatUid + "\n" + "ParentActionUid = " + mParentActionUid);
+            Log.d(TAG, "GalleryUid = " + mChatUid);
         }
         else {
             Log.w(TAG, "No savedInstanceState or intentArgs!");
@@ -72,8 +68,7 @@ public class ChatInfoActivity extends BaseActivity {
         }
 
         if (mChatUid != null) {
-            mController = new FirebaseActionInfoController<>(super.mCoupleUid,
-                    mParentActionUid, mChatUid, ChatFB.class);
+            mController = new FirebaseActionInfoController<>(super.mCoupleUid, mChatUid, ChatFB.class);
             mPresenter = new ActionInfoPresenter<>(view, mController);
         } else {
             Log.w(TAG, "Chat Uid is null, impossible to instantiate Controller and presenter");
@@ -96,7 +91,6 @@ public class ChatInfoActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(CHAT_UID_KEY, mChatUid);
-        outState.putString(PARENT_ACTION_UID_KEY, mParentActionUid);
     }
 
     @Override

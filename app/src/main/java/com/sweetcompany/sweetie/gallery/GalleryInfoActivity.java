@@ -21,18 +21,15 @@ public class GalleryInfoActivity extends BaseActivity {
     private static final String TAG = "GalleryInfoActivity";
 
     private static final String GALLERY_UID_KEY = "galleryUid";
-    private static final String PARENT_ACTION_UID_KEY = "parentActionUid";
 
     private String mGalleryUid;
-    private String mParentActionUid;
 
     private FirebaseActionInfoController<GalleryFB> mController;
     private GalleryInfoContract.Presenter mPresenter;
 
-    public static Intent getStartActivityIntent(Context context, String galleryUid, String parentActionUid) {
+    public static Intent getStartActivityIntent(Context context, String galleryUid) {
         Intent intent = new Intent(context, GalleryInfoActivity.class);
         intent.putExtra(GALLERY_UID_KEY, galleryUid);
-        intent.putExtra(PARENT_ACTION_UID_KEY, parentActionUid);
         return intent;
     }
 
@@ -49,9 +46,8 @@ public class GalleryInfoActivity extends BaseActivity {
 
         if (savedInstanceState != null) {
             mGalleryUid = savedInstanceState.getString(GALLERY_UID_KEY);
-            mParentActionUid = savedInstanceState.getString(PARENT_ACTION_UID_KEY);
 
-            Log.d(TAG, "GalleryUid = " + mGalleryUid + "\n" + "ParentActionUid = " + mParentActionUid);
+            Log.d(TAG, "GalleryUid = " + mGalleryUid);
         }
         else {
             Log.w(TAG, "No savedInstanceState or intentArgs!");
@@ -70,8 +66,7 @@ public class GalleryInfoActivity extends BaseActivity {
         }
 
         if (mGalleryUid != null) {
-            mController = new FirebaseActionInfoController<>(super.mCoupleUid,
-                    mParentActionUid, mGalleryUid, GalleryFB.class);
+            mController = new FirebaseActionInfoController<>(super.mCoupleUid, mGalleryUid, GalleryFB.class);
             mPresenter = new GalleryInfoPresenter(view, mController);
         } else {
             Log.w(TAG, "Gallery Uid is null, impossible to instantiate Controller and presenter");
@@ -94,7 +89,6 @@ public class GalleryInfoActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(GALLERY_UID_KEY, mGalleryUid);
-        outState.putString(PARENT_ACTION_UID_KEY, mParentActionUid);
     }
 
     @Override

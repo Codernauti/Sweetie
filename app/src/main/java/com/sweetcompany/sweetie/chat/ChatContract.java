@@ -23,8 +23,8 @@ interface ChatContract {
     }
 
     interface Presenter {
-        void sendTextMessage(MessageVM message);
-        void sendPhotoMessage(MessageVM message);
+        void sendTextMessage(String messageText);
+        void sendPhotoMessage(String msgPhotoUriLocal, String msgText);
         void bookmarkMessage(MessageVM message,int type);
     }
 }

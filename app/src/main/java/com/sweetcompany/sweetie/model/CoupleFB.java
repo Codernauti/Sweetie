@@ -18,6 +18,9 @@ public class CoupleFB {
     private String imageStorageUri;
     private String anniversary;
 
+    private boolean uploadingImg;
+    private int progress;
+
     public CoupleFB() {}
 
     public CoupleFB(String userUid, String partnerUid,
@@ -88,5 +91,21 @@ public class CoupleFB {
 
     public void setAnniversary(String anniversary) {
         this.anniversary = anniversary;
+    }
+
+    public boolean isUploadingImg() {
+        return uploadingImg;
+    }
+
+    public void setUploadingImg(boolean uploadingImg) {
+        this.uploadingImg = uploadingImg;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 }

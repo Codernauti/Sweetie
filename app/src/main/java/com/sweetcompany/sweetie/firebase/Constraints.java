@@ -23,11 +23,15 @@ interface Constraints {
     }
 
     String COUPLES = "couples";
+    interface Couples {
         String ACTIVE = "active";
         String BREAK_TIME = "brokenTime";
         String IMAGE_LOCAL_URI = "imageLocalUri";
         String IMAGE_STORAGE_URI = "imageStorageUri";
         String ANNIVERSARY = "anniversary";
+        String UPLOADING_IMG = "uploadingImg";
+        String PROGRESS = "progress";
+    }
 
     String PAIRING_REQUESTS = "pairing-requests";
 

@@ -70,7 +70,6 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
                         .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
                         .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                         .build();
-
         }
     }
 

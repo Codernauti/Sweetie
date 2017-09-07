@@ -15,6 +15,7 @@ public interface CoupleDetailsContract {
         void updateCoupleData(String imageUri, String partnerOneName, String partnerTwoName,
                               Date anniversary, String anniversaryString, String creationTime);
         void updateUploadProgress(int progress);
+        void hideUploadProgress();
     }
 
     interface Presenter {

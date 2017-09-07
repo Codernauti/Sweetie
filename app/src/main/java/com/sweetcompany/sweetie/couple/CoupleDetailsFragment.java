@@ -117,7 +117,6 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
                 Uri fileUri = Uri.fromFile(new File(mImagesPicked.get(0).getPath()));
                 mPresenter.sendCoupleImage(fileUri);
                 mCoupleImage.setImageDrawable(null);
-                showUploadProgress();
             }
         }
 
@@ -126,20 +125,24 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
 
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
+
+                // feedback immediately the user
+                // N.B. if user leave activity this feedback is lost
+                Glide.with(this)
+                        .load(resultUri)
+                        .placeholder(R.drawable.image_placeholder)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .dontAnimate()
+                        .into(mCoupleImage);
+
                 mPresenter.sendCoupleImage(resultUri);
-                mCoupleImage.setImageDrawable(null);
-                showUploadProgress();
+
             }
             else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
                 Log.d(TAG, error.toString());
             }
         }
-    }
-
-    private void showUploadProgress() {
-        mUploadProgressBar.setVisibility(View.VISIBLE);
-        mUploadProgress.setVisibility(View.VISIBLE);
     }
 
 
@@ -152,6 +155,7 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
     public void updateCoupleData(String imageUri, String partnerOneName, String partnerTwoName,
                                  Date anniversary, String anniversaryString, String creationTime) {
         Log.d(TAG, "updateCoupleData()");
+
         if (anniversary != null) {
             mCalendar.setTime(anniversary);
         }
@@ -160,6 +164,7 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
                 .load(imageUri)
                 .placeholder(R.drawable.image_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
                 .into(mCoupleImage);
 
         mCoupleNames.setText(partnerOneName + " " + getString(R.string.and) + " " + partnerTwoName);
@@ -169,16 +174,22 @@ public class CoupleDetailsFragment extends Fragment implements CoupleDetailsCont
 
     @Override
     public void updateUploadProgress(int progress) {
-        if (progress < 100) {
-            mUploadProgress.setText(progress + "%");
-        } else {
-            hideUploadProgress();
+        mUploadProgress.setText(progress + "%");
+
+        // show only if necessary
+        if (progress > 0 && progress < 100) {
+            mUploadProgress.setVisibility(View.VISIBLE);
         }
+        mUploadProgressBar.setVisibility(View.VISIBLE);
+
+        mChangeImageButton.setEnabled(false);
     }
 
-    private void hideUploadProgress() {
+    @Override
+    public void hideUploadProgress() {
         mUploadProgressBar.setVisibility(View.GONE);
         mUploadProgress.setVisibility(View.GONE);
+        mChangeImageButton.setEnabled(true);
     }
 
     @Override

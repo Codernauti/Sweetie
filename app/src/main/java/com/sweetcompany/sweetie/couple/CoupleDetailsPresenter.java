@@ -65,12 +65,18 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
             anniversary = DataMaker.getDateFromIsoFormatString(couple.getAnniversary());
         }
 
-        mView.updateCoupleData(imageUriToLoad,
-                couple.getPartnerOneUsername(), couple.getPartnerTwoUsername(),
-                anniversary,
-                getFormattedDate(couple.getAnniversary()),
-                getFormattedDate(couple.getCreationTime())
-        );
+        if (couple.isUploadingImg()) {
+            mView.updateUploadProgress(couple.getProgress());
+        } else {
+            mView.hideUploadProgress();
+
+            mView.updateCoupleData(imageUriToLoad,
+                    couple.getPartnerOneUsername(), couple.getPartnerTwoUsername(),
+                    anniversary,
+                    getFormattedDate(couple.getAnniversary()),
+                    getFormattedDate(couple.getCreationTime())
+            );
+        }
     }
 
     private String getFormattedDate(String dateString) {
@@ -80,10 +86,5 @@ public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
         } else {
             return "";
         }
-    }
-
-    @Override
-    public void onImageUploadProgress(int progress) {
-        mView.updateUploadProgress(progress);
     }
 }

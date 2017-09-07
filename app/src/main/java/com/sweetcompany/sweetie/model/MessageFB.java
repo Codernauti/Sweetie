@@ -21,6 +21,8 @@ public class MessageFB {
     private int type;
     private String uriStorage;
 
+    private boolean uploading;
+
     // For firebase serialization
     public MessageFB() {}
 
@@ -81,6 +83,13 @@ public class MessageFB {
         this.uriStorage = uriS;
     }
 
+    public boolean isUploading() {
+        return uploading;
+    }
+    public void setUploading(boolean uploading) {
+        this.uploading = uploading;
+    }
+
     @Exclude
     public String getDate() {
         return dateTime.substring(0, 10);   // yyyy-mm-dd
@@ -106,4 +115,4 @@ public class MessageFB {
                 " bookmarked: " + bookmarked +
                 "}";
     }
-    }
+}

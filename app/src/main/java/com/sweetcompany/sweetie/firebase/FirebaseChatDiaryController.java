@@ -2,7 +2,6 @@ package com.sweetcompany.sweetie.firebase;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -124,7 +123,7 @@ public class FirebaseChatDiaryController {
         // Remove bookmark of item
         updates.put(mChatMessagesUrl + "/"
                 + messageUid + "/"
-                + Constraints.BOOKMARK,
+                + Constraints.ChatMessages.BOOKMARK,
                 false);
 
         mDatabaseRef.child(mActionDiaryUrl)

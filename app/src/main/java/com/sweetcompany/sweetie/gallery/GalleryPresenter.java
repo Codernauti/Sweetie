@@ -15,22 +15,22 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
 
     private GalleryContract.View mView;
     private FirebaseGalleryController mController;
-    private String mUserMail;   // id of messages of main user
+    private String mUserUid;
 
-    GalleryPresenter(GalleryContract.View view, FirebaseGalleryController controller, String userMail){
-        mView = view;
-        mView.setPresenter(this);
+    GalleryPresenter(GalleryContract.View view, FirebaseGalleryController controller, String userUid){
+        mUserUid = userUid;
+
         mController = controller;
         mController.addListener(this);
-
-        mUserMail = userMail;
+        mView = view;
+        mView.setPresenter(this);
     }
 
     @Override
     public void sendMedia(MediaVM mediaVM) {
         // TODO: remove down cast -> use Factory method
         PhotoVM photoVM = (PhotoVM) mediaVM;
-        MediaFB newMedia = new MediaFB(mUserMail, photoVM.getDescription(), photoVM.getTime(), false,
+        MediaFB newMedia = new MediaFB(mUserUid, photoVM.getDescription(), photoVM.getTime(), false,
                 photoVM.getUriStorage(), photoVM.isUploading());
 
         mController.uploadMedia(newMedia);
@@ -89,12 +89,10 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
      */
 
     private MediaVM createPhotoVM(MediaFB media) {
-        // Understand if the message is of Main User
+        // Understand if the media is of Main User
         boolean who = MediaVM.THE_PARTNER;
-        if (media.getEmail() != null) {   // TODO remove check in future
-            if (media.getEmail().equals(mUserMail)) {
-                who = MediaVM.THE_MAIN_USER;
-            }
+        if (media.getUserUid().equals(mUserUid)) {
+            who = MediaVM.THE_MAIN_USER;
         }
         
         return new PhotoVM(who, media.getDateTime(), media.getText(), media.getUriStorage(),

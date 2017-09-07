@@ -284,10 +284,11 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
 
                                 Log.d(TAG, taskSnapshot.toString() + " onProgress: " + progress);
 
-                                mDatabaseRef.child(mGalleryPhotosUrl)
+                                // TODO: too many network request
+                                /*mDatabaseRef.child(mGalleryPhotosUrl)
                                         .child(media.getKey())
                                         .child(Constraints.GalleryPhotos.PROGRESS)
-                                        .setValue(progress);
+                                        .setValue(progress);*/
                             }
                         });
     }

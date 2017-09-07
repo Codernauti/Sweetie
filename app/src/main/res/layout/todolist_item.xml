@@ -21,8 +21,6 @@
         android:padding="1dp"
         android:inputType="textNoSuggestions"
         android:background="@android:color/transparent"
-        android:linksClickable="true"
-        android:autoLink="web|email"
         android:text=""
         android:visibility="visible" />
 

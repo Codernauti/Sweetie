@@ -31,6 +31,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/info_layout"
+
+        app:layout_constraintVertical_chainStyle="packed"
         />
 
     <!--<de.hdodenhof.circleimageview.CircleImageView
@@ -78,6 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
         android:padding="10dp"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +96,7 @@
         android:id="@+id/info_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:paddingStart="16dp"

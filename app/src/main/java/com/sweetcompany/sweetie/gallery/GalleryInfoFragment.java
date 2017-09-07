@@ -42,6 +42,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by Eduard on 04-Sep-17.
  */
 
+@Deprecated
 public class GalleryInfoFragment extends Fragment implements GalleryInfoContract.View,
         View.OnClickListener {
 

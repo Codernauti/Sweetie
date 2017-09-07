@@ -15,20 +15,20 @@ class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListC
 
     private ToDoListContract.View mView;
     private FirebaseToDoListController mController;
-    private String mUserMail;   // id of checkEntries of main user
+    private String mUserUid;   // id of checkEntries of main user
 
-    ToDoListPresenter(ToDoListContract.View view, FirebaseToDoListController controller, String userMail){
+    ToDoListPresenter(ToDoListContract.View view, FirebaseToDoListController controller, String userUid){
         mView = view;
         mView.setPresenter(this);
         mController = controller;
         mController.addListener(this);
 
-        mUserMail = userMail;
+        mUserUid = userUid;
     }
 
     @Override
     public void addCheckEntry(CheckEntryVM checkEntry) {
-        CheckEntryFB newCheckEntry = new CheckEntryFB(mUserMail, checkEntry.getText(),
+        CheckEntryFB newCheckEntry = new CheckEntryFB(mUserUid, checkEntry.getText(),
                 checkEntry.isChecked(),checkEntry.getTime());
 
         mController.addCheckEntry(newCheckEntry);
@@ -41,7 +41,7 @@ class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListC
 
     @Override
     public void changeCheckEntry(CheckEntryVM checkEntry) {
-        CheckEntryFB updateCheckEntry = new CheckEntryFB(mUserMail, checkEntry.getText(),
+        CheckEntryFB updateCheckEntry = new CheckEntryFB(mUserUid, checkEntry.getText(),
                 checkEntry.isChecked(),checkEntry.getTime());
         updateCheckEntry.setKey(checkEntry.getKey());
 
@@ -50,7 +50,7 @@ class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListC
 
     @Override
     public void checkedCheckEntry(CheckEntryVM checkEntry) {
-        CheckEntryFB updateCheckEntry = new CheckEntryFB(mUserMail, checkEntry.getText(),
+        CheckEntryFB updateCheckEntry = new CheckEntryFB(mUserUid, checkEntry.getText(),
                 checkEntry.isChecked(),checkEntry.getTime());
         updateCheckEntry.setKey(checkEntry.getKey());
 
@@ -67,7 +67,7 @@ class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListC
     @Override
     public void onCheckEntryAdded(CheckEntryFB checkEntry) {
         boolean who = CheckEntryVM.THE_PARTNER;
-        if (checkEntry.getEmail().equals(mUserMail)) {
+        if (checkEntry.getUserUid().equals(mUserUid)) {
             who = CheckEntryVM.THE_MAIN_USER;
         }
         CheckEntryVM checkEntryVM = new CheckEntryVM(who,checkEntry.getKey(),checkEntry.getText(),
@@ -78,7 +78,7 @@ class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListC
     @Override
     public void onCheckEntryRemoved(CheckEntryFB checkEntry) {
         boolean who = CheckEntryVM.THE_PARTNER;
-        if (checkEntry.getEmail().equals(mUserMail)) {
+        if (checkEntry.getUserUid().equals(mUserUid)) {
             who = CheckEntryVM.THE_MAIN_USER;
         }
         CheckEntryVM checkEntryVM = new CheckEntryVM(who,checkEntry.getKey(),checkEntry.getText(),
@@ -89,7 +89,7 @@ class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListC
     @Override
     public void onCheckEntryChanged(CheckEntryFB checkEntry) {
         boolean who = CheckEntryVM.THE_PARTNER;
-        if (checkEntry.getEmail().equals(mUserMail)) {
+        if (checkEntry.getUserUid().equals(mUserUid)) {
             who = CheckEntryVM.THE_MAIN_USER;
         }
         CheckEntryVM checkEntryVM = new CheckEntryVM(who,checkEntry.getKey(),checkEntry.getText(),

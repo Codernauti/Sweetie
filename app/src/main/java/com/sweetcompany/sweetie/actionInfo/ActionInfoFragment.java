@@ -1,6 +1,8 @@
 package com.sweetcompany.sweetie.actionInfo;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -18,12 +20,22 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 import com.theartofdev.edmodo.cropper.CropImage;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -35,6 +47,8 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
         View.OnClickListener {
 
     private static final String SUPER_TAG = "ActionInfoFragment";
+
+    private static final int PLACE_PICKER_REQUEST = 4002;
 
     private ActionInfoContract.Presenter mPresenter;
 
@@ -76,9 +90,9 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
         }
 
         mActionImageView = (ImageView) root.findViewById(R.id.action_info_image);
-        mImageUploadProgressBar = (ProgressBar) root.findViewById(R.id.progress_bar_image_upload);
-        mImageUploadProgressText = (TextView) root.findViewById(R.id.progress_image_upload);
-        mChangeImageButtom = (ImageButton) root.findViewById(R.id.change_image_button);
+        mImageUploadProgressBar = (ProgressBar) root.findViewById(R.id.step_three_progress_bar_img_upload);
+        mImageUploadProgressText = (TextView) root.findViewById(R.id.step_three_progress_img_upload);
+        mChangeImageButtom = (ImageButton) root.findViewById(R.id.step_three_change_img_btn);
 
         mDateCreationTextView = (TextView) root.findViewById(R.id.date_creation);
 
@@ -120,6 +134,26 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
         }
 
         showImageUploadProgress(action.getProgress());
+
+        if (action instanceof GalleryFB) {
+            mPositionLayout.setVisibility(View.VISIBLE);
+            GalleryFB gallery = (GalleryFB) action;
+
+            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+            List<Address> addresses = new ArrayList<>();
+            if(gallery.getLatitude() != null && gallery.getLongitude() != null){
+                try {
+                    addresses = geocoder.getFromLocation(gallery.getLatitude(), gallery.getLongitude(), 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if(addresses.size() > 0) {
+                    String address = addresses.get(0).getAddressLine(0);
+                    sPositionText.setText(address);
+                }
+            }
+        }
     }
 
     private void showImageUploadProgress(int progress) {
@@ -172,15 +206,11 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
         }
     }
 
-    public void setPositionLayoutVisible() {
-        mPositionLayout.setVisibility(View.VISIBLE);
-    }
-
     @CallSuper
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.change_image_button: {
+            case R.id.step_three_change_img_btn: {
 
                 CropImage.activity()
                         .setAspectRatio(13, 10) // a rectangle
@@ -188,16 +218,16 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
 
                 break;
             }
-            /*case R.id.change_position_button: {
+            case R.id.change_position_button: {
                 pickPosition();
                 break;
-            }*/
+            }
             default:
                 break;
         }
     }
 
-    /*public void pickPosition(){
+    public void pickPosition(){
         try {
 
             PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
@@ -215,5 +245,5 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
             Log.e(SUPER_TAG, String.format("PlacePicker Exception: %s", e.getMessage()));
             Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
         }
-    }*/
+    }
 }

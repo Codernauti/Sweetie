@@ -18,12 +18,12 @@ import java.util.List;
  */
 
 public class FirebaseRegisterController {
-    private static final String TAG = "FbRegistrerController";
+    private static final String TAG = "RegisterController";
 
     private final DatabaseReference mUsers;
-    private List<FbRegisterControllerListener> mListeners = new ArrayList<>();
+    private Listener mListener;
 
-    public interface FbRegisterControllerListener {
+    public interface Listener {
         void onUserPushed();
     }
 
@@ -39,15 +39,15 @@ public class FirebaseRegisterController {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        for(FbRegisterControllerListener listener : mListeners) {
-                            listener.onUserPushed();
+                        if (mListener != null) {
+                            mListener.onUserPushed();
                         }
                     }
                 });
     }
 
-    public void addListener(FbRegisterControllerListener listener) {
-        mListeners.add(listener);
+    public void setListener(Listener listener) {
+        mListener = listener;
     }
 
 
@@ -60,7 +60,7 @@ public class FirebaseRegisterController {
                 String key = dataSnapshot.getKey();
                 UserFB user = dataSnapshot.getValue(UserFB.class);
                 user.setKey(key);
-                for (FbRegisterControllerListener listener : mListeners) {
+                for (Listener listener : mListeners) {
                     listener.onUserPushed(user);
                 }
             }

@@ -62,6 +62,7 @@ public class GalleryInfoActivity extends BaseActivity {
 
         if (view == null) {
             view = ActionInfoFragment.newInstance(getIntent().getExtras());
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             transaction.add(R.id.action_info_fragment_container, view);

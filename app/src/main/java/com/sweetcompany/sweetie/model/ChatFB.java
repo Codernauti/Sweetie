@@ -7,17 +7,14 @@ import com.sweetcompany.sweetie.actionInfo.ActionInfoVM;
  * Created by Eduard on 25-May-17.
  */
 
-public class ChatFB implements ActionInfoVM {
+public class ChatFB extends ChildActionFB {
 
     @Exclude
     private String key;
 
-    private String title;
-    private String uriCover;
-    private String creationDate;
-
-    // For firebase
-    public ChatFB() {}
+    /*private String title;
+    private String uriCover;*/
+    /*private String creationDate;*/
 
     @Exclude
     public String getKey() {
@@ -28,7 +25,7 @@ public class ChatFB implements ActionInfoVM {
         this.key = key;
     }
 
-    public String getTitle() {
+   /* public String getTitle() {
         return title;
     }
     public void setTitle(String title) {
@@ -40,13 +37,12 @@ public class ChatFB implements ActionInfoVM {
     }
     public void setUriCover(String uriCover) {
         this.uriCover = uriCover;
-    }
+    }*/
 
-    public String getCreationDate() {
+    /*public String getCreationDate() {
         return creationDate;
     }
     public void setCreationDate(String date) {
         this.creationDate = date;
-    }
-
+    }*/
 }

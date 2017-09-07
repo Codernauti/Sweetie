@@ -48,9 +48,4 @@ public class ActionInfoPresenter<AFB extends ActionInfoVM> implements ActionInfo
     public void onActionInfoChanged(AFB actionFB) {
         mView.updateInfo(actionFB);
     }
-
-    @Override
-    public void onImageUploadProgress(int progress) {
-        mView.showImageUploadProgress(progress);
-    }
 }

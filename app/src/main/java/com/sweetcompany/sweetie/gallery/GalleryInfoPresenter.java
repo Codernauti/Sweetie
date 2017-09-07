@@ -54,8 +54,4 @@ class GalleryInfoPresenter implements GalleryInfoContract.Presenter,
         mView.updateInfo(gallery);
     }
 
-    @Override
-    public void onImageUploadProgress(int progress) {
-        mView.showImageUploadProgress(progress);
-    }
 }

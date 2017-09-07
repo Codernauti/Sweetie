@@ -11,9 +11,9 @@ public class MessageConverter {
 
     private static final String TAG = "MessageConverter";
 
-    public static MessageVM createMessageVM(MessageFB message, String userMail) {
+    public static MessageVM createMessageVM(MessageFB message, String userUid) {
 
-        boolean who = checkWho(message.getEmail(), userMail);
+        boolean who = checkWho(message.getUserUid(), userUid);
 
         // understand type of MessageFB and create the correct type of message
         MessageVM msgVM = null;
@@ -32,17 +32,17 @@ public class MessageConverter {
         return msgVM;
     }
 
-    private static boolean checkWho(String msgMail, String userMail) {
-        return msgMail.equals(userMail)? MessageVM.THE_MAIN_USER : MessageVM.THE_PARTNER;
+    private static boolean checkWho(String msgUserUid, String userUid) {
+        return msgUserUid.equals(userUid)? MessageVM.THE_MAIN_USER : MessageVM.THE_PARTNER;
     }
 
     private static MessageVM createTextMessageVM(MessageFB message, boolean who) {
-        return new TextMessageVM(message.getText(), message.getEmail(), who, message.getDateTime(),
+        return new TextMessageVM(message.getText(), message.getUserUid(), who, message.getDateTime(),
                 message.isBookmarked(), message.getKey());
     }
 
     private static MessageVM createTextPhotoMessageVM(MessageFB message, boolean who) {
-        return new TextPhotoMessageVM(message.getText(), message.getEmail(), who, message.getDateTime(),
+        return new TextPhotoMessageVM(message.getText(), message.getUserUid(), who, message.getDateTime(),
                 message.isBookmarked(), message.getKey(), message.getUriStorage());
     }
 }

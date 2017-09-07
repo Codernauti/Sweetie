@@ -1,11 +1,11 @@
 package com.sweetcompany.sweetie.chat;
 
+import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.model.MessageFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,55 +19,42 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Li
 
     private final ChatContract.View mView;
     private final FirebaseChatController mController;
-    private final String mUserMail;   // id of messages of main user
+    private final String mUserUid;   // id of messages of main user
 
     private Date mLastMsgDate;
     private Calendar mLastMsgDateCalendar = Calendar.getInstance();
     private Calendar mMsgcalendar = Calendar.getInstance();
 
-    ChatPresenter(ChatContract.View view, FirebaseChatController controller, String userMail){
+    ChatPresenter(ChatContract.View view, FirebaseChatController controller, String userUid){
         mView = view;
         mView.setPresenter(this);
         mController = controller;
         mController.setListener(this);
 
-        mUserMail = userMail;
+        mUserUid = userUid;
     }
 
     @Override
-    public void sendTextMessage(MessageVM message) {
-        // TODO: remove down cast -> use Factory method
-        TextMessageVM messageVM = (TextMessageVM) message;
-        MessageFB newMessage = new MessageFB(mUserMail, messageVM.getText(), messageVM.getTime(),
-                messageVM.isBookmarked(), MessageFB.TEXT_MSG, null);
+    public void sendTextMessage(String messageText) {
+        MessageFB newMessage = new MessageFB(mUserUid, messageText, DataMaker.get_UTC_DateTime(),
+                false, MessageFB.TEXT_MSG, null);
 
-        // TODO: doesn't work, firebase trigger data also offline
-        /*String newMessageUID = */mController.sendMessage(newMessage);
-        //newMessage.setKey(newMessageUID);
-        //messageVM.setKey(newMessageUID);
-        //mView.updateMessage(messageVM);
+        mController.sendMessage(newMessage);
     }
 
     @Override
-    public void sendPhotoMessage(MessageVM messageVM) {
-        // TODO: remove down cast -> use Factory method
-        TextPhotoMessageVM photoMessageVM = (TextPhotoMessageVM) messageVM;
-        MessageFB newMessage = new MessageFB(mUserMail, photoMessageVM.getText(),
-                photoMessageVM.getTime(), photoMessageVM.isBookmarked(), MessageFB.PHOTO_MSG,
-                photoMessageVM.getUriStorage());
+    public void sendPhotoMessage(String msgPhotoUriLocal, String textMsg) {
+        MessageFB newMessage = new MessageFB(mUserUid, textMsg, DataMaker.get_UTC_DateTime(),
+                false, MessageFB.PHOTO_MSG, msgPhotoUriLocal);
 
         mController.uploadPhotoMessage(newMessage);
-        /*String newMessageUID = mController.sendMedia(newMessage);
-        newMessage.setKey(newMessageUID);
-        photoMessageVM.setKey(newMessageUID);
-        mView.updateMessage(photoMessageVM);*/
     }
 
     @Override
     public void bookmarkMessage(MessageVM messageVM, int type) {
         if(type == MessageVM.TEXT_MSG){
             TextMessageVM msgVM = (TextMessageVM) messageVM;
-            MessageFB updateMessage = new MessageFB(msgVM.getCreatorEmail(), msgVM.getText(), msgVM.getTime(),
+            MessageFB updateMessage = new MessageFB(msgVM.getCreatorUid(), msgVM.getText(), msgVM.getTime(),
                     msgVM.isBookmarked(), MessageFB.TEXT_MSG, null);
             updateMessage.setKey(msgVM.getKey());
 
@@ -76,7 +63,7 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Li
         } else if(type == MessageVM.TEXT_PHOTO_MSG) {
 
             TextPhotoMessageVM msgVM = (TextPhotoMessageVM) messageVM;
-            MessageFB updateMessage = new MessageFB(msgVM.getCreatorEmail(), msgVM.getText(), msgVM.getTime(),
+            MessageFB updateMessage = new MessageFB(msgVM.getCreatorUid(), msgVM.getText(), msgVM.getTime(),
                     msgVM.isBookmarked(), MessageFB.PHOTO_MSG, msgVM.getUriStorage());
             updateMessage.setKey(msgVM.getKey());
 
@@ -123,20 +110,20 @@ class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Li
     }
 
     private void insertMessageVM(MessageFB message) {
-        MessageVM msgVM = MessageConverter.createMessageVM(message, mUserMail);
+        MessageVM msgVM = MessageConverter.createMessageVM(message, mUserUid);
         mView.updateMessage(msgVM);
     }
 
 
     @Override
     public void onMessageRemoved(MessageFB message) {
-        MessageVM msgVM = MessageConverter.createMessageVM(message, mUserMail);
+        MessageVM msgVM = MessageConverter.createMessageVM(message, mUserUid);
         mView.removeMessage(msgVM);
     }
 
     @Override
     public void onMessageChanged(MessageFB message) {
-        MessageVM msgVM = MessageConverter.createMessageVM(message, mUserMail);
+        MessageVM msgVM = MessageConverter.createMessageVM(message, mUserUid);
         mView.changeMessage(msgVM);
     }
 

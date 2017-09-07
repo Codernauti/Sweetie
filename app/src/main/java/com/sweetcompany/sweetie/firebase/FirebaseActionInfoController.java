@@ -49,13 +49,13 @@ public class FirebaseActionInfoController<AT> {
     }
 
 
-    public FirebaseActionInfoController(String coupleUid, String parentActionUid, String actionUid, Class<AT> actionObjClass) {
+    public FirebaseActionInfoController(String coupleUid, String actionUid, Class<AT> actionObjClass) {
         mActionObjClass = actionObjClass;
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mActionsImgStorageRef = FirebaseStorage.getInstance().getReference(Constraints.ACTIONS_IMAGES + "/" + coupleUid);
 
-        mParentActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + parentActionUid;
+        mParentActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionUid;
 
         if (actionObjClass.isAssignableFrom(GalleryFB.class)) {
             mActionUrl = Constraints.GALLERIES + "/" + coupleUid + "/" + actionUid;

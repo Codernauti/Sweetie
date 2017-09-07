@@ -96,9 +96,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
     private ChatContract.Presenter mPresenter;
 
-    private String mUserMail;
     private String mChatUid;
-    private String mParentActionUid;
 
 
     public static ChatFragment newInstance(Bundle bundle) {
@@ -118,8 +116,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mChatAdapter.setListener(this);
 
         mInputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        mUserMail = Utility.getStringPreference(getContext(), SharedPrefKeys.MAIL);
     }
 
     @Override
@@ -131,7 +127,6 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         // TODO: is useless to set titleChat, Firebase update it also if it is offline
         String titleChat = getArguments().getString(ChatActivity.CHAT_TITLE);
         mChatUid = getArguments().getString(ChatActivity.CHAT_DATABASE_KEY);
-        mParentActionUid = getArguments().getString(ChatActivity.ACTION_DATABASE_KEY);
 
         Log.d(TAG, "from Intent CHAT_TITLE: " + titleChat + "\n" + "from Intent CHAT_DATABASE_KEY: " + mChatUid);
 
@@ -298,11 +293,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             Uri file = Uri.fromFile(new File(images.get(i).getPath()));
             String stringUriLocal = file.toString();
 
-            MessageVM newMessage = new TextPhotoMessageVM(getString(R.string.camera_emoticons),
-                    mUserMail, MessageVM.THE_MAIN_USER, DataMaker.get_UTC_DateTime(),
-                    false, null, stringUriLocal);
-
-            mPresenter.sendPhotoMessage(newMessage);
+            mPresenter.sendPhotoMessage(stringUriLocal, getString(R.string.camera_emoticons));
         }
     }
 
@@ -368,8 +359,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_info: {
-                Intent intent = ChatInfoActivity.getStartActivityIntent(
-                        getContext(), mChatUid, mParentActionUid);
+                Intent intent = ChatInfoActivity.getStartActivityIntent(getContext(), mChatUid);
                 startActivity(intent);
                 break;
             }
@@ -389,10 +379,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
 
                 if (!inputText.isEmpty()) {
                     // TODO: is this responsibility of fragment?
-                    MessageVM newMessage = new TextMessageVM(inputText, mUserMail, MessageVM.THE_MAIN_USER,
-                            DataMaker.get_UTC_DateTime(), false, null);
-
-                    mPresenter.sendTextMessage(newMessage);
+                    mPresenter.sendTextMessage(inputText);
                 }
                 break;
 

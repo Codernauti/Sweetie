@@ -14,7 +14,7 @@ public class MessageFB {
     @Exclude
     private String key;
 
-    private String email;   //TODO: add a user identifier
+    private String userUid;
     private String text;
     private String dateTime;
     private boolean bookmarked;
@@ -26,8 +26,8 @@ public class MessageFB {
     // For firebase serialization
     public MessageFB() {}
 
-    public MessageFB(String email, String text, String date, boolean bookmarked, int type, String uriS) {
-        this.email = email;
+    public MessageFB(String userUid, String text, String date, boolean bookmarked, int type, String uriS) {
+        this.userUid = userUid;
         this.text = text;
         this.dateTime = date;
         this.bookmarked = bookmarked;
@@ -45,8 +45,8 @@ public class MessageFB {
         this.key = key;
     }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public String getUserUid() { return userUid; }
+    public void setUserUid(String userUid) { this.userUid = userUid; }
 
     public String getText() {
         return text;
@@ -109,7 +109,7 @@ public class MessageFB {
     public String toString() {
         return "{" +
                 " key: " + key +
-                " email: " + email +
+                " userUid: " + userUid +
                 " text: " + text +
                 " dateTime: " + dateTime +
                 " bookmarked: " + bookmarked +

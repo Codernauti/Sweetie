@@ -23,10 +23,8 @@ public class ToDoListInfoActivity extends BaseActivity {
     private static final String TAG = "ChatInfoActivity";
 
     private static final String TODOLIST_UID_KEY = "toDoListUid";
-    private static final String PARENT_ACTION_UID_KEY = "parentActionUid";
 
     private String mToDoListUid;
-    private String mParentActionUid;
 
     private FirebaseActionInfoController<ToDoListFB> mController;
     private ActionInfoPresenter<ToDoListFB> mPresenter;
@@ -34,7 +32,6 @@ public class ToDoListInfoActivity extends BaseActivity {
     public static Intent getStartActivityIntent(Context context, String galleryUid, String parentActionUid) {
         Intent intent = new Intent(context, ToDoListInfoActivity.class);
         intent.putExtra(TODOLIST_UID_KEY, galleryUid);
-        intent.putExtra(PARENT_ACTION_UID_KEY, parentActionUid);
         return intent;
     }
 
@@ -51,9 +48,8 @@ public class ToDoListInfoActivity extends BaseActivity {
 
         if (savedInstanceState != null) {
             mToDoListUid = savedInstanceState.getString(TODOLIST_UID_KEY);
-            mParentActionUid = savedInstanceState.getString(PARENT_ACTION_UID_KEY);
 
-            Log.d(TAG, "ToDoListUid = " + mToDoListUid + "\n" + "ParentActionUid = " + mParentActionUid);
+            Log.d(TAG, "ToDoListUid = " + mToDoListUid);
         }
         else {
             Log.w(TAG, "No savedInstanceState or intentArgs!");
@@ -72,8 +68,7 @@ public class ToDoListInfoActivity extends BaseActivity {
         }
 
         if (mToDoListUid != null) {
-            mController = new FirebaseActionInfoController<>(super.mCoupleUid,
-                    mParentActionUid, mToDoListUid, ToDoListFB.class);
+            mController = new FirebaseActionInfoController<>(super.mCoupleUid, mToDoListUid, ToDoListFB.class);
             mPresenter = new ActionInfoPresenter<>(view, mController);
         } else {
             Log.w(TAG, "ToDOList Uid is null, impossible to instantiate Controller and presenter");
@@ -96,7 +91,6 @@ public class ToDoListInfoActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(TODOLIST_UID_KEY, mToDoListUid);
-        outState.putString(PARENT_ACTION_UID_KEY, mParentActionUid);
     }
 
     @Override

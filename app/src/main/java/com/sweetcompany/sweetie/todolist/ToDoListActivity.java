@@ -1,9 +1,11 @@
 package com.sweetcompany.sweetie.todolist;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
@@ -71,6 +73,7 @@ public class ToDoListActivity extends BaseActivity {
         } else {
             Log.w(TAG, "Impossible to create ToDoListController and ToDoListPresenter because ToDoListKey is NULL");
         }
+
 
         mController.attachListeners();
     }

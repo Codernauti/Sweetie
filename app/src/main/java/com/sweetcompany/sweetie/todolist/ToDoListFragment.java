@@ -1,5 +1,6 @@
 package com.sweetcompany.sweetie.todolist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
@@ -83,8 +85,10 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
         mToDoListListView = (RecyclerView) root.findViewById(R.id.todolist_list);
+        mToDoListListView.setItemAnimator(null);
         mToDoListListView.setLayoutManager(mLinearLayoutManager);
         mToDoListListView.setAdapter(toDoListAdapter);
+
 
         return root;
     }

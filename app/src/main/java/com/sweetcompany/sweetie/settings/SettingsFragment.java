@@ -110,24 +110,19 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
     @Override
     public void updateUserInfo(String userImageUri, String username, String email, String telephone,
                                boolean gender) {
-        Glide.with(getActivity())
-                .load(userImageUri)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(mImageView);
+
+        if (mProgressImgUploadBar.getVisibility() == View.GONE) {
+            // if progressBar is hide, load image
+            Glide.with(getActivity())
+                    .load(userImageUri)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(mImageView);
+        }
 
         mUsernameTextView.setText(username);
         mEmailTextView.setText(email);
         mTelephoneTextView.setText(telephone);
         mGenderTextView.setText(gender ? getString(R.string.gender_male) : getString(R.string.gender_female));
-    }
-
-    @Override
-    public void updateImageUploadProgress(int progress) {
-        if (progress < 100) {
-            mProgressImgUploadTextView.setText(progress + "%");
-        } else {
-            setProgressViewsVisible(false);
-        }
     }
 
     @Override
@@ -187,6 +182,13 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
             if (resultCode == RESULT_OK) {
                 setProgressViewsVisible(true);
                 Uri resultUri = result.getUri();
+
+                // Immediately feedback the user
+                Glide.with(getActivity())
+                        .load(resultUri)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(mImageView);
+
                 mPresenter.uploadImage(resultUri);
             }
             else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -196,12 +198,13 @@ public class SettingsFragment extends Fragment implements SettingsContract.View,
         }
     }
 
-    private void setProgressViewsVisible(boolean visible) {
+    @Override
+    public void setProgressViewsVisible(boolean visible) {
         if (visible) {
-            mProgressImgUploadTextView.setVisibility(View.VISIBLE);
+            //mProgressImgUploadTextView.setVisibility(View.VISIBLE);
             mProgressImgUploadBar.setVisibility(View.VISIBLE);
         } else {
-            mProgressImgUploadTextView.setVisibility(View.GONE);
+            //mProgressImgUploadTextView.setVisibility(View.GONE);
             mProgressImgUploadBar.setVisibility(View.GONE);
         }
     }

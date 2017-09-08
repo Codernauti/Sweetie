@@ -8,6 +8,7 @@ import com.sweetcompany.sweetie.model.GalleryFB;
  * Created by Eduard on 04-Sep-17.
  */
 
+@Deprecated
 interface GalleryInfoContract {
 
     interface View {

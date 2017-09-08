@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.sweetcompany.sweetie.UserMonitorService;
 import com.sweetcompany.sweetie.firebase.FirebaseLoginController;
 import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
+import com.sweetcompany.sweetie.firebase.FirebaseSettingsController;
 import com.sweetcompany.sweetie.model.UserFB;
 import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
@@ -27,6 +28,10 @@ public class RegisterActivity extends AppCompatActivity
     private StepTwo mViewTwo;
     private RegisterPresenter mRegisterPresenter;
     private FirebaseRegisterController mRegisterController;
+
+    private StepSetUserImage mViewThree;
+    private SetUserImagePresenter mSetUserImagePresenter;
+    private FirebaseSettingsController mSettingsController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +72,10 @@ public class RegisterActivity extends AppCompatActivity
             startActivity(new Intent(this, MainActivity.class));
         }
         else {  // user == null, he need to sign in
+
+            mLoginController.removeListener(this);
+            mLoginController.removeListener(mLoginPresenter);
+
             // Initialization of fragment StepTwo
 
             mViewTwo = null;
@@ -90,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity
             mRegisterController = new FirebaseRegisterController();
             mRegisterPresenter = new RegisterPresenter(mViewTwo, mRegisterController);
 
-            mRegisterController.addListener(mRegisterPresenter);
+            mRegisterController.setListener(mRegisterPresenter);
         }
     }
 
@@ -100,6 +109,10 @@ public class RegisterActivity extends AppCompatActivity
         // remove all listeners from firebase to avoid memory leak
         mLoginController.removeListener(this);
         mLoginController.removeListener(mLoginPresenter);
+
+        if (mSettingsController != null) {
+            mSettingsController.detachListener();
+        }
     }
 
     @Override
@@ -115,5 +128,36 @@ public class RegisterActivity extends AppCompatActivity
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public void showStepThree() {
+        mRegisterController.setListener(null);
+
+        //
+
+        mViewThree = null;
+
+        if (mViewThree == null) {
+            mViewThree = StepSetUserImage.newInstance(getIntent().getExtras());
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            transaction.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+            );
+
+            transaction.addToBackStack(StepSetUserImage.TAG);
+            transaction.replace(R.id.register_fragment_container, mViewThree);
+            transaction.commit();
+        }
+
+        String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
+
+        mSettingsController = new FirebaseSettingsController(userUid);
+        mSetUserImagePresenter = new SetUserImagePresenter(mViewThree, mSettingsController);
+
+        mSettingsController.attachListener();
     }
 }

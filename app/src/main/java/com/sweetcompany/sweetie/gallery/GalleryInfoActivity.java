@@ -9,6 +9,9 @@ import android.util.Log;
 
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.actionInfo.ActionInfoContract;
+import com.sweetcompany.sweetie.actionInfo.ActionInfoFragment;
+import com.sweetcompany.sweetie.actionInfo.ActionInfoPresenter;
 import com.sweetcompany.sweetie.firebase.FirebaseActionInfoController;
 import com.sweetcompany.sweetie.model.GalleryFB;
 
@@ -25,7 +28,7 @@ public class GalleryInfoActivity extends BaseActivity {
     private String mGalleryUid;
 
     private FirebaseActionInfoController<GalleryFB> mController;
-    private GalleryInfoContract.Presenter mPresenter;
+    private ActionInfoContract.Presenter mPresenter;
 
     public static Intent getStartActivityIntent(Context context, String galleryUid) {
         Intent intent = new Intent(context, GalleryInfoActivity.class);
@@ -54,11 +57,12 @@ public class GalleryInfoActivity extends BaseActivity {
         }
 
 
-        GalleryInfoFragment view = (GalleryInfoFragment) getSupportFragmentManager()
+        ActionInfoFragment view = (ActionInfoFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.action_info_fragment_container);
 
         if (view == null) {
-            view = GalleryInfoFragment.newInstance(getIntent().getExtras());
+            view = ActionInfoFragment.newInstance(getIntent().getExtras());
+
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
             transaction.add(R.id.action_info_fragment_container, view);
@@ -67,7 +71,7 @@ public class GalleryInfoActivity extends BaseActivity {
 
         if (mGalleryUid != null) {
             mController = new FirebaseActionInfoController<>(super.mCoupleUid, mGalleryUid, GalleryFB.class);
-            mPresenter = new GalleryInfoPresenter(view, mController);
+            mPresenter = new ActionInfoPresenter<GalleryFB>(view, mController);
         } else {
             Log.w(TAG, "Gallery Uid is null, impossible to instantiate Controller and presenter");
         }

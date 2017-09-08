@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.firebase;
 
+import android.support.annotation.Nullable;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +23,7 @@ public class FirebaseUserController {
     private UserControllerListener mListener;
 
     public interface UserControllerListener {
-        void onUserChange(UserFB newUserData);
+        void onUserChange(@Nullable UserFB newUserData);
     }
 
     public FirebaseUserController(String userUid, UserControllerListener listener) {
@@ -36,7 +38,7 @@ public class FirebaseUserController {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     UserFB newUserData = dataSnapshot.getValue(UserFB.class);
 
-                    if (mListener != null && newUserData != null) {
+                    if (mListener != null) {
                         mListener.onUserChange(newUserData);
                     }
                 }

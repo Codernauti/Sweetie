@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.sweetcompany.sweetie.firebase.FirebaseUserController;
@@ -51,7 +52,14 @@ public class UserMonitorService extends Service implements FirebaseUserControlle
     // controller callback
 
     @Override
-    public void onUserChange(UserFB newUserData) {
+    public void onUserChange(@Nullable UserFB newUserData) {
+
+        if (newUserData == null) {
+            // Try to take out the user
+            Utility.clearSharedPreferences(this);
+            return;
+        }
+
         // save user data
         Utility.saveStringPreference(UserMonitorService.this, SharedPrefKeys.USER_IMAGE_URI, newUserData.getImageUrl());
 

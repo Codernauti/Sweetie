@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.registration;
 
+import android.net.Uri;
+
 /**
  * Created by lucas on 16/05/2017.
  */
@@ -19,11 +21,23 @@ interface RegisterContract {
     // StepTwo
     interface RegisterView {
         void setPresenter(RegisterPresenter presenter);
-        void startPairingActivity();
+        void showNextScreen();
     }
 
     interface RegisterPresenter {
         void saveUserData(String uid, String email, String username, String phonNumber, boolean gender);
+    }
+
+    // StepThree
+    interface SetUserImageView {
+        void setPresenter(SetUserImagePresenter presenter);
+        void setProgressViewsVisible(boolean visible);
+        void showNextScreen();
+        void showImage(String imageUrl);
+    }
+
+    interface SetUserImagePresenter {
+        void uploadImage(Uri imgLocalUri);
     }
 
 }

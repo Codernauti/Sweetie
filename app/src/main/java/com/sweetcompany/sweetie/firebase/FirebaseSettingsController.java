@@ -1,8 +1,10 @@
 package com.sweetcompany.sweetie.firebase;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -10,9 +12,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sweetcompany.sweetie.model.UserFB;
+
+import java.util.HashMap;
 
 /**
  * Created by Eduard on 28-Aug-17.
@@ -29,7 +34,7 @@ public class FirebaseSettingsController {
 
     private SettingsControllerListener mListener;
 
-    public interface SettingsControllerListener extends ImageUploader.OnImageUploadProgressListener {
+    public interface SettingsControllerListener {
         void onUserChanged(UserFB user);
     }
 
@@ -74,20 +79,40 @@ public class FirebaseSettingsController {
     }
 
     public void changeUserImage(final Uri imageLocalUri) {
-        // TODO: duplicated code with ChatController
+        mUserRef.child(Constraints.Users.UPLOADING_IMG).setValue(true);
+
+
         StorageReference photoStorageRef = mUserStorage.child(imageLocalUri.getLastPathSegment());
 
-        ImageUploader.build(photoStorageRef)
-                .setDefaultImageUploadProgressListener(mListener)
-                .setOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        UploadTask uploadTask = photoStorageRef.putFile(imageLocalUri);
+
+        uploadTask
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        mUserRef.child(Constraints.Users.UPLOADING_IMG).setValue(false);
+                        Log.d(TAG, "onFailure upload user image");
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         String urlImg = taskSnapshot.getDownloadUrl().toString();
-                        mUserRef.child(Constraints.Users.IMAGE_URL).setValue(urlImg);
+
+                        HashMap<String, Object> updates = new HashMap<String, Object>();
+                        updates.put(Constraints.Users.UPLOADING_IMG, null);
+                        updates.put(Constraints.Users.IMAGE_URL, urlImg);
+
+                        mUserRef.updateChildren(updates);
 
                         Log.d(TAG, "Url image settings uploaded: " + urlImg);
                     }
                 })
-                .startUpload(imageLocalUri);
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        // TODO: implement it, we want progress?
+                    }
+                });
     }
 }

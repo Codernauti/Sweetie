@@ -41,8 +41,9 @@ interface Constraints {
         String IMAGE_URL = "imageUrl";
         String DESCRIPTION = "description";
         String DATE_TIME = "dataTime";
-        String NOTIFICATION_COUNTER = "notificationCounters";
+        String NOTIFICATION_COUNTERS = "notificationCounters";
         String COUNTER = "counter";
+        String UPDATED_ELEMENTS = "updatedElements";
     }
 
     String ACTIONS_DIARY = "actionsDiary";

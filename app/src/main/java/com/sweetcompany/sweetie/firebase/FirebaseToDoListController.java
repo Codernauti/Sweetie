@@ -29,7 +29,7 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
 
     private final DatabaseReference mDatabaseRef;
     private final DatabaseReference mToDoListRef;
-    private final DatabaseReference mToDoListCheckEntryRef;
+    private final DatabaseReference mToDoListCheckEntriesRef;
 
     private ValueEventListener mToDoListListener;
     private ChildEventListener mToDoListCheckEntriesListener;
@@ -56,7 +56,7 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
         mToDoListRef = mDatabaseRef.child(mToDoListUrl);
-        mToDoListCheckEntryRef = mDatabaseRef.child(mtoDoListCheckEntriesUrl);
+        mToDoListCheckEntriesRef = mDatabaseRef.child(mtoDoListCheckEntriesUrl);
     }
 
     public void addListener(Listener listener) {
@@ -116,7 +116,7 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
 
                 }
             };
-            mToDoListCheckEntryRef.addChildEventListener(mToDoListCheckEntriesListener);
+            mToDoListCheckEntriesRef.addChildEventListener(mToDoListCheckEntriesListener);
         }
 
         if (mToDoListListener == null) {
@@ -144,7 +144,7 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
         super.detachListeners();
 
         if (mToDoListCheckEntriesListener != null) {
-            mToDoListCheckEntryRef.removeEventListener(mToDoListCheckEntriesListener);
+            mToDoListCheckEntriesRef.removeEventListener(mToDoListCheckEntriesListener);
         }
         mToDoListCheckEntriesListener = null;
 
@@ -171,19 +171,26 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
     public void addCheckEntry(CheckEntryFB checkEntry) {
         Log.d(TAG, "Add CheckEntryFB: " + checkEntry);
 
-        String checkEntryUid = mToDoListCheckEntryRef.push().getKey();
+        String checkEntryUid = mToDoListCheckEntriesRef.push().getKey();
 
         HashMap<String, Object> updates = new HashMap<>();
         updates.put(mtoDoListCheckEntriesUrl + "/" + checkEntryUid, checkEntry);
 
-        super.updateNotificationCounter(updates);
+        super.updateNotificationCounterAfterInsertion(updates, checkEntryUid);
 
         mDatabaseRef.updateChildren(updates);
     }
 
-    public void removeCheckEntry(String key){
-        Log.d(TAG, "Remove CheckEntryFB: " + key);
-        mToDoListCheckEntryRef.child(key).removeValue();
+    public void removeCheckEntry(String checkEntryUid){
+        Log.d(TAG, "Remove CheckEntryFB: " + checkEntryUid);
+        // mToDoListCheckEntriesRef.child(checkEntryUid).removeValue();
+
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put(mtoDoListCheckEntriesUrl + "/" + checkEntryUid, null);
+
+        super.updateNotificationCounterAfterDeletion(updates, checkEntryUid);
+
+        mDatabaseRef.updateChildren(updates);
     }
 
 }

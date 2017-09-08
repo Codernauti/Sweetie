@@ -18,7 +18,6 @@ import com.sweetcompany.sweetie.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by Eduard on 07/05/2017.

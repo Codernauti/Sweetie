@@ -33,7 +33,7 @@ public class SettingsPresenter implements SettingsContract.Presenter,
     @Override
     public void onUserChanged(UserFB user) {
 
-        if (user.isUploadingImage()) {
+        if (user.isUploadingImg()) {
             mView.setProgressViewsVisible(true);
         } else {
             mView.setProgressViewsVisible(false);

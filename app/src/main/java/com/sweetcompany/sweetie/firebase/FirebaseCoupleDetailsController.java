@@ -32,11 +32,13 @@ public class FirebaseCoupleDetailsController {
     private static final String ACTIVE_COUPLE_PARTIAL_URL = Constraints.COUPLE_INFO + "/" + Constraints.ACTIVE_COUPLE;
     private static final String ARCHIVED_COUPLES_PARTIAL_URL = Constraints.COUPLE_INFO + "/" + Constraints.ARCHIVED_COUPLES;
 
-    private final DatabaseReference mDatabase;
+    private final DatabaseReference mDatabaseRef;
     private final StorageReference mCoupleStorage;
 
-    private final DatabaseReference mCouple;
+    private final DatabaseReference mCoupleRef;
     private ValueEventListener mCoupleListener;
+
+    private final String mCoupleUid;
 
     private final String mUserFuturePartnerUrl;         // users/<userUid>/futurePartner
     private final String mPartnerFuturePartnerUrl;      // users/<partnerUid>/futurePartner
@@ -50,13 +52,13 @@ public class FirebaseCoupleDetailsController {
 
     public interface CoupleDetailsControllerListener {
         void onCoupleDetailsChanged(CoupleFB couple);
-        void onImageUploadProgress(int progress);
     }
 
 
     public FirebaseCoupleDetailsController(String userUid, String partnerUid, String coupleUid) {
+        mCoupleUid = coupleUid;
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mCoupleStorage = FirebaseStorage.getInstance().getReference(Constraints.COUPLES_DETAILS + "/" + coupleUid);
 
         mUserFuturePartnerUrl = Constraints.USERS + "/" + userUid + "/" + Constraints.FUTURE_PARTNER;
@@ -70,7 +72,7 @@ public class FirebaseCoupleDetailsController {
 
         mCoupleUidUrl = Constraints.COUPLES + "/" + coupleUid;
 
-        mCouple = mDatabase.child(mCoupleUidUrl);
+        mCoupleRef = mDatabaseRef.child(mCoupleUidUrl);
     }
 
     private String buildArchivedCouplesUrl(String genericUserUid, String coupleUid) {
@@ -104,21 +106,19 @@ public class FirebaseCoupleDetailsController {
 
                 }
             };
-            mCouple.addValueEventListener(mCoupleListener);
+            mCoupleRef.addValueEventListener(mCoupleListener);
         }
     }
 
     public void detachCoupleListener() {
         if (mCoupleListener != null) {
-            mCouple.removeEventListener(mCoupleListener);
+            mCoupleRef.removeEventListener(mCoupleListener);
         }
         mCoupleListener = null;
     }
 
     public void archiveCouple() {
-        // TODO: remove try catch
-        String now = "no-data";
-        now = DataMaker.get_UTC_DateTime();
+        String now = DataMaker.get_UTC_DateTime();
 
         Map<String, Object> updates = new HashMap<>();
 
@@ -135,36 +135,42 @@ public class FirebaseCoupleDetailsController {
         updates.put(mUserActiveCoupleUrl, null);
 
         // set to false the active couple of coupleUid and push break time
-        updates.put(mCoupleUidUrl + "/" + Constraints.ACTIVE, false);
-        updates.put(mCoupleUidUrl + "/" + Constraints.BREAK_TIME, now);
+        updates.put(mCoupleUidUrl + "/" + Constraints.Couples.ACTIVE, false);
+        updates.put(mCoupleUidUrl + "/" + Constraints.Couples.BREAK_TIME, now);
 
-        mDatabase.updateChildren(updates);
+        mDatabaseRef.updateChildren(updates);
     }
 
 
-    public void changeCoupleImage(final Uri imageLocalUri) {
-        // TODO: duplicated code with ChatController
-        StorageReference photoRef = mCoupleStorage.child(imageLocalUri.getLastPathSegment());
-        UploadTask uploadTask = photoRef.putFile(imageLocalUri);
-        final String imageLocalUriString = imageLocalUri.toString();
+    public void changeCoupleImage(Uri imageLocalUri) {
+
+        mCoupleRef.child(Constraints.Couples.UPLOADING_IMG).setValue(true);
+
+        String imageName = DataMaker.get_UTC_DateTime() + mCoupleUid;
+        UploadTask uploadTask = mCoupleStorage.child(imageName).putFile(imageLocalUri);
 
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
+                Map<String, Object> updates = new HashMap<>();
+                updates.put(Constraints.Couples.PROGRESS, null);
+                updates.put(Constraints.Couples.UPLOADING_IMG, false);
+
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d(TAG, "onSuccess sendImage(): " + taskSnapshot.getDownloadUrl() +"\n" + "update into uri: " + mCouple);
+                Log.d(TAG, "onSuccess sendImage(): " + taskSnapshot.getDownloadUrl() +"\n" + "update into uri: " + mCoupleRef);
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 String imageStorageUriString = downloadUrl.toString();
 
                 Map<String, Object> updates = new HashMap<>();
-                updates.put(Constraints.IMAGE_LOCAL_URI, imageLocalUriString);
-                updates.put(Constraints.IMAGE_STORAGE_URI, imageStorageUriString);
+                updates.put(Constraints.Couples.IMAGE_STORAGE_URI, imageStorageUriString);
+                updates.put(Constraints.Couples.PROGRESS, null);
+                updates.put(Constraints.Couples.UPLOADING_IMG, false);
 
-                mCouple.updateChildren(updates);
+                mCoupleRef.updateChildren(updates);
             }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -172,16 +178,13 @@ public class FirebaseCoupleDetailsController {
                 double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
                 Log.d(TAG, "Upload image progress: " + progress);
-
-                if (mListener != null) {
-                    mListener.onImageUploadProgress((int) progress);
-                }
+                mCoupleRef.child(Constraints.Couples.PROGRESS).setValue(progress);
             }
         });
     }
 
     public void changeAnniversaryDate(String anniversary) {
-        mCouple.child(Constraints.ANNIVERSARY).setValue(anniversary);
+        mCoupleRef.child(Constraints.Couples.ANNIVERSARY).setValue(anniversary);
     }
 
 }

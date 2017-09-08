@@ -17,6 +17,7 @@ public class UserFB {
     private String imageUrl;
     private CoupleInfoFB coupleInfo;
     private String futurePartner;
+    private boolean uploadingImg = false;
 
     public UserFB(){}
 
@@ -83,5 +84,13 @@ public class UserFB {
     }
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public boolean isUploadingImg() {
+        return uploadingImg;
+    }
+
+    public void setUploadingImg(boolean uploadingImg) {
+        this.uploadingImg = uploadingImg;
     }
 }

@@ -137,7 +137,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {}
             };
-            mGalleryPhotos.orderByChild("dataTime").addChildEventListener(mGalleryPhotosListener);
+            mGalleryPhotos.addChildEventListener(mGalleryPhotosListener);
         }
 
         if (mGalleryListener == null) {
@@ -246,7 +246,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, "\uD83D\uDCF7");
         updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, media.getDateTime());
 
-        super.updateNotificationCounter(updates);
+        super.updateNotificationCounterAfterInsertion(updates, mediaUid);
 
         mDatabaseRef.updateChildren(updates);
     }
@@ -316,18 +316,28 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         Log.d(TAG, "remove media:" + uriStorage);
 
         if (uriStorage == null) {
-            mGalleryPhotos.child(mediaUid).removeValue();
+            removeMediaFromDatabase(mediaUid);
+            /*mGalleryPhotos.child(mediaUid).removeValue();*/
         }
         else {
             StorageReference mMediaRef = FirebaseStorage.getInstance().getReferenceFromUrl(uriStorage);
             mMediaRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Log.d(TAG, "media is deleted");
-                    mGalleryPhotos.child(mediaUid).removeValue();
+                    Log.d(TAG, "media is deleted from storage");
+                    removeMediaFromDatabase(mediaUid);
+                    //mGalleryPhotos.child(mediaUid).removeValue();
                 }
             });
         }
+    }
+
+    private void removeMediaFromDatabase(final String mediaUid) {
+        HashMap<String, Object> updates = new HashMap<>();
+        updates.put(mGalleryPhotosUrl + "/" + mediaUid, null);
+        super.updateNotificationCounterAfterDeletion(updates, mediaUid);
+
+        mDatabaseRef.updateChildren(updates);
     }
 
 

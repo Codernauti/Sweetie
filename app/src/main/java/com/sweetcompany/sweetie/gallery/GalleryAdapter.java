@@ -80,17 +80,19 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryViewHolder>
 
     void addMedia(MediaVM media) {
         //is already in VM exchange VM
-        if(searchIndexMediaOf(media) != -1)
-        {
+        if(searchIndexMediaOf(media.getKey()) != -1) {
             removeMedia(media);
         }
-        //TODO not clear
-        mMediasList.add(0, media); //add in head
-        notifyItemInserted(0);
+
+        mMediasList.add(media);
+        notifyItemInserted(mMediasList.size());
+
+       /* mMediasList.add(0, media);
+        notifyItemInserted(0);*/
     }
 
     void removeMedia(MediaVM mediaVM) {
-        int indexOldMedia = searchIndexMediaOf(mediaVM);
+        int indexOldMedia = searchIndexMediaOf(mediaVM.getKey());
         if (indexOldMedia != -1) {
             mMediasList.remove(indexOldMedia);
             notifyItemRemoved(indexOldMedia);
@@ -98,18 +100,17 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryViewHolder>
     }
 
     void changeMedia(MediaVM mediaVM) {
-        int indexOldMedia = searchIndexMediaOf(mediaVM);
-        if (indexOldMedia != -1) {
-            mMediasList.set(indexOldMedia, mediaVM);
-            notifyItemChanged(indexOldMedia);
+        int indexMedia = searchIndexMediaOf(mediaVM.getKey());
+        if (indexMedia != -1) {
+            mMediasList.set(indexMedia, mediaVM);
+            notifyItemChanged(indexMedia);
         }
     }
 
-    private int searchIndexMediaOf(MediaVM media) {
-        String modifyMediaKey = media.getKey();
+    private int searchIndexMediaOf(String changedMediaUid) {
         for (int i = 0; i < mMediasList.size(); i++) {
             String mediaKey = mMediasList.get(i).getKey();
-            if (mediaKey.equals(modifyMediaKey)) {
+            if (mediaKey.equals(changedMediaUid)) {
                 return i;
             }
         }

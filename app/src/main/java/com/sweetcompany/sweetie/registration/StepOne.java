@@ -70,7 +70,6 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
                         .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
                         .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                         .build();
-
         }
     }
 
@@ -127,8 +126,6 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include android:id="@+id/step_three_toolbar"
+        layout="@layout/app_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="0dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/step_three_user_image"
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="48dp"
+        android:src="@color/grey_alpha_50"
+
+        app:layout_constraintTop_toBottomOf="@+id/step_three_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/step_three_info"
+        />
+
+    <ProgressBar
+        android:id="@+id/step_three_progress_bar_img_upload"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintTop_toTopOf="@+id/step_three_user_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/step_three_user_image"/>
+
+    <TextView
+        android:id="@+id/step_three_progress_img_upload"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+
+        app:layout_constraintTop_toTopOf="@+id/step_three_user_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/step_three_user_image"/>
+
+
+    <ImageButton
+        android:id="@+id/step_three_change_img_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+
+        app:layout_constraintEnd_toEndOf="@+id/step_three_user_image"
+        app:layout_constraintBottom_toBottomOf="@+id/step_three_user_image"
+
+        android:background="@drawable/shape_circle"
+        android:src="@drawable/ic_photo_camera_black_24dp"
+        android:elevation="4dp"
+        />
+
+    <TextView
+        android:id="@+id/step_three_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="32dp"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:elevation="4dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/step_three_user_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/step_three_next_btn"
+
+        android:text="@string/register_info_set_user_img"
+        />
+
+    <Button
+        android:id="@+id/step_three_next_btn"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="Next"
+
+        app:layout_constraintTop_toBottomOf="@+id/step_three_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</android.support.constraint.ConstraintLayout>

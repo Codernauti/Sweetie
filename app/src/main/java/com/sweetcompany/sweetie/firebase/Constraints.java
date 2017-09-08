@@ -19,14 +19,19 @@ interface Constraints {
 
     interface Users {
         String IMAGE_URL = "imageUrl";
+        String UPLOADING_IMG = "uploadingImg";
     }
 
     String COUPLES = "couples";
+    interface Couples {
         String ACTIVE = "active";
         String BREAK_TIME = "brokenTime";
         String IMAGE_LOCAL_URI = "imageLocalUri";
         String IMAGE_STORAGE_URI = "imageStorageUri";
         String ANNIVERSARY = "anniversary";
+        String UPLOADING_IMG = "uploadingImg";
+        String PROGRESS = "progress";
+    }
 
     String PAIRING_REQUESTS = "pairing-requests";
 
@@ -36,8 +41,9 @@ interface Constraints {
         String IMAGE_URL = "imageUrl";
         String DESCRIPTION = "description";
         String DATE_TIME = "dataTime";
-        String NOTIFICATION_COUNTER = "notificationCounters";
+        String NOTIFICATION_COUNTERS = "notificationCounters";
         String COUNTER = "counter";
+        String UPDATED_ELEMENTS = "updatedElements";
     }
 
     String ACTIONS_DIARY = "actionsDiary";

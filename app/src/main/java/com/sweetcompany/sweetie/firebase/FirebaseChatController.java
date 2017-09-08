@@ -244,7 +244,7 @@ public class FirebaseChatController extends FirebaseGeneralActionController {
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, msg.getText());
         updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, msg.getDateTime());
 
-        super.updateNotificationCounter(updates);
+        super.updateNotificationCounterAfterInsertion(updates, msgUid);
 
         // update msg-notification-room
         mMsgDefaultNotification.setText(msg.getText());

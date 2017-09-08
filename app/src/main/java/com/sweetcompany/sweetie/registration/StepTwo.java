@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
@@ -77,8 +78,16 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
                 String phoneNumber = mPhoneText.getText().toString();
                 boolean gender = mRadio.isChecked();
 
-                savePreferences(username, phoneNumber, gender);
-                mPresenter.saveUserData(userUid, userEmail, username, phoneNumber, gender);
+                if (username.isEmpty() && phoneNumber.isEmpty()) {
+                    Toast.makeText(mContext, "Username and phone number can not be empty", Toast.LENGTH_SHORT).show();
+                } else if (username.isEmpty()) {
+                    Toast.makeText(mContext, "Username can not be empty", Toast.LENGTH_SHORT).show();
+                } else if (phoneNumber.isEmpty()) {
+                    Toast.makeText(mContext, "Phone number can not be empty", Toast.LENGTH_SHORT).show();
+                } else {
+                    savePreferences(username, phoneNumber, gender);
+                    mPresenter.saveUserData(userUid, userEmail, username, phoneNumber, gender);
+                }
 
                 break;
             default:
@@ -100,7 +109,7 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
     }
 
     @Override
-    public void startPairingActivity() {
-        ((RegisterActivity) getActivity()).initServiceAndOpenPairingScreen();
+    public void showNextScreen() {
+        ((RegisterActivity) getActivity()).showStepThree();
     }
 }

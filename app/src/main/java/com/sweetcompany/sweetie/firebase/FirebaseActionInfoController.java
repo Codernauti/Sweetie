@@ -122,6 +122,9 @@ public class FirebaseActionInfoController<AT> {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
+                        HashMap<String, Object> updates = new HashMap<>();
+                        updates.put(mActionUrl + "/" + Constraints.ChildAction.PROGRESS, null);
+                        updates.put(mActionUrl + "/" + Constraints.ChildAction.UPLOADING_IMG, false);
                     }
                 })
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -133,6 +136,7 @@ public class FirebaseActionInfoController<AT> {
 
                         HashMap<String, Object> updates = new HashMap<>();
                         updates.put(mActionUrl + "/" + Constraints.ChildAction.URI_COVER, imageStorageUriString);
+                        updates.put(mActionUrl + "/" + Constraints.ChildAction.PROGRESS, null);
                         updates.put(mActionUrl + "/" + Constraints.ChildAction.UPLOADING_IMG, false);
                         if (mActionObjClass == GalleryFB.class) {
                             updates.put(mActionUrl + "/" + Constraints.Galleries.IMG_SET_BY_USER, true);

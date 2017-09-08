@@ -11,7 +11,7 @@ interface SettingsContract {
     interface View {
         void setPresenter(Presenter presenter);
         void updateUserInfo(String userImageUri, String username, String email, String telephone, boolean gender);
-        void updateImageUploadProgress(int progress);
+        void setProgressViewsVisible(boolean show);
     }
 
     interface Presenter {

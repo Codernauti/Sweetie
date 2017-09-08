@@ -32,13 +32,15 @@ public class SettingsPresenter implements SettingsContract.Presenter,
 
     @Override
     public void onUserChanged(UserFB user) {
+
+        if (user.isUploadingImage()) {
+            mView.setProgressViewsVisible(true);
+        } else {
+            mView.setProgressViewsVisible(false);
+        }
+
         // TODO: convert UserFB to UserVM
         mView.updateUserInfo(user.getImageUrl(), user.getUsername(), user.getEmail(),
                 user.getPhone(), user.getGender());
-    }
-
-    @Override
-    public void onImageUploadProgress(int progress) {
-        mView.updateImageUploadProgress(progress);
     }
 }

@@ -32,9 +32,6 @@ class SetUserImagePresenter implements RegisterContract.SetUserImagePresenter,
 
 
     // Controller callbacks
-    @Override
-    public void onImageUploadProgress(int progress) {
-    }
 
     @Override
     public void onUserChanged(UserFB user) {

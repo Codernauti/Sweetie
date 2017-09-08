@@ -34,7 +34,7 @@ public class FirebaseSettingsController {
 
     private SettingsControllerListener mListener;
 
-    public interface SettingsControllerListener extends ImageUploader.OnImageUploadProgressListener {
+    public interface SettingsControllerListener {
         void onUserChanged(UserFB user);
     }
 
@@ -111,7 +111,7 @@ public class FirebaseSettingsController {
                 .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        // TODO: implement it
+                        // TODO: implement it, we want progress?
                     }
                 });
     }

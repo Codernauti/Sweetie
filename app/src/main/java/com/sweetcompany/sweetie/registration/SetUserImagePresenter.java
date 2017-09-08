@@ -35,7 +35,7 @@ class SetUserImagePresenter implements RegisterContract.SetUserImagePresenter,
 
     @Override
     public void onUserChanged(UserFB user) {
-        if (user.isUploadingImage()) {
+        if (user.isUploadingImg()) {
             mView.setProgressViewsVisible(true);
         } else {
             mView.setProgressViewsVisible(false);

@@ -26,7 +26,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
@@ -180,7 +182,7 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
             }
         }
         // call by subclass
-        /*if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == PLACE_PICKER_REQUEST && resultCode == RESULT_OK) {
             Place place = PlacePicker.getPlace(getContext(), data);
             LatLng latLng;
             if (place == null) {
@@ -191,7 +193,7 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
                 latLng = place.getLatLng();
                 mPresenter.changePosition(latLng.latitude, latLng.longitude);
             }
-        }*/
+        }
     }
 
     private void setProgressViewsVisible(boolean visible) {

@@ -119,7 +119,7 @@ public class PairingFragment extends Fragment implements PairingContract.View,
                 break;
             case R.id.pairing_next_button:
                 String partnerPhone = mPhoneInputText.getText().toString();
-                if (partnerPhone.length() != 10) {
+                if (partnerPhone.length() == 10) {
                     mPresenter.sendPairingRequest(partnerPhone);
                 } else {
                     Toast.makeText(getContext(), "A phone number must have 10 characters", Toast.LENGTH_LONG).show();

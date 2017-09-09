@@ -9,7 +9,7 @@ public interface MapContract {
     interface View {
         void setPresenter(MapContract.Presenter presenter);
         void addGallery(GalleryMapVM gallery);
-        void removeGallery(GalleryMapVM gallery);
+        void removeGallery(String galleryKey);
         void changeGallery(GalleryMapVM gallery);
 
         void addGeogift(GeogiftMapVM geogift);

@@ -19,9 +19,11 @@
     <color name="grey_black">#8c8c8c</color>
     <color name="grey_alpha_50">#80E0E0E0</color>
     <color name="grey_alpha_5">#0DE0E0E0</color>
-    <color name="pink_light">#FFCCCC</color>
 
     <color name="ic_heart">#FF879E</color>
+
+    <!-- actions colors -->
+    <color name="action_selected">#40E25B5B</color>
 
     <!-- ToDoList colors -->
     <color name="todolist_main_color">#66B2FF</color>
@@ -29,12 +31,12 @@
     <!-- Chat colors -->
     <color name="chat_main_color">#E25B5B</color>
     <color name="chat_background">#e6e6e6</color>
-    <color name="chat_message_selected">#F4F6F6</color>
+    <color name="chat_message_selected">#80E25B5B</color>
 
     <!-- Gallery colors -->
     <color name="gallery_main_color">#8CE25B</color>
     <color name="gallery_background">#e6e6e6</color>
-    <color name="gallery_photo_selected">#333333</color>
+    <color name="gallery_photo_selected">#80000000</color>
 
 
     <color name="geogift_background">#e6e6e6</color>

@@ -68,12 +68,6 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     private SupportMapFragment mapFragment;
     private GoogleMap map;
 
-    private List<Marker> locationGeogiftMarkers = new ArrayList<>();
-    private List<Marker> locationGalleryMarkers = new ArrayList<>();
-
-    List<GalleryMapVM> mGalleriesList = new ArrayList<>();
-    List<GeogiftMapVM> mGeogiftsList = new ArrayList<>();
-
     private HashMap<String, Marker> galleryMarkers = new HashMap<String, Marker>();
     private HashMap<String, Marker> geogiftMarkers = new HashMap<String, Marker>();
 
@@ -272,7 +266,11 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     }
     @Override
     public void removeGallery(GalleryMapVM gallery) {
-
+        if(galleryMarkers.containsKey( gallery.getKey() )) {
+           Marker marker = galleryMarkers.get(gallery.getKey());
+           marker.setVisible(false);
+           galleryMarkers.remove(gallery.getKey());
+        }
     }
     @Override
     public void changeGallery(GalleryMapVM gallery) {
@@ -288,17 +286,17 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     // TODO
     @Override
     public void removeGeogift(GeogiftMapVM geogift) {
-        //locationGeogiftMarkers.remove(indexOfGeogift())
+        if(geogiftMarkers.containsKey( geogift.getKey() )) {
+            Marker marker = geogiftMarkers.get(geogift.getKey());
+            marker.setVisible(false);
+            geogiftMarkers.remove(geogift.getKey());
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if(map!=null){
-            map.clear();
-            //mGeogiftsList.clear();
-            //mGalleriesList.clear();
-
             //TODO refactor
             if(currentSelectionMap == GALLERY_MAP) {
                 selectGalleryMap();

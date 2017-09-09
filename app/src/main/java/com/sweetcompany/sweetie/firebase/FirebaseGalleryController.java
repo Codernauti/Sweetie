@@ -244,7 +244,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
 
         // update parent action dateTime & imageUrl & partnerNotificationCounter
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, "\uD83D\uDCF7");
-        updates.put(mActionUrl + "/" + Constraints.Actions.LAST_DATE_TIME, media.getDateTime());
+        updates.put(mActionUrl + "/" + Constraints.Actions.LAST_UPDATED_DATE, media.getDateTime());
 
         super.updateNotificationCounterAfterInsertion(updates, mediaUid);
 

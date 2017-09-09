@@ -85,14 +85,26 @@
             android:paddingTop="12dp"
             android:src="@drawable/chat_image_picker_button" />
 
-        <Button
+        <!--<Button
             android:id="@+id/chat_send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/rosa_sweetie"
             android:layout_gravity="bottom"
             android:layout_weight="0"
-            android:text="Send"/>
+            android:text="Send"/>-->
+
+        <ImageButton
+            android:id="@+id/chat_send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:padding="10dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/shape_circle"
+            android:backgroundTint="@color/rosa_sweetie"
+            android:src="@drawable/ic_send_white_24dp"/>
 
     </LinearLayout>
 

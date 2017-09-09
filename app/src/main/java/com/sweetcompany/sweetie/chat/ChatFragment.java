@@ -83,7 +83,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     private LinearLayoutManager mLinearLayoutManager;
 
     private EditText mTextMessageInput;
-    private Button mSendButton;
+    private ImageButton mSendButton;
     private ImageButton mEmoticonsButton;
     private ImageButton mMediaPickerButton;
 
@@ -151,7 +151,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         mTextMessageInput = (EditText) root.findViewById(R.id.chat_text_message_input);
         mEmoticonsButton = (ImageButton) root.findViewById(R.id.chat_emoticons_button);
         mMediaPickerButton = (ImageButton) root.findViewById(R.id.chat_media_picker_button);
-        mSendButton = (Button) root.findViewById(R.id.chat_send_button);
+        mSendButton = (ImageButton) root.findViewById(R.id.chat_send_button);
 
         mKeyboardPlaceholder = (FrameLayout) root.findViewById(R.id.chat_emojicons_container);
 

@@ -26,7 +26,6 @@ public class ToDoListActivity extends BaseActivity {
     public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
     private String mToDoListKey;
-    private String mActionKey;
 
     private ToDoListContract.Presenter mPresenter;
     private FirebaseToDoListController mController;
@@ -42,13 +41,10 @@ public class ToDoListActivity extends BaseActivity {
         }
 
         if (savedInstanceState != null) {
-            mToDoListKey = savedInstanceState.getString(TODOLIST_DATABASE_KEY);
-            mActionKey = savedInstanceState.getString(ACTION_DATABASE_KEY);
+            mToDoListKey = savedInstanceState.getString(TODOLIST_DATABASE_KEY);;
 
             Log.d(TAG, "from Intent TODOLIST_TITLE: " +
                     savedInstanceState.getString(TODOLIST_TITLE));
-            Log.d(TAG, "from Intent ACTION_DATABASE_KEY: " +
-                    savedInstanceState.getString(ACTION_DATABASE_KEY));
             Log.d(TAG, "from Intent ACTION_DATABASE_KEY: " +
                     savedInstanceState.getString(ACTION_DATABASE_KEY));
         } else {
@@ -67,25 +63,14 @@ public class ToDoListActivity extends BaseActivity {
         }
 
         if (mToDoListKey != null) {
-            mController = new FirebaseToDoListController(super.mCoupleUid, mToDoListKey, mActionKey,
+            mController = new FirebaseToDoListController(super.mCoupleUid, mToDoListKey,
                                                             super.mUserUid, super.mPartnerUid);
             mPresenter = new ToDoListPresenter(mView, mController, super.mUserUid);
+
+            mController.attachListeners();
         } else {
             Log.w(TAG, "Impossible to create ToDoListController and ToDoListPresenter because ToDoListKey is NULL");
         }
-
-
-        mController.attachListeners();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
     }
 
     @Override
@@ -104,6 +89,5 @@ public class ToDoListActivity extends BaseActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(TODOLIST_DATABASE_KEY, mToDoListKey);
-        outState.putString(ACTION_DATABASE_KEY, mActionKey);
     }
 }

@@ -29,9 +29,9 @@ public class ToDoListInfoActivity extends BaseActivity {
     private FirebaseActionInfoController<ToDoListFB> mController;
     private ActionInfoPresenter<ToDoListFB> mPresenter;
 
-    public static Intent getStartActivityIntent(Context context, String galleryUid, String parentActionUid) {
+    public static Intent getStartActivityIntent(Context context, String todoListUid) {
         Intent intent = new Intent(context, ToDoListInfoActivity.class);
-        intent.putExtra(TODOLIST_UID_KEY, galleryUid);
+        intent.putExtra(TODOLIST_UID_KEY, todoListUid);
         return intent;
     }
 

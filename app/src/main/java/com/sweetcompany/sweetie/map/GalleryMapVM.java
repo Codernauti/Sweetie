@@ -42,11 +42,15 @@ public class GalleryMapVM implements Parcelable{
         }
     };
 
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
+    String getKey(){
+        return mKey;
     }
+
     String getTitle() {
         return mTitle;
+    }
+    public void setTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 
     public Double getLat() {

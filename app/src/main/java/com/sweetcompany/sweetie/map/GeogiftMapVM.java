@@ -21,7 +21,11 @@ public class GeogiftMapVM {
         mLon = lon;
     }
 
-    String getTitle() {
+    public String getKey(){
+        return mKey;
+    }
+
+    public String getTitle() {
         return mTitle;
     }
     public void setTitle(String title){

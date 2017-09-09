@@ -40,9 +40,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseMapController;
+import com.sweetcompany.sweetie.utils.UtilisGraphic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MapsFragment extends Fragment implements View.OnClickListener,
                                                       MapContract.View,
@@ -70,6 +73,9 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
 
     List<GalleryMapVM> mGalleriesList = new ArrayList<>();
     List<GeogiftMapVM> mGeogiftsList = new ArrayList<>();
+
+    private HashMap<String, Marker> galleryMarkers = new HashMap<String, Marker>();
+    private HashMap<String, Marker> geogiftMarkers = new HashMap<String, Marker>();
 
     private MapContract.Presenter mPresenter;
     private FirebaseMapController mMapController;
@@ -138,7 +144,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     }
 
     // Initialize GoogleMaps
-    private void initGMaps(){
+    private void initGMaps() {
         Log.d(TAG, "initGMaps");
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_gallery_fragment);
 
@@ -164,94 +170,81 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         //TODO set smart bounds (have more marker on map)
     }
 
-    // Create a Location Marker
-    private void markerGeogift(GeogiftMapVM geogift) {
-
-            LatLng latLng = new LatLng(geogift.getLat() , geogift.getLon());
-            MarkerOptions markerOptions = new MarkerOptions()
-                    .position(latLng)
-                    .title(geogift.getTitle())
-                    .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_gift_icon",72,72)));
-
-            if ( map != null ) {
-                Marker geoMarker = map.addMarker(markerOptions);
-                if(currentSelectionMap == GALLERY_MAP) geoMarker.setVisible(false);
-                locationGeogiftMarkers.add(geoMarker);
-                Log.d(TAG, "addMarker " + markerOptions.getTitle());
-            }
-    }
-
-    private void markerGallery(final GalleryMapVM gallery){
-        Glide.
-        with(mContext).
-        load(gallery.getUriCover()).
-        asBitmap().
-        into(new SimpleTarget<Bitmap>(96,96) {
-            @Override
-            public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
-                drawGalleryMarker(resource, gallery);
-            }
-        });
-    }
-
-    public void drawGalleryMarker(Bitmap res, GalleryMapVM gallery){
-        if(res != null) {
-            Bitmap circleBmp = getCircleBitmap(res);
-            Bitmap markerIcon = Bitmap.createScaledBitmap(circleBmp, 96, 96, false);
-
-            LatLng latLng = new LatLng(gallery.getLat() , gallery.getLon());
-            MarkerOptions markerOptions = new MarkerOptions()
-                    .position(latLng)
-                    .title(gallery.getTitle())
-                    .icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
-
-            if ( map != null ) {
-                Marker galleryMarker = map.addMarker(markerOptions);
-                galleryMarker.setTitle(gallery.getTitle());
-                if(currentSelectionMap == GEOGIFT_MAP) galleryMarker.setVisible(false);
-                locationGalleryMarkers.add(galleryMarker);
-                Log.d(TAG, "addMarker " + markerOptions.getTitle());
+    public void addGeogiftMarker(GeogiftMapVM geogift){
+        if(!geogiftMarkers.containsKey( geogift.getKey() )){
+            MarkerOptions geogiftMarkOptions = makeGeogiftMakerOptions(geogift);
+            if(geogiftMarkOptions != null) {
+                if (map != null) {
+                    Marker geogiftMarker = map.addMarker(geogiftMarkOptions);
+                    geogiftMarker.setTitle(geogift.getTitle());
+                    if (currentSelectionMap == GALLERY_MAP)
+                        geogiftMarker.setVisible(false);
+                    geogiftMarkers.put(geogift.getKey(), geogiftMarker);
+                }
             }
         }
     }
 
-    public static Bitmap getCircleBitmap(Bitmap bm) {
-        int sice = Math.min((bm.getWidth()), (bm.getHeight()));
+    public MarkerOptions makeGeogiftMakerOptions(GeogiftMapVM geogift){
+        MarkerOptions geogiftMarkerOptions = null;
 
-        Bitmap bitmap = ThumbnailUtils.extractThumbnail(bm, sice, sice);
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
+        LatLng latLng = new LatLng(geogift.getLat() , geogift.getLon());
+        geogiftMarkerOptions = new MarkerOptions()
+                .position(latLng)
+                .title(geogift.getTitle())
+                .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("action_gift_icon",72,72)));
 
-        final int color = 0xffff0000;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        paint.setFilterBitmap(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
-
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth((float) 4);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        return output;
+        return geogiftMarkerOptions;
     }
 
-    public int getIconDrawable(int type){
+    /*public int getIconDrawable(int type){
         int idDrawable = R.drawable.action_gift_icon;
         // TODO differentiate geogift types
-        /*switch (type){
+        switch (type){
             case GeogiftFB.MESSAGE_GEOGIFT:
                 idDrawable =  R.drawable.action_gift_icon;
-        }*/
-
+        }
         return idDrawable;
+    }*/
+
+    public void addGalleryMarker(final GalleryMapVM gallery) {
+        if(!galleryMarkers.containsKey( gallery.getKey() )){
+            Glide.
+                    with(mContext).
+                    load(gallery.getUriCover()).
+                    asBitmap().
+                    into(new SimpleTarget<Bitmap>(96,96) {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation glideAnimation) {
+                            MarkerOptions galleryMarkOptions = makeGalleryMakerOptions(resource, gallery);
+                            if(galleryMarkOptions != null) {
+                                if (map != null) {
+                                    Marker galleryMarker = map.addMarker(galleryMarkOptions);
+                                    galleryMarker.setTitle(gallery.getTitle());
+                                    if (currentSelectionMap == GEOGIFT_MAP)
+                                        galleryMarker.setVisible(false);
+                                    galleryMarkers.put(gallery.getKey(), galleryMarker);
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    public MarkerOptions makeGalleryMakerOptions(Bitmap res, GalleryMapVM gallery){
+        MarkerOptions galleryMarkerOptions = null;
+        if(res != null) {
+            Bitmap circleBmp = UtilisGraphic.getCircleBitmap(res);
+            Bitmap markerIcon = Bitmap.createScaledBitmap(circleBmp, 96, 96, false);
+
+            LatLng latLng = new LatLng(gallery.getLat(), gallery.getLon());
+            galleryMarkerOptions = new MarkerOptions()
+                    .position(latLng)
+                    .title(gallery.getTitle())
+                    .icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
+
+        }
+        return galleryMarkerOptions;
     }
 
     public Bitmap resizeBitmap(String drawableName, int width, int height){
@@ -275,8 +268,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     // TODO
     @Override
     public void addGallery(GalleryMapVM gallery) {
-        mGalleriesList.add(gallery);
-        markerGallery(gallery);
+        addGalleryMarker(gallery);
     }
     @Override
     public void removeGallery(GalleryMapVM gallery) {
@@ -290,8 +282,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void addGeogift(GeogiftMapVM geogift) {
-        mGeogiftsList.add(geogift);
-        markerGeogift(geogift);
+        addGeogiftMarker(geogift);
     }
 
     // TODO
@@ -304,7 +295,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     public void onResume() {
         super.onResume();
         if(map!=null){
-            //map.clear();
+            map.clear();
             //mGeogiftsList.clear();
             //mGalleriesList.clear();
 
@@ -335,8 +326,15 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         geogiftButtonText.setTextColor(Color.GRAY);
         galleryButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_alpha_50));
         geogiftButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
-        for(Marker markerGeo : locationGeogiftMarkers) markerGeo.setVisible(false);
-        for(Marker markerGall : locationGalleryMarkers) markerGall.setVisible(true);
+        for (Map.Entry<String, Marker> entry : geogiftMarkers.entrySet()) {
+            Marker mark = entry.getValue();
+            mark.setVisible(false);
+        }
+        for (Map.Entry<String, Marker> entry : galleryMarkers.entrySet()) {
+            Marker mark = entry.getValue();
+            mark.setVisible(true);
+        }
+
     }
 
     public void selectGeogiftMap(){
@@ -345,8 +343,14 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         galleryButtonText.setTextColor(Color.GRAY);
         geogiftButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey_alpha_50));
         galleryButton.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
-        for(Marker markerGall : locationGalleryMarkers) markerGall.setVisible(false);
-        for(Marker markerGeo : locationGeogiftMarkers) markerGeo.setVisible(true);
+        for (Map.Entry<String, Marker> entry : geogiftMarkers.entrySet()) {
+            Marker mark = entry.getValue();
+            mark.setVisible(true);
+        }
+        for (Map.Entry<String, Marker> entry : galleryMarkers.entrySet()) {
+            Marker mark = entry.getValue();
+            mark.setVisible(false);
+        }
     }
 
     @Override

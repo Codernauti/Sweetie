@@ -3,7 +3,9 @@ package com.sweetcompany.sweetie.todolist;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +28,7 @@ import com.sweetcompany.sweetie.utils.DataMaker;
  * Created by lucas on 04/08/2017.
  */
 
-public class ToDoListFragment extends Fragment implements  ToDoListContract.View,
+public class ToDoListFragment extends Fragment implements  ToDoListContract.View, View.OnClickListener,
         ToDoListAdapter.ToDoListAdapterListener {
 
     private static final String TAG = "ToDoListFragment";
@@ -34,13 +36,11 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     private ToDoListAdapter toDoListAdapter;
     private Toolbar mToolBar;
     private RecyclerView mToDoListListView;
+    private FloatingActionButton mFabNewCheckEntry;
     private LinearLayoutManager mLinearLayoutManager;
 
-    private boolean entryAddedFromButton;
-
+    private boolean entryAddedFromButton = false;
     private String mToDoListUid;
-    private String mParentActionUid;
-
 
     private ToDoListContract.Presenter mPresenter;
 
@@ -61,25 +61,24 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
 
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
-        final ViewGroup root = (ViewGroup) inflater.inflate(R.layout.todolist_fragment, container, false);
+        final View root = inflater.inflate(R.layout.todolist_fragment, container, false);
 
         String titleToDoList = getArguments().getString(ToDoListActivity.TODOLIST_TITLE);
         mToDoListUid = getArguments().getString(ToDoListActivity.TODOLIST_DATABASE_KEY);
-        mParentActionUid = getArguments().getString(ToDoListActivity.ACTION_DATABASE_KEY);
         Log.d(TAG, "from Intent TODOLIST_TITLE: " + titleToDoList);
-        Log.d(TAG, "from Intent TODOLIST_DATABASE_KEY: " + mToDoListUid);
 
         // initialize toolbar
         mToolBar = (Toolbar) root.findViewById(R.id.todolist_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
         parentActivity.setSupportActionBar(mToolBar);
-        parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        parentActivity.getSupportActionBar().setTitle(titleToDoList);
+        ActionBar actionBar = parentActivity.getSupportActionBar();
+        if (actionBar != null) {
+            parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            parentActivity.getSupportActionBar().setTitle(titleToDoList);
+        }
 
         //initialize input widgets
-
-
-        entryAddedFromButton = false;
+        mFabNewCheckEntry = (FloatingActionButton) root.findViewById(R.id.fab_new_check_entry);
 
         // initialize message's list
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
@@ -89,9 +88,23 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         mToDoListListView.setLayoutManager(mLinearLayoutManager);
         mToDoListListView.setAdapter(toDoListAdapter);
 
+        mFabNewCheckEntry.setOnClickListener(this);
 
         return root;
     }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_new_check_entry: {
+                onAddButtonClicked();
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
 
     // Menu management
 
@@ -105,7 +118,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         switch (item.getItemId()) {
             case R.id.menu_info: {
                 Intent intent = ToDoListInfoActivity.getStartActivityIntent(
-                        getContext(), mToDoListUid, mParentActionUid);
+                        getContext(), mToDoListUid);
                 startActivity(intent);
                 break;
             }
@@ -114,6 +127,8 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         }
         return false;
     }
+
+
 
     @Override
     public void setPresenter(ToDoListContract.Presenter presenter) {
@@ -136,11 +151,6 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     }
 
     @Override
-    public void addToDoListButton(ToDoListButtonVM toDoListButton) {
-        toDoListAdapter.addToDOListButton(toDoListButton);
-    }
-
-    @Override
     public void removeCheckEntry(CheckEntryVM checkEntry) {
         toDoListAdapter.removeCheckEntry(checkEntry);
     }
@@ -150,6 +160,8 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         toDoListAdapter.changeCheckEntry(checkEntry);
     }
 
+
+    // adapter callbacks
 
     @Override
     public void onCheckEntryClicked(CheckEntryVM checkEntry) {
@@ -177,5 +189,4 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
                 DataMaker.get_UTC_DateTime(),false);
         mPresenter.addCheckEntry(checkEntryVM);
     }
-
 }

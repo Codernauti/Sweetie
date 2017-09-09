@@ -25,7 +25,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListViewHolder> im
 
     ToDoListAdapter(){
         mToDoListItemList = new ArrayList<>();
-        mToDoListItemList.add(new ToDoListButtonVM());
+        //mToDoListItemList.add(new ToDoListButtonVM());
     }
 
     interface ToDoListAdapterListener {
@@ -81,14 +81,10 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListViewHolder> im
         return mToDoListItemList.size();
     }
 
-    void addCheckEntry(CheckEntryVM checkEntryVM) {
-        mToDoListItemList.add(mToDoListItemList.size()-1,checkEntryVM);
-        notifyItemInserted(mToDoListItemList.size()-2);
-    }
 
-    void addToDOListButton(ToDoListButtonVM toDoListButtonVM){
-        mToDoListItemList.add(mToDoListItemList.size(),toDoListButtonVM);
-        notifyItemInserted(mToDoListItemList.size()-1);
+    void addCheckEntry(CheckEntryVM checkEntryVM) {
+        mToDoListItemList.add(checkEntryVM);
+        notifyItemInserted(mToDoListItemList.size() - 1);
     }
 
     void removeCheckEntry(CheckEntryVM checkEntryVM) {
@@ -134,7 +130,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListViewHolder> im
     @Override
     public void onCheckEntryRemove(int adapterPosition) {
         int vhPositionToFocus = -1;
-        if (adapterPosition + 1 < mToDoListItemList.size()-1) {
+        if (adapterPosition + 1 < mToDoListItemList.size()) {
             vhPositionToFocus = adapterPosition + 1;
         } else if (adapterPosition - 1 >= 0) {
             vhPositionToFocus = adapterPosition - 1;

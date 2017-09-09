@@ -62,8 +62,7 @@ class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
     }
 
     private void updateTintColor() {
-        mThumbnail.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.gallery_photo_selected),
-                PorterDuff.Mode.LIGHTEN);
+        mThumbnail.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.gallery_photo_selected));
     }
 
     private void removeTintColor() {

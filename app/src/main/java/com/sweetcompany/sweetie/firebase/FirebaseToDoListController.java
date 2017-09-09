@@ -45,13 +45,13 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
         void onCheckEntryChanged(CheckEntryFB checkEntry);
     }
 
-    public FirebaseToDoListController(String coupleUid, String toDoListKey, String actionUid,
+    public FirebaseToDoListController(String coupleUid, String toDoListUid,
                                       String userUid, String partnerUid){
-        super(coupleUid, userUid, partnerUid, actionUid);
+        super(coupleUid, userUid, partnerUid, toDoListUid);
 
-        mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionUid;
-        mToDoListUrl = Constraints.TODOLIST + "/" + coupleUid + "/" + toDoListKey;
-        mtoDoListCheckEntriesUrl = Constraints.TODOLIST_CHECKENTRY + "/" + coupleUid + "/" + toDoListKey;
+        mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + toDoListUid;
+        mToDoListUrl = Constraints.TODOLIST + "/" + coupleUid + "/" + toDoListUid;
+        mtoDoListCheckEntriesUrl = Constraints.TODOLIST_CHECKENTRY + "/" + coupleUid + "/" + toDoListUid;
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 

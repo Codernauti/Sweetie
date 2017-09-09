@@ -40,7 +40,7 @@ interface Constraints {
         String TITLE = "title";
         String IMAGE_URL = "imageUrl";
         String DESCRIPTION = "description";
-        String DATE_TIME = "dataTime";
+        String LAST_DATE_TIME = "lastDateTime";
         String NOTIFICATION_COUNTERS = "notificationCounters";
         String COUNTER = "counter";
         String UPDATED_ELEMENTS = "updatedElements";

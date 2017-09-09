@@ -119,7 +119,7 @@ public class FirebaseActionsController {
             };
 
             // TODO test much more sorting
-            mActionsRef.orderByChild("dataTime").addValueEventListener(mActionsEventListener);
+            mActionsRef.orderByChild(Constraints.Actions.LAST_DATE_TIME).addValueEventListener(mActionsEventListener);
         }
     }
 

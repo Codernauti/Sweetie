@@ -162,7 +162,7 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
 
         // update description and dataTime of action of this associated ToDoList
         updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, chk.getText());
-        updates.put(mActionUrl + "/" + Constraints.Actions.DATE_TIME, chk.getDateTime());
+        updates.put(mActionUrl + "/" + Constraints.Actions.LAST_DATE_TIME, chk.getDateTime());
 
         mDatabaseRef.updateChildren(updates);
 

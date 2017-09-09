@@ -304,7 +304,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     public void onResume() {
         super.onResume();
         if(map!=null){
-            map.clear();
+            //map.clear();
             //mGeogiftsList.clear();
             //mGalleriesList.clear();
 
@@ -364,4 +364,19 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
                 break;
         }
     }
+
+    /*@Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+
+        }
+    }*/
+
 }

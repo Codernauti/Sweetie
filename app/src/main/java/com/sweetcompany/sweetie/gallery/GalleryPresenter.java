@@ -38,7 +38,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
         /*String newMediaUID = mController.sendMedia(newMedia);
         photoVM.setKey(newMediaUID);
         photoVM.setPercent(0);
-        mView.updateMedia(photoVM);*/
+        mView.addMedia(photoVM);*/
     }
 
     @Override
@@ -59,7 +59,7 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     public void onMediaAdded(MediaFB media) {
         //MediaVM mediaVM = MediaConverter.createMediaVM(media, mUserMail);
         MediaVM mediaVM = createPhotoVM(media);
-        mView.updateMedia(mediaVM);
+        mView.addMedia(mediaVM);
     }
 
     @Override

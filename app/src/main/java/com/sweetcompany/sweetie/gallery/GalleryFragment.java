@@ -113,7 +113,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     }
 
     @Override
-    public void updateMedia(MediaVM mediaVM) {
+    public void addMedia(MediaVM mediaVM) {
         mGalleryAdapter.addMedia(mediaVM);
         mGalleryListView.scrollToPosition(0);
     }

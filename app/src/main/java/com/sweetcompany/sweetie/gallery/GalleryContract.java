@@ -13,7 +13,7 @@ interface GalleryContract {
         void setPresenter(GalleryContract.Presenter presenter);
         void updateGalleryInfo(GalleryVM gallery);
 
-        void updateMedia(MediaVM mediaVM);
+        void addMedia(MediaVM mediaVM);
         void removeMedia(MediaVM mediaVM);
         void changeMedia(MediaVM mediaVM);
         @Deprecated

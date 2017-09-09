@@ -33,11 +33,13 @@ public class MapPresenter implements MapContract.Presenter, FirebaseMapControlle
     }
     @Override
     public void onGalleryRemoved(GalleryFB gallery) {
-
+        mView.removeGallery(gallery.getKey());
     }
     @Override
     public void onGalleryChanged(GalleryFB gallery) {
-
+        GalleryMapVM newGalleryVM =  new GalleryMapVM(gallery.getKey(), gallery.getLatitude(), gallery.getLongitude(), gallery.getUriCover());
+        newGalleryVM.setTitle(gallery.getTitle());
+        mView.changeGallery(newGalleryVM);
     }
 
 

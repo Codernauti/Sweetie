@@ -265,16 +265,23 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         addGalleryMarker(gallery);
     }
     @Override
-    public void removeGallery(GalleryMapVM gallery) {
-        if(galleryMarkers.containsKey( gallery.getKey() )) {
-           Marker marker = galleryMarkers.get(gallery.getKey());
+    public void removeGallery(String galleryKey) {
+        if(galleryMarkers.containsKey( galleryKey )) {
+           Marker marker = galleryMarkers.get(galleryKey);
            marker.setVisible(false);
-           galleryMarkers.remove(gallery.getKey());
+            marker.remove();
+           galleryMarkers.remove(galleryKey);
         }
     }
     @Override
     public void changeGallery(GalleryMapVM gallery) {
-
+        if(galleryMarkers.containsKey( gallery.getKey() )) {
+            Marker marker = galleryMarkers.get( gallery.getKey() );
+            marker.setVisible(false);
+            marker.remove();
+            galleryMarkers.remove(gallery.getKey());
+            addGalleryMarker(gallery);
+        }
     }
 
 
@@ -289,6 +296,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         if(geogiftMarkers.containsKey( geogift.getKey() )) {
             Marker marker = geogiftMarkers.get(geogift.getKey());
             marker.setVisible(false);
+            marker.remove();
             geogiftMarkers.remove(geogift.getKey());
         }
     }

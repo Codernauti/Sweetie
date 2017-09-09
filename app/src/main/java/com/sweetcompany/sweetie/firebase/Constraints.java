@@ -75,7 +75,7 @@ interface Constraints {
 
     String GALLERY_PHOTOS = "gallery-photos";
     interface GalleryPhotos {
-        String DATE_TIME = "dateTime";
+        String LAST_UPDATE_DATE = "lastUpdateDate";
         String URI_STORAGE = "uriStorage";
         String PROGRESS = "progress";
         String UPLOADING = "uploading";

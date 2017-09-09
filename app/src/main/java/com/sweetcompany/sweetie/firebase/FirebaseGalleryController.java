@@ -137,7 +137,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
                 @Override
                 public void onCancelled(DatabaseError databaseError) {}
             };
-            mGalleryPhotos.orderByChild(Constraints.GalleryPhotos.DATE_TIME).addChildEventListener(mGalleryPhotosListener);
+            mGalleryPhotos.orderByChild(Constraints.GalleryPhotos.LAST_UPDATE_DATE).addChildEventListener(mGalleryPhotosListener);
         }
 
         if (mGalleryListener == null) {

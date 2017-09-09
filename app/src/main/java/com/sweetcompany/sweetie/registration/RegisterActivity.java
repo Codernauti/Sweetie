@@ -60,7 +60,10 @@ public class RegisterActivity extends AppCompatActivity
 
     public void initServiceAndOpenPairingScreen() {
         startService(new Intent(this, UserMonitorService.class));
-        startActivity(new Intent(this, PairingActivity.class));
+
+        Intent intent = new Intent(this, PairingActivity.class);
+        intent.putExtra(PairingActivity.USER_FROM_REGISTER_KEY, true);
+        startActivity(intent);
     }
 
     @Override

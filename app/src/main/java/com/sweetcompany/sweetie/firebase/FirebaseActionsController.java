@@ -23,7 +23,6 @@ import com.sweetcompany.sweetie.model.ToDoListFB;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by ghiro on 22/05/2017.
@@ -119,7 +118,7 @@ public class FirebaseActionsController {
             };
 
             // TODO test much more sorting
-            mActionsRef.orderByChild(Constraints.Actions.LAST_DATE_TIME).addValueEventListener(mActionsEventListener);
+            mActionsRef.orderByChild(Constraints.Actions.LAST_UPDATED_DATE).addValueEventListener(mActionsEventListener);
         }
     }
 

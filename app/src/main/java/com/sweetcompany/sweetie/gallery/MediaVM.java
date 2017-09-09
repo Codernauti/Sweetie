@@ -17,7 +17,7 @@ abstract class MediaVM implements GalleryItemVM {
     private String mDescription;
     private String mUriStorage;
     private int mPercent = 100;
-    private final boolean mUploading;
+    private boolean mUploading;
 
     MediaVM(boolean who, String date, String desc, String uriS, String key, boolean uploading) {
         mWho = who;
@@ -69,4 +69,6 @@ abstract class MediaVM implements GalleryItemVM {
     public boolean isUploading() {
         return mUploading;
     }
+
+    public void setUploading(boolean uploading) { mUploading = uploading; }
 }

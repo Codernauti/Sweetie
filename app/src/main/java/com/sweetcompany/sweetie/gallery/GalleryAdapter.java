@@ -79,16 +79,14 @@ class GalleryAdapter extends RecyclerView.Adapter<GalleryViewHolder>
 
 
     void addMedia(MediaVM media) {
-        //is already in VM exchange VM
+        //is already in VM change VM
         if(searchIndexMediaOf(media.getKey()) != -1) {
-            removeMedia(media);
+            changeMedia(media);
+        } else {
+            // add to head
+            mMediasList.add(0, media);
+            notifyItemInserted(0);
         }
-
-        mMediasList.add(media);
-        notifyItemInserted(mMediasList.size());
-
-       /* mMediasList.add(0, media);
-        notifyItemInserted(0);*/
     }
 
     void removeMedia(MediaVM mediaVM) {

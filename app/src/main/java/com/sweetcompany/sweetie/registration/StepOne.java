@@ -129,13 +129,14 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            setProgressBarVisible(false);
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
                 // Google Sign In failed
-                Log.e(TAG, "Google Sign In failed.");
+                Log.d(TAG, "Google Sign In failed.");
                 Log.e(TAG, String.valueOf(result));
             }
         }

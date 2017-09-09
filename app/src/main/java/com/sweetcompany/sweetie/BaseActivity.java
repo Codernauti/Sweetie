@@ -98,8 +98,7 @@ public class BaseActivity extends AppCompatActivity implements
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) { // user sign out
-                    Utility.clearSharedPreferences(BaseActivity.this);
-                    Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                    signOutAutomatically();
                     takeUserToLoginScreenOnUnAuth();
                 }
             }
@@ -109,7 +108,10 @@ public class BaseActivity extends AppCompatActivity implements
     }
 
     private void signOutAutomatically() {
+        Utility.clearSharedPreferences(BaseActivity.this);
         FirebaseAuth.getInstance().signOut();
+
+        //Auth.GoogleSignInApi.signOut(mGoogleApiClient);   generate nullpointerex if mGoogleApiClient is not ready
         Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient);
     }
 

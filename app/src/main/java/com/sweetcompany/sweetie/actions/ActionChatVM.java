@@ -41,9 +41,6 @@ class ActionChatVM extends ActionVM {
         intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);
-
-        // Or in a SingleActivity App
-        //mPageChanger.changePageTo(2);
     }
 
     @Override

@@ -25,7 +25,6 @@ abstract class FirebaseGeneralActionController {
     private final String mUserUid;
     private final String mPartnerUid;
 
-    private final String mUserNotificationUrl;
     private final String mPartnerNotificationUrl;     // actions/<couple_uid>/<action_uid>/notificationCounters/<partner_uid>
     // private final String mNotificationCountersUrl;  //actions/<couple_uid>/<action_uid>notificationCounters
 
@@ -46,10 +45,6 @@ abstract class FirebaseGeneralActionController {
 
         String mNotificationCountersUrl = mActionUrl + "/"
                 + Constraints.Actions.NOTIFICATION_COUNTERS;
-
-        mUserNotificationUrl = mActionUrl + "/"
-                + Constraints.Actions.NOTIFICATION_COUNTERS + "/"
-                + userUid;
 
         mPartnerNotificationUrl = mActionUrl + "/"
                 + Constraints.Actions.NOTIFICATION_COUNTERS + "/"
@@ -110,8 +105,9 @@ abstract class FirebaseGeneralActionController {
                         if (notificationCounters.containsKey(mUserUid)) {
                             Log.d(SUPER_TAG, "reset notification of user");
                             HashMap<String, Object> updates = new HashMap<>();
-                            updates.put(mUserNotificationUrl + "/" + Constraints.Actions.COUNTER, 0);
-                            updates.put(mUserNotificationUrl + "/" + Constraints.Actions.UPDATED_ELEMENTS, null);
+                            updates.put(mUserUid + "/" + Constraints.Actions.COUNTER, 0);
+                            updates.put(mUserUid + "/" + Constraints.Actions.UPDATED_ELEMENTS, null);
+                            mNotificationCountersRef.updateChildren(updates);
                         }
                     }
                 }

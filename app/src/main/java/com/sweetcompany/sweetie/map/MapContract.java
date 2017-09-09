@@ -1,7 +1,5 @@
 package com.sweetcompany.sweetie.map;
 
-import java.util.List;
-
 /**
  * Created by ghiro on 24/08/2017.
  */

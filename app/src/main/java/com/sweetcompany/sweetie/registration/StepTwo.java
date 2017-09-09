@@ -72,22 +72,23 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
                 String userUid = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
                 String userEmail = Utility.getStringPreference(mContext, SharedPrefKeys.MAIL);
 
-                // get user's input
-                //TODO Check if not empty
                 String username = mUsernameText.getText().toString();
                 String phoneNumber = mPhoneText.getText().toString();
                 boolean gender = mRadio.isChecked();
 
                 if (username.isEmpty() && phoneNumber.isEmpty()) {
                     Toast.makeText(mContext, "Username and phone number can not be empty", Toast.LENGTH_SHORT).show();
-                } else if (username.isEmpty()) {
+                } else if (username.length() <= 0) {
                     Toast.makeText(mContext, "Username can not be empty", Toast.LENGTH_SHORT).show();
                 } else if (phoneNumber.isEmpty()) {
                     Toast.makeText(mContext, "Phone number can not be empty", Toast.LENGTH_SHORT).show();
+                } else if (phoneNumber.length() != 10){
+                    Toast.makeText(getContext(), "A phone number must have 10 characters", Toast.LENGTH_SHORT).show();
                 } else {
                     savePreferences(username, phoneNumber, gender);
                     mPresenter.saveUserData(userUid, userEmail, username, phoneNumber, gender);
                 }
+
 
                 break;
             default:

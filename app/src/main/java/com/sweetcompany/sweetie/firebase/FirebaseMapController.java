@@ -85,10 +85,9 @@ public class FirebaseMapController {
                     GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
                     newGallery.setKey(dataSnapshot.getKey());
 
-                    // TODO
-                    /*if (mGalleryListener != null) {
+                    if (mGalleryListener != null) {
                         mGalleryListener.onGalleryChanged(newGallery);
-                    }*/
+                    }
                 }
 
                 @Override
@@ -96,10 +95,9 @@ public class FirebaseMapController {
                     GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
                     newGallery.setKey(dataSnapshot.getKey());
 
-                    //TODO
-                    /*if (mGalleryListener != null) {
+                    if (mGalleryListener != null) {
                         mGalleryListener.onGalleryRemoved(newGallery);
-                    }*/
+                    }
                 }
 
                 @Override
@@ -129,12 +127,13 @@ public class FirebaseMapController {
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    //do nothing
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     GeogiftFB removedGeogift = dataSnapshot.getValue(GeogiftFB.class);
-
+                    removedGeogift.setKey(dataSnapshot.getKey());
                     if (mGeogiftListener != null) {
                         mGeogiftListener.onGeogiftRemoved(removedGeogift);
                     }

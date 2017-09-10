@@ -17,16 +17,16 @@ class ChatDiaryPresenter implements ChatDiaryContract.Presenter,
     private final FirebaseChatDiaryController mController;
     private final ChatDiaryContract.View mView;
 
-    private final String mUserMail;
+    private final String mUserUid;
 
-    ChatDiaryPresenter(ChatDiaryContract.View view, FirebaseChatDiaryController controller, String userMail) {
-        mView = view;
-        mView.setPresenter(this);
+    ChatDiaryPresenter(ChatDiaryContract.View view, FirebaseChatDiaryController controller, String userUid) {
+        mUserUid = userUid;
 
         mController = controller;
         mController.setListener(this);
 
-        mUserMail = userMail;
+        mView = view;
+        mView.setPresenter(this);
     }
 
 
@@ -40,7 +40,7 @@ class ChatDiaryPresenter implements ChatDiaryContract.Presenter,
 
     @Override
     public void onMessageAdded(MessageFB message) {
-        MessageVM messageVM = MessageConverter.createMessageVM(message, mUserMail);
+        MessageVM messageVM = MessageConverter.createMessageVM(message, mUserUid);
         mView.updateMessage(messageVM);
     }
 

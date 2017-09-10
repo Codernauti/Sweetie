@@ -82,7 +82,6 @@
 
     </FrameLayout>
 
-
     <ImageView
         android:id="@+id/geogift_heart_picture"
         android:layout_width="200dp"

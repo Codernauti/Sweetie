@@ -52,7 +52,7 @@
             android:fontFamily="casual"
             android:maxLength="20"
             android:maxLines="1"
-            android:inputType="text|textMultiLine|textNoSuggestions"
+            android:inputType="textNoSuggestions"
             android:imeOptions="actionDone"
             android:layout_gravity="bottom|center_horizontal"
             android:hint="@string/text_hint_geogift"/>

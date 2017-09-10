@@ -141,19 +141,8 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
             mPositionLayout.setVisibility(View.VISIBLE);
             GalleryFB gallery = (GalleryFB) action;
 
-            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-            List<Address> addresses = new ArrayList<>();
-            if(gallery.getLatitude() != null && gallery.getLongitude() != null){
-                try {
-                    addresses = geocoder.getFromLocation(gallery.getLatitude(), gallery.getLongitude(), 1);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if(addresses.size() > 0) {
-                    String address = addresses.get(0).getAddressLine(0);
-                    sPositionText.setText(address);
-                }
+            if(gallery.getAddress() != null) {
+                sPositionText.setText(gallery.getAddress());
             }
         }
     }
@@ -191,7 +180,7 @@ public class ActionInfoFragment extends Fragment implements ActionInfoContract.V
             }else
             {
                 latLng = place.getLatLng();
-                mPresenter.changePosition(latLng.latitude, latLng.longitude);
+                mPresenter.changePosition(latLng.latitude, latLng.longitude, place.getAddress().toString());
             }
         }
     }

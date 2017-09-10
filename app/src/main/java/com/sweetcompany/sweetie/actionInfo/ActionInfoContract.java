@@ -16,6 +16,6 @@ public interface ActionInfoContract {
     interface Presenter {
         void changeTitle(String newTitle);
         void changeImage(Uri imageLocalUri);
-        void changePosition(Double latitude, Double longitude);
+        void changePosition(Double latitude, Double longitude, String address);
     }
 }

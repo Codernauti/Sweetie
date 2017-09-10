@@ -41,8 +41,7 @@
             android:gravity="center"
             android:textSize="20dp"
             android:fontFamily="casual"
-            android:layout_gravity="bottom|center_horizontal"
-            android:hint="@string/text_hint_geogift"/>
+            android:layout_gravity="bottom|center_horizontal"/>
         <ImageView
             android:id="@+id/geogift_done_pin_polaroid"
             android:layout_width="50dp"
@@ -68,8 +67,7 @@
             android:gravity="center"
             android:textSize="25dp"
             android:fontFamily="casual"
-            android:layout_gravity="center|center_vertical"
-            android:hint="@string/text_hint_geogift"/>
+            android:layout_gravity="center|center_vertical"/>
         <ImageView
             android:id="@+id/geogift_done_pin_postit"
             android:layout_width="50dp"

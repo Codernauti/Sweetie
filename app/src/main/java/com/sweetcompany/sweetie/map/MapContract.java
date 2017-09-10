@@ -13,7 +13,7 @@ public interface MapContract {
         void changeGallery(GalleryMapVM gallery);
 
         void addGeogift(GeogiftMapVM geogift);
-        void removeGeogift(GeogiftMapVM geogift);
+        void removeGeogift(String geogiftkey);
     }
 
     interface Presenter {

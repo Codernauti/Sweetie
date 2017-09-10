@@ -292,12 +292,12 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
 
     // TODO
     @Override
-    public void removeGeogift(GeogiftMapVM geogift) {
-        if(geogiftMarkers.containsKey( geogift.getKey() )) {
-            Marker marker = geogiftMarkers.get(geogift.getKey());
+    public void removeGeogift(String geogiftKey) {
+        if(geogiftMarkers.containsKey(geogiftKey)) {
+            Marker marker = geogiftMarkers.get(geogiftKey);
             marker.setVisible(false);
             marker.remove();
-            geogiftMarkers.remove(geogift.getKey());
+            geogiftMarkers.remove(geogiftKey);
         }
     }
 
@@ -374,19 +374,5 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
                 break;
         }
     }
-
-    /*@Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-
-        }
-    }*/
 
 }

@@ -23,8 +23,6 @@ public class MapPresenter implements MapContract.Presenter, FirebaseMapControlle
         mController.addGeogiftListener(this);
     }
 
-
-    //TODO
     @Override
     public void onGalleryAdded(GalleryFB gallery) {
         GalleryMapVM newGalleryVM =  new GalleryMapVM(gallery.getKey(), gallery.getLatitude(), gallery.getLongitude(), gallery.getUriCover());
@@ -51,10 +49,7 @@ public class MapPresenter implements MapContract.Presenter, FirebaseMapControlle
         mView.addGeogift(newGeogiftMapVM);
     }
     @Override
-    public void onGeogiftRemoved(GeogiftFB geogift) {
-        //TODO only key is needed?
-        GeogiftMapVM removedGeogiftMapVM = new GeogiftMapVM(geogift.getKey(), geogift.getLat(), geogift.getLon());
-        removedGeogiftMapVM.setType(geogift.getType());
-        mView.removeGeogift(removedGeogiftMapVM);
+    public void onGeogiftRemoved(String geogiftkey) {
+        mView.removeGeogift(geogiftkey);
     }
 }

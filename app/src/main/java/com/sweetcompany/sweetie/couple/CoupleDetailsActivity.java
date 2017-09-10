@@ -40,14 +40,14 @@ public class CoupleDetailsActivity extends BaseActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         mController.attachCoupleListener();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         mController.detachCoupleListener();
     }
 

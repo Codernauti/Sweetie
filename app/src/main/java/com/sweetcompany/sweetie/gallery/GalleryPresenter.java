@@ -28,17 +28,10 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
 
     @Override
     public void sendMedia(MediaVM mediaVM) {
-        // TODO: remove down cast -> use Factory method
-        PhotoVM photoVM = (PhotoVM) mediaVM;
-        MediaFB newMedia = new MediaFB(mUserUid, photoVM.getDescription(), photoVM.getTime(), false,
-                photoVM.getUriStorage(), photoVM.isUploading());
+        MediaFB newMedia = new MediaFB(mUserUid, mediaVM.getDescription(), mediaVM.getTime(), false,
+                mediaVM.getUriStorage(), mediaVM.isUploading());
 
         mController.uploadMedia(newMedia);
-
-        /*String newMediaUID = mController.sendMedia(newMedia);
-        photoVM.setKey(newMediaUID);
-        photoVM.setPercent(0);
-        mView.addMedia(photoVM);*/
     }
 
     @Override
@@ -87,7 +80,6 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
      * @param media
      * @return
      */
-
     private MediaVM createPhotoVM(MediaFB media) {
         // Understand if the media is of Main User
         boolean who = MediaVM.THE_PARTNER;

@@ -38,7 +38,7 @@ public class BaseActivity extends AppCompatActivity implements
 
     // utils fields for the correct working of all activity
     protected String mUserUid;
-    protected String mUserEmail;
+    private String mUserEmail;
     protected String mCoupleUid;
     protected String mPartnerUid;
 

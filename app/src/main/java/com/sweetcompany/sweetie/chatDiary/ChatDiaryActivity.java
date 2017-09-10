@@ -57,7 +57,7 @@ public class ChatDiaryActivity extends BaseActivity {
         if (mActionDiaryDate != null && mActionDiaryUid != null) {
             mController = new FirebaseChatDiaryController(super.mCoupleUid, mActionDiaryDate,
                     mActionDiaryUid);
-            mPresenter = new ChatDiaryPresenter(mView, mController, super.mUserEmail);
+            mPresenter = new ChatDiaryPresenter(mView, mController, super.mUserUid);
         }
         else {
             Log.w(TAG, "Impossible to create ChatDiaryController and ChatDiaryPresenter because actionDiaryUid OR actionDiaryDate are NULL");

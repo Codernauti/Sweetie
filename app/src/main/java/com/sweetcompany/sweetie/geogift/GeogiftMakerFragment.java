@@ -65,6 +65,7 @@ public class GeogiftMakerFragment extends Fragment implements
     private static final int HEART_SELECTION = 2;
     private static final int MIN_MESSAGE_LENGHT = 0;
     private int currentSelection = 1;
+    private boolean mIsButtonsEnable = true;
 
     private ArrayList<Image> imagesPicked = new ArrayList<>();
     private boolean isImageTaken = false;
@@ -114,6 +115,8 @@ public class GeogiftMakerFragment extends Fragment implements
     private String titleGeogift;
 
     private GeogiftVM mGeoItem;
+
+    public ViewGroup mainLayout;
 
     public static GeogiftMakerFragment newInstance(Bundle bundle) {
         GeogiftMakerFragment newGeogiftMakerFragment = new GeogiftMakerFragment();
@@ -226,8 +229,15 @@ public class GeogiftMakerFragment extends Fragment implements
         mFabAddGeogift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isGeogiftComplete){
-                    prepareNewGeogift();
+                if(mIsButtonsEnable) {
+                    if (isGeogiftComplete) {
+                        prepareNewGeogift();
+                        mIsButtonsEnable = false;
+                        mMessagePolaroidEditText.clearFocus();
+                        mMessagePostitEditText.clearFocus();
+                        mMessagePolaroidEditText.setEnabled(false);
+                        mMessagePostitEditText.setEnabled(false);
+                    }
                 }
             }
         });
@@ -236,6 +246,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
         mGeoItem = new GeogiftVM();
 
+        mainLayout = root;
         return root;
     }
 
@@ -252,34 +263,35 @@ public class GeogiftMakerFragment extends Fragment implements
 
     @Override
     public void onClick(View v) {
-        switch ( v.getId() ) {
-            case R.id.geogift_icon_topbar:
-            case R.id.geogift_textview_topbar:
-                pickPosition();
-                break;
-            case R.id.message_geogift_layout:
-                switchContainerGift(MESSAGE_SELECTION);
-                break;
-            case R.id.photo_geogift_layout:
-                switchContainerGift(PHOTO_SELECTION);
-                break;
-            case R.id.heart_geogift_layout:
-                switchContainerGift(HEART_SELECTION);
-                break;
-            case R.id.geogift_image_thumb:
-                if (isImageTaken){
-                    // TODO show full screen picture ?
-                    //showPicture();
-                }
-                else {
-                    takePicture();
-                }
-                break;
-            case R.id.geogift_clear_image_button:
-                clearImage();
-                break;
-            default:
-                break;
+        if(mIsButtonsEnable == true) {
+            switch (v.getId()) {
+                case R.id.geogift_icon_topbar:
+                case R.id.geogift_textview_topbar:
+                    pickPosition();
+                    break;
+                case R.id.message_geogift_layout:
+                    switchContainerGift(MESSAGE_SELECTION);
+                    break;
+                case R.id.photo_geogift_layout:
+                    switchContainerGift(PHOTO_SELECTION);
+                    break;
+                case R.id.heart_geogift_layout:
+                    switchContainerGift(HEART_SELECTION);
+                    break;
+                case R.id.geogift_image_thumb:
+                    if (isImageTaken) {
+                        // TODO show full screen picture ?
+                        //showPicture();
+                    } else {
+                        takePicture();
+                    }
+                    break;
+                case R.id.geogift_clear_image_button:
+                    clearImage();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -527,13 +539,14 @@ public class GeogiftMakerFragment extends Fragment implements
     public void createNewGeogift() {
 
         //TODO implement GeogiftVM with costructor not only setter
-        String mUserUid = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
+       String mUserUid = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
        mGeoItem.setUserCreatorUID(mUserUid);
        mGeoItem.setAddress(addressGeogift);
        mGeoItem.setMessage(messageGeogift);
        mGeoItem.setBookmarked(false); //TODO
        mGeoItem.setLat(positionGeogift.latitude);
        mGeoItem.setLon(positionGeogift.longitude);
+
 
        List<String> keys = mPresenter.pushGeogiftAction(mGeoItem, titleGeogift, mUserUid);
 

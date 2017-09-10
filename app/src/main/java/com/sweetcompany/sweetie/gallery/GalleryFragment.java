@@ -54,7 +54,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
     private GalleryContract.Presenter mPresenter;
 
     private String mGalleryUid;
-    private String mParentActionUid;
 
     public static GalleryFragment newInstance(Bundle bundle) {
         GalleryFragment newGalleryFragment = new GalleryFragment();
@@ -79,7 +78,6 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
         String titleGallery = getArguments().getString(GalleryActivity.GALLERY_TITLE);
         mGalleryUid = getArguments().getString(GalleryActivity.GALLERY_DATABASE_KEY);
-        mParentActionUid = getArguments().getString(GalleryActivity.ACTION_DATABASE_KEY);
 
         mGalleryListView = (RecyclerView) root.findViewById(R.id.gallery_list);
 

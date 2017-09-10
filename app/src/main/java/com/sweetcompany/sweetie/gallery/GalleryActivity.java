@@ -40,8 +40,6 @@ public class GalleryActivity extends BaseActivity {
                     savedInstanceState.getString(GALLERY_TITLE));
             Log.d(TAG, "from Intent GALLERY_TITLE_DATABASE_KEY: " +
                     savedInstanceState.getString(GALLERY_DATABASE_KEY));
-            Log.d(TAG, "from Intent GALLERY_TITLE_ACTION_KEY: " +
-                    savedInstanceState.getString(ACTION_DATABASE_KEY));
         }
         else {
             Log.w(TAG, "No savedInstanceState or intentArgs!");

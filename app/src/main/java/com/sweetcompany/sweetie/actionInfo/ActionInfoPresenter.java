@@ -37,8 +37,8 @@ public class ActionInfoPresenter<AFB extends ActionInfoVM> implements ActionInfo
     }
 
     @Override
-    public void changePosition(Double latitude, Double longitude) {
-        mController.changePosition(latitude, longitude);
+    public void changePosition(Double latitude, Double longitude, String address) {
+        mController.changePosition(latitude, longitude, address);
     }
 
 

@@ -167,12 +167,13 @@ public class FirebaseActionInfoController<AT> {
         mDatabaseRef.updateChildren(updates);
     }
 
-    public void changePosition(Double latitude, Double longitude) {
+    public void changePosition(Double latitude, Double longitude, String address) {
         if (mActionObjClass == GalleryFB.class) {
             HashMap<String, Object> updates = new HashMap<>();
 
             updates.put(mActionUrl + "/" + Constraints.Galleries.LATITUDE, latitude);
             updates.put(mActionUrl + "/" + Constraints.Galleries.LONGITUDE, longitude);
+            updates.put(mActionUrl + "/" + Constraints.Galleries.ADDRESS, address);
 
             mDatabaseRef.updateChildren(updates);
         }

@@ -13,6 +13,7 @@ public class GalleryFB extends ChildActionFB {
 
     private Double latitude;
     private Double longitude;
+    private String address;
     private boolean imageSetByUser;
 
 
@@ -44,5 +45,12 @@ public class GalleryFB extends ChildActionFB {
     }
     public void setImageSetByUser(boolean imageSetByUser) {
         this.imageSetByUser = imageSetByUser;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

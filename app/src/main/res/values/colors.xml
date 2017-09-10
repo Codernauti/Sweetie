@@ -38,8 +38,11 @@
     <color name="gallery_background">#e6e6e6</color>
     <color name="gallery_photo_selected">#80000000</color>
 
-
+    <!-- Geogift colors -->
     <color name="geogift_background">#e6e6e6</color>
+    <color name="fragmentSeparator">#E0E0E0</color>
+    <color name="geogiftItem">#708090</color>
+    <color name="background_uploading_geogift">#E67973D6</color>
 
     <color name="textHighlight">#FFFFFF</color>
     <color name="chat_emoticons_tabs">#e6e6e6</color>
@@ -50,9 +53,7 @@
     <color name="action_separator">#E0E0E0</color>
     <color name="action_avatar_background">#d9d9d9</color>
 
-    <color name="fragmentSeparator">#E0E0E0</color>
-    <color name="geogiftItem">#708090</color>
-    <color name="background_uploading_geogift">#E67973D6</color>
+
 
 
 

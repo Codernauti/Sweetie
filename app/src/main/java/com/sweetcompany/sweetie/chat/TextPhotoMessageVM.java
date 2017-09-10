@@ -15,9 +15,9 @@ public class TextPhotoMessageVM extends MessageVM implements Serializable {
     private String mUriStorage;
     private int mPercent;
 
-    TextPhotoMessageVM(String text, String creatorEmail, boolean mainUser, String date,
+    TextPhotoMessageVM(String text, String creatorUid, boolean mainUser, String date,
                        boolean bookMarked, String key, String uriS) {
-        super(mainUser, creatorEmail, date, bookMarked, key);
+        super(mainUser, creatorUid, date, bookMarked, key);
         mText = text;
         mUriStorage = uriS;
     }

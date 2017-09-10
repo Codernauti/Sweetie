@@ -32,7 +32,7 @@ public class FirebaseMapController {
 
     public interface MapGeogiftControllerListener {
         void onGeogiftAdded(GeogiftFB geogift);
-        void onGeogiftRemoved(GeogiftFB geogift);
+        void onGeogiftRemoved(String geogiftKey);
     }
 
     public interface MapGalleryControllerListener {
@@ -135,7 +135,7 @@ public class FirebaseMapController {
                     GeogiftFB removedGeogift = dataSnapshot.getValue(GeogiftFB.class);
                     removedGeogift.setKey(dataSnapshot.getKey());
                     if (mGeogiftListener != null) {
-                        mGeogiftListener.onGeogiftRemoved(removedGeogift);
+                        mGeogiftListener.onGeogiftRemoved(removedGeogift.getKey());
                     }
                 }
 

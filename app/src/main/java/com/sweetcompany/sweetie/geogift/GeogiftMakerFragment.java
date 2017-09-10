@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.model.Image;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -36,7 +35,6 @@ import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,9 +51,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
     private static final String TAG = "GeogiftMakerFragment";
 
-    public static final int REQ_PERMISSION_UPDATE = 4001;
     private static final int PLACE_PICKER_REQUEST = 4002;
-    private static final int RC_CODE_PICKER = 2001;
 
     // key for Intent extras
     public static final String GEOGIFT_ADDESS_PICKED = "GeogiftAdressPicked";
@@ -579,9 +575,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
             int selectionItem = savedInstanceState.getInt(GEOGIFT_ITEM_SELECTION);
             switchContainerGift(selectionItem);
-
         }
-
     }
 
 }

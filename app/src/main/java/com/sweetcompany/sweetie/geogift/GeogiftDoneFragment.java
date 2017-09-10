@@ -139,13 +139,14 @@ public class GeogiftDoneFragment extends Fragment implements  GeogiftDoneContrac
                 mPostitFrame.setVisibility(View.VISIBLE);
 
                 random = new Random();
-                degree = random.nextInt(3) -3;
+                degree = random.nextInt(6) -3;
                 mPostitFrame.setRotation(degree);
 
                 mMessagePostitText.setVisibility(View.VISIBLE);
                 mPinPostit.setVisibility(View.VISIBLE);
 
-                mMessagePostitText.setText(geoitem.getMessage());
+                //mMessagePostitText.setText(geoitem.getMessage());
+                mMessagePostitText.setText(String.valueOf(degree));
 
                 break;
             case PHOTO_SELECTION:
@@ -153,7 +154,7 @@ public class GeogiftDoneFragment extends Fragment implements  GeogiftDoneContrac
                 mPolaroidFrame.setVisibility(View.VISIBLE);
 
                 random = new Random();
-                degree = random.nextInt(3) -3;
+                degree = random.nextInt(6) -3;
                 mPolaroidFrame.setRotation(degree);
 
                 mImageThumb.setVisibility(View.VISIBLE);

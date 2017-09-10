@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import com.sweetcompany.sweetie.DashboardActivity;
 import com.sweetcompany.sweetie.R;
@@ -42,6 +43,7 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.d(TAG, "onCreate");
 
         String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
         mController = new FirebaseMsgNotificationController(userUid);
@@ -52,14 +54,16 @@ public class MessagesMonitorService extends Service implements FirebaseMsgNotifi
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand");
         mController.attachListener();
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mController.detach();
+        Log.d(TAG, "onDestroy");
     }
 
     @Override

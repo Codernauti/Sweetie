@@ -190,10 +190,6 @@ public class GeogiftMakerFragment extends Fragment implements
         mPostitFrame = (FrameLayout) root.findViewById(R.id.geogift_postit_container);
         mPostitFrame.setVisibility(View.GONE);
 
-        // heart
-        mHeartPic = (ImageView) root.findViewById(R.id.geogift_heart_picture);
-        mHeartPic.setVisibility(View.GONE);
-
         mMessagePostitEditText = (EditText) root.findViewById(R.id.geogift_postit_edit_text);
         mMessagePostitEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -207,6 +203,10 @@ public class GeogiftMakerFragment extends Fragment implements
             }
         });
         mMessagePolaroidEditText.setVisibility(View.GONE);
+
+        // heart
+        mHeartPic = (ImageView) root.findViewById(R.id.geogift_heart_picture);
+        mHeartPic.setVisibility(View.GONE);
 
         /*timeExpirationSpinner = (Spinner) root.findViewById(R.id.expiration_geogift_spinner);
         ArrayAdapter<CharSequence> adapterExpiration = ArrayAdapter.createFromResource(getContext(),

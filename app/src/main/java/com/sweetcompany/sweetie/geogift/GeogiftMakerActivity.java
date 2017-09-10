@@ -90,9 +90,8 @@ public class GeogiftMakerActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // TODO adjust dialog messages
+
         builder.setTitle(R.string.title_alter_dialog_back);
-        //builder.setMessage("");
         builder.setPositiveButton(android.R.string.ok,
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -114,6 +113,5 @@ public class GeogiftMakerActivity extends BaseActivity {
             }
         });
         builder.show();
-        //super.onBackPressed();
     }
 }

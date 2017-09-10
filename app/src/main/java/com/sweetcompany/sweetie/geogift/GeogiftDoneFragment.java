@@ -12,8 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -30,37 +35,42 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
+
+import java.util.Random;
+
 /**
  * Created by ghiro on 17/08/2017.
  */
 
-public class GeogiftDoneFragment extends Fragment implements
-                                                                OnMapReadyCallback,
-                                                                GoogleApiClient.ConnectionCallbacks,
-                                                                GoogleApiClient.OnConnectionFailedListener,
-                                                                GeogiftDoneContract.View{
+public class GeogiftDoneFragment extends Fragment implements  GeogiftDoneContract.View{
 
     private static final String TAG = "GeogiftDoneFragment";
 
-    private Toolbar mToolBar;
-    private SupportMapFragment mapGoogleFragment;
-    private GoogleMap map;
-    private TextView addressText;
-    private TextView datetimePositionedText;
-    private TextView isVisitedText;
+    private static final int MESSAGE_SELECTION = 0;
+    private static final int PHOTO_SELECTION = 1;
+    private static final int HEART_SELECTION = 2;
 
-    private GoogleApiClient googleApiClient;
-    private Circle geoFenceLimits;
-    private Marker geoFenceMarker;
+    private Toolbar mToolBar;
+
+    // polaroid container
+    private FrameLayout mPolaroidFrame;
+    private ImageView mImageThumb;
+    private TextView mMessagePolaroidText;
+    private ImageView mPinPolaroid;
+    // postit
+    private FrameLayout mPostitFrame;
+    private TextView mMessagePostitText;
+    private ImageView mPinPostit;
+    // heart
+    private ImageView mHeartPic;
 
     private Context mContext;
     private String titleGeogift;
-    private float geofenceRadius = 100.0f; // in meters
+
+    Random random;
+    int degree;
 
     private GeogiftVM geoItem = null;
-    double lat;
-    double lon;
-    LatLng coord;
 
     private GeogiftDoneContract.Presenter mPresenter;
 
@@ -77,9 +87,12 @@ public class GeogiftDoneFragment extends Fragment implements
 
         mContext = getContext();
 
-        //create GoogleApiClient
-        createGoogleApi();
-        //googleApiClient.connect();
+    }
+
+
+    @Override
+    public void setPresenter(GeogiftDoneContract.Presenter presenter) {
+        mPresenter = presenter;
     }
 
     @Override
@@ -94,11 +107,88 @@ public class GeogiftDoneFragment extends Fragment implements
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         parentActivity.getSupportActionBar().setTitle(titleGeogift);
 
-        addressText = (TextView) root.findViewById(R.id.address_geogift_done_text);
-        datetimePositionedText = (TextView) root.findViewById(R.id.datetime_geogift_done_text);
-        isVisitedText = (TextView) root.findViewById(R.id.isvisited_geogift_done_text);
+        // polaroid
+        mPolaroidFrame = (FrameLayout) root.findViewById(R.id.geogift_done_polaroid_container);
+        mPolaroidFrame.setVisibility(View.GONE);
+        mImageThumb = (ImageView) root.findViewById(R.id.geogift_done_image_thumb);
+        mImageThumb.setVisibility(View.GONE);
+        mMessagePolaroidText = (TextView) root.findViewById(R.id.geogift_done_polaroid_text);
+        mMessagePolaroidText.setVisibility(View.GONE);
+        mPinPolaroid = (ImageView) root.findViewById(R.id.geogift_done_pin_polaroid);
+        mPinPolaroid.setVisibility(View.GONE);
+
+        // postit
+        mPostitFrame = (FrameLayout) root.findViewById(R.id.geogift_done_postit_container);
+        mPostitFrame.setVisibility(View.GONE);
+        mMessagePostitText = (TextView) root.findViewById(R.id.geogift_done_postit_text);
+        mMessagePostitText.setVisibility(View.GONE);
+        mPinPostit = (ImageView) root.findViewById(R.id.geogift_done_pin_postit);
+        mPinPostit.setVisibility(View.GONE);
+
+        // heart
+        mHeartPic = (ImageView) root.findViewById(R.id.geogift_done_heart_picture);
+        mHeartPic.setVisibility(View.GONE);
 
         return root;
+    }
+
+    public void drawGeogift(GeogiftVM geoitem, int type){
+        switch ( type ){
+            case MESSAGE_SELECTION:
+
+                mPostitFrame.setVisibility(View.VISIBLE);
+
+                random = new Random();
+                degree = random.nextInt(3) -3;
+                mPostitFrame.setRotation(degree);
+
+                mMessagePostitText.setVisibility(View.VISIBLE);
+                mPinPostit.setVisibility(View.VISIBLE);
+
+                mMessagePostitText.setText(geoitem.getMessage());
+
+                break;
+            case PHOTO_SELECTION:
+
+                mPolaroidFrame.setVisibility(View.VISIBLE);
+
+                random = new Random();
+                degree = random.nextInt(3) -3;
+                mPolaroidFrame.setRotation(degree);
+
+                mImageThumb.setVisibility(View.VISIBLE);
+                mMessagePolaroidText.setVisibility(View.VISIBLE);
+                mPinPolaroid.setVisibility(View.VISIBLE);
+
+                Glide.with(this).load(geoitem.getUriStorage())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(mImageThumb);
+
+                mMessagePolaroidText.setText(geoitem.getMessage());
+
+                break;
+            case HEART_SELECTION:
+
+                mHeartPic.setVisibility(View.VISIBLE);
+
+                break;
+        }
+    }
+
+    @Override
+    public void updateGeogift(GeogiftVM geoitem) {
+        Log.d(TAG, "updateGeogift");
+
+        mToolBar.setTitle(geoitem.getTitle());
+
+        drawGeogift(geoitem, geoitem.getType());
+
+        if(geoitem.getIsTriggered()){
+
+        }
+        else{
+
+        }
     }
 
     @Override
@@ -109,138 +199,5 @@ public class GeogiftDoneFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-    // Create GoogleApiClient instance
-    private void createGoogleApi() {
-        Log.d(TAG, "createGoogleApi()");
-        if ( googleApiClient == null ) {
-            googleApiClient = new GoogleApiClient.Builder(getContext())
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-    }
-
-
-    // Initialize GoogleMaps
-    private void initGMaps(){
-        mapGoogleFragment = (SupportMapFragment) getChildFragmentManager() .findFragmentById(R.id.map_geogift_done_fragment);
-
-        if(mapGoogleFragment != null) {
-            mapGoogleFragment.getMapAsync(this);
-        }
-    }
-
-    // Callback called when Map is ready
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        Log.d(TAG, "onMapReady()");
-        map = googleMap;
-        //map.setOnMapClickListener(this);
-        //map.setOnMarkerClickListener(this);
-        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        //map.setMyLocationEnabled(true);
-        //map.setIndoorEnabled(true);
-        //map.setBuildingsEnabled(true);
-        //map.getUiSettings().setZoomControlsEnabled(true);
-        markerForGeofence(coord);
-        centerMap(coord);
-        drawGeofence();
-    }
-
-    private void centerMap(LatLng latLng){
-        float zoom = 15f;
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
-        map.moveCamera(cameraUpdate);
-    }
-
-    // Create a marker for the geofence creation
-    private void markerForGeofence(LatLng latLng) {
-        Log.i(TAG, "markerForGeofence("+latLng+")");
-        String title = latLng.latitude + ", " + latLng.longitude;
-        // Define marker options
-        MarkerOptions markerOptions = new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                .title(title);
-        if ( map!=null ) {
-            // Remove last geoFenceMarker
-            if (geoFenceMarker != null)
-                geoFenceMarker.remove();
-
-            geoFenceMarker = map.addMarker(markerOptions);
-        }
-    }
-
-    // Draw Geofence circle on GoogleMap
-    private void drawGeofence() {
-        Log.d(TAG, "drawGeofence()");
-
-        if ( geoFenceLimits != null )
-            geoFenceLimits.remove();
-
-        CircleOptions circleOptions = new CircleOptions()
-                .center( geoFenceMarker.getPosition())
-                .strokeColor(Color.argb(50, 70,70,70))
-                .fillColor( Color.argb(100, 150,150,150) )
-                .radius( geofenceRadius );
-        geoFenceLimits = map.addCircle( circleOptions );
-    }
-
-    private void removeGeofenceDraw() {
-        Log.d(TAG, "removeGeofenceDraw()");
-        if ( geoFenceMarker != null)
-            geoFenceMarker.remove();
-        if ( geoFenceLimits != null )
-            geoFenceLimits.remove();
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.i(TAG, "onConnected()");
-        // initialize GoogleMaps
-        initGMaps();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-
-
-    @Override
-    public void setPresenter(GeogiftDoneContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public void updateGeogift(GeogiftVM geoitem) {
-        Log.d(TAG, "updateGeogift");
-
-        mToolBar.setTitle(geoitem.getTitle());
-
-        addressText.setText(getResources().getString(R.string.address_geogift)+" "+geoitem.getAddress());
-        datetimePositionedText.setText(getResources().getString(R.string.datetime_positioned_geogift)+" "+ DataMaker.get_dd_MM_Local(geoitem.getCreationDate()));
-        if(geoitem.getIsTriggered()){
-            isVisitedText.setText(getResources().getString(R.string.is_triggered_yes_geogifty) + " at " + geoitem.getDatetimeVisited());
-            isVisitedText.setTextColor(Color.GREEN);
-        }
-        else{
-            isVisitedText.setText(getResources().getString(R.string.isvisited_no_geogifty));
-            isVisitedText.setTextColor(Color.RED);
-        }
-        lat = geoitem.getLat();
-        lon = geoitem.getLon();
-        coord = new LatLng(lat, lon);
-        //TODO
-        googleApiClient.connect();
     }
 }

@@ -75,6 +75,7 @@
             android:fontFamily="casual"
             android:maxLength="100"
             android:maxLines="5"
+            android:gravity="center"
             android:inputType="text|textMultiLine|textNoSuggestions"
             android:imeOptions="actionDone"
             android:layout_gravity="center|center_vertical"

@@ -152,7 +152,6 @@
 
         android:src="@drawable/ic_mode_edit_black_24dp"
         android:background="#FFF"
-        android:alpha="0.7"
         android:elevation="1dp"
         />
 

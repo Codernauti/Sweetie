@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -74,25 +76,30 @@ public class GeogiftMakerFragment extends Fragment implements
     private Toolbar mToolBar;
     //location picker topbar
     private ImageView locationPickerIcon;
-    private TextView locationPickerText;
+    private TextView mLocationPickerText;
     //item selector bar
-    private View messageIconButton;
-    private View photoIconButton;
-    private View heartIconButton;
-    private ImageView messageSelector;
-    private ImageView photoSelector;
-    private ImageView heartSelector;
+    private View mMessageButton;
+    private View mPhotoButton;
+    private View mHeartButton;
+    private ImageView mMessageIcon;
+    private ImageView mPhotoIcon;
+    private ImageView mHeartIcon;
     //image selector container
-    private ImageView imageThumb;
-    private ImageView clearImageButton;
-    // editText
-    private EditText messageEditText;
+    private FrameLayout mPolaroidFrame;
+    private ImageView mImageThumb;
+    private ImageView mClearImageButton;
+    private EditText mMessagePolaroidEditText;
+    // postit
+    private FrameLayout mPostitFrame;
+    private EditText mMessagePostitEditText;
+    // heart
+    private ImageView mHeartPic;
     //spinner
     //private Spinner timeExpirationSpinner;
     //fabButton
     private FloatingActionButton mFabAddGeogift;
     //uploading fragment
-    private View sendingFragment;
+    private View mSendingFragment;
     private TextView uploadingPercent;
 
     private String messageGeogift = "";
@@ -142,33 +149,35 @@ public class GeogiftMakerFragment extends Fragment implements
         parentActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         parentActivity.getSupportActionBar().setTitle(titleGeogift);
 
+        // loaction picker
         locationPickerIcon = (ImageView) root.findViewById(R.id.geogift_icon_topbar);
         locationPickerIcon.setOnClickListener(this);
-        locationPickerText = (TextView) root.findViewById(R.id.geogift_textview_topbar);
-        locationPickerText.setOnClickListener(this);
+        mLocationPickerText = (TextView) root.findViewById(R.id.geogift_textview_topbar);
+        mLocationPickerText.setOnClickListener(this);
 
-        messageIconButton = (View) root.findViewById(R.id.message_geogift_layout);
-        messageIconButton.setOnClickListener(this);
-        photoIconButton = (View) root.findViewById(R.id.photo_geogift_layout);
-        photoIconButton.setOnClickListener(this);
-        heartIconButton = (View) root.findViewById(R.id.heart_geogift_layout);
-        heartIconButton.setOnClickListener(this);
-        messageSelector = (ImageView) root.findViewById(R.id.message_geogift_selector);
-        messageSelector.setVisibility(View.GONE);
-        photoSelector = (ImageView) root.findViewById(R.id.photo_geogift_selector);
-        photoSelector.setVisibility(View.GONE);
-        heartSelector = (ImageView) root.findViewById(R.id.heart_geogift_selector);
-        heartSelector.setVisibility(View.GONE);
+        // selector bar
+        mMessageButton = (View) root.findViewById(R.id.message_geogift_layout);
+        mMessageButton.setOnClickListener(this);
+        mPhotoButton = (View) root.findViewById(R.id.photo_geogift_layout);
+        mPhotoButton.setOnClickListener(this);
+        mHeartButton = (View) root.findViewById(R.id.heart_geogift_layout);
+        mHeartButton.setOnClickListener(this);
+        mMessageIcon = (ImageView) root.findViewById(R.id.geogift_message_icon);
+        mPhotoIcon = (ImageView) root.findViewById(R.id.geogift_photo_icon) ;
+        mHeartIcon = (ImageView) root.findViewById(R.id.geogift_heart_icon);
 
-        imageThumb = (ImageView) root.findViewById(R.id.image_thumb_geogift);
-        imageThumb.setVisibility(View.GONE);
-        imageThumb.setOnClickListener(this);
-        clearImageButton = (ImageView) root.findViewById(R.id.clear_image_geogift_button);
-        clearImageButton.setVisibility(View.GONE);
-        clearImageButton.setOnClickListener(this);
+        // polaroid
+        mPolaroidFrame = (FrameLayout) root.findViewById(R.id.geogift_polaroid_container);
+        mPolaroidFrame.setVisibility(View.GONE);
+        mImageThumb = (ImageView) root.findViewById(R.id.geogift_image_thumb);
+        mImageThumb.setVisibility(View.GONE);
+        mImageThumb.setOnClickListener(this);
+        mClearImageButton = (ImageView) root.findViewById(R.id.geogift_clear_image_button);
+        mClearImageButton.setVisibility(View.GONE);
+        mClearImageButton.setOnClickListener(this);
 
-        messageEditText = (EditText) root.findViewById(R.id.text_geogift);
-        messageEditText.addTextChangedListener(new TextWatcher() {
+        mMessagePolaroidEditText = (EditText) root.findViewById(R.id.geogift_polaroid_edit_text);
+        mMessagePolaroidEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
@@ -179,6 +188,29 @@ public class GeogiftMakerFragment extends Fragment implements
                 checkGeogiftFields();
             }
         });
+        mMessagePolaroidEditText.setVisibility(View.GONE);
+
+        // postit
+        mPostitFrame = (FrameLayout) root.findViewById(R.id.geogift_postit_container);
+        mPostitFrame.setVisibility(View.GONE);
+
+        // heart
+        mHeartPic = (ImageView) root.findViewById(R.id.geogift_heart_picture);
+        mHeartPic.setVisibility(View.GONE);
+
+        mMessagePostitEditText = (EditText) root.findViewById(R.id.geogift_postit_edit_text);
+        mMessagePostitEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                messageGeogift = s.toString();
+                checkGeogiftFields();
+            }
+        });
+        mMessagePolaroidEditText.setVisibility(View.GONE);
 
         /*timeExpirationSpinner = (Spinner) root.findViewById(R.id.expiration_geogift_spinner);
         ArrayAdapter<CharSequence> adapterExpiration = ArrayAdapter.createFromResource(getContext(),
@@ -186,9 +218,11 @@ public class GeogiftMakerFragment extends Fragment implements
         adapterExpiration.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeExpirationSpinner.setAdapter(adapterExpiration);*/
 
-        sendingFragment = (View) root.findViewById(R.id.included_uploading_geogift);
-        uploadingPercent = (TextView) sendingFragment.findViewById(R.id.uploading_percent_geogift_text);
+        // uploading
+        mSendingFragment = (View) root.findViewById(R.id.included_uploading_geogift);
+        uploadingPercent = (TextView) mSendingFragment.findViewById(R.id.uploading_percent_geogift_text);
 
+        // fab button
         mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_add_photo);
         mFabAddGeogift.setClickable(false);
 
@@ -236,7 +270,7 @@ public class GeogiftMakerFragment extends Fragment implements
             case R.id.heart_geogift_layout:
                 switchContainerGift(HEART_SELECTION);
                 break;
-            case R.id.image_thumb_geogift:
+            case R.id.geogift_image_thumb:
                 if (isImageTaken){
                     // TODO show full screen picture ?
                     //showPicture();
@@ -245,7 +279,7 @@ public class GeogiftMakerFragment extends Fragment implements
                     takePicture();
                 }
                 break;
-            case R.id.clear_image_geogift_button:
+            case R.id.geogift_clear_image_button:
                 clearImage();
                 break;
             default:
@@ -256,35 +290,53 @@ public class GeogiftMakerFragment extends Fragment implements
     public void switchContainerGift(int item){
         switch ( item ){
             case MESSAGE_SELECTION:
-                messageSelector.setVisibility(View.VISIBLE);
-                photoSelector.setVisibility(View.GONE);
-                heartSelector.setVisibility(View.GONE);
 
-                imageThumb.setVisibility(View.GONE);
-                clearImageButton.setVisibility(View.GONE);
+                mMessageIcon.setAlpha(1f);
+                mPhotoIcon.setAlpha(0.5f);
+                mHeartIcon.setAlpha(0.5f);
+
+                mPolaroidFrame.setVisibility(View.GONE);
+                mImageThumb.setVisibility(View.GONE);
+                mClearImageButton.setVisibility(View.GONE);
+                mMessagePolaroidEditText.setVisibility(View.GONE);
+                mPostitFrame.setVisibility(View.VISIBLE);
+                mMessagePostitEditText.setVisibility(View.VISIBLE);
+                mHeartPic.setVisibility(View.GONE);
 
                 currentSelection = MESSAGE_SELECTION;
                 checkGeogiftFields();
                 break;
             case PHOTO_SELECTION:
-                messageSelector.setVisibility(View.GONE);
-                photoSelector.setVisibility(View.VISIBLE);
-                heartSelector.setVisibility(View.GONE);
 
-                imageThumb.setVisibility(View.VISIBLE);
-                if(isImageTaken) clearImageButton.setVisibility(View.VISIBLE);
-                else clearImageButton.setVisibility(View.GONE);
+                mMessageIcon.setAlpha(0.5f);
+                mPhotoIcon.setAlpha(1f);
+                mHeartIcon.setAlpha(0.5f);
+
+                mPolaroidFrame.setVisibility(View.VISIBLE);
+                mImageThumb.setVisibility(View.VISIBLE);
+                if(isImageTaken) mClearImageButton.setVisibility(View.VISIBLE);
+                else mClearImageButton.setVisibility(View.GONE);
+                mMessagePolaroidEditText.setVisibility(View.VISIBLE);
+                mPostitFrame.setVisibility(View.GONE);
+                mMessagePostitEditText.setVisibility(View.GONE);
+                mHeartPic.setVisibility(View.GONE);
 
                 currentSelection = PHOTO_SELECTION;
                 checkGeogiftFields();
                 break;
             case HEART_SELECTION:
-                messageSelector.setVisibility(View.GONE);
-                photoSelector.setVisibility(View.GONE);
-                heartSelector.setVisibility(View.VISIBLE);
 
-                imageThumb.setVisibility(View.GONE);
-                clearImageButton.setVisibility(View.GONE);
+                mMessageIcon.setAlpha(0.5f);
+                mPhotoIcon.setAlpha(0.5f);
+                mHeartIcon.setAlpha(1f);
+
+                mPolaroidFrame.setVisibility(View.GONE);
+                mImageThumb.setVisibility(View.GONE);
+                mClearImageButton.setVisibility(View.GONE);
+                mMessagePolaroidEditText.setVisibility(View.GONE);
+                mPostitFrame.setVisibility(View.GONE);
+                mMessagePostitEditText.setVisibility(View.GONE);
+                mHeartPic.setVisibility(View.VISIBLE);
 
                 currentSelection = HEART_SELECTION;
                 checkGeogiftFields();
@@ -360,21 +412,9 @@ public class GeogiftMakerFragment extends Fragment implements
     }
 
      public void takePicture() {
-         ImagePicker imagePicker = ImagePicker.create(this)
-                 .theme(R.style.ImagePickerTheme)
-                 .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
-                 .folderMode(true) // set folder mode (false by default)
-                 .folderTitle("Folder") // folder selection title
-                 .imageTitle(String.valueOf(R.string.image_picker_select)); // image selection title
-
-         //imagePicker.multi();
-         imagePicker.single();
-
-         imagePicker
-                   .showCamera(true) // show camera or not (true by default)
-                   .imageDirectory("Camera")   // captured image directory name ("Camera" folder by default)
-                   .origin(imagesPicked) // original selected images, used in multi mode
-                   .start(RC_CODE_PICKER); // start image picker activity with request code
+         CropImage.activity()
+                 .setAspectRatio(256,256)
+                 .start(getContext(), this);
      }
 
      public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -390,50 +430,53 @@ public class GeogiftMakerFragment extends Fragment implements
              {
                  name = place.getName().toString();
                  addressGeogift = place.getAddress().toString();
-                 locationPickerText.setText(addressGeogift);
+                 mLocationPickerText.setText(addressGeogift);
                  latLng = place.getLatLng();
                  positionGeogift = new LatLng(latLng.latitude, latLng.longitude);
                  checkGeogiftFields();
              }
          }
-         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
-             imagesPicked = (ArrayList<Image>) ImagePicker.getImages(data);
-             drawImage();
-             return;
+         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+
+             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
+             if (resultCode == RESULT_OK) {
+                 Uri resultUri = result.getUri();
+
+                 stringUriLocal = resultUri.toString();
+
+                 drawImage();
+             }
+             else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                 Exception error = result.getError();
+                 Log.d(TAG, error.toString());
+             }
          }
      }
 
-     public void drawImage(){
-         if(imagesPicked.size()>0) {
-             stringUriLocal = imagesPicked.get(0).getPath();
-         }
+     public void drawImage() {
+         uriImageToLoad = stringUriLocal;
 
-         Uri uriFile = Uri.fromFile(new File(stringUriLocal));
-         uriImageToLoad = uriFile.toString();
-
-             Glide.with(this).load(uriFile.toString())
-                     .thumbnail(0.5f)
-                     .crossFade()
-                     .placeholder(R.drawable.image_placeholder)
+             Glide.with(this).load(uriImageToLoad)
+                     .placeholder(R.drawable.image_geogift_placeholder)
                      .diskCacheStrategy(DiskCacheStrategy.ALL)
-                     .into(imageThumb);
+                     .into(mImageThumb);
+
              isImageTaken = true;
-             clearImageButton.setVisibility(View.VISIBLE);
+             mClearImageButton.setVisibility(View.VISIBLE);
              checkGeogiftFields();
 
      }
 
-     public void clearImage(){
+     public void clearImage() {
          if(isImageTaken){
              isImageTaken = false;
-             clearImageButton.setVisibility(View.GONE);
+             mClearImageButton.setVisibility(View.GONE);
              imagesPicked.clear();
              Glide.with(this).load(R.drawable.image_geogift_placeholder)
-                     .thumbnail(0.5f)
-                     .crossFade()
                      .placeholder(R.drawable.image_placeholder)
                      .diskCacheStrategy(DiskCacheStrategy.ALL)
-                     .into(imageThumb);
+                     .into(mImageThumb);
              checkGeogiftFields();
          }
      }
@@ -468,10 +511,10 @@ public class GeogiftMakerFragment extends Fragment implements
         }
     }
 
-    public void prepareNewGeogift(){
+    public void prepareNewGeogift() {
         if(currentSelection == PHOTO_SELECTION){
             mPresenter.uploadMedia(uriImageToLoad);
-            sendingFragment.setVisibility(View.VISIBLE);
+            mSendingFragment.setVisibility(View.VISIBLE);
             mGeoItem.setType(GeogiftVM.PHOTO_GEOGIFT);
             //createNewGeogift();
         }
@@ -485,7 +528,7 @@ public class GeogiftMakerFragment extends Fragment implements
         }
     }
 
-    public void createNewGeogift(){
+    public void createNewGeogift() {
 
         //TODO implement GeogiftVM with costructor not only setter
         String mUserUid = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
@@ -520,7 +563,7 @@ public class GeogiftMakerFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             addressGeogift = savedInstanceState.getString(GEOGIFT_ADDESS_PICKED);
-            if(addressGeogift != null) locationPickerText.setText(addressGeogift);
+            if(addressGeogift != null) mLocationPickerText.setText(addressGeogift);
 
             latGeogift = savedInstanceState.getDouble(GEOGIFT_LAT_PICKED);
             lonGeogift = savedInstanceState.getDouble(GEOGIFT_LON_PICKED);

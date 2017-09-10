@@ -2,15 +2,12 @@ package com.sweetcompany.sweetie.geogift;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftMakerController;
@@ -24,7 +21,6 @@ public class GeogiftMakerActivity extends BaseActivity {
 
     // key for Intent extras
     public static final String GEOGIFT_TITLE = "GeogiftTitle";
-    private GoogleApiClient googleApiClient;
 
     private GeogiftMakerFragment mView;
 

@@ -1,7 +1,5 @@
 package com.sweetcompany.sweetie.geogift;
 
-import static android.R.attr.type;
-
 /**
  * Created by ghiro on 16/08/2017.
  */

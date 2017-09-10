@@ -15,7 +15,7 @@ interface GeogiftMakerContract {
     }
 
     interface Presenter {
-        List<String> pushGeogiftAction(GeogiftVM geoItem, String userInputGeogiftTitle, String username);
+        List<String> pushGeogiftAction(GeogiftVM geoItem, String userInputGeogiftTitle, String userUid);
         void uploadMedia(String uriImage);
     }
 }

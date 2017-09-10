@@ -279,10 +279,7 @@ public class GeogiftMakerFragment extends Fragment implements
                     switchContainerGift(HEART_SELECTION);
                     break;
                 case R.id.geogift_image_thumb:
-                    if (isImageTaken) {
-                        // TODO show full screen picture ?
-                        //showPicture();
-                    } else {
+                    if (!isImageTaken) {
                         takePicture();
                     }
                     break;
@@ -412,11 +409,6 @@ public class GeogiftMakerFragment extends Fragment implements
             toast.setDuration(Toast.LENGTH_SHORT);
             toast.show();
         }
-    }
-
-    //TODO show image at click
-    public void showPicture(){
-
     }
 
      public void takePicture() {

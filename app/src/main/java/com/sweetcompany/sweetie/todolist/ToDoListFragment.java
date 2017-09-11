@@ -1,9 +1,7 @@
 package com.sweetcompany.sweetie.todolist;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +16,6 @@ import android.view.MenuItem;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
@@ -28,7 +25,7 @@ import com.sweetcompany.sweetie.utils.DataMaker;
  * Created by lucas on 04/08/2017.
  */
 
-public class ToDoListFragment extends Fragment implements  ToDoListContract.View, View.OnClickListener,
+public class ToDoListFragment extends Fragment implements  ToDoListContract.View,
         ToDoListAdapter.ToDoListAdapterListener {
 
     private static final String TAG = "ToDoListFragment";
@@ -36,7 +33,6 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
     private ToDoListAdapter toDoListAdapter;
     private Toolbar mToolBar;
     private RecyclerView mToDoListListView;
-    private FloatingActionButton mFabNewCheckEntry;
     private LinearLayoutManager mLinearLayoutManager;
 
     private boolean entryAddedFromButton = false;
@@ -77,9 +73,6 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
             parentActivity.getSupportActionBar().setTitle(titleToDoList);
         }
 
-        //initialize input widgets
-        mFabNewCheckEntry = (FloatingActionButton) root.findViewById(R.id.fab_new_check_entry);
-
         // initialize message's list
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
 
@@ -88,21 +81,7 @@ public class ToDoListFragment extends Fragment implements  ToDoListContract.View
         mToDoListListView.setLayoutManager(mLinearLayoutManager);
         mToDoListListView.setAdapter(toDoListAdapter);
 
-        mFabNewCheckEntry.setOnClickListener(this);
-
         return root;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab_new_check_entry: {
-                onAddButtonClicked();
-                break;
-            }
-            default:
-                break;
-        }
     }
 
 

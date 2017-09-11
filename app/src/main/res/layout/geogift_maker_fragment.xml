@@ -193,21 +193,19 @@
 
     </LinearLayout>
 
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_make_geogift"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/geogift_send_button"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:elevation="4dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:layout_gravity="bottom|right"
+        android:background="@drawable/shape_circle"
+        android:backgroundTint="@color/purple_sweetie"
         android:src="@drawable/check_icon"
         android:tint="@color/white"
-        android:backgroundTint="@color/purple_sweetie"
-
-        android:alpha="0.5"
-        />
+        android:alpha="0.5"/>
 
     <include
         android:id="@+id/included_uploading_geogift"

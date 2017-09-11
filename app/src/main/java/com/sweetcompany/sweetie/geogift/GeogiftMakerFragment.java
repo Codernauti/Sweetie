@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -94,7 +95,7 @@ public class GeogiftMakerFragment extends Fragment implements
     //spinner
     //private Spinner timeExpirationSpinner;
     //fabButton
-    private FloatingActionButton mFabAddGeogift;
+    private ImageButton mSendGeogift;
     //uploading fragment
     private View mSendingFragment;
     private TextView uploadingPercent;
@@ -220,25 +221,8 @@ public class GeogiftMakerFragment extends Fragment implements
         uploadingPercent = (TextView) mSendingFragment.findViewById(R.id.uploading_percent_geogift_text);
 
         // fab button
-        mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_make_geogift);
-        mFabAddGeogift.setClickable(false);
-
-        // Add listener
-        mFabAddGeogift.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mIsButtonsEnable) {
-                    if (isGeogiftComplete) {
-                        prepareNewGeogift();
-                        mIsButtonsEnable = false;
-                        mMessagePolaroidEditText.clearFocus();
-                        mMessagePostitEditText.clearFocus();
-                        mMessagePolaroidEditText.setEnabled(false);
-                        mMessagePostitEditText.setEnabled(false);
-                    }
-                }
-            }
-        });
+        mSendGeogift = (ImageButton) root.findViewById(R.id.geogift_send_button);
+        mSendGeogift.setClickable(true);
 
         switchContainerGift(PHOTO_SELECTION);
 
@@ -283,6 +267,15 @@ public class GeogiftMakerFragment extends Fragment implements
                 case R.id.geogift_clear_image_button:
                     clearImage();
                     break;
+                case R.id.geogift_send_button:
+                    if (isGeogiftComplete) {
+                        prepareNewGeogift();
+                        mIsButtonsEnable = false;
+                        mMessagePolaroidEditText.clearFocus();
+                        mMessagePostitEditText.clearFocus();
+                        mMessagePolaroidEditText.setEnabled(false);
+                        mMessagePostitEditText.setEnabled(false);
+                    }
                 default:
                     break;
             }
@@ -375,12 +368,12 @@ public class GeogiftMakerFragment extends Fragment implements
         }
 
         if(isGeogiftComplete){
-            mFabAddGeogift.setClickable(true);
-            mFabAddGeogift.setAlpha(1.0f);
+            mSendGeogift.setClickable(true);
+            mSendGeogift.setAlpha(1.0f);
         }
         else{
-            mFabAddGeogift.setClickable(false);
-            mFabAddGeogift.setAlpha(0.5f);
+            mSendGeogift.setClickable(false);
+            mSendGeogift.setAlpha(0.5f);
         }
     }
 

@@ -88,8 +88,6 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
                     savePreferences(username, phoneNumber, gender);
                     mPresenter.saveUserData(userUid, userEmail, username, phoneNumber, gender);
                 }
-
-
                 break;
             default:
                 break;

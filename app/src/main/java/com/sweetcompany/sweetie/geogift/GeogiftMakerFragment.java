@@ -220,7 +220,7 @@ public class GeogiftMakerFragment extends Fragment implements
         uploadingPercent = (TextView) mSendingFragment.findViewById(R.id.uploading_percent_geogift_text);
 
         // fab button
-        mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_add_photo);
+        mFabAddGeogift = (FloatingActionButton) root.findViewById(R.id.fab_make_geogift);
         mFabAddGeogift.setClickable(false);
 
         // Add listener

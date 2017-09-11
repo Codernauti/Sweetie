@@ -289,7 +289,7 @@ public class GeogiftMakerFragment extends Fragment implements
         }
     }
 
-    public void switchContainerGift(int item){
+    public void switchContainerGift(int item) {
         switch ( item ){
             case MESSAGE_SELECTION:
 

@@ -58,54 +58,6 @@ public class RegisterActivity extends AppCompatActivity
         mLoginController.addListener(this);
     }
 
-    public void initServiceAndOpenPairingScreen() {
-        startService(new Intent(this, UserMonitorService.class));
-
-        Intent intent = new Intent(this, PairingActivity.class);
-        intent.putExtra(PairingActivity.USER_FROM_REGISTER_KEY, true);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onUserDownloadFinished(UserFB user) {
-        if (user != null) {
-            Utility.saveStringPreference(this, SharedPrefKeys.USERNAME, user.getUsername());
-            Utility.saveStringPreference(this, SharedPrefKeys.PHONE_NUMBER, user.getPhone());
-            Utility.saveStringPreference(this, SharedPrefKeys.GENDER, String.valueOf(user.getGender()));
-            startActivity(new Intent(this, MainActivity.class));
-        }
-        else {  // user == null, he need to sign in
-
-            mLoginController.removeListener(this);
-            mLoginController.removeListener(mLoginPresenter);
-
-            // Initialization of fragment StepTwo
-
-            mViewTwo = null;
-            // Class Cast exteption if StepOne is on register_fragment_container.
-                    /*(StepTwo) getSupportFragmentManager()
-                    .findFragmentById(R.id.register_fragment_container);*/
-
-            if (mViewTwo == null) {
-                mViewTwo = StepTwo.newInstance(getIntent().getExtras());
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(
-                                R.anim.slide_in_right,
-                                R.anim.slide_out_left,
-                                R.anim.slide_in_left,
-                                R.anim.slide_out_right
-                        )
-                        .addToBackStack(StepOne.TAG)
-                        .replace(R.id.register_fragment_container, mViewTwo);
-                transaction.commit();
-            }
-            mRegisterController = new FirebaseRegisterController();
-            mRegisterPresenter = new RegisterPresenter(mViewTwo, mRegisterController);
-
-            mRegisterController.setListener(mRegisterPresenter);
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -118,11 +70,20 @@ public class RegisterActivity extends AppCompatActivity
         }
     }
 
+
+    // back management
+
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0 ){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            // Sign in Fragment
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+        else if (getSupportFragmentManager().getBackStackEntryCount() > 1 ) {
             getSupportFragmentManager().popBackStack();
-        } else {
+        }
+        else {
             moveTaskToBack(true);
         }
     }
@@ -133,10 +94,51 @@ public class RegisterActivity extends AppCompatActivity
         return true;
     }
 
+
+    @Override
+    public void onUserDownloadFinished(UserFB user) {
+        if (user != null) {
+            // user already have an account
+            Utility.saveStringPreference(this, SharedPrefKeys.USERNAME, user.getUsername());
+            Utility.saveStringPreference(this, SharedPrefKeys.PHONE_NUMBER, user.getPhone());
+            Utility.saveStringPreference(this, SharedPrefKeys.GENDER, String.valueOf(user.getGender()));
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        else {  // user == null, he need to sign in
+            mLoginController.removeListener(this);
+            mLoginController.removeListener(mLoginPresenter);
+
+            showStepTwo();
+        }
+    }
+
+    private void showStepTwo() {
+        mViewTwo = null;
+        // Class Cast exteption if StepOne is on register_fragment_container.
+                    /*(StepTwo) getSupportFragmentManager()
+                    .findFragmentById(R.id.register_fragment_container);*/
+
+        if (mViewTwo == null) {
+            mViewTwo = StepTwo.newInstance(getIntent().getExtras());
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(
+                            R.anim.slide_in_right,
+                            R.anim.slide_out_left,
+                            R.anim.slide_in_left,
+                            R.anim.slide_out_right
+                    )
+                    .addToBackStack(StepOne.TAG)
+                    .replace(R.id.register_fragment_container, mViewTwo);
+            transaction.commit();
+        }
+        mRegisterController = new FirebaseRegisterController();
+        mRegisterPresenter = new RegisterPresenter(mViewTwo, mRegisterController);
+
+        mRegisterController.setListener(mRegisterPresenter);
+    }
+
     public void showStepThree() {
         mRegisterController.setListener(null);
-
-        //
 
         mViewThree = null;
 
@@ -162,5 +164,13 @@ public class RegisterActivity extends AppCompatActivity
         mSetUserImagePresenter = new SetUserImagePresenter(mViewThree, mSettingsController);
 
         mSettingsController.attachListener();
+    }
+
+    public void initServiceAndOpenPairingScreen() {
+        startService(new Intent(this, UserMonitorService.class));
+
+        Intent intent = new Intent(this, PairingActivity.class);
+        intent.putExtra(PairingActivity.USER_FROM_REGISTER_KEY, true);
+        startActivity(intent);
     }
 }

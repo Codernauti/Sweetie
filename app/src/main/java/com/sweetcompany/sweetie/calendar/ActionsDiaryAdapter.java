@@ -76,6 +76,7 @@ class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
 
         if (actionDiary.getImageUri() == null &&
                 actionDiary.getTitle().length() > 0) {
+            viewHolder.noImgText.setVisibility(View.VISIBLE);
             viewHolder.noImgText.setText(actionDiary.getTitle().substring(0, 1));
         } else {
             viewHolder.noImgText.setVisibility(View.GONE);

@@ -140,6 +140,11 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListViewHolder> im
     }
 
     @Override
+    public void onEnterKeyPressed() {
+        mListener.onAddButtonClicked();
+    }
+
+    @Override
     public void onAddButtonClicked() {
         mListener.onAddButtonClicked();
     }

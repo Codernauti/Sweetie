@@ -75,8 +75,7 @@
             android:theme="@style/AppTheme" />
 
         <activity android:name=".geogift.GeogiftMakerActivity"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustPan"/>
+            android:theme="@style/AppTheme" />
 
         <activity android:name=".geogift.GeogiftDoneActivity"
             android:parentActivityName=".DashboardActivity"

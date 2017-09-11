@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -20,12 +21,13 @@ import com.sweetcompany.sweetie.R;
  * Created by lucas on 12/08/2017.
  */
 
-public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnFocusChangeListener, View.OnClickListener{
-    CheckBox mCheckBox;
-    EditText mEditText;
-    ImageButton mDeleteButton;
-    OnCheckEntryViewHolderClickListener mListener;
-    String oldText;
+public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnFocusChangeListener, View.OnClickListener, View.OnKeyListener{
+    private CheckBox mCheckBox;
+    private EditText mEditText;
+    private ImageButton mDeleteButton;
+    private OnCheckEntryViewHolderClickListener mListener;
+    private String oldText;
+    private InputMethodManager mInputMethodManager;
 
     public CheckEntryViewHolder(View itemView) {
         super(itemView);
@@ -36,6 +38,8 @@ public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnF
         mCheckBox.setOnClickListener(this);
         mEditText.setOnFocusChangeListener(this);
         mDeleteButton.setOnClickListener(this);
+        mInputMethodManager =(InputMethodManager) mEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        mEditText.setOnKeyListener(this);
     }
 
     void setCheckEntryViewHolderClickListener(OnCheckEntryViewHolderClickListener listener) {
@@ -61,11 +65,25 @@ public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnF
         }
     }
 
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_ENTER:
+                    mListener.onEnterKeyPressed();
+                    return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
 
     interface OnCheckEntryViewHolderClickListener {
         void onCheckBoxClicked(int adapterPosition, boolean isChecked);
         void onCheckEntryUnfocused(int adapterPosition,String text);
         void onCheckEntryRemove(int adapterPosition);
+        void onEnterKeyPressed();
     }
 
 
@@ -90,7 +108,5 @@ public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnF
 
     public void setFocus(){
         mEditText.requestFocus();
-        InputMethodManager inputMethodManager =(InputMethodManager) mEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 }

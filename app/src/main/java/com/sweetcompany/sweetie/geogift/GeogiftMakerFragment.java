@@ -116,8 +116,6 @@ public class GeogiftMakerFragment extends Fragment implements
 
     private GeogiftVM mGeoItem;
 
-    public ViewGroup mainLayout;
-
     public static GeogiftMakerFragment newInstance(Bundle bundle) {
         GeogiftMakerFragment newGeogiftMakerFragment = new GeogiftMakerFragment();
         newGeogiftMakerFragment.setArguments(bundle);
@@ -246,7 +244,6 @@ public class GeogiftMakerFragment extends Fragment implements
 
         mGeoItem = new GeogiftVM();
 
-        mainLayout = root;
         return root;
     }
 

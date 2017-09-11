@@ -3,6 +3,7 @@ package com.sweetcompany.sweetie.todolist;
 import com.sweetcompany.sweetie.firebase.FirebaseToDoListController;
 import com.sweetcompany.sweetie.model.CheckEntryFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 /**
  * Created by lucas on 04/08/2017.
@@ -42,7 +43,7 @@ class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListC
     @Override
     public void changeCheckEntry(CheckEntryVM checkEntry) {
         CheckEntryFB updateCheckEntry = new CheckEntryFB(mUserUid, checkEntry.getText(),
-                checkEntry.isChecked(),checkEntry.getTime());
+                checkEntry.isChecked(), DataMaker.get_UTC_DateTime());
         updateCheckEntry.setKey(checkEntry.getKey());
 
         mController.updateCheckEntry(updateCheckEntry);

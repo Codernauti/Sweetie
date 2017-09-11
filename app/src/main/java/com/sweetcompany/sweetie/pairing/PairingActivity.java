@@ -81,6 +81,12 @@ public class PairingActivity extends BaseActivity
 
     @Override
     public boolean onSupportNavigateUp() {
+        super.onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
         if (mUserFromRegister) {
             Intent intent = new Intent(this, DashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -89,9 +95,7 @@ public class PairingActivity extends BaseActivity
         } else {
             super.onBackPressed();
         }
-        return true;
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

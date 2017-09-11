@@ -129,9 +129,9 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;
 
-            case R.id.menu_fake_geogift:
+            /*case R.id.menu_fake_geogift:
                 startActivity(new Intent(this, GeogiftTestActivity.class));
-                return true;
+                return true;*/
 
             case R.id.menu_print_sp:
                 Utility.printLogAllSharedPreferences(this);

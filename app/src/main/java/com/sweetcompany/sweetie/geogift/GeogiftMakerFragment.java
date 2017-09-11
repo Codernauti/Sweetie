@@ -221,7 +221,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
         // fab button
         mSendGeogift = (ImageButton) root.findViewById(R.id.geogift_send_button);
-        mSendGeogift.setClickable(true);
+        mSendGeogift.setOnClickListener(this);
 
         switchContainerGift(PHOTO_SELECTION);
 

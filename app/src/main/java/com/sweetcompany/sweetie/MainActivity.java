@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity{
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user == null) {
+        String username = Utility.getStringPreference(this, SharedPrefKeys.USERNAME);
+
+        if (user == null || username.equals("error")) {
             // user log out
             startActivity(new Intent(this, RegisterActivity.class));
 

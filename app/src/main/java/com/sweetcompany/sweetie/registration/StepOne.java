@@ -59,18 +59,17 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (mGoogleApiClient == null) {
-                // TODO: move this code into a Controller
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.server_client_ID))
-                        .requestEmail()
-                        .build();
 
-                mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                        .enableAutoManage(getActivity() /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                        .build();
-        }
+        // TODO: move this code into a Controller
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_ID))
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .enableAutoManage(getActivity(), this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
     @Override
@@ -94,17 +93,9 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        // Set click listeners
         mRegisterGoogleButton.setOnClickListener(this);
 
         return root;
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mGoogleApiClient.stopAutoManage(getActivity());
-        mGoogleApiClient.disconnect();
     }
 
     @Override
@@ -119,6 +110,7 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
         }
     }
 
+
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -130,12 +122,15 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             setProgressBarVisible(false);
+
             if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
+
                 GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
+                if (account != null) {
+                    firebaseAuthWithGoogle(account);
+                }
+
             } else {
-                // Google Sign In failed
                 Log.d(TAG, "Google Sign In failed.");
                 Log.e(TAG, String.valueOf(result));
             }
@@ -144,9 +139,9 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount account) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
-        //TODO: warning thread pool shared!
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -156,9 +151,8 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
                             Toast.makeText(getActivity(), "Authentication failed.", Toast.LENGTH_SHORT).show();
-                            setProgressBarVisible(false);
                         }
-                        else {
+                        else if (FirebaseAuth.getInstance().getCurrentUser() != null){
                             //save id token
                             // TODO: here or after into RegisterActivity?
                             Utility.saveStringPreference(mContext, SharedPrefKeys.USER_UID,
@@ -185,11 +179,11 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
     }
 
     @Override
-    public void setProgressBarVisible(boolean b) {
-        if(b){
+    public void setProgressBarVisible(boolean visible) {
+        if(visible){
             mProgressBar.setVisibility(View.VISIBLE);
         } else {
-            mProgressBar.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 }

@@ -126,8 +126,8 @@ public class GeogiftDoneFragment extends Fragment implements  GeogiftDoneContrac
                 mMessagePostitText.setVisibility(View.VISIBLE);
                 mPinPostit.setVisibility(View.VISIBLE);
 
-                //mMessagePostitText.setText(geoitem.getMessage());
-                mMessagePostitText.setText(String.valueOf(degree));
+                mMessagePostitText.setText(geoitem.getMessage());
+                //mMessagePostitText.setText(String.valueOf(degree));
 
                 break;
             case PHOTO_SELECTION:

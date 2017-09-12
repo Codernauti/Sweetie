@@ -75,21 +75,24 @@ public class FirebaseMapController {
                     GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
                     newGallery.setKey(dataSnapshot.getKey());
 
-                    if(newGallery.getLatitude() != null && newGallery.getLongitude() != null
-                       && newGallery.getUriCover() != null) {
+                    if(newGallery.getLatitude() != null && newGallery.getLongitude() != null) {
                         if (mGalleryListener != null) {
                             mGalleryListener.onGalleryAdded(newGallery);
                         }
+
                     }
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "onChildChanged");
                     GalleryFB newGallery = dataSnapshot.getValue(GalleryFB.class);
                     newGallery.setKey(dataSnapshot.getKey());
 
-                    if (mGalleryListener != null) {
-                        mGalleryListener.onGalleryChanged(newGallery);
+                    if(newGallery.getLatitude() != null && newGallery.getLongitude() != null) {
+                        if (mGalleryListener != null) {
+                            mGalleryListener.onGalleryChanged(newGallery);
+                        }
                     }
                 }
 

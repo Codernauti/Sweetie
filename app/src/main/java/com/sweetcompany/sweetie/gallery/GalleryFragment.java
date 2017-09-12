@@ -24,6 +24,8 @@ import com.sweetcompany.sweetie.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import com.esafirm.imagepicker.model.Image;
 import com.sweetcompany.sweetie.utils.DataMaker;
@@ -204,7 +206,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
     @Override
     public void onPhotoClicked(int position, List<MediaVM> mediasVM) {
-        SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance(mediasVM, position);
+        SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance(new ArrayList<>(mediasVM), position);
 
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
         newFragment.show(ft, SlideshowDialogFragment.TAG);

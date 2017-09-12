@@ -36,7 +36,9 @@ public class SlideshowDialogFragment extends DialogFragment {
     private TextView lblCount, lblTitle, lblDate;
     private int selectedPosition = 0;
 
-    private ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener() {
+    private ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
         @Override
         public void onPageSelected(int position) {
@@ -44,14 +46,7 @@ public class SlideshowDialogFragment extends DialogFragment {
         }
 
         @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0) {
-
-        }
+        public void onPageScrollStateChanged(int state) { }
     };
 
     static SlideshowDialogFragment newInstance(List<MediaVM> medias, int position) {
@@ -85,9 +80,9 @@ public class SlideshowDialogFragment extends DialogFragment {
 
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
-        viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
         setCurrentItem(selectedPosition);
+        viewPager.addOnPageChangeListener(mPageChangeListener);
 
         return v;
     }
@@ -107,12 +102,10 @@ public class SlideshowDialogFragment extends DialogFragment {
 
 
     //	adapter
-    public class MyViewPagerAdapter extends PagerAdapter {
+    private class MyViewPagerAdapter extends PagerAdapter {
 
         private LayoutInflater layoutInflater;
 
-        public MyViewPagerAdapter() {
-        }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
@@ -143,7 +136,7 @@ public class SlideshowDialogFragment extends DialogFragment {
 
         @Override
         public boolean isViewFromObject(View view, Object obj) {
-            return view == ((View) obj);
+            return view == obj;
         }
 
 

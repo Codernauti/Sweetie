@@ -15,7 +15,6 @@ import com.sweetcompany.sweetie.calendar.CalendarPresenter;
 import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.firebase.FirebaseMapController;
-import com.sweetcompany.sweetie.folders.FoldersFragment;
 import com.sweetcompany.sweetie.actions.ActionsFragment;
 import com.sweetcompany.sweetie.map.MapContract;
 import com.sweetcompany.sweetie.map.MapPresenter;
@@ -122,6 +121,4 @@ public class DashboardPagerAdapter extends FragmentPagerAdapter {
         }
         return null;
     }
-
-
 }

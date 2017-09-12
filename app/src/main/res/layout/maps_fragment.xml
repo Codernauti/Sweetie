@@ -10,10 +10,15 @@
     <!--GoogleMap fragment-->
     <fragment
         class="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/map_gallery_fragment"
+        android:id="@+id/map_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"/>
+
+    <!--<com.google.android.gms.maps.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
 
     <LinearLayout
         android:layout_width="match_parent"

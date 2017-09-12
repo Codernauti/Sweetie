@@ -1,6 +1,8 @@
 package com.sweetcompany.sweetie.firebase;
 
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -62,6 +64,7 @@ public class FirebaseMapController {
     }
 
     public void attachNetworkDatabase() {
+        Log.d(TAG, "attachDatabase");
 
         // Galleries
 
@@ -150,6 +153,8 @@ public class FirebaseMapController {
     }
 
     public void detachNetworkDatabase() {
+        Log.d(TAG, "detachDatabase");
+
         if (mGeogiftsEventListener != null) {
             mGeogiftsDbReference.removeEventListener(mGeogiftsEventListener);
         }

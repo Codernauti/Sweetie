@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.sweetcompany.sweetie.couple.CoupleActivity;
@@ -32,7 +34,7 @@ import com.sweetcompany.sweetie.utils.Utility;
  */
 public class BaseActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
-        SharedPreferences.OnSharedPreferenceChangeListener {
+        SharedPreferences.OnSharedPreferenceChangeListener, GoogleApiClient.ConnectionCallbacks {
 
     private static final String BASE_TAG = "BaseActivity";
 
@@ -61,7 +63,9 @@ public class BaseActivity extends AppCompatActivity implements
         /* Setup the Google API object to allow Google+ logins */
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this /* OnConnectionFailedListener */)
+                .addConnectionCallbacks(this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .addApi(LocationServices.API)
                 .build();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -184,6 +188,16 @@ public class BaseActivity extends AppCompatActivity implements
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(BASE_TAG, "onConnectionFailed:" + connectionResult);
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        // nothing, for Dashboard
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
 
 

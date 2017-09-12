@@ -2,6 +2,7 @@ package com.sweetcompany.sweetie;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -85,7 +86,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
     protected void onResume() {
         super.onResume();
         mActionsController.attachNetworkDatabase();
-        mMapController.attachNetworkDatabase();
+        //mMapController.attachNetworkDatabase();
     }
 
     @Override
@@ -94,7 +95,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         // TODO: clean up adapter?
         mActionsController.detachNetworkDatabase();
         mCalendarController.detachListener();
-        mMapController.detachNetworkDatabase();
+        //mMapController.detachNetworkDatabase();
     }
 
     @Override
@@ -152,5 +153,11 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
     public void onBackPressed() {
         //  super.onBackPressed();
         moveTaskToBack(true);
+    }
+
+    // GoogleApi
+
+    public void attachMapDatabase() {
+        mMapController.attachNetworkDatabase();
     }
 }

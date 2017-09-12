@@ -127,7 +127,6 @@ public class GeofenceTrasitionService extends IntentService {
         pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT
                 | PendingIntent.FLAG_ONE_SHOT);
 
-        replyAction = new android.support.v7.app.NotificationCompat.Action(R.drawable.action_gift_icon, "Open", pendingIntent);
 
         // Creating and sending Notification
         Notification notification= new android.support.v7.app.NotificationCompat.Builder(this)
@@ -135,7 +134,6 @@ public class GeofenceTrasitionService extends IntentService {
                 .setContentTitle(msg)
                 .setContentText(getString(R.string.open_geogift))
                 .setColor(ContextCompat.getColor(this, R.color.rosa_sweetie))
-                .addAction(replyAction)
                 .setContentIntent(pendingIntent)
                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_SOUND)
                 .setAutoCancel(true)

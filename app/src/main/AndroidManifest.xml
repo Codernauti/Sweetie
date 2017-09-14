@@ -32,6 +32,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".login.LoginActivity"
+            android:theme="@style/ChatTheme" />
+
         <activity android:name=".DashboardActivity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme">
@@ -44,7 +47,11 @@
             android:theme="@style/ChatTheme" />
 
         <activity android:name=".pairing.PairingActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DashboardActivity"/>
+        </activity>
 
         <!--android:windowSoftInputMode="adjustNothing"-->
         <activity android:name=".chat.ChatActivity"

@@ -5,17 +5,7 @@ import android.net.Uri;
 
 interface RegisterContract {
 
-    // StepOne
-    interface LoginView {
-        void setPresenter(LoginPresenter presenter);
-        void setProgressBarVisible(boolean b);
-    }
-
-    interface LoginPresenter {
-        void attachUserCheckListener(String key);
-    }
-
-    // StepTwo
+    // SetInfoFragment
     interface RegisterView {
         void setPresenter(RegisterPresenter presenter);
         void showNextScreen();

@@ -12,7 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.sweetcompany.sweetie.chat.MessagesMonitorService;
+import com.sweetcompany.sweetie.firebase.FirebaseSettingsController;
+import com.sweetcompany.sweetie.firebase.FirebaseUserController;
 import com.sweetcompany.sweetie.geogift.GeogiftDoneActivity;
+import com.sweetcompany.sweetie.login.LoginActivity;
 import com.sweetcompany.sweetie.registration.RegisterActivity;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
@@ -25,13 +28,10 @@ public class MainActivity extends AppCompatActivity{
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        String username = Utility.getStringPreference(this, SharedPrefKeys.USERNAME);
+        boolean registerUser = Utility.getBooleanPreference(this, SharedPrefKeys.REGISTERED_USER);
 
-        if (user == null || username.equals("error")) {
-            // user log out
-            startActivity(new Intent(this, RegisterActivity.class));
-
-        } else { // User logged
+        if (user != null && registerUser) {
+            // user already logged and register
             checkOptions();
 
             if (Utility.getBooleanPreference(this, SharedPrefKeys.Options.GEOGIFT_ENABLED)) {
@@ -42,7 +42,10 @@ public class MainActivity extends AppCompatActivity{
             startService(new Intent(this, UserMonitorService.class));
             startActivity(new Intent(this, DashboardActivity.class));
         }
-
+        else {
+            // user not authenticated OR he sign out (shared pref clear)
+            startActivity(new Intent(this, LoginActivity.class));
+        }
         finish();
     }
 

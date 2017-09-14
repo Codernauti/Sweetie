@@ -1,4 +1,4 @@
-package com.sweetcompany.sweetie.registration;
+package com.sweetcompany.sweetie.login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,24 +34,24 @@ import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 // TODO: manage the GoogleApiClient into RegisterActivity
-public class StepOne extends Fragment implements RegisterContract.LoginView,
-        View.OnClickListener,
-        GoogleApiClient.OnConnectionFailedListener{
+public class LoginFragment extends Fragment implements LoginContract.LoginView, View.OnClickListener,
+        GoogleApiClient.OnConnectionFailedListener {
 
-    static final String TAG = "StepOne";
+    static final String TAG = "LoginFragment";
+
     private static final int RC_SIGN_IN = 9001;
 
     private Context mContext;
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
 
-    private RegisterContract.LoginPresenter mLoginPresenter;
+    private LoginContract.LoginPresenter mLoginPresenter;
 
     private SignInButton mRegisterGoogleButton;
     private ProgressBar mProgressBar;
 
-    public static StepOne newInstance(Bundle bundle) {
-        StepOne newFragment = new StepOne();
+    public static LoginFragment newInstance(Bundle bundle) {
+        LoginFragment newFragment = new LoginFragment();
         newFragment.setArguments(bundle);
         return newFragment;
     }
@@ -67,7 +67,7 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(), this)
+                .enableAutoManage(getActivity(), 16, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
     }
@@ -76,7 +76,7 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.register_step_one, container, false);
+        View root = inflater.inflate(R.layout.login_fragment, container, false);
         mContext = getContext();
 
         // Assign fields
@@ -96,6 +96,13 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
         mRegisterGoogleButton.setOnClickListener(this);
 
         return root;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
     }
 
     @Override
@@ -174,7 +181,7 @@ public class StepOne extends Fragment implements RegisterContract.LoginView,
 
 
     @Override
-    public void setPresenter(RegisterContract.LoginPresenter loginPresenter) {
+    public void setPresenter(LoginContract.LoginPresenter loginPresenter) {
         mLoginPresenter = loginPresenter;
     }
 

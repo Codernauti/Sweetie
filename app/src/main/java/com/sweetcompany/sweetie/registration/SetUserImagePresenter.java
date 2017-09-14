@@ -6,7 +6,7 @@ import android.net.Uri;
 import com.sweetcompany.sweetie.firebase.FirebaseSettingsController;
 import com.sweetcompany.sweetie.model.UserFB;
 
-
+@Deprecated
 class SetUserImagePresenter implements RegisterContract.SetUserImagePresenter,
         FirebaseSettingsController.SettingsControllerListener {
 

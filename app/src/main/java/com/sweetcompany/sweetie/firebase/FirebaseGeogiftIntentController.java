@@ -26,8 +26,8 @@ public class FirebaseGeogiftIntentController {
         mUserUid = userUid;
     }
 
-    public void setTriggeredGeogift(String actionKey, String geogiftKey, String dateTime) {
-        mActionsDbReference.child(actionKey + "/" + "isTriggered").setValue(true);
+    public void setTriggeredGeogift(String geogiftKey, String dateTime) {
+        mActionsDbReference.child(geogiftKey + "/" + "isTriggered").setValue(true);
 
         Map<String, Object> updates = new HashMap<>();
         updates.put(geogiftKey + "/" + Constraints.Geogifts.IS_TRIGGERED, true);

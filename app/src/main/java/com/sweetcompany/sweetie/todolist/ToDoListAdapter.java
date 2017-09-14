@@ -12,9 +12,6 @@ import com.sweetcompany.sweetie.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by lucas on 09/08/2017.
- */
 
 public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListViewHolder> implements CheckEntryViewHolder.OnCheckEntryViewHolderClickListener, ButtonViewHolder.OnButtonViewHolderClickListener{
 

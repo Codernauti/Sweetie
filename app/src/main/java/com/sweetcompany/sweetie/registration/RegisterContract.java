@@ -2,9 +2,6 @@ package com.sweetcompany.sweetie.registration;
 
 import android.net.Uri;
 
-/**
- * Created by lucas on 16/05/2017.
- */
 
 interface RegisterContract {
 

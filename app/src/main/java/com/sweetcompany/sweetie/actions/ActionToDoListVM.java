@@ -7,9 +7,6 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ActionFB;
 import com.sweetcompany.sweetie.todolist.ToDoListActivity;
 
-/**
- * Created by lucas on 04/08/2017.
- */
 
 class ActionToDoListVM extends ActionVM{
     ActionToDoListVM(String title, String description, String lastUpdateDate, int type, String childKey,

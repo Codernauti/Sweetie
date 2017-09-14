@@ -18,9 +18,6 @@ import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.List;
 
-/**
- * Created by lucas on 04/08/2017.
- */
 
 public class ActionNewToDoListFragment extends DialogFragment implements DialogView {
     public static final String TAG = "ActionNewToDoListFragment";

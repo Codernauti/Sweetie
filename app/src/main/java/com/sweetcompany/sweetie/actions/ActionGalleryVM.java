@@ -7,9 +7,6 @@ import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ActionFB;
 
-/**
- * Created by Federico Allegro on 24/05/2017.
- */
 
 //TODO complete class
 class ActionGalleryVM extends ActionVM {

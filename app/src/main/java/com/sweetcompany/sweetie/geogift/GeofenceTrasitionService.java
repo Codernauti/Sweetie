@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
@@ -29,6 +30,7 @@ public class GeofenceTrasitionService extends IntentService {
     public static final int GEOFENCE_NOTIFICATION_ID = 4040;
     public static final String GEOGIFT_ACTION_KEY = "ACTION_KEY";
     public static final String GEOGIFT_KEY = "GEOGIFT_KEY";
+    public static final String USER_CREATOR_UID = "USER_CREATOR_UID";
 
     private FirebaseGeogiftIntentController mController = null;
 
@@ -68,22 +70,30 @@ public class GeofenceTrasitionService extends IntentService {
             Log.d(TAG, "geofence triggered!");
 
             //Set geogift triggered
-            String actionKey = intent.getStringExtra(GEOGIFT_ACTION_KEY);
             String geogiftKey = intent.getStringExtra(GEOGIFT_KEY);
-            String dateTime = DataMaker.get_UTC_DateTime();
+            String userCreatorUid = intent.getStringExtra(USER_CREATOR_UID);
+            String partnerUid = Utility.getStringPreference(this, SharedPrefKeys.PARTNER_UID);
 
-            // Get the geofence that were triggered
-            List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+            if(userCreatorUid.equals(partnerUid))
+            {
 
-            String geofenceTransitionDetails = getGeofenceTrasitionDetails(geoFenceTransition, triggeringGeofences );
+                String dateTime = DataMaker.get_UTC_DateTime();
 
-            // Send notification details as a String
-            //sendNotification( geofenceTransitionDetails );
+                /*// Get the geofence that were triggered
+                List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+                String geofenceTransitionDetails = getGeofenceTrasitionDetails(geoFenceTransition, triggeringGeofences);
+                // Send notification details as a String
+                //sendNotification( geofenceTransitionDetails );
+                */
+
+                //TODO
+                String msg = "Geogift finded!";
+                sendNotification(msg, geogiftKey);
+
+                mController.setTriggeredGeogift(geogiftKey, dateTime);
+            }
             //TODO
-            String msg = "Geogift finded!";
-            sendNotification( msg, geogiftKey );
-
-            mController.setTriggeredGeogift(actionKey, geogiftKey, dateTime);
+            // else delete all geogift
         }
     }
 

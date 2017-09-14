@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by lucas on 04/08/2017.
- */
 
 public class FirebaseToDoListController extends FirebaseGeneralActionController {
 

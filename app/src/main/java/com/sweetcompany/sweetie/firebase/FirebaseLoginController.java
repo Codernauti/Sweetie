@@ -10,9 +10,6 @@ import com.sweetcompany.sweetie.model.UserFB;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by lucas on 27/05/2017.
- */
 
 public class FirebaseLoginController{
     private static final String TAG = "LoginController";

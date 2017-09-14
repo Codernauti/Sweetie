@@ -4,9 +4,6 @@ package com.sweetcompany.sweetie.registration;
 import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.model.UserFB;
 
-/**
- * Created by lucas on 22/05/2017.
- */
 
 public class RegisterPresenter implements RegisterContract.RegisterPresenter,
         FirebaseRegisterController.Listener {

@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * Created by lucas on 24/05/2017.
- */
 
 public class FirebaseRegisterController {
     private static final String TAG = "RegisterController";

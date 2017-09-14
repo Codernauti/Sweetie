@@ -2,9 +2,6 @@ package com.sweetcompany.sweetie.model;
 
 import com.google.firebase.database.Exclude;
 
-/**
- * Created by lucas on 04/08/2017.
- */
 
 public class CheckEntryFB {
     @Exclude

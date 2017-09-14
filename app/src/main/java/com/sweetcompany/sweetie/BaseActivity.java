@@ -1,7 +1,10 @@
 package com.sweetcompany.sweetie;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -106,6 +109,10 @@ public class BaseActivity extends AppCompatActivity implements
         };
         mFirebaseAuth.addAuthStateListener(mAuthListener);
         //}
+
+        if (!isConnected()) {
+            Toast.makeText(this, "No connection detect", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void signOutAutomatically() {
@@ -161,6 +168,14 @@ public class BaseActivity extends AppCompatActivity implements
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    private boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
     @Override

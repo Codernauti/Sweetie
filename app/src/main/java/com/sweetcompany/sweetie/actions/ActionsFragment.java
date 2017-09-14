@@ -270,7 +270,6 @@ public class ActionsFragment extends Fragment implements ActionsContract.View, A
         }
 
         mActionAdapter.updateActionsList(actionsVM);
-        mActionsListView.scrollToPosition(mActionAdapter.getItemCount());
     }
 
     /*// Verify user's response of the permission requested

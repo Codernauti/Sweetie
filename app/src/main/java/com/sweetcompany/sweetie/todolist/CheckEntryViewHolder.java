@@ -17,9 +17,6 @@ import android.widget.TextView;
 import com.sweetcompany.sweetie.R;
 
 
-/**
- * Created by lucas on 12/08/2017.
- */
 
 public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnFocusChangeListener, View.OnClickListener, View.OnKeyListener{
     private CheckBox mCheckBox;

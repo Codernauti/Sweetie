@@ -17,9 +17,6 @@ import com.bumptech.glide.Glide;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ActionFB;
 
-/**
- * Created by Eduard on 01-Aug-17.
- */
 
 class ActionsDiaryAdapter extends ArrayAdapter<ActionDiaryVM> {
 

@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
-/**
- * Created by lucas on 22/05/2017.
- */
 
 public class Utility {
 

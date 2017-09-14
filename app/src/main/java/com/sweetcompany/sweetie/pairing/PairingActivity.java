@@ -14,9 +14,6 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
-/**
- * Created by Eduard on 29-Jun-17.
- */
 
 public class PairingActivity extends BaseActivity
         implements FirebasePairingController.NewPairingListener {

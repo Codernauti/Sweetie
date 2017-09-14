@@ -19,9 +19,6 @@ import com.sweetcompany.sweetie.model.UserFB;
 
 import java.util.HashMap;
 
-/**
- * Created by Eduard on 28-Aug-17.
- */
 
 public class FirebaseSettingsController {
 

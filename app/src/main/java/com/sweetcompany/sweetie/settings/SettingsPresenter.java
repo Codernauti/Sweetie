@@ -5,9 +5,6 @@ import android.net.Uri;
 import com.sweetcompany.sweetie.firebase.FirebaseSettingsController;
 import com.sweetcompany.sweetie.model.UserFB;
 
-/**
- * Created by Eduard on 28-Aug-17.
- */
 
 public class SettingsPresenter implements SettingsContract.Presenter,
         FirebaseSettingsController.SettingsControllerListener {

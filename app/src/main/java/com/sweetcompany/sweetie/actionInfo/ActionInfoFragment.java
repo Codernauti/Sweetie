@@ -34,9 +34,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by Eduard on 05-Sep-17.
- */
 
 public class ActionInfoFragment extends Fragment implements ActionInfoContract.View,
         View.OnClickListener {

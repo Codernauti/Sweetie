@@ -7,9 +7,6 @@ import com.sweetcompany.sweetie.chat.ChatActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ActionFB;
 
-/**
- * Created by Eduard on 10/05/2017.
- */
 
 // TODO complete class
 class ActionChatVM extends ActionVM {

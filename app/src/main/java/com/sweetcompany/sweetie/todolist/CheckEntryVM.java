@@ -6,9 +6,6 @@ import android.widget.CheckBox;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.CheckEntryFB;
 
-/**
- * Created by lucas on 04/08/2017.
- */
 
 public class CheckEntryVM implements ToDoListItemVM{
     static final boolean THE_MAIN_USER = true;

@@ -10,9 +10,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-/**
- * Created by Eduard on 30-Aug-17.
- */
 
 class ImageUploader {
 

@@ -9,9 +9,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.UserFB;
 
-/**
- * Created by Eduard on 30-Aug-17.
- */
 
 public class FirebaseUserController {
 

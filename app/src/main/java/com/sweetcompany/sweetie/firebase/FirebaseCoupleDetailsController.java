@@ -21,9 +21,6 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Eduard on 20-Jul-17.
- */
 
 public class FirebaseCoupleDetailsController {
 

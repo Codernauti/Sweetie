@@ -15,9 +15,6 @@ import com.sweetcompany.sweetie.actionInfo.ActionInfoPresenter;
 import com.sweetcompany.sweetie.firebase.FirebaseActionInfoController;
 import com.sweetcompany.sweetie.model.GalleryFB;
 
-/**
- * Created by Eduard on 04-Sep-17.
- */
 
 public class GalleryInfoActivity extends BaseActivity {
 

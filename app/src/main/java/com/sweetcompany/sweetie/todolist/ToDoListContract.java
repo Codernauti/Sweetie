@@ -4,9 +4,6 @@ import com.sweetcompany.sweetie.model.CheckEntryFB;
 
 import java.util.List;
 
-/**
- * Created by lucas on 04/08/2017.
- */
 
 public interface ToDoListContract {
     interface View {

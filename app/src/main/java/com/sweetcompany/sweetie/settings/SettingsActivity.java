@@ -7,9 +7,6 @@ import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseSettingsController;
 
-/**
- * Created by Eduard on 28-Aug-17.
- */
 
 public class SettingsActivity extends BaseActivity {
 

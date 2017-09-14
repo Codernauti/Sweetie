@@ -21,9 +21,6 @@ import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.ArrayList;
 
-/**
- * Created by Eduard on 01-Sep-17.
- */
 
 public class MessagesMonitorService extends Service implements FirebaseMsgNotificationController.MsgNotificationControllerListener {
 

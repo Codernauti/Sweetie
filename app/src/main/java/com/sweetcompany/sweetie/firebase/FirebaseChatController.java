@@ -25,9 +25,6 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Eduard on 21-May-17.
- */
 
 public class FirebaseChatController extends FirebaseGeneralActionController {
 

@@ -22,9 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by lucas on 30/05/2017.
- */
 
 public class FirebasePairingController {
     private static final String TAG = "FbPairingController";

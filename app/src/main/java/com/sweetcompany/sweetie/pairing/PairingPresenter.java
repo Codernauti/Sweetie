@@ -8,9 +8,6 @@ import com.sweetcompany.sweetie.model.UserFB;
 
 import java.util.List;
 
-/**
- * Created by Eduard on 29-Jun-17.
- */
 
 class PairingPresenter implements PairingContract.Presenter,
         FirebasePairingController.PairingControllerListener {

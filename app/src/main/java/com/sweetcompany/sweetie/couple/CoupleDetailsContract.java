@@ -4,9 +4,6 @@ import android.net.Uri;
 
 import java.util.Date;
 
-/**
- * Created by Eduard on 20-Jul-17.
- */
 
 public interface CoupleDetailsContract {
 

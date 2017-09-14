@@ -5,9 +5,6 @@ import com.sweetcompany.sweetie.chat.MessageVM;
 import com.sweetcompany.sweetie.firebase.FirebaseChatDiaryController;
 import com.sweetcompany.sweetie.model.MessageFB;
 
-/**
- * Created by Eduard on 22-Aug-17.
- */
 
 class ChatDiaryPresenter implements ChatDiaryContract.Presenter,
         FirebaseChatDiaryController.Listener {

@@ -10,9 +10,6 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Eduard on 10/05/2017.
- */
 
 public class ActionsPresenter implements ActionsContract.Presenter,
                                          FirebaseActionsController.OnFirebaseActionsDataChange {

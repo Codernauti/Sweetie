@@ -21,9 +21,6 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
 
-/**
- * Created by lucas on 04/08/2017.
- */
 
 public class ToDoListFragment extends Fragment implements  ToDoListContract.View,
         ToDoListAdapter.ToDoListAdapterListener {

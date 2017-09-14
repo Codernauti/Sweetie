@@ -27,8 +27,8 @@
         android:title="Test Geogift"
         app:showAsAction="never" />-->
 
-    <item android:id="@+id/menu_print_sp"
+    <!--<item android:id="@+id/menu_print_sp"
         android:title="Print log sp"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 
 </menu>

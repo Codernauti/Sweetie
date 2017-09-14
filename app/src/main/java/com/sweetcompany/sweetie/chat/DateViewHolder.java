@@ -5,9 +5,6 @@ import android.widget.TextView;
 
 import com.sweetcompany.sweetie.R;
 
-/**
- * Created by Eduard on 21-Aug-17.
- */
 
 class DateViewHolder extends ChatViewHolder {
 

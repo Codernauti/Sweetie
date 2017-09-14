@@ -17,9 +17,6 @@ import com.sweetcompany.sweetie.utils.Utility;
 
 import java.util.List;
 
-/**
- * Created by Eduard on 13-May-17.
- */
 
 // TODO: decide if use DialogFragment of this class or go to ChatsActivity
 public class ActionNewChatFragment extends DialogFragment implements ActionsContract.DialogView {

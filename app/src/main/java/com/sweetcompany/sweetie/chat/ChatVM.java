@@ -1,8 +1,5 @@
 package com.sweetcompany.sweetie.chat;
 
-/**
- * Created by Eduard on 26/05/2017.
- */
 
 class ChatVM {
     private String mKey;

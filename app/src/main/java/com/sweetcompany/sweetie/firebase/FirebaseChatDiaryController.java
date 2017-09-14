@@ -12,9 +12,6 @@ import com.sweetcompany.sweetie.model.MessageFB;
 
 import java.util.HashMap;
 
-/**
- * Created by Eduard on 22-Aug-17.
- */
 
 public class FirebaseChatDiaryController {
 

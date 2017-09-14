@@ -2,9 +2,6 @@ package com.sweetcompany.sweetie.model;
 
 import java.util.Map;
 
-/**
- * Created by Eduard on 11-Jul-17.
- */
 
 public class CoupleInfoFB {
 

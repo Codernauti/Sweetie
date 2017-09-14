@@ -14,9 +14,6 @@ import com.sweetcompany.sweetie.actionInfo.ActionInfoPresenter;
 import com.sweetcompany.sweetie.firebase.FirebaseActionInfoController;
 import com.sweetcompany.sweetie.model.ToDoListFB;
 
-/**
- * Created by Eduard on 05-Sep-17.
- */
 
 public class ToDoListInfoActivity extends BaseActivity {
 

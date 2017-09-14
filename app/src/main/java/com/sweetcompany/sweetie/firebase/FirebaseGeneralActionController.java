@@ -14,9 +14,6 @@ import com.sweetcompany.sweetie.model.ActionNotification;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Eduard on 05-Sep-17.
- */
 
 abstract class FirebaseGeneralActionController {
 

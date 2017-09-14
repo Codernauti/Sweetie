@@ -7,9 +7,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sweetcompany.sweetie.model.MsgNotification;
 
-/**
- * Created by Eduard on 01-Sep-17.
- */
 
 public class FirebaseMsgNotificationController {
 

@@ -5,9 +5,6 @@ import com.sweetcompany.sweetie.model.CheckEntryFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
 
-/**
- * Created by lucas on 04/08/2017.
- */
 
 class ToDoListPresenter implements ToDoListContract.Presenter, FirebaseToDoListController.Listener {
 

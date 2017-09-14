@@ -3,9 +3,6 @@ package com.sweetcompany.sweetie.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Eduard on 04-Jul-17.
- */
 
 public class CoupleFB {
 

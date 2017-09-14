@@ -1,8 +1,5 @@
 package com.sweetcompany.sweetie.utils;
 
-/**
- * Created by Eduard on 26-Aug-17.
- */
 
 // Key strings for get a shared preference
 public interface SharedPrefKeys {

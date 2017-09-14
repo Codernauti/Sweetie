@@ -13,9 +13,6 @@ import com.sweetcompany.sweetie.firebase.FirebaseToDoListController;
 import com.sweetcompany.sweetie.utils.Utility;
 
 
-/**
- * Created by lucas on 04/08/2017.
- */
 
 public class ToDoListActivity extends BaseActivity {
     private static final String TAG = "ToDoListActivity";

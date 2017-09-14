@@ -8,9 +8,6 @@ import android.widget.TextView;
 
 import com.sweetcompany.sweetie.R;
 
-/**
- * Created by lucas on 06/09/2017.
- */
 
 class ButtonViewHolder extends ToDoListViewHolder implements View.OnClickListener {
 

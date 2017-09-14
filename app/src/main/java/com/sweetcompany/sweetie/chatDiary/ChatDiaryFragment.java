@@ -24,9 +24,6 @@ import com.sweetcompany.sweetie.chat.TextPhotoMessageVM;
 
 import java.util.List;
 
-/**
- * Created by Eduard on 22-Aug-17.
- */
 
 public class ChatDiaryFragment extends Fragment implements ChatDiaryContract.View,
     ChatAdapter.ChatAdapterListener, ActionMode.Callback {

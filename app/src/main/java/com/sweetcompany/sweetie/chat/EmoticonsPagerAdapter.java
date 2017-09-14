@@ -22,9 +22,6 @@ import io.github.rockerhieu.emojicon.EmojiconPage;
 import io.github.rockerhieu.emojicon.EmojiconsView;
 import io.github.rockerhieu.emojicon.emoji.Emojicon;
 
-/**
- * Created by Eduard on 26-Jul-17.
- */
 
 class EmoticonsPagerAdapter extends PagerAdapter implements
         EmojiconGridFragment.OnEmojiconClickedListener{

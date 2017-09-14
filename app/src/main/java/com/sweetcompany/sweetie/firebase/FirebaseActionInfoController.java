@@ -22,9 +22,6 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.HashMap;
 
-/**
- * Created by Eduard on 04-Sep-17.
- */
 
 public class FirebaseActionInfoController<AT> {
 

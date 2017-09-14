@@ -3,9 +3,6 @@ package com.sweetcompany.sweetie.registration;
 import com.sweetcompany.sweetie.firebase.FirebaseLoginController;
 import com.sweetcompany.sweetie.model.UserFB;
 
-/**
- * Created by Eduard on 13-Jul-17.
- */
 
 public class LoginPresenter implements RegisterContract.LoginPresenter,
         FirebaseLoginController.FbLoginControllerListener{

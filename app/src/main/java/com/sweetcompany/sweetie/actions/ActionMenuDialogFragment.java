@@ -17,9 +17,6 @@ import android.widget.Toast;
 import com.sweetcompany.sweetie.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-/**
- * Created by Eduard on 30-Aug-17.
- */
 
 public class ActionMenuDialogFragment extends DialogFragment implements ActionsContract.DialogView {
 

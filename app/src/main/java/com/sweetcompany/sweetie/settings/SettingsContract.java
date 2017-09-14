@@ -2,9 +2,6 @@ package com.sweetcompany.sweetie.settings;
 
 import android.net.Uri;
 
-/**
- * Created by Eduard on 28-Aug-17.
- */
 
 interface SettingsContract {
 

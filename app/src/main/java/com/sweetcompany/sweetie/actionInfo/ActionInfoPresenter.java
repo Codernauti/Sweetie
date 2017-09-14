@@ -4,9 +4,6 @@ import android.net.Uri;
 
 import com.sweetcompany.sweetie.firebase.FirebaseActionInfoController;
 
-/**
- * Created by Eduard on 05-Sep-17.
- */
 
 public class ActionInfoPresenter<AFB extends ActionInfoVM> implements ActionInfoContract.Presenter, FirebaseActionInfoController.Listener<AFB> {
 

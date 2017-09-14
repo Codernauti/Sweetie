@@ -2,9 +2,6 @@ package com.sweetcompany.sweetie.model;
 
 import com.google.firebase.database.Exclude;
 
-/**
- * Created by Eduard on 03-Jul-17.
- */
 
 public class PairingRequestFB {
 

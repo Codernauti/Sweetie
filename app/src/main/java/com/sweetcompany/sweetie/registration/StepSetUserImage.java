@@ -24,9 +24,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by Eduard on 07-Sep-17.
- */
 
 public class StepSetUserImage extends Fragment implements RegisterContract.SetUserImageView,
         View.OnClickListener {

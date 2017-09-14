@@ -12,10 +12,6 @@ import com.sweetcompany.sweetie.model.UserFB;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
-/**
- * Created by Eduard on 15-Jul-17.
- */
-
 public class UserMonitorService extends Service implements FirebaseUserController.UserControllerListener {
 
     private static final String TAG = "UserMonitorService";

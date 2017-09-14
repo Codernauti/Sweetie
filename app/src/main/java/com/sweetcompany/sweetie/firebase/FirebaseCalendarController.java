@@ -13,9 +13,6 @@ import com.sweetcompany.sweetie.model.ActionDiaryFB;
 
 import java.util.Map;
 
-/**
- * Created by Eduard on 01-Aug-17.
- */
 
 public class FirebaseCalendarController {
 

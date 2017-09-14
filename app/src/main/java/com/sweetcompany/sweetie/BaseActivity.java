@@ -21,9 +21,6 @@ import com.sweetcompany.sweetie.couple.CoupleActivity;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
-/**
- * Created by Eduard on 26-Aug-17.
- */
 
 /**
  *  BaseActivity class for every activity of app, her responsibilities are:

@@ -4,9 +4,6 @@ import com.google.firebase.database.Exclude;
 
 import java.util.Map;
 
-/**
- * Created by Eduard on 04-Sep-17.
- */
 
 public class ActionNotification {
 

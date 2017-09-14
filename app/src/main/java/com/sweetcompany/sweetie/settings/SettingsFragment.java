@@ -34,9 +34,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by Eduard on 28-Aug-17.
- */
 
 public class SettingsFragment extends Fragment implements SettingsContract.View,
         View.OnClickListener {

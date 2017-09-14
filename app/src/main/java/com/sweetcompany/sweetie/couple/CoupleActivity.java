@@ -15,9 +15,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.DashboardActivity;
 import com.sweetcompany.sweetie.R;
 
-/**
- * Created by Eduard on 17-Jul-17.
- */
 // TODO: extract UI for this activity
 public class CoupleActivity extends AppCompatActivity {
 

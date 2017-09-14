@@ -6,9 +6,6 @@ import android.net.Uri;
 import com.sweetcompany.sweetie.firebase.FirebaseSettingsController;
 import com.sweetcompany.sweetie.model.UserFB;
 
-/**
- * Created by Eduard on 07-Sep-17.
- */
 
 class SetUserImagePresenter implements RegisterContract.SetUserImagePresenter,
         FirebaseSettingsController.SettingsControllerListener {

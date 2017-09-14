@@ -1,8 +1,5 @@
 package com.sweetcompany.sweetie.pairing;
 
-/**
- * Created by Eduard on 29-Jun-17.
- */
 
 interface PairingContract {
 

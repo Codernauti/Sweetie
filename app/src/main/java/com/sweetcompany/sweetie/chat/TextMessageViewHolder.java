@@ -8,9 +8,6 @@ import com.sweetcompany.sweetie.R;
 
 import io.github.rockerhieu.emojicon.EmojiconTextView;
 
-/**
- * Created by Eduard on 21-May-17.
- */
 
 class TextMessageViewHolder extends MessageViewHolder {
     private EmojiconTextView mTextMessage;

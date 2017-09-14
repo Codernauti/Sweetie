@@ -5,9 +5,6 @@ import com.sweetcompany.sweetie.calendar.ActionDiaryVM;
 
 import java.util.Map;
 
-/**
- * Created by Eduard on 01-Aug-17.
- */
 
 public class ActionDiaryFB implements ActionDiaryVM {
 

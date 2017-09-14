@@ -11,9 +11,6 @@ import com.sweetcompany.sweetie.utils.Utility;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Eduard on 20-Jul-17.
- */
 
 public class CoupleDetailsPresenter implements CoupleDetailsContract.Presenter,
         FirebaseCoupleDetailsController.CoupleDetailsControllerListener {

@@ -2,9 +2,6 @@ package com.sweetcompany.sweetie.actionInfo;
 
 import android.net.Uri;
 
-/**
- * Created by Eduard on 05-Sep-17.
- */
 
 public interface ActionInfoContract {
 

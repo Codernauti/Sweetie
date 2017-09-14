@@ -11,9 +11,6 @@ import com.sweetcompany.sweetie.firebase.FirebaseCoupleDetailsController;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
-/**
- * Created by Eduard on 20-Jul-17.
- */
 
 public class CoupleDetailsActivity extends BaseActivity {
 

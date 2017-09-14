@@ -1,8 +1,5 @@
 package com.sweetcompany.sweetie.firebase;
 
-/**
- * Created by Eduard on 09-Jul-17.
- */
 
 interface Constraints {
 

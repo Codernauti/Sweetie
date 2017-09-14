@@ -1,15 +1,10 @@
 package com.sweetcompany.sweetie.calendar;
 
-import android.util.Log;
-
 import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.model.ActionDiaryFB;
 
 import java.util.Map;
 
-/**
- * Created by Eduard on 01-Aug-17.
- */
 
 public class CalendarPresenter implements CalendarContract.Presenter,
         FirebaseCalendarController.CalendarControllerListener {

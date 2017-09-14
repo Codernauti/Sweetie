@@ -10,9 +10,6 @@ import android.widget.ImageView;
 
 import com.sweetcompany.sweetie.R;
 
-/**
- * Created by Eduard on 21-May-17.
- */
 
 abstract class MessageViewHolder extends ChatViewHolder implements View.OnClickListener,
         View.OnLongClickListener {

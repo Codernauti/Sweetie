@@ -4,9 +4,6 @@ import android.net.Uri;
 
 import java.util.List;
 
-/**
- * Created by Eduard on 10/05/2017.
- */
 
 public interface ActionsContract {
 

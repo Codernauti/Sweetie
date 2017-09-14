@@ -38,9 +38,6 @@ import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by Eduard on 20-Jul-17.
- */
 
 public class CoupleDetailsFragment extends Fragment implements CoupleDetailsContract.View,
         View.OnClickListener, DatePickerDialog.OnDateSetListener {

@@ -7,9 +7,6 @@ import com.sweetcompany.sweetie.R;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by Eduard on 21-Aug-17.
- */
 
 public class DateItemVM implements ChatItemVM {
 

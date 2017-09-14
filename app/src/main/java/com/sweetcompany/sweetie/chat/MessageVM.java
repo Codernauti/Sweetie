@@ -1,8 +1,5 @@
 package com.sweetcompany.sweetie.chat;
 
-/**
- * Created by Eduard on 18-May-17.
- */
 
 public abstract class MessageVM implements ChatItemVM {
     static final boolean THE_MAIN_USER = true;

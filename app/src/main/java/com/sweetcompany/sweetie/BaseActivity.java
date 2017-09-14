@@ -20,7 +20,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.sweetcompany.sweetie.chat.MessagesMonitorService;
 import com.sweetcompany.sweetie.couple.CoupleActivity;
+import com.sweetcompany.sweetie.registration.RegisterActivity;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
@@ -40,11 +42,10 @@ public class BaseActivity extends AppCompatActivity implements
 
     // utils fields for the correct working of all activity
     protected String mUserUid;
-    private String mUserEmail;
     protected String mCoupleUid;
     protected String mPartnerUid;
 
-    protected GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient mGoogleApiClient;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -73,10 +74,8 @@ public class BaseActivity extends AppCompatActivity implements
         // Getting utils data for all activity
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         mUserUid = sp.getString(SharedPrefKeys.USER_UID, SharedPrefKeys.DEFAULT_VALUE);
-        mUserEmail = sp.getString(SharedPrefKeys.MAIL, SharedPrefKeys.DEFAULT_VALUE);
         mCoupleUid = sp.getString(SharedPrefKeys.COUPLE_UID, SharedPrefKeys.DEFAULT_VALUE);
         mPartnerUid = sp.getString(SharedPrefKeys.PARTNER_UID, SharedPrefKeys.DEFAULT_VALUE);
-
     }
 
     @Override
@@ -96,31 +95,37 @@ public class BaseActivity extends AppCompatActivity implements
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.registerOnSharedPreferenceChangeListener(this);
 
-        // if (!(this instanceof RegisterActivity)) {
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) { // user sign out
-                    signOutAutomatically();
-                    takeUserToLoginScreenOnUnAuth();
+        if (!(this instanceof RegisterActivity)) {
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    if (user == null) { // user sign out
+                        stopServices();
+                        signOutAutomatically();
+                        takeUserToLoginScreenOnUnAuth();
+                    }
                 }
-            }
-        };
-        mFirebaseAuth.addAuthStateListener(mAuthListener);
-        //}
+            };
+            mFirebaseAuth.addAuthStateListener(mAuthListener);
+        }
 
         if (!isConnected()) {
             Toast.makeText(this, "No connection detect", Toast.LENGTH_LONG).show();
         }
     }
 
+    private void stopServices() {
+        stopService(new Intent(this, UserMonitorService.class));
+        stopService(new Intent(this, MessagesMonitorService.class));
+        stopService(new Intent(this, GeogiftMonitorService.class));
+    }
+
     private void signOutAutomatically() {
         Utility.clearSharedPreferences(BaseActivity.this);
         FirebaseAuth.getInstance().signOut();
 
-        //Auth.GoogleSignInApi.signOut(mGoogleApiClient);   generate nullpointerex if mGoogleApiClient is not ready
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient);
+        signOutFromGoogleAPIClient();
     }
 
     private void checkUserRelationshipStatus() {
@@ -183,10 +188,9 @@ public class BaseActivity extends AppCompatActivity implements
         super.onPause();
         Log.d(BASE_TAG, "onPause()");
 
-        /* Cleanup the AuthStateListener */
-        /*if (!(this instanceof RegisterActivity)) {*/
-        mFirebaseAuth.removeAuthStateListener(mAuthListener);
-        /*}*/
+        if (!(this instanceof RegisterActivity)) {
+            mFirebaseAuth.removeAuthStateListener(mAuthListener);
+        }
 
         // remove shared preferences listener
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -210,6 +214,15 @@ public class BaseActivity extends AppCompatActivity implements
     @Override
     public void onConnectionSuspended(int i) {
 
+    }
+
+    // Register
+
+    public void signOutFromGoogleAPIClient() {
+        if (mGoogleApiClient.isConnected()) {
+            //Auth.GoogleSignInApi.signOut(mGoogleApiClient);   generate nullpointerex if mGoogleApiClient is not ready
+            Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient);
+        }
     }
 
 

@@ -9,10 +9,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sweetcompany.sweetie.model.UserFB;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 
 public class FirebaseRegisterController {
     private static final String TAG = "RegisterController";
@@ -21,7 +17,7 @@ public class FirebaseRegisterController {
     private Listener mListener;
 
     public interface Listener {
-        void onUserPushed();
+        void onUserUploaded();
     }
 
     public FirebaseRegisterController() {
@@ -37,7 +33,7 @@ public class FirebaseRegisterController {
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (mListener != null) {
-                            mListener.onUserPushed();
+                            mListener.onUserUploaded();
                         }
                     }
                 });
@@ -58,7 +54,7 @@ public class FirebaseRegisterController {
                 UserFB user = dataSnapshot.getValue(UserFB.class);
                 user.setKey(key);
                 for (Listener listener : mListeners) {
-                    listener.onUserPushed(user);
+                    listener.onUserUploaded(user);
                 }
             }
 

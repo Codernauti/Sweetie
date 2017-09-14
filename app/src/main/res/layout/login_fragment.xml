@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/chat_background">
+    android:background="@null">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/step_three_toolbar"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:background="@color/colorPrimary"
+        android:elevation="4dp"
         app:title="@string/register_title"
         app:theme="@style/SweetieThemeToolbar"
         app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
@@ -19,10 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
-        >
-
-    </android.support.v7.widget.Toolbar>
+        />
 
     <ImageView
         android:id="@+id/register_app_image"
@@ -65,7 +63,7 @@
         android:padding="16dp"
         android:background="@color/white"
         android:gravity="center"
-        android:elevation="4dp"
+        android:elevation="1dp"
 
         app:layout_constraintTop_toBottomOf="@+id/register_app_name"
         app:layout_constraintStart_toStartOf="parent"

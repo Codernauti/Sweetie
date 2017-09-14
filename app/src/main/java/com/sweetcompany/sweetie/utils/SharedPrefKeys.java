@@ -18,6 +18,8 @@ public interface SharedPrefKeys {
     String PARTNER_USERNAME = "partner_username";
     String PARTNER_IMAGE_URI = "partner_image_uri";
 
+    String REGISTERED_USER = "registered_user";
+
     String USER_RELATIONSHIP_STATUS = "user_relationship_status";
     String USER_RELATIONSHIP_STATUS_CHANGED = "user_relationship_status_changed";
 

@@ -116,8 +116,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_sign_out:
-                // TODO: extract these lines of code
-                FirebaseAuth.getInstance().signOut();
+                FirebaseAuth.getInstance().signOut();   // trigger mAuthListener into BaseActivity
                 return true;
 
             case R.id.menu_search_partner:

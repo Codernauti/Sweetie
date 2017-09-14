@@ -1,18 +1,18 @@
-package com.sweetcompany.sweetie.registration;
+package com.sweetcompany.sweetie.login;
 
 import com.sweetcompany.sweetie.firebase.FirebaseLoginController;
 import com.sweetcompany.sweetie.model.UserFB;
 
 
-public class LoginPresenter implements RegisterContract.LoginPresenter,
-        FirebaseLoginController.FbLoginControllerListener{
+class LoginPresenter implements LoginContract.LoginPresenter,
+        FirebaseLoginController.FbLoginControllerListener {
 
     public static final String TAG = "RegisterPresenter";
 
     private FirebaseLoginController mFirebaseLoginController;
-    private RegisterContract.LoginView mView;
+    private LoginContract.LoginView mView;
 
-    LoginPresenter(RegisterContract.LoginView view, FirebaseLoginController loginController){
+    LoginPresenter(LoginContract.LoginView view, FirebaseLoginController loginController){
         mView = view;
         mView.setPresenter(this);
         mFirebaseLoginController = loginController;
@@ -23,7 +23,7 @@ public class LoginPresenter implements RegisterContract.LoginPresenter,
         mFirebaseLoginController.retrieveUserDataFromQuery(key);
     }
 
-    // Firebase callback
+    // Controller callback
 
     @Override
     public void onUserDownloadFinished(UserFB userFB) {

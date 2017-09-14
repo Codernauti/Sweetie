@@ -1,6 +1,5 @@
 package com.sweetcompany.sweetie.registration;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,21 +15,20 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.utils.SharedPrefKeys;
+import com.sweetcompany.sweetie.utils.Utility;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import static android.app.Activity.RESULT_OK;
 
 
-public class StepSetUserImage extends Fragment implements RegisterContract.SetUserImageView,
-        View.OnClickListener {
+public class SetUserImgFragment extends Fragment implements View.OnClickListener {
 
-    static final String TAG = "StepSetUserImage";
-
-    private RegisterContract.SetUserImagePresenter mPresenter;
+    static final String TAG = "SetUserImgFragment";
 
     private ImageView mUserImage;
     private ProgressBar mProgressBar;
@@ -38,8 +36,8 @@ public class StepSetUserImage extends Fragment implements RegisterContract.SetUs
     private ImageButton mChangeImageButton;
     private Button mForwardButton;
 
-    public static StepSetUserImage newInstance(Bundle extras) {
-        StepSetUserImage newFragment = new StepSetUserImage();
+    public static SetUserImgFragment newInstance(Bundle extras) {
+        SetUserImgFragment newFragment = new SetUserImgFragment();
         newFragment.setArguments(extras);
         return newFragment;
     }
@@ -55,6 +53,8 @@ public class StepSetUserImage extends Fragment implements RegisterContract.SetUs
         //mProgressText = (TextView) root.findViewById(R.id.step_three_progress_img_upload);
         mChangeImageButton = (ImageButton) root.findViewById(R.id.step_three_change_img_btn);
         mForwardButton = (Button) root.findViewById(R.id.step_three_next_btn);
+
+        showImage(Utility.getStringPreference(getContext(), SharedPrefKeys.USER_IMAGE_URI));
 
         Toolbar toolbar = (Toolbar) root.findViewById(R.id.step_three_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
@@ -76,13 +76,14 @@ public class StepSetUserImage extends Fragment implements RegisterContract.SetUs
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.step_three_next_btn:
-                showNextScreen();
+                // showNextScreen();
+                ((RegisterActivity)getActivity()).registrationComplete();
                 break;
 
             case R.id.step_three_change_img_btn:
                 CropImage.activity()
                         .setAspectRatio(1, 1)
-                        .setMaxCropResultSize(1024, 1024)
+                        .setMaxCropResultSize(2048, 2048)
                         .start(getContext(), this);
             default:
                 break;
@@ -96,9 +97,12 @@ public class StepSetUserImage extends Fragment implements RegisterContract.SetUs
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
 
             if (resultCode == RESULT_OK) {
-                setProgressViewsVisible(true);
+                //setProgressViewsVisible(true);
                 Uri resultUri = result.getUri();
-                mPresenter.uploadImage(resultUri);
+
+                Utility.saveStringPreference(getContext(), SharedPrefKeys.USER_IMAGE_URI, resultUri.toString());
+
+                showImage(resultUri.toString());
             }
             else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
@@ -107,33 +111,11 @@ public class StepSetUserImage extends Fragment implements RegisterContract.SetUs
         }
     }
 
-    @Override
-    public void setProgressViewsVisible(boolean visible) {
-        if (visible) {
-            mProgressBar.setVisibility(View.VISIBLE);
-            //mProgressText.setVisibility(View.VISIBLE);
-        } else {
-            mProgressBar.setVisibility(View.GONE);
-            //mProgressText.setVisibility(View.GONE);
-        }
-    }
-
-
-    @Override
-    public void setPresenter(RegisterContract.SetUserImagePresenter presenter) {
-        mPresenter = presenter;
-    }
-
-    @Override
-    public void showNextScreen() {
-        ((RegisterActivity) getActivity()).initServiceAndOpenPairingScreen();
-    }
-
-    @Override
-    public void showImage(String imageUrl) {
+    private void showImage(String imageUrl) {
         Glide.with(this)
                 .load(imageUrl)
                 .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.user_default_photo)
                 .into(mUserImage);
     }

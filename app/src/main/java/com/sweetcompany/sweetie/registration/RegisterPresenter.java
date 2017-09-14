@@ -5,6 +5,7 @@ import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.model.UserFB;
 
 
+@Deprecated
 public class RegisterPresenter implements RegisterContract.RegisterPresenter,
         FirebaseRegisterController.Listener {
 
@@ -30,7 +31,7 @@ public class RegisterPresenter implements RegisterContract.RegisterPresenter,
 
     // TODO: move this callback to activity
     @Override
-    public void onUserPushed() {
+    public void onUserUploaded() {
         mView.showNextScreen();
         // TODO: give other feedback to the user
     }

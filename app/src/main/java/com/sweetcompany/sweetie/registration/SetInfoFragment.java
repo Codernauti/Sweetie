@@ -19,20 +19,22 @@ import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
 
-public class StepTwo extends Fragment implements RegisterContract.RegisterView, View.OnClickListener {
+public class SetInfoFragment extends Fragment implements RegisterContract.RegisterView, View.OnClickListener {
 
-    static final String TAG = "StepTwo";
+    static final String TAG = "SetInfoFragment";
 
     private Button mForwardButton;
     private EditText mUsernameText;
     private EditText mPhoneText;
-    private RadioButton mRadio;
+    private RadioButton mMaleRadio;
+    private RadioButton mFemaleRadio;
+
     private Context mContext;
 
     private RegisterContract.RegisterPresenter mPresenter;
 
-    public static StepTwo newInstance(Bundle extras) {
-        StepTwo newFragment = new StepTwo();
+    public static SetInfoFragment newInstance(Bundle extras) {
+        SetInfoFragment newFragment = new SetInfoFragment();
         newFragment.setArguments(extras);
         return newFragment;
     }
@@ -47,7 +49,26 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
         mForwardButton = (Button) root.findViewById(R.id.pairing_next_button);
         mUsernameText = (EditText) root.findViewById(R.id.username_input);
         mPhoneText = (EditText) root.findViewById(R.id.phone_input);
-        mRadio = (RadioButton)root.findViewById(R.id.radio_button_male);
+        mMaleRadio = (RadioButton)root.findViewById(R.id.radio_button_male);
+        mFemaleRadio = (RadioButton) root.findViewById(R.id.radio_button_famale);
+
+        // populate field if already exist sp
+        String username = Utility.getStringPreference(getContext(), SharedPrefKeys.USERNAME);
+        String phone = Utility.getStringPreference(getContext(), SharedPrefKeys.PHONE_NUMBER);
+        // true if male
+        boolean gender = Utility.getBooleanPreference(getContext(), SharedPrefKeys.GENDER);
+
+        if (!username.equals(SharedPrefKeys.DEFAULT_VALUE)) {
+            mUsernameText.setText(username);
+        }
+
+        if (!phone.equals(SharedPrefKeys.DEFAULT_VALUE)) {
+            mPhoneText.setText(phone);
+        }
+
+        mFemaleRadio.setChecked(gender);
+
+
 
         Toolbar toolbar = (Toolbar) root.findViewById(R.id.credentials_toolbar);
         AppCompatActivity parentActivity = (AppCompatActivity) getActivity();
@@ -68,13 +89,13 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pairing_next_button:
-                // get data of Auth
+                /*// get data of Auth
                 String userUid = Utility.getStringPreference(mContext, SharedPrefKeys.USER_UID);
-                String userEmail = Utility.getStringPreference(mContext, SharedPrefKeys.MAIL);
+                String userEmail = Utility.getStringPreference(mContext, SharedPrefKeys.MAIL);*/
 
                 String username = mUsernameText.getText().toString();
                 String phoneNumber = mPhoneText.getText().toString();
-                boolean gender = mRadio.isChecked();
+                boolean gender = mMaleRadio.isChecked();
 
                 if (username.isEmpty() && phoneNumber.isEmpty()) {
                     Toast.makeText(mContext, "Username and phone number can not be empty", Toast.LENGTH_SHORT).show();
@@ -86,7 +107,9 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
                     Toast.makeText(getContext(), "A phone number must have 10 characters", Toast.LENGTH_SHORT).show();
                 } else {
                     savePreferences(username, phoneNumber, gender);
-                    mPresenter.saveUserData(userUid, userEmail, username, phoneNumber, gender);
+
+                    ((RegisterActivity) getActivity()).showNextStep();
+                    //mPresenter.saveUserData(userUid, userEmail, username, phoneNumber, gender);
                 }
                 break;
             default:
@@ -98,7 +121,7 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
     private void savePreferences(String username, String phoneNumber, boolean gender) {
         Utility.saveStringPreference(mContext, SharedPrefKeys.USERNAME, username);
         Utility.saveStringPreference(mContext, SharedPrefKeys.PHONE_NUMBER, phoneNumber);
-        Utility.saveStringPreference(mContext, SharedPrefKeys.GENDER,String.valueOf(gender));
+        Utility.saveBooleanPreference(mContext, SharedPrefKeys.GENDER, gender);
     }
 
 
@@ -109,6 +132,6 @@ public class StepTwo extends Fragment implements RegisterContract.RegisterView, 
 
     @Override
     public void showNextScreen() {
-        ((RegisterActivity) getActivity()).showStepThree();
+        ((RegisterActivity) getActivity()).showNextStep();
     }
 }

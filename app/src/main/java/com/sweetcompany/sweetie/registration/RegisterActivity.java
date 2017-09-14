@@ -1,92 +1,75 @@
 package com.sweetcompany.sweetie.registration;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
+import com.sweetcompany.sweetie.BaseActivity;
+import com.sweetcompany.sweetie.GeogiftMonitorService;
+import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.UserMonitorService;
-import com.sweetcompany.sweetie.firebase.FirebaseLoginController;
+import com.sweetcompany.sweetie.chat.MessagesMonitorService;
 import com.sweetcompany.sweetie.firebase.FirebaseRegisterController;
 import com.sweetcompany.sweetie.firebase.FirebaseSettingsController;
-import com.sweetcompany.sweetie.model.UserFB;
-import com.sweetcompany.sweetie.MainActivity;
 import com.sweetcompany.sweetie.R;
+import com.sweetcompany.sweetie.model.UserFB;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 import com.sweetcompany.sweetie.pairing.PairingActivity;
 
-// TODO: extend BaseActivity???
-public class RegisterActivity extends AppCompatActivity
-        implements FirebaseLoginController.FbLoginControllerListener {
 
-    private StepOne mViewOne;
-    private LoginPresenter mLoginPresenter;
-    private FirebaseLoginController mLoginController;
+public class RegisterActivity extends BaseActivity implements
+        FirebaseRegisterController.Listener {
 
-    // Lazy initialization
-    private StepTwo mViewTwo;
-    private RegisterPresenter mRegisterPresenter;
+    private static final String TAG = "RegisterActivity";
+
+
+    private SetInfoFragment mViewSetInfo;
+    private SetUserImgFragment mViewSetImage;
+
     private FirebaseRegisterController mRegisterController;
-
-    private StepSetUserImage mViewThree;
-    private SetUserImagePresenter mSetUserImagePresenter;
     private FirebaseSettingsController mSettingsController;
+
+    private String mUserUid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_layout);
 
-        mViewOne = null;
-        // Class cast exception if StepTwo is in register_fragment_container
-                /*(StepOne) getSupportFragmentManager()
+        mViewSetInfo = null;
+        // Class cast exception if SetInfoFragment is in register_fragment_container
+                /*(LoginFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.register_fragment_container);*/
 
-        if (mViewOne == null) {
-            mViewOne = StepOne.newInstance(getIntent().getExtras());
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.register_fragment_container, mViewOne);
-            transaction.commit();
+        if (mViewSetInfo == null) {
+            mViewSetInfo = SetInfoFragment.newInstance(getIntent().getExtras());
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.register_fragment_container, mViewSetInfo)
+                    .addToBackStack(SetInfoFragment.TAG)
+                    .commit();
         }
 
-        mLoginController = new FirebaseLoginController();
-        mLoginPresenter = new LoginPresenter(mViewOne, mLoginController);
+        mUserUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
 
-        // remember to remove that listener
-        mLoginController.addListener(mLoginPresenter);
-        mLoginController.addListener(this);
-    }
+        mRegisterController = new FirebaseRegisterController();
+        mRegisterController.setListener(this);
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // remove all listeners from firebase to avoid memory leak
-        mLoginController.removeListener(this);
-        mLoginController.removeListener(mLoginPresenter);
-
-        if (mSettingsController != null) {
-            mSettingsController.detachListener();
-        }
+        mSettingsController = new FirebaseSettingsController(mUserUid);
     }
 
 
     // back management
-
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-            // Sign in Fragment
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-        else if (getSupportFragmentManager().getBackStackEntryCount() > 1 ) {
-            getSupportFragmentManager().popBackStack();
-        }
-        else {
-            moveTaskToBack(true);
-        }
-    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -94,83 +77,102 @@ public class RegisterActivity extends AppCompatActivity
         return true;
     }
 
-
     @Override
-    public void onUserDownloadFinished(UserFB user) {
-        if (user != null) {
-            // user already have an account
-            Utility.saveStringPreference(this, SharedPrefKeys.USERNAME, user.getUsername());
-            Utility.saveStringPreference(this, SharedPrefKeys.PHONE_NUMBER, user.getPhone());
-            Utility.saveStringPreference(this, SharedPrefKeys.GENDER, String.valueOf(user.getGender()));
-            startActivity(new Intent(this, MainActivity.class));
-        }
-        else {  // user == null, he need to sign in
-            mLoginController.removeListener(this);
-            mLoginController.removeListener(mLoginPresenter);
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            Log.d(TAG, "back stack empty, user on SetInfo");
 
-            showStepTwo();
+            new AlertDialog.Builder(this)
+                    .setTitle("Cancel the registration?")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            RegisterActivity.super.signOutFromGoogleAPIClient();
+
+                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        }
+        else {
+            Log.d(TAG, "popBackStack, user on SetImage");
+            getSupportFragmentManager().popBackStack();
         }
     }
 
-    private void showStepTwo() {
-        mViewTwo = null;
-        // Class Cast exteption if StepOne is on register_fragment_container.
-                    /*(StepTwo) getSupportFragmentManager()
-                    .findFragmentById(R.id.register_fragment_container);*/
 
-        if (mViewTwo == null) {
-            mViewTwo = StepTwo.newInstance(getIntent().getExtras());
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction()
+    // Fragment callbacks
+
+    public void showNextStep() {
+        hideSoftKeyboard();
+
+        mViewSetImage = null; //(SetUserImgFragment) getSupportFragmentManager().findFragmentByTag(SetUserImgFragment.TAG);
+
+        if (mViewSetImage == null) {
+            mViewSetImage = SetUserImgFragment.newInstance(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(
                             R.anim.slide_in_right,
                             R.anim.slide_out_left,
                             R.anim.slide_in_left,
                             R.anim.slide_out_right
                     )
-                    .addToBackStack(StepOne.TAG)
-                    .replace(R.id.register_fragment_container, mViewTwo);
-            transaction.commit();
+                    .addToBackStack(SetUserImgFragment.TAG)
+                    .replace(R.id.register_fragment_container, mViewSetImage)
+                    .commit();
         }
-        mRegisterController = new FirebaseRegisterController();
-        mRegisterPresenter = new RegisterPresenter(mViewTwo, mRegisterController);
-
-        mRegisterController.setListener(mRegisterPresenter);
     }
 
-    public void showStepThree() {
-        mRegisterController.setListener(null);
+    private void hideSoftKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        mViewThree = null;
-
-        if (mViewThree == null) {
-            mViewThree = StepSetUserImage.newInstance(getIntent().getExtras());
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-            transaction.setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left,
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_right
-            );
-
-            transaction.addToBackStack(StepSetUserImage.TAG);
-            transaction.replace(R.id.register_fragment_container, mViewThree);
-            transaction.commit();
+        View v = getCurrentFocus();
+        if (v != null) {
+            inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
-
-        String userUid = Utility.getStringPreference(this, SharedPrefKeys.USER_UID);
-
-        mSettingsController = new FirebaseSettingsController(userUid);
-        mSetUserImagePresenter = new SetUserImagePresenter(mViewThree, mSettingsController);
-
-        mSettingsController.attachListener();
     }
 
-    public void initServiceAndOpenPairingScreen() {
+    public void registrationComplete() {
+        // push user
+        String username = Utility.getStringPreference(this, SharedPrefKeys.USERNAME);
+        String email = Utility.getStringPreference(this, SharedPrefKeys.MAIL);
+        String phoneNumber = Utility.getStringPreference(this, SharedPrefKeys.PHONE_NUMBER);
+        boolean gender = Utility.getBooleanPreference(this, SharedPrefKeys.GENDER);
+
+        UserFB user = new UserFB(username, email, phoneNumber, gender);
+        user.setKey(mUserUid);
+
+        mRegisterController.saveUserData(user);
+    }
+
+
+    // Controllers callback
+
+    @Override
+    public void onUserUploaded() {
+        // user registered
+        Utility.saveBooleanPreference(this, SharedPrefKeys.REGISTERED_USER, true);
+
+        // push image
+        String userImageUri = Utility.getStringPreference(this, SharedPrefKeys.USER_IMAGE_URI);
+        mSettingsController.changeUserImage(Uri.parse(userImageUri));
+
+        // start services
         startService(new Intent(this, UserMonitorService.class));
+        startService(new Intent(this, MessagesMonitorService.class));
 
+        // start PairingActivity
         Intent intent = new Intent(this, PairingActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(PairingActivity.USER_FROM_REGISTER_KEY, true);
-        startActivity(intent);
+
+        TaskStackBuilder.create(this)
+                .addParentStack(PairingActivity.class)   // start DashboardActivity
+                .addNextIntent(intent)
+                .startActivities();
     }
+
 }

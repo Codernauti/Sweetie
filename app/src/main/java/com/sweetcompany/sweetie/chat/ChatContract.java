@@ -1,11 +1,5 @@
 package com.sweetcompany.sweetie.chat;
 
-import java.util.List;
-
-/**
- * Created by ghiro on 11/05/2017.
- */
-
 interface ChatContract {
 
     interface View {

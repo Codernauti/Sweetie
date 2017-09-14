@@ -4,10 +4,6 @@ import com.google.firebase.database.Exclude;
 
 import java.util.HashMap;
 
-/**
- * Created by ghiro on 18/05/2017.
- */
-
 public class ActionFB {
 
     public final static int CHAT = 0;

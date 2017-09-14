@@ -19,10 +19,6 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.io.Serializable;
 
-/**
- * Created by ghiro on 05/08/2017.
- */
-
 public class ShowImageFragment extends DialogFragment {
 
     public static final String TAG = SlideshowDialogFragment.class.getSimpleName();

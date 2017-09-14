@@ -4,11 +4,6 @@ import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
 
-
-/**
- * Created by ghiro on 22/07/2017.
- */
-
 class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryController.GalleryControllerListener {
 
     private static final String TAG = "GALLERYPresenter";

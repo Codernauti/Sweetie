@@ -10,10 +10,6 @@ import com.sweetcompany.sweetie.model.GeogiftFB;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ghiro on 17/08/2017.
- */
-
 public class FirebaseGeogiftDoneController {
 
     private static final String TAG = "FbGeogiftDoneController";

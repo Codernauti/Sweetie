@@ -10,11 +10,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.GeogiftFB;
 
-
-/**
- * Created by ghiro on 29/08/2017.
- */
-
 public class FirebaseGeogiftController {
 
     private static final String TAG = "GeogiftController";

@@ -1,9 +1,5 @@
 package com.sweetcompany.sweetie.geogift;
 
-/**
- * Created by ghiro on 16/08/2017.
- */
-
 public class GeogiftVM {
 
     public final static int MESSAGE_GEOGIFT = 0;

@@ -32,10 +32,6 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by ghiro on 22/07/2017.
- */
-
 public class GalleryFragment extends Fragment implements GalleryContract.View, View.OnClickListener,
         GalleryAdapter.GalleryAdapterListener, ActionMode.Callback {
 

@@ -7,10 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sweetcompany.sweetie.R;
 
-/**
- * Created by ghiro on 07/08/2017.
- */
-
 public class GeogiftTestActivity extends AppCompatActivity {
 
     private static final String TAG = "GeogiftTestActivity";

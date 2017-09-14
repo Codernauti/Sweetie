@@ -22,10 +22,6 @@ import com.sweetcompany.sweetie.utils.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ghiro on 10/08/2017.
- */
-
 public class GeofenceTrasitionService extends IntentService {
 
     private static final String TAG = "GeofenceTrasitionServ";

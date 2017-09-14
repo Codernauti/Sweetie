@@ -11,10 +11,6 @@ import com.sweetcompany.sweetie.R;
 
 import io.github.rockerhieu.emojicon.EmojiconTextView;
 
-/**
- * Created by ghiro on 03/08/2017.
- */
-
 public class TextPhotoMessageViewHolder extends MessageViewHolder {
     private EmojiconTextView mTextMessage;
     private TextView mTextTime;

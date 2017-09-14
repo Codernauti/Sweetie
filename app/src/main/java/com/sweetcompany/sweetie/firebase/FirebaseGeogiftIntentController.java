@@ -9,10 +9,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by ghiro on 30/08/2017.
- */
-
 public class FirebaseGeogiftIntentController {
 
     private static final String TAG = "GeogiftIntentController";

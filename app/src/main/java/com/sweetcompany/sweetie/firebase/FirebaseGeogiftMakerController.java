@@ -20,10 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by ghiro on 16/08/2017.
- */
-
 public class FirebaseGeogiftMakerController {
 
     private static final String TAG = "FbGeogiftMakerController";

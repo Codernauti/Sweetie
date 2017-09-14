@@ -4,10 +4,6 @@ import com.sweetcompany.sweetie.R;
 
 import java.io.Serializable;
 
-/**
- * Created by ghiro on 22/07/2017.
- */
-
 public class PhotoVM extends MediaVM implements Serializable {
 
     PhotoVM(boolean who, String date, String desc, String uriS, String key, boolean uploading) {

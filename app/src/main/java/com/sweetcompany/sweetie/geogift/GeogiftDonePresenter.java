@@ -3,10 +3,6 @@ package com.sweetcompany.sweetie.geogift;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftDoneController;
 import com.sweetcompany.sweetie.model.GeogiftFB;
 
-/**
- * Created by ghiro on 17/08/2017.
- */
-
 public class GeogiftDonePresenter implements GeogiftDoneContract.Presenter, FirebaseGeogiftDoneController.GeogiftDoneControllerListener{
 
     public static final String TAG = "GeogiftDone.presenter" ;

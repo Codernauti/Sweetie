@@ -4,10 +4,6 @@ import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.GeogiftFB;
 
-/**
- * Created by ghiro on 24/08/2017.
- */
-
 public class MapPresenter implements MapContract.Presenter, FirebaseMapController.MapGalleryControllerListener, FirebaseMapController.MapGeogiftControllerListener {
 
     private static final String TAG = "MapPresenter";

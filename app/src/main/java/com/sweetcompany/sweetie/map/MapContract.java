@@ -1,9 +1,5 @@
 package com.sweetcompany.sweetie.map;
 
-/**
- * Created by ghiro on 24/08/2017.
- */
-
 public interface MapContract {
 
     interface View {

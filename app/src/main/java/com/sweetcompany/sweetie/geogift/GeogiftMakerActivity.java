@@ -12,9 +12,6 @@ import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftMakerController;
 
-/**
- * Created by ghiro on 07/08/2017.
- */
 
 public class GeogiftMakerActivity extends BaseActivity {
     private static final String TAG = "GeogiftMakerActivity";

@@ -289,7 +289,8 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
             Uri file = Uri.fromFile(new File(images.get(i).getPath()));
             String stringUriLocal = file.toString();
 
-            mPresenter.sendPhotoMessage(stringUriLocal, getString(R.string.camera_emoticons));
+            int unicodePhotoEmoticon = 0x1F4F7;
+            mPresenter.sendPhotoMessage(stringUriLocal, new String(Character.toChars(unicodePhotoEmoticon)));
         }
     }
 

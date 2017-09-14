@@ -44,7 +44,8 @@
 
     <!-- ChatFragment -->
     <string name="hint_chat_message">\tWrite a new message</string>
-    <string name="camera_emoticons">📷</string>
+    <!-- bugged with lollipop 5.1.1 -->
+    <!--<string name="camera_emoticons"></string>-->
     <string name="chat_cab_menu_remove">Remove</string>
 
 

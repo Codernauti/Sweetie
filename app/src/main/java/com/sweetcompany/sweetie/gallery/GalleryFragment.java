@@ -189,7 +189,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
                 .returnAfterFirst(false) // set whether pick action or camera action should return immediate result or not. Only works in single mode for image picker
                 .folderMode(true) // set folder mode (false by default)
                 .folderTitle("Folder") // folder selection title
-                .imageTitle(String.valueOf(R.string.image_picker_select)) // image selection title
+                .imageTitle(getString(R.string.image_picker_select)) // image selection title
                 .limit(10)
                 .multi()
                 .imageDirectory("Camera")

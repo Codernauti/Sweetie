@@ -5,15 +5,10 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sweetcompany.sweetie.R;
-
-/**
- * Created by ghiro on 25/07/2017.
- */
 
 class PhotoViewHolder extends MediaViewHolder implements View.OnClickListener,
         View.OnLongClickListener {

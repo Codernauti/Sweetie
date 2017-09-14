@@ -8,10 +8,6 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.text.ParseException;
 
-/**
- * Created by ghiro on 08/05/2017.
- */
-
 // TODO abstract class
 abstract class ActionVM {
 

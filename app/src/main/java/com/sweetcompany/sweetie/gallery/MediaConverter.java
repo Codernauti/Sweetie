@@ -2,10 +2,6 @@ package com.sweetcompany.sweetie.gallery;
 
 import com.sweetcompany.sweetie.model.MediaFB;
 
-/**
- * Created by ghiro on 28/08/2017.
- */
-
 public class MediaConverter {
 
     private static final String TAG = "MediaConverter";

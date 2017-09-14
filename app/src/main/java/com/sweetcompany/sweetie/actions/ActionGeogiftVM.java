@@ -7,10 +7,6 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.geogift.GeogiftDoneActivity;
 import com.sweetcompany.sweetie.model.ActionFB;
 
-/**
- * Created by ghiro on 07/08/2017.
- */
-
 public class ActionGeogiftVM extends ActionVM {
 
     boolean isVisited;

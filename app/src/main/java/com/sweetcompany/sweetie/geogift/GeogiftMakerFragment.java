@@ -40,10 +40,6 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by ghiro on 07/08/2017.
- */
-
 public class GeogiftMakerFragment extends Fragment implements
                                                          View.OnClickListener,
                                                          GeogiftMakerContract.View,

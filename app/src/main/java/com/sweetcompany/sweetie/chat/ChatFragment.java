@@ -53,10 +53,6 @@ import io.github.rockerhieu.emojicon.emoji.Emojicon;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by ghiro on 11/05/2017.
- */
-
 public class ChatFragment extends Fragment implements ChatContract.View, View.OnClickListener,
         View.OnTouchListener,
         ChatAdapter.ChatAdapterListener, EmoticonsPagerAdapter.EmoticonsPagerAdapterListener {

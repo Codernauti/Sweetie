@@ -24,10 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by ghiro on 22/05/2017.
- */
-
 public class FirebaseActionsController {
 
     private static final String TAG = "FbActionsController";

@@ -28,10 +28,6 @@ import com.sweetcompany.sweetie.utils.Utility;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ghiro on 29/08/2017.
- */
-
 public class GeogiftMonitorService extends Service implements ResultCallback<Status>,
                                                               GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
                                                               FirebaseGeogiftController.GeogiftControllerListener {

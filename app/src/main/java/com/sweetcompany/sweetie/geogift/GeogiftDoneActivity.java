@@ -8,10 +8,6 @@ import com.sweetcompany.sweetie.BaseActivity;
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.firebase.FirebaseGeogiftDoneController;
 
-/**
- * Created by ghiro on 17/08/2017.
- */
-
 public class GeogiftDoneActivity extends BaseActivity {
 
     private static final String TAG = "GeogiftDoneActivity";

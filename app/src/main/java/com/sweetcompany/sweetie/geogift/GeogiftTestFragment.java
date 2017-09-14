@@ -53,10 +53,6 @@ import com.sweetcompany.sweetie.utils.Utility;
 
 import static android.app.Activity.RESULT_OK;
 
-/**
- * Created by ghiro on 07/08/2017.
- */
-
 public class GeogiftTestFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,

@@ -16,10 +16,6 @@ import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
-/**
- * Created by ghiro on 11/05/2017.
- */
-
 public class ChatActivity extends BaseActivity {
 
     private static final String TAG = "ChatActivity";

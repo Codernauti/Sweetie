@@ -15,10 +15,6 @@ import com.sweetcompany.sweetie.geogift.GeogiftMakerActivity;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
-/**
- * Created by ghiro on 07/08/2017.
- */
-
 public class ActionNewGeogiftFragment extends DialogFragment implements ActionsContract.DialogView {
 
     public static final String TAG = "ActionNewGeogiftFragment";

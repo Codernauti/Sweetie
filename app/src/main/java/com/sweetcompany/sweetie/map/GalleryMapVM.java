@@ -3,10 +3,6 @@ package com.sweetcompany.sweetie.map;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by ghiro on 24/08/2017.
- */
-
 public class GalleryMapVM implements Parcelable{
 
     private String mKey;

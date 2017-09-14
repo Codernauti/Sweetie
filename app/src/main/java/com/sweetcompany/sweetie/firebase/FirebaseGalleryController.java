@@ -27,10 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by ghiro on 22/07/2017.
- */
-
 public class FirebaseGalleryController extends FirebaseGeneralActionController {
 
     private static final String TAG = "FbGalleryController";

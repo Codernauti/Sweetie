@@ -1,6 +1,5 @@
 package com.sweetcompany.sweetie.chat;
 
-import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.model.ChatFB;
 import com.sweetcompany.sweetie.firebase.FirebaseChatController;
 import com.sweetcompany.sweetie.model.MessageFB;
@@ -8,10 +7,6 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.Calendar;
 import java.util.Date;
-
-/**
- * Created by ghiro on 11/05/2017.
- */
 
 class ChatPresenter implements ChatContract.Presenter, FirebaseChatController.Listener {
 

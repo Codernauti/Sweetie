@@ -19,10 +19,6 @@ import com.sweetcompany.sweetie.R;
 
 import java.util.Random;
 
-/**
- * Created by ghiro on 17/08/2017.
- */
-
 public class GeogiftDoneFragment extends Fragment implements  GeogiftDoneContract.View{
 
     private static final String TAG = "GeogiftDoneFragment";

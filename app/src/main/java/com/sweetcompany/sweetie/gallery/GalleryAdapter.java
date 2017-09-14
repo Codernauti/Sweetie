@@ -11,10 +11,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by ghiro on 16/05/2017.
- */
-
 class GalleryAdapter extends RecyclerView.Adapter<GalleryViewHolder>
         implements MediaViewHolder.OnViewHolderClickListener{
 

@@ -2,10 +2,6 @@ package com.sweetcompany.sweetie.model;
 
 import com.google.firebase.database.Exclude;
 
-/**
- * Created by ghiro on 07/08/2017.
- */
-
 public class GeogiftFB {
 
     public final static int MESSAGE_GEOGIFT = 0;

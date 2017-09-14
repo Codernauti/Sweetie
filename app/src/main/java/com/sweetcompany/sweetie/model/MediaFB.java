@@ -2,10 +2,6 @@ package com.sweetcompany.sweetie.model;
 
 import com.google.firebase.database.Exclude;
 
-/**
- * Created by ghiro on 22/07/2017.
- */
-
 public class MediaFB {
     @Exclude
     private String key;

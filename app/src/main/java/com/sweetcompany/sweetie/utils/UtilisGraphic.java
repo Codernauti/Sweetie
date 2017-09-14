@@ -10,10 +10,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.ThumbnailUtils;
 
-/**
- * Created by ghiro on 09/09/2017.
- */
-
 public class UtilisGraphic {
 
     public static Bitmap getCircleBitmap(Bitmap bm) {

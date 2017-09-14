@@ -1,6 +1,5 @@
 package com.sweetcompany.sweetie.firebase;
 
-
 import android.util.Log;
 
 import com.google.firebase.database.ChildEventListener;
@@ -10,10 +9,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.GeogiftFB;
-
-/**
- * Created by ghiro on 24/08/2017.
- */
 
 public class FirebaseMapController {
 

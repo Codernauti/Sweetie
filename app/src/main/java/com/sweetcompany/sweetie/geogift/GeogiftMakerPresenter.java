@@ -8,9 +8,6 @@ import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.List;
 
-/**
- * Created by ghiro on 16/08/2017.
- */
 
 public class GeogiftMakerPresenter implements GeogiftMakerContract.Presenter, FirebaseGeogiftMakerController.GeogiftMakerControllerListener{
 

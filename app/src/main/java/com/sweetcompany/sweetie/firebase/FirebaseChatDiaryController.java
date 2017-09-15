@@ -123,19 +123,18 @@ public class FirebaseChatDiaryController {
                 + Constraints.ChatMessages.BOOKMARK,
                 false);
 
+        mDatabaseRef.updateChildren(updates);
+
         mDatabaseRef.child(mActionDiaryUrl)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getChildrenCount() <= 0) {
+                        if (dataSnapshot.getChildrenCount() <= 0 || dataSnapshot.getValue() == null) {
                             // user remove all messages associated with this ActionDiary
                             mDatabaseRef.child(mActionDiaryCalendarUrl).removeValue();
                         }
                     }
                     public void onCancelled(DatabaseError databaseError) { }
                 });
-
-        mDatabaseRef.updateChildren(updates);
-
     }
 
 }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -93,9 +94,8 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
     public void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-        updateMarkers();
+        ((DashboardActivity) getActivity()).attachMapDatabase();
     }
-
 
     private void updateMarkers() {
         if (mMap != null) {
@@ -131,13 +131,23 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+
+        mMap.clear();
+        mGalleryMarkersOptions.clear();
+        mGeogiftMarkersOptions.clear();
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         Log.d(TAG, "onDestroyView");
 
-        /*SupportMapFragment mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map_gallery_fragment));
+        /*SupportMapFragment mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.map_fragment));
 
         if(mapFragment != null) {
             FragmentManager fM = getFragmentManager();
@@ -158,7 +168,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
 
         // TODO: set smart bound on Map
 
-        ((DashboardActivity) getActivity()).attachMapDatabase();
+        //((DashboardActivity) getActivity()).attachMapDatabase();
     }
 
 
@@ -280,6 +290,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
             updateMarkers();
         }
     }
+
 
 
     @Override

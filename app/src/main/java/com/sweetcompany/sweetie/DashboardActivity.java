@@ -85,16 +85,15 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         Log.d(TAG, "onResume");
         mActionsController.attachNetworkDatabase();
-        //mMapController.attachNetworkDatabase();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         Log.d(TAG, "onPause");
 
         mActionsController.detachNetworkDatabase();

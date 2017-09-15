@@ -166,10 +166,11 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setTrafficEnabled(false);
 
+        updateMarkers();
+
         // TODO: set smart bound on Map
 
-        //((DashboardActivity) getActivity()).attachMapDatabase();
-    }
+        /*((DashboardActivity) getActivity()).attachMapDatabase();*/ }
 
 
     // Presenter calls

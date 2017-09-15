@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import com.sweetcompany.sweetie.firebase.FirebaseActionsController;
 import com.sweetcompany.sweetie.firebase.FirebaseCalendarController;
 import com.sweetcompany.sweetie.firebase.FirebaseMapController;
 import com.sweetcompany.sweetie.geogift.GeogiftTestActivity;
+import com.sweetcompany.sweetie.map.MapsFragment;
 import com.sweetcompany.sweetie.pairing.PairingActivity;
 import com.sweetcompany.sweetie.settings.SettingsActivity;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
@@ -85,14 +87,16 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume");
         mActionsController.attachNetworkDatabase();
-        mMapController.attachNetworkDatabase();
+        //mMapController.attachNetworkDatabase();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // TODO: clean up adapter?
+        Log.d(TAG, "onPause");
+
         mActionsController.detachNetworkDatabase();
         mCalendarController.detachListener();
         mMapController.detachNetworkDatabase();
@@ -157,6 +161,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
     // GoogleApi
 
     public void attachMapDatabase() {
-        //mMapController.attachNetworkDatabase();
+        Log.d(TAG, "MapFragment request attach");
+        mMapController.attachNetworkDatabase();
     }
 }

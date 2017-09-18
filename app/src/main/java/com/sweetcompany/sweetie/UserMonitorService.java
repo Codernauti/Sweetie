@@ -90,7 +90,7 @@ public class UserMonitorService extends Service implements FirebaseUserControlle
                 // else coupleUid remains the same
             }
             else {
-                if (!oldCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
+                if (!oldCoupleUid.equals(newUserData.getKey() /*SharedPrefKeys.DEFAULT_VALUE*/)) {
                     Log.d(TAG, "couple break!");
 
                     Utility.saveBooleanPreference(UserMonitorService.this,

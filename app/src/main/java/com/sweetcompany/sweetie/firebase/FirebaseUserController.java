@@ -34,6 +34,7 @@ public class FirebaseUserController {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     UserFB newUserData = dataSnapshot.getValue(UserFB.class);
+                    newUserData.setKey(dataSnapshot.getKey());
 
                     if (mListener != null) {
                         mListener.onUserChange(newUserData);

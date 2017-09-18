@@ -177,7 +177,7 @@ public class GeogiftMakerFragment extends Fragment implements
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void afterTextChanged(Editable s) {
-                messageGeogift = s.toString();
+                messageGeogift = s.toString().trim();
                 checkGeogiftFields();
             }
         });
@@ -195,7 +195,7 @@ public class GeogiftMakerFragment extends Fragment implements
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void afterTextChanged(Editable s) {
-                messageGeogift = s.toString();
+                messageGeogift = s.toString().trim();
                 checkGeogiftFields();
             }
         });
@@ -239,7 +239,7 @@ public class GeogiftMakerFragment extends Fragment implements
 
     @Override
     public void onClick(View v) {
-        if(mIsButtonsEnable == true) {
+        if(mIsButtonsEnable) {
             switch (v.getId()) {
                 case R.id.geogift_icon_topbar:
                 case R.id.geogift_textview_topbar:
@@ -337,7 +337,7 @@ public class GeogiftMakerFragment extends Fragment implements
     public void checkGeogiftFields(){
         switch (currentSelection){
             case MESSAGE_SELECTION:
-                if(messageGeogift.length()>MIN_MESSAGE_LENGHT){
+                if(messageGeogift.length() > MIN_MESSAGE_LENGHT){
                     isGeogiftComplete = true;
                 }
                 else
@@ -489,8 +489,7 @@ public class GeogiftMakerFragment extends Fragment implements
     public void setUriStorage(String uriS) {
         //call when image is uploaded
         uriStorage = uriS;
-        if(uriStorage!=null)
-        {
+        if (uriStorage != null) {
             mGeoItem.setUriStorage(uriStorage);
             createNewGeogift();
         }

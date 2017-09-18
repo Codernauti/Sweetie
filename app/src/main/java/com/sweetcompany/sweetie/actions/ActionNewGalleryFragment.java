@@ -55,7 +55,7 @@ public class ActionNewGalleryFragment extends DialogFragment implements ActionsC
                 .setPositiveButton(USER_POSITIVE_RESPONSE,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                String userInputGalleryTitle = mTitleGalleryEditText.getText().toString();
+                                String userInputGalleryTitle = mTitleGalleryEditText.getText().toString().trim();
 
                                 if (!userInputGalleryTitle.isEmpty()) {
                                     String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);

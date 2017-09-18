@@ -55,7 +55,7 @@ public class ActionNewChatFragment extends DialogFragment implements ActionsCont
                 .setPositiveButton(USER_POSITIVE_RESPONSE,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                String userInputChatTitle = mTitleChatEditText.getText().toString();
+                                String userInputChatTitle = mTitleChatEditText.getText().toString().trim();
 
                                 if (!userInputChatTitle.isEmpty()) {
                                     // [0] : chatKey, [1] : actionKey

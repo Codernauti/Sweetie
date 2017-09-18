@@ -53,7 +53,7 @@ public class ActionNewToDoListFragment extends DialogFragment implements DialogV
                 .setPositiveButton(USER_POSITIVE_RESPONSE, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String userInputChatTitle = mTitleToDoListEditText.getText().toString();
+                        String userInputChatTitle = mTitleToDoListEditText.getText().toString().trim();
 
                         if (!userInputChatTitle.isEmpty()) {
                             String userName = Utility.getStringPreference(getActivity(), SharedPrefKeys.USER_UID);

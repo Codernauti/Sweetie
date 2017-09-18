@@ -51,7 +51,7 @@ public class ActionNewGeogiftFragment extends DialogFragment implements ActionsC
                 .setPositiveButton(USER_POSITIVE_RESPONSE,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                String userInputGeogiftTitle = mTitleGeogiftEditText.getText().toString();
+                                String userInputGeogiftTitle = mTitleGeogiftEditText.getText().toString().trim();
 
                                 if (!userInputGeogiftTitle.isEmpty()) {
                                     // [0] : geogiftKey, [1] : actionKey

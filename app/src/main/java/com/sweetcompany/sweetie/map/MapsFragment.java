@@ -136,7 +136,9 @@ public class MapsFragment extends Fragment implements View.OnClickListener,
         super.onPause();
         Log.d(TAG, "onPause");
 
-        mMap.clear();
+        if (mMap != null) {
+            mMap.clear();
+        }
         mGalleryMarkersOptions.clear();
         mGeogiftMarkersOptions.clear();
     }

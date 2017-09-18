@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.sweetcompany.sweetie.chat.ChatActivity;
 import com.sweetcompany.sweetie.R;
@@ -69,6 +70,8 @@ public class ActionNewChatFragment extends DialogFragment implements ActionsCont
                                         intent.putExtra(ChatActivity.ACTION_DATABASE_KEY, keys.get(0));
                                         startActivity(intent);
                                     }
+                                } else {
+                                    Toast.makeText(getActivity(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }

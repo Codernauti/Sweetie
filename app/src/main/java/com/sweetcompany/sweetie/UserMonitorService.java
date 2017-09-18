@@ -97,7 +97,7 @@ public class UserMonitorService extends Service implements FirebaseUserControlle
                             SharedPrefKeys.USER_RELATIONSHIP_STATUS_CHANGED, true);
 
                     Utility.saveStringPreference(UserMonitorService.this,
-                            SharedPrefKeys.COUPLE_UID, SharedPrefKeys.DEFAULT_VALUE);
+                            SharedPrefKeys.COUPLE_UID, newUserData.getKey() /*SharedPrefKeys.DEFAULT_VALUE*/);
                     Utility.saveIntPreference(UserMonitorService.this,
                             SharedPrefKeys.USER_RELATIONSHIP_STATUS, BREAK_SINGLE);
                 }

@@ -106,7 +106,7 @@ public class DashboardActivity extends BaseActivity implements IPageChanger {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
 
-        if (super.mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
+        if (super.userIsSingle()) {
             menu.findItem(R.id.menu_couple_details).setVisible(false);
         } else {
             menu.findItem(R.id.menu_search_partner).setVisible(false);

@@ -318,15 +318,21 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
             /*mGalleryPhotos.child(mediaUid).removeValue();*/
         }
         else {
-            StorageReference mMediaRef = FirebaseStorage.getInstance().getReferenceFromUrl(uriStorage);
-            mMediaRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Log.d(TAG, "media is deleted from storage");
-                    removeMediaFromDatabase(mediaUid);
-                    //mGalleryPhotos.child(mediaUid).removeValue();
-                }
-            });
+            try {
+                StorageReference mMediaRef = FirebaseStorage.getInstance().getReferenceFromUrl(uriStorage);
+                mMediaRef.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "media is deleted from storage");
+                        removeMediaFromDatabase(mediaUid);
+                        //mGalleryPhotos.child(mediaUid).removeValue();
+                    }
+                });
+            } catch (IllegalArgumentException ex) {
+                // TODO: bad code
+                Log.d(TAG, "media not into storage");
+                removeMediaFromDatabase(mediaUid);
+            }
         }
     }
 

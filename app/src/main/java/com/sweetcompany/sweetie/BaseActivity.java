@@ -238,6 +238,6 @@ public class BaseActivity extends AppCompatActivity implements
     }
 
     public boolean userIsSingle() {
-        return !( mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE) && mCoupleUid.equals(mUserUid) );
+        return mCoupleUid.equals(mUserUid) || mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE);
     }
 }

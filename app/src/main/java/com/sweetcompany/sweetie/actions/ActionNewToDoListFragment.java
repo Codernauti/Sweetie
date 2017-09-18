@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.actions.ActionsContract.DialogView;
@@ -66,10 +67,11 @@ public class ActionNewToDoListFragment extends DialogFragment implements DialogV
                                 intent.putExtra(ToDoListActivity.ACTION_DATABASE_KEY, keys.get(0));
                                 startActivity(intent);
                             }
+                        } else {
+                            Toast.makeText(getActivity(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
-                )
+                })
                 .setNegativeButton(USER_NEGATIVE_RESPONSE,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {

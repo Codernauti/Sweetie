@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.sweetcompany.sweetie.R;
 import com.sweetcompany.sweetie.geogift.GeogiftMakerActivity;
@@ -65,6 +66,8 @@ public class ActionNewGeogiftFragment extends DialogFragment implements ActionsC
                                         //intent.putExtra(GeogiftMakerActivity.ACTION_DATABASE_KEY, keys.get(1));
                                         startActivity(intent);
                                     //}
+                                } else {
+                                    Toast.makeText(getActivity(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }

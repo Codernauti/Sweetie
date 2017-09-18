@@ -447,8 +447,12 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     public boolean onTouch(View v, MotionEvent event) {
         switch (v.getId()) {
             case R.id.chat_text_message_input:
-                insertKeyboardSpaceHolder();
-                mEmoticonsPopup.dismiss();
+                if (mKeyboardState == SOFT_KB_CLOSED) {
+                    insertKeyboardSpaceHolder();
+                    mEmoticonsPopup.dismiss();
+                    mEmoticonsButton.setImageDrawable(ContextCompat.getDrawable(getContext(),
+                            R.drawable.chat_open_emoticon_image_button24x24));
+                }
                 break;
 
             default:

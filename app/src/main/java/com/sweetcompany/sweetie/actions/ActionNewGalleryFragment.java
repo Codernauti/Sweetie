@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.sweetcompany.sweetie.gallery.GalleryActivity;
 import com.sweetcompany.sweetie.R;
@@ -68,6 +69,8 @@ public class ActionNewGalleryFragment extends DialogFragment implements ActionsC
                                         intent.putExtra(GalleryActivity.ACTION_DATABASE_KEY, keys.get(0));
                                         startActivity(intent);
                                     }
+                                } else {
+                                    Toast.makeText(getActivity(), "Title cannot be empty", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }

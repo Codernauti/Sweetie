@@ -69,6 +69,7 @@
             android:textColorHint="@color/grey"
             android:backgroundTint="@color/rosa_sweetie"
             android:focusableInTouchMode="true"
+            android:inputType="textNoSuggestions"
             app:emojiconSize="@dimen/emoticons">
             <requestFocus/>
         </io.github.rockerhieu.emojicon.EmojiconEditText>

@@ -8,7 +8,7 @@
     <!-- dashboard menu -->
     <string name="menu_sign_out">Sign Out</string>
     <string name="menu_send_couple_request">Find your partner</string>
-    <string name="menu_couple_details">Couples</string>
+    <string name="menu_couple_details">Couple</string>
     <string name="menu_settings">Settings</string>
 
     <!-- Gallery -->

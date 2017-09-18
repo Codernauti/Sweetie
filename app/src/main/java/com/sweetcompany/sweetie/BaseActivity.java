@@ -74,7 +74,7 @@ public class BaseActivity extends AppCompatActivity implements
         // Getting utils data for all activity
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         mUserUid = sp.getString(SharedPrefKeys.USER_UID, SharedPrefKeys.DEFAULT_VALUE);
-        mCoupleUid = sp.getString(SharedPrefKeys.COUPLE_UID, SharedPrefKeys.DEFAULT_VALUE);
+        mCoupleUid = sp.getString(SharedPrefKeys.COUPLE_UID, mUserUid);
         mPartnerUid = sp.getString(SharedPrefKeys.PARTNER_UID, SharedPrefKeys.DEFAULT_VALUE);
     }
 
@@ -237,4 +237,7 @@ public class BaseActivity extends AppCompatActivity implements
         }
     }
 
+    public boolean userIsSingle() {
+        return !( mCoupleUid.equals(SharedPrefKeys.DEFAULT_VALUE) && mCoupleUid.equals(mUserUid) );
+    }
 }

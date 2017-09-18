@@ -42,9 +42,18 @@ public class Utility {
      * @param key
      * @return
      */
-    public static String getStringPreference(Context context,String key){
-        return PreferenceManager.getDefaultSharedPreferences(context)
+    public static String getStringPreference(Context context, String key){
+        String coupleUid = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(key, SharedPrefKeys.DEFAULT_VALUE);
+
+        if (key.equals(SharedPrefKeys.COUPLE_UID) &&
+                coupleUid.equals(SharedPrefKeys.DEFAULT_VALUE)) {
+            // couple uid is error -> return userUid as default couple
+            return PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString(SharedPrefKeys.USER_UID, "This-Is-A-Bug");
+        }
+
+        return coupleUid;
     }
 
     public static void saveIntPreference(Context context, String key, int data) {

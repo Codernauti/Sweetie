@@ -140,14 +140,16 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
             mGalleryListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    // TODO: test
                     GalleryFB gallery = dataSnapshot.getValue(GalleryFB.class);
-                    gallery.setKey(dataSnapshot.getKey());
 
-                    mIsImageSetByUser = gallery.isImageSetByUser();
+                    if (gallery != null) {
+                        gallery.setKey(dataSnapshot.getKey());
 
-                    for (GalleryControllerListener listener : mListeners) {
-                        listener.onGalleryChanged(gallery);
+                        mIsImageSetByUser = gallery.isImageSetByUser();
+
+                        for (GalleryControllerListener listener : mListeners) {
+                            listener.onGalleryChanged(gallery);
+                        }
                     }
                 }
 

@@ -20,6 +20,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
 
 
     private boolean chatDiary = false;  // dirty bit
+    private boolean mEnableSelection;   // dirty bit
 
     private List<ChatItemVM> mChatItemList = new ArrayList<>();
     private ChatAdapterListener mListener;
@@ -33,6 +34,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
         void onPhotoClicked(TextPhotoMessageVM photoMessage);
         void onMessageLongClicked();
         void onMessageSelectionFinished();
+    }
+
+    public ChatAdapter(boolean enableSelection) {
+        mEnableSelection = enableSelection;
     }
 
     /**
@@ -105,8 +110,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
         ChatItemVM msgVM = mChatItemList.get(position);
         msgVM.configViewHolder(holder);
 
-        if (msgVM instanceof MessageVM) {
-            ((MessageViewHolder) holder).setViewHolderSelected(mSelectedItems.get(position, false));
+        if (mEnableSelection) {
+            if (msgVM instanceof MessageVM) {
+                ((MessageViewHolder) holder).setViewHolderSelected(mSelectedItems.get(position, false));
+            }
         }
     }
 
@@ -257,9 +264,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatViewHolder>
     @Override
     public void onMessageLongClicked(int adapterPosition) {
         // only MessageViewHolder can have LongClicked triggered
-        mListener.onMessageLongClicked();
-        mMultipleSelectionEnable = true;
+        if (mEnableSelection) {
+            mListener.onMessageLongClicked();
+            mMultipleSelectionEnable = true;
 
-        toggleSelection(adapterPosition);
+            toggleSelection(adapterPosition);
+        }
     }
 }

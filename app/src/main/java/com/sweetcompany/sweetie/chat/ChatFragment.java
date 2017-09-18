@@ -108,7 +108,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        mChatAdapter = new ChatAdapter();
+        mChatAdapter = new ChatAdapter(false);
         mChatAdapter.setListener(this);
 
         mInputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -371,7 +371,7 @@ public class ChatFragment extends Fragment implements ChatContract.View, View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.chat_send_button:
-                String inputText = mTextMessageInput.getText().toString();
+                String inputText = mTextMessageInput.getText().toString().trim();
                 mTextMessageInput.setText("");
 
                 if (!inputText.isEmpty()) {

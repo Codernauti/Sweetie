@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sweetcompany.sweetie.model.CheckEntryFB;
 import com.sweetcompany.sweetie.model.ToDoListFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -184,6 +185,9 @@ public class FirebaseToDoListController extends FirebaseGeneralActionController 
 
         HashMap<String, Object> updates = new HashMap<>();
         updates.put(mtoDoListCheckEntriesUrl + "/" + checkEntryUid, null);
+
+        updates.put(mActionUrl + "/" + Constraints.Actions.DESCRIPTION, "");
+        updates.put(mActionUrl + "/" + Constraints.Actions.LAST_UPDATED_DATE, DataMaker.get_UTC_DateTime());
 
         super.updateNotificationCounterAfterDeletion(updates, checkEntryUid);
 

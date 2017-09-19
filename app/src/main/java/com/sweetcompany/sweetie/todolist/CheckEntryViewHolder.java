@@ -101,6 +101,7 @@ public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnF
     }
     public void setText(String text) {
         mEditText.setText(text);
+        mEditText.setSelection(text.length());
     }
 
     public void setChecked(boolean checked){

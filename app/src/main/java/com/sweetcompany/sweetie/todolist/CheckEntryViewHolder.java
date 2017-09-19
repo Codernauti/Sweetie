@@ -24,19 +24,19 @@ public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnF
     private ImageButton mDeleteButton;
     private OnCheckEntryViewHolderClickListener mListener;
     private String oldText;
-    private InputMethodManager mInputMethodManager;
 
     public CheckEntryViewHolder(View itemView) {
         super(itemView);
-        mCheckBox = (CheckBox) itemView.findViewById(R.id.todolist_checkEntry);
+
         mEditText = (EditText) itemView.findViewById(R.id.todolist_editText);
         mDeleteButton = (ImageButton) itemView.findViewById(R.id.todolist_imageButton);
+        mCheckBox = (CheckBox) itemView.findViewById(R.id.todolist_checkEntry);
 
-        mCheckBox.setOnClickListener(this);
         mEditText.setOnFocusChangeListener(this);
-        mDeleteButton.setOnClickListener(this);
-        mInputMethodManager =(InputMethodManager) mEditText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         mEditText.setOnKeyListener(this);
+        mCheckBox.setOnClickListener(this);
+        mDeleteButton.setOnClickListener(this);
+
     }
 
     void setCheckEntryViewHolderClickListener(OnCheckEntryViewHolderClickListener listener) {
@@ -88,6 +88,10 @@ public class CheckEntryViewHolder extends ToDoListViewHolder implements View.OnF
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.todolist_checkEntry:
+                String attualText = mEditText.getText().toString().trim();
+                if(oldText != attualText){
+                    mListener.onCheckEntryUnfocused(getAdapterPosition(), attualText);
+                }
                 mListener.onCheckBoxClicked(getAdapterPosition(), mCheckBox.isChecked());
                 break;
             case R.id.todolist_imageButton:

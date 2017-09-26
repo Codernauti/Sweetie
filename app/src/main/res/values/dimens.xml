@@ -10,6 +10,7 @@
 
     <!-- ActionInfo -->
     <dimen name="action_info_label_width">100dp</dimen>
-    <dimen name="action_item_general_padding">8dp</dimen>
+    <dimen name="action_item_top_padding">8dp</dimen>
+    <dimen name="action_item_general_padding">16dp</dimen>
 
 </resources>

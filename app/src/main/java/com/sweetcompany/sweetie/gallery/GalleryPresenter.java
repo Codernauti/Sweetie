@@ -1,12 +1,16 @@
 package com.sweetcompany.sweetie.gallery;
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
 import com.sweetcompany.sweetie.model.GalleryFB;
 import com.sweetcompany.sweetie.model.MediaFB;
+import com.sweetcompany.sweetie.utils.DataMaker;
 
 class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryController.GalleryControllerListener {
 
-    private static final String TAG = "GALLERYPresenter";
+    private static final String TAG = "GalleryPresenter";
 
     private GalleryContract.View mView;
     private FirebaseGalleryController mController;
@@ -22,11 +26,15 @@ class GalleryPresenter implements GalleryContract.Presenter, FirebaseGalleryCont
     }
 
     @Override
-    public void sendMedia(MediaVM mediaVM) {
-        MediaFB newMedia = new MediaFB(mUserUid, mediaVM.getDescription(), mediaVM.getTime(), false,
-                mediaVM.getUriStorage(), mediaVM.isUploading());
+    public void sendMedia(String localFilePath, String actionUid, Context context) {
+        //MediaFB newMedia = new MediaFB(mUserUid, "", DataMaker.get_UTC_DateTime(), false, localFilePath, true);
 
-        mController.uploadMedia(newMedia);
+        Intent intent = new Intent(context, UploadMediaService.class);
+        intent.putExtra(UploadMediaService.ACTION_UID_KEY, actionUid);
+        intent.putExtra(UploadMediaService.LOCAL_FILE_PATH_KEY, localFilePath);
+        context.getApplicationContext().startService(intent);
+
+        // mController.uploadMedia(newMedia);
     }
 
     @Override

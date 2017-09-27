@@ -65,7 +65,6 @@ public class ActionNewGalleryFragment extends DialogFragment implements ActionsC
                                     if (keys != null) {
                                         Intent intent = new Intent(getActivity(), GalleryActivity.class);
                                         intent.putExtra(GalleryActivity.GALLERY_TITLE, userInputGalleryTitle);
-                                        intent.putExtra(GalleryActivity.GALLERY_DATABASE_KEY, keys.get(0));
                                         intent.putExtra(GalleryActivity.ACTION_DATABASE_KEY, keys.get(0));
                                         startActivity(intent);
                                     }

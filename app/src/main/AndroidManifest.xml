@@ -124,6 +124,8 @@
         <service android:name=".chat.MessagesMonitorService"
             android:enabled="true" />
 
+        <service android:name=".gallery.UploadMediaService"
+            android:exported="false"/>
 
         <!-- meta-data -->
 

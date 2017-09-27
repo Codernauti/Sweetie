@@ -34,7 +34,6 @@ class ActionGalleryVM extends ActionVM {
 
         Intent intent = new Intent(mContext, GalleryActivity.class);
         intent.putExtra(GalleryActivity.GALLERY_TITLE, super.getTitle());
-        intent.putExtra(GalleryActivity.GALLERY_DATABASE_KEY, super.getChildUid());
         intent.putExtra(GalleryActivity.ACTION_DATABASE_KEY, super.getKey());
 
         mContext.startActivity(intent);

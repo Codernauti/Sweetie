@@ -59,15 +59,17 @@
 
         android:text="@string/action_title"
         android:textColor="@color/action_title"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:ellipsize="end"
         android:maxLines="1"
     />
 
     <TextView
         android:id="@+id/action_item_notification_counter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:gravity="center"
 
         app:layout_constraintTop_toTopOf="@+id/action_item_type"
@@ -94,19 +96,17 @@
         app:layout_constraintHorizontal_chainStyle="spread"
 
         android:text="@string/lorem_ipsum"
-        android:textSize="14dp"
+        android:textSize="14sp"
         android:ellipsize="end"
         android:maxLines="1"
     />
 
-    <!-- TODO aggiustare padding di ogni elemento -->
     <TextView
         android:id="@+id/action_item_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingEnd="16dp"
 
-        app:layout_constraintStart_toEndOf="@+id/action_item_type"
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintTop_toTopOf="parent"
@@ -133,7 +133,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
 
         app:layout_constraintStart_toEndOf="@+id/action_item_subtitle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/action_item_date"
+
 
 
         android:src="@drawable/googleg_standard_color_18" />

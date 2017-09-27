@@ -1,5 +1,7 @@
 package com.sweetcompany.sweetie.gallery;
 
+import android.content.Context;
+
 interface GalleryContract {
 
     interface View {
@@ -14,7 +16,7 @@ interface GalleryContract {
     }
     
     interface Presenter {
-        void sendMedia(MediaVM media);
+        void sendMedia(String localFilePath, String actionUid, Context context);
         void removeMedia(MediaVM media);
     }
 }

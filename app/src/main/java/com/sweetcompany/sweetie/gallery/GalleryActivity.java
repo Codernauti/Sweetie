@@ -13,11 +13,9 @@ public class GalleryActivity extends BaseActivity {
     private static final String TAG = "GalleryActivity";
 
     // key for Intent extras
-    public static final String GALLERY_DATABASE_KEY = "GalleryDatabaseKey";
     public static final String GALLERY_TITLE = "GalleryTitle";    // For offline user
     public static final String ACTION_DATABASE_KEY = "ActionDatabaseKey";
 
-    private String mGalleryKey;
     private String mActionKey;
 
     private GalleryContract.Presenter mPresenter;
@@ -33,13 +31,12 @@ public class GalleryActivity extends BaseActivity {
         }
 
         if (savedInstanceState != null) {
-            mGalleryKey = savedInstanceState.getString(GALLERY_DATABASE_KEY);
             mActionKey = savedInstanceState.getString(ACTION_DATABASE_KEY);
 
             Log.d(TAG, "from Intent GALLERY_TITLE: " +
                     savedInstanceState.getString(GALLERY_TITLE));
             Log.d(TAG, "from Intent GALLERY_TITLE_DATABASE_KEY: " +
-                    savedInstanceState.getString(GALLERY_DATABASE_KEY));
+                    savedInstanceState.getString(ACTION_DATABASE_KEY));
         }
         else {
             Log.w(TAG, "No savedInstanceState or intentArgs!");
@@ -56,13 +53,13 @@ public class GalleryActivity extends BaseActivity {
             transaction.commit();
         }
 
-        if (mGalleryKey != null) {
-            mController = new FirebaseGalleryController(super.mCoupleUid, mGalleryKey, mActionKey,
+        if (mActionKey != null) {
+            mController = new FirebaseGalleryController(super.mCoupleUid, mActionKey,
                     super.mUserUid, super.mPartnerUid);
             mPresenter = new GalleryPresenter(view, mController, super.mUserUid);
         }
         else {
-            Log.w(TAG, "Impossible to create GalleryController and GalleryPresenter because galleryKey is NULL");
+            Log.w(TAG, "Impossible to create GalleryController and GalleryPresenter because actionUid is NULL");
         }
     }
 
@@ -87,7 +84,6 @@ public class GalleryActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(GALLERY_DATABASE_KEY, mGalleryKey);
         outState.putString(ACTION_DATABASE_KEY, mActionKey);
     }
 }

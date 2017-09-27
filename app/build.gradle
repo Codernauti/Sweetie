@@ -80,6 +80,8 @@ dependencies {
     compile 'com.github.esafirm.android-image-picker:imagepicker:1.8.0'
     // imageCrop
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.7'
+    // compressor
+    compile 'id.zelory:compressor:2.1.0'
 
     // ImageView
     compile 'de.hdodenhof:circleimageview:2.1.0'

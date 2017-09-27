@@ -61,16 +61,16 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
     }
 
 
-    public FirebaseGalleryController(String coupleUid, String galleryKey, String actionUid,
-                                     String userUid, String partnerUid) {
+    public FirebaseGalleryController(String coupleUid, String actionUid, String userUid,
+                                     String partnerUid) {
         super(coupleUid, userUid, partnerUid, actionUid);
 
         mCoupleUid = coupleUid;
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
-        mGalleryUrl = Constraints.GALLERIES + "/" + coupleUid + "/" + galleryKey;
-        mGalleryPhotosUrl = Constraints.GALLERY_PHOTOS + "/" + coupleUid + "/" + galleryKey;
+        mGalleryUrl = Constraints.GALLERIES + "/" + coupleUid + "/" + actionUid;
+        mGalleryPhotosUrl = Constraints.GALLERY_PHOTOS + "/" + coupleUid + "/" + actionUid;
         mActionUrl = Constraints.ACTIONS + "/" + coupleUid + "/" + actionUid;
 
         mGallery = mDatabaseRef.child(mGalleryUrl);
@@ -221,6 +221,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
     }
 
     public void uploadMedia(final MediaFB media) {
+        // TODO compress image
         updateMediaData(media);
         addMediaToDatabase(media.getKey(), media);
         addMediaToStorage(media);

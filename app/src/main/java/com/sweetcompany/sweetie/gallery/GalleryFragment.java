@@ -75,7 +75,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
         View root = inflater.inflate(R.layout.gallery_fragment, container, false);
 
         String titleGallery = getArguments().getString(GalleryActivity.GALLERY_TITLE);
-        mGalleryUid = getArguments().getString(GalleryActivity.GALLERY_DATABASE_KEY);
+        mGalleryUid = getArguments().getString(GalleryActivity.ACTION_DATABASE_KEY);
 
         mGalleryListView = (RecyclerView) root.findViewById(R.id.gallery_list);
 
@@ -143,9 +143,7 @@ public class GalleryFragment extends Fragment implements GalleryContract.View, V
 
         for (int i = 0, l = imagesPicked.size(); i < l; i++) {
             Uri file = Uri.fromFile(new File(imagesPicked.get(i).getPath()));
-
-            MediaVM newMedia = new PhotoVM(MediaVM.THE_MAIN_USER , DataMaker.get_UTC_DateTime(), "", file.toString(), null, true);
-            mPresenter.sendMedia(newMedia);
+            mPresenter.sendMedia(file.toString(), mGalleryUid, getActivity());
         }
         imagesPicked.clear();
     }

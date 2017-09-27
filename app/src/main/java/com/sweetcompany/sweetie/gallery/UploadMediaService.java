@@ -14,6 +14,7 @@ import android.util.Log;
 import com.sweetcompany.sweetie.firebase.FirebaseGalleryController;
 import com.sweetcompany.sweetie.model.MediaFB;
 import com.sweetcompany.sweetie.utils.DataMaker;
+import com.sweetcompany.sweetie.utils.FileUtility;
 import com.sweetcompany.sweetie.utils.SharedPrefKeys;
 import com.sweetcompany.sweetie.utils.Utility;
 
@@ -33,12 +34,11 @@ public class UploadMediaService extends IntentService {
 
     static final String ACTION_UID_KEY = "action";
     static final String LOCAL_FILE_PATH_KEY = "localFilePath";
+
     private static final long MAX_LENGTH_WITHOUT_COMPRESSION = 300000; // 300 kb
 
     // TODO: create a new controller specialized to upload file
     //private FirebaseGalleryController mController;
-
-    private File mImage;
 
 
     public UploadMediaService() {
@@ -62,7 +62,7 @@ public class UploadMediaService extends IntentService {
             Log.d(TAG, "uploadMedia() " + actionUid + " - media: " + newMedia.getUriStorage());
 
             try {
-                File image = from(Uri.parse(localFilePath));
+                File image = FileUtility.from(this, Uri.parse(localFilePath));
 
                 if (image.length() > MAX_LENGTH_WITHOUT_COMPRESSION) {
                     // compress image
@@ -86,112 +86,6 @@ public class UploadMediaService extends IntentService {
         else {
             Log.w(TAG, "started without an intent data");
         }
-    }
-
-
-    // TODO: low level code, understand it and refactor it
-    // File utils
-
-    private File from(Uri uri) throws IOException {
-        // stream source file
-        InputStream sourceFileStream = getBaseContext().getContentResolver().openInputStream(uri);
-
-        // get info of source file
-        String fileName = getFileName(this, uri);
-        String[] splitName = splitFileName(fileName);
-
-        // create a new file in temporary directory with name (0) + extension (1)
-        File tempFile = File.createTempFile(splitName[0], splitName[1]);
-
-        // set settings for temporary file
-        tempFile = rename(tempFile, fileName);
-        tempFile.deleteOnExit();    // delete whe app is killed
-
-        // create a stream for the new file
-        FileOutputStream tempFileStream = null;
-        try {
-            // bind tempFile with output stream
-            tempFileStream = new FileOutputStream(tempFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (sourceFileStream != null) {
-            // copy the byte from inputStream (source file) to outputStream (temporary file)
-            copy(sourceFileStream, tempFileStream);
-            sourceFileStream.close();
-        }
-
-        if (tempFileStream != null) {
-            tempFileStream.close();
-        }
-
-        return tempFile;
-    }
-
-    private String[] splitFileName(String fileName) {
-        String name = fileName;
-        String extension = "";
-        int i = fileName.lastIndexOf(".");
-        if (i != -1) {
-            name = fileName.substring(0, i);
-            extension = fileName.substring(i);
-        }
-
-        return new String[]{name, extension};
-    }
-
-    private static String getFileName(Context context, Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf(File.separator);
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
-    }
-
-    private File rename(File file, String newName) {
-        File newFile = new File(file.getParent(), newName);
-        if (!newFile.equals(file)) {
-            if (newFile.exists() && newFile.delete()) {
-                Log.d("FileUtil", "Delete old " + newName + " file");
-            }
-            if (file.renameTo(newFile)) {
-                Log.d("FileUtil", "Rename file to " + newName);
-            }
-        }
-        return newFile;
-    }
-
-    private static final int EOF = -1;
-    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
-
-    private long copy(InputStream input, OutputStream output) throws IOException {
-        long count = 0;
-        int n;
-        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-        while (EOF != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-            count += n;
-        }
-        return count;
     }
 
 }

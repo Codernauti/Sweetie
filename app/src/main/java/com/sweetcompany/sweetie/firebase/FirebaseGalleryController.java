@@ -31,8 +31,6 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
 
     private static final String TAG = "FbGalleryController";
 
-    private final String mCoupleUid;
-
     private final String mGalleryUrl;           // galleries/<couple_uid>/<gallery_uid>
     private final String mGalleryPhotosUrl;     // gallery-photos/<couple_uid>/<gallery_uid>
     private final String mActionUrl;            // actions/<couple_uid>/<action_uid>
@@ -65,8 +63,6 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
                                      String partnerUid) {
         super(coupleUid, userUid, partnerUid, actionUid);
 
-        mCoupleUid = coupleUid;
-
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
 
         mGalleryUrl = Constraints.GALLERIES + "/" + coupleUid + "/" + actionUid;
@@ -76,7 +72,7 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         mGallery = mDatabaseRef.child(mGalleryUrl);
         mGalleryPhotos = mDatabaseRef.child(mGalleryPhotosUrl);
 
-        String mMediaGalleryUrl = Constraints.GALLERY_PHOTOS_DIRECTORY + "/" + mCoupleUid;
+        String mMediaGalleryUrl = Constraints.GALLERY_PHOTOS_DIRECTORY + "/" + coupleUid;
         mMediaGallery = FirebaseStorage.getInstance().getReference(mMediaGalleryUrl);
     }
 
@@ -176,49 +172,6 @@ public class FirebaseGalleryController extends FirebaseGeneralActionController {
         mGalleryPhotosListener = null;
     }
 
-
-    @Deprecated
-    public String sendMedia(final MediaFB media) {
-        Log.d(TAG, "Send MediaFB: " + media);
-
-        final String newMediaUID = mGalleryPhotos.push().getKey();
-
-        Uri uriLocal = Uri.parse(media.getUriStorage());
-        StorageReference photoRef = mMediaGallery.child( DataMaker.get_UTC_DateTime() + newMediaUID );
-        UploadTask uploadTask = photoRef.putFile(uriLocal);
-
-        // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                Log.e(TAG, "onFailure sendFileFirebase " + exception.getMessage());
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                media.setUriStorage(downloadUrl.toString());
-
-                addMediaToDatabase(newMediaUID, media);
-            }
-        }).addOnProgressListener(
-                new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                        Log.d(TAG, taskSnapshot.toString() + " onProgress: " + progress);
-
-                        /*for (GalleryControllerListener listener : mListeners) {
-                            listener.onUploadPercent(media, ((int) progress));
-                        }*/
-                    }
-                });
-
-        return newMediaUID;
-    }
 
     public void uploadMedia(final MediaFB media) {
         // TODO compress image

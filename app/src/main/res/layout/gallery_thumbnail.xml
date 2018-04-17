@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sweetcompany.sweetie.gallery.SquareLayout
+<com.codernauti.sweetie.gallery.SquareLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/gallery_list_item_root"
     android:layout_width="match_parent"
@@ -33,4 +33,4 @@
         android:src="@drawable/ic_check_white_24dp"/>
 
 
-</com.sweetcompany.sweetie.gallery.SquareLayout>
+</com.codernauti.sweetie.gallery.SquareLayout>

@@ -36,7 +36,7 @@
         android:layout_toStartOf="@+id/chat_item_photo_container"
         android:src="@drawable/ic_access_time_black_24dp"/>
 
-    <com.sweetcompany.sweetie.gallery.SquareLayout
+    <com.codernauti.sweetie.gallery.SquareLayout
         android:id="@+id/chat_item_photo_container"
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -79,7 +79,7 @@
                 android:layout_height="match_parent" />
         </FrameLayout>
 
-    </com.sweetcompany.sweetie.gallery.SquareLayout>
+    </com.codernauti.sweetie.gallery.SquareLayout>
 
 
 </RelativeLayout>

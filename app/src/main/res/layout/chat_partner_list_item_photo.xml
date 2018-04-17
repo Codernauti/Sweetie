@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.sweetcompany.sweetie.gallery.SquareLayout
+    <com.codernauti.sweetie.gallery.SquareLayout
         android:id="@+id/chat_item_photo_container"
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -51,7 +51,7 @@
         </FrameLayout>
 
 
-    </com.sweetcompany.sweetie.gallery.SquareLayout>
+    </com.codernauti.sweetie.gallery.SquareLayout>
 
     <TextView
         android:id="@+id/chat_item_photo_time_view"
